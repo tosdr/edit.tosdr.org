@@ -1,0 +1,2 @@
+class TosdrRating < ApplicationRecord
+end

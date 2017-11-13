@@ -10,10 +10,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113150746) do
+ActiveRecord::Schema.define(version: 20171113154236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "points", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "rank"
+    t.string "title"
+    t.string "source"
+    t.string "status"
+    t.text "analysis"
+    t.integer "rating"
+    t.boolean "featured", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "topic_id"
+    t.index ["topic_id"], name: "index_points_on_topic_id"
+    t.index ["user_id"], name: "index_points_on_user_id"
+  end
+
+  create_table "reasons", force: :cascade do |t|
+    t.text "reason"
+    t.bigint "user_id"
+    t.bigint "point_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_id"], name: "index_reasons_on_point_id"
+    t.index ["user_id"], name: "index_reasons_on_user_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "tosdr_rating_id"
+    t.index ["tosdr_rating_id"], name: "index_services_on_tosdr_rating_id"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "title"
+    t.string "subtitle"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tosdr_ratings", force: :cascade do |t|
+    t.integer "class_rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -34,4 +83,9 @@ ActiveRecord::Schema.define(version: 20171113150746) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "points", "topics"
+  add_foreign_key "points", "users"
+  add_foreign_key "reasons", "points"
+  add_foreign_key "reasons", "users"
+  add_foreign_key "services", "tosdr_ratings"
 end
