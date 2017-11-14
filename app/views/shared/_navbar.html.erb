@@ -1,0 +1,58 @@
+<div class="navbar-tosdr">
+  <!-- Left Navigation -->
+  <div class="navbar-tosdr-left">
+    <!-- Logo -->
+    <%= link_to root_path, class: "navbar-tosdr-brand" do %>
+      <%= image_tag "logo.png" %>
+    <% end %>
+    <div class="navbar-tosdr-title">
+      <strong>ToS;</strong>DR
+    </div>
+    <div class="btn btn-primary btn-sm">
+      Add Point
+    </div>
+  </div>
+  <!-- Right Navigation -->
+  <div class="navbar-tosdr-right hidden-xs hidden-sm">
+
+    <!-- Links -->
+    <div class="navbar-tosdr-group">
+      <%= link_to "Points", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Topics", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Services", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
+    </div>
+    <div class="navbar-tosdr-group">
+      <%= link_to "About", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
+    </div>
+    <!-- Avatar with dropdown menu -->
+    <div class="navbar-tosdr-item">
+      <div class="dropdown">
+        <%= link_to "Login", "#", class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu", "data-toggle" => "dropdown" %>
+        <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
+          <li>
+            <%= link_to "#" do %>
+              <i class="fa fa-user"></i> <%= t(".profile", default: "Profile") %>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "#" do %>
+              <i class="fa fa-home"></i>  <%= t(".profile", default: "Home") %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown list appearing on mobile only -->
+  <div class="navbar-tosdr-item hidden-md hidden-lg">
+    <div class="dropdown">
+      <i class="fa fa-bars dropdown-toggle" data-toggle="dropdown"></i>
+      <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
+        <li><a href="#">Some mobile link</a></li>
+        <li><a href="#">Other one</a></li>
+        <li><a href="#">Other one</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
