@@ -11,7 +11,7 @@ class Service < ApplicationRecord
     case avg.round
     when 9..10
       "A"
-    when 7..9
+    when 7..8
       "B"
     when 5..6
       "C"
