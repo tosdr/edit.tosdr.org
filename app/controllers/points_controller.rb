@@ -56,6 +56,6 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:user_id, :title, :source, :analysis, :topic_id)
+    params.require(:point).permit(:title, :source, :analysis, :topic_id)
   end
 end
