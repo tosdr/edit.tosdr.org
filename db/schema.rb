@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114105910) do
+ActiveRecord::Schema.define(version: 20171114133758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,20 +46,13 @@ ActiveRecord::Schema.define(version: 20171114105910) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "tosdr_rating_id"
-    t.index ["tosdr_rating_id"], name: "index_services_on_tosdr_rating_id"
+    t.string "grade"
   end
 
   create_table "topics", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tosdr_ratings", force: :cascade do |t|
-    t.integer "class_rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,5 +80,4 @@ ActiveRecord::Schema.define(version: 20171114105910) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
-  add_foreign_key "services", "tosdr_ratings"
 end
