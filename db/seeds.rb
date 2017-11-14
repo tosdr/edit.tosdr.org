@@ -13,8 +13,8 @@ test_service = Service.new(name: "Test service", url: "http://perdu.com", grade:
 test_service.save
 test_topic = Topic.new(title: "Test topic", subtitle: "Test subtitle", description: "Test topic description")
 test_topic.save
-test_point_1 = Point.new(user_id: 1, title: "Test point 1", source: "http://perdu.com", status: "pending", analysis: "Bla bla bla", rating: 3, topic_id: 1)
+test_point_1 = Point.new(user_id: 1, title: "Test point 1", source: "http://perdu.com", status: "pending", analysis: "Bla bla bla", rating: 3, topic_id: 1, service_id: 1)
 test_point_1.save
-test_point_2 = Point.new(user_id: 1, title: "Test point 2", source: "http://perdu.com", status: "pending", analysis: "Bla bla bla", rating: 5, topic_id: 1)
+test_point_2 = Point.new(user_id: 1, title: "Test point 2", source: "http://perdu.com", status: "pending", analysis: "Bla bla bla", rating: 5, topic_id: 1, service_id: 1)
 test_point_2.save
 puts "Done!"
