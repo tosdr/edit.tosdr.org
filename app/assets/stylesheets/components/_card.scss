@@ -1,0 +1,33 @@
+.card {
+
+}
+.card-badge {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  & .card-badge-letter {
+    color: white;
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+  }
+}
+.rating-a {
+  background-color: #1BA321;
+}
+.rating-b {
+  background-color: #C7E128;
+}
+.rating-c {
+  background-color: #FFB727;
+}
+.rating-d {
+  background-color: #F26A15;
+}
+.rating-f {
+  background-color: #D02620;
+}
+
+
