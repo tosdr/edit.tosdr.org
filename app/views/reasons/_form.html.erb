@@ -1,0 +1,11 @@
+<%= simple_form_for([@point, @reason]) do |f| %>
+<div class="form-inputs">
+    <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+</div>
+<div class="form-inputs">
+<%= f.input :reason %>
+</div>
+<div class="form-inputs">
+    <%= f.submit class: 'btn btn-primary' %>
+</div>
+<% end %>
