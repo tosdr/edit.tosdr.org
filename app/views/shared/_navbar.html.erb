@@ -27,7 +27,8 @@
     <!-- Avatar with dropdown menu -->
     <div class="navbar-tosdr-item">
       <div class="dropdown">
-        <%= link_to "Login", "#", class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu", "data-toggle" => "dropdown" %>
+        <%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %>
+        <!-- todo make the data toggle when user is logged in -->
         <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
           <li>
             <%= link_to "#" do %>
