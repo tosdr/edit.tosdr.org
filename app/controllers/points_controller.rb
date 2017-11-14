@@ -1,4 +1,6 @@
 class PointsController < ApplicationController
+  before_action :set_point
+
   def index
     @points = Point.all
   end
@@ -7,13 +9,18 @@ class PointsController < ApplicationController
     if current_user
       @point = Point.new
     else
-      flash[:notice] = "Please log in or sign up to create a point."
+      flash[:notice] = "Please log in before adding a point"
       redirect_to new_user_path
     end
   end
 
   def create
     @point = Point.new(point_params)
+    @point.user_id = current_user
+    # need to instantiate the services ?
+    # @point.service_id = @service(params[:id])
+    # @point.topid_id = @topic(params[:id])
+    # if yes, TODO: create the setting private methods
     if @point.save
       flash[:notice] = "You created a point!"
       redirect_to points_path
@@ -49,6 +56,6 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit
+    params.require(:point).permit(:user_id, :title, :source, :analysis, :topic_id)
   end
 end
