@@ -1,5 +1,53 @@
 .card {
+  width: 420px;
+  height: 260px;
+  background-color: white;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
 
+  & .card-service {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom: 0.25px solid rgba(0, 0, 0, 0.3) ;
+  }
+  & .card-block {
+    display: flex;
+    padding: 10px 10px;
+
+    & .card-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 200px;
+      flex: 0 0 70px;
+      padding: 20px 10px;
+    }
+    & .card-left-item {
+      margin: 50px 0;
+    }
+    & .card-text {
+      flex: 0 1 auto;
+      font-size: 0.9em;
+      line-height: 1em;
+      padding: 5px;
+    }
+    & .card-text p {
+      margin: 0.5em;
+      text-align: justify;
+    }
+  }
+}
+
+.pointbox {
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+}
+.point-bad {
+  background-color: #D02620;
 }
 .card-badge {
   height: 70px;
