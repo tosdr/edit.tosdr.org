@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   end
   resources :services
   resources :topics
+
 end

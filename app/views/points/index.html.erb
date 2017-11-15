@@ -1,2 +1,9 @@
-<h1>Points#index</h1>
-<p>Find me in app/views/points/index.html.erb</p>
+<% @points.each do |p| %>
+  <p><%= p.service.name %></p>
+  <p> <%= p.title %> </p>
+  <p> <%= p.status %> </p>
+  <p> <%= p.rating %> </p>
+
+  <p> <%= link_to 'Status update!', point_path(p) if p.reason %> </p>
+<% end %>
+
