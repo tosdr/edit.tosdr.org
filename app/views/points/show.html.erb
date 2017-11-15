@@ -1,2 +1,14 @@
 <h1>Points#show</h1>
 <p>Find me in app/views/points/show.html.erb</p>
+
+<p class="rank">0</p>
+<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+
+<script>
+  document.querySelector(".fa-thumbs-o-up").addEventListener("click", event => {
+      console.log("preparing event");
+      console.log(event);
+      let rankUp = document.querySelector(".rank");
+      const totalRank = <%= @point.rank %> + rankUp.innerHTML++;
+    });
+</script>

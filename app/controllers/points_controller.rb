@@ -1,61 +1,71 @@
 class PointsController < ApplicationController
-  before_action :set_point
+  before_action :set_point, only: [:show, :edit, :update, :destroy]
+  # before_action :set_service
+  # before_action :set_topic
 
   def index
     @points = Point.all
   end
 
   def new
-    if current_user
-      @point = Point.new
-    else
-      flash[:notice] = "Please log in before adding a point"
-      redirect_to new_user_path
-    end
+    @point = Point.new
+    @services = Service.all
+    @topics = Topic.all
+    # if current_user
+    #   @point = Point.new
+    # else
+    #   flash[:notice] = "Please log in before adding a point"
+    #   redirect_to new_user_path
+    # end
   end
 
   def create
     @point = Point.new(point_params)
-    @point.user_id = current_user
+    @point.user = current_user
     # need to instantiate the services ?
-    # @point.service_id = @service(params[:id])
-    # @point.topid_id = @topic(params[:id])
+    # @point.topic = @topic
+    # @point.service = @service
     # if yes, TODO: create the setting private methods
     if @point.save
       flash[:notice] = "You created a point!"
       redirect_to points_path
     else
-      render :new
+      redirect_to new_point_path
     end
   end
 
   def edit
-    @point = Point.find(params[:id])
   end
 
   def show
-    @point = Point.find(params[:id])
   end
 
   def update
-    @point = Point.find(params[:id])
     @point.update(point_params)
     flash[:notice] = "Point successfully updated!"
     redirect_to points_path
   end
 
   def destroy
-    @point = Point.find(params[:id])
     @point.destroy
     redirect_to points_path
   end
 
   private
+
   def set_point
-    @point = Point.find(params[:point_id])
+    @point = Point.find(params[:id])
   end
 
+  # def set_service
+  #   @service = Service.find(params[:service_id])
+  # end
+
+  # def set_topic
+  #   @topic = Topic.find(params[:topic_id])
+  # end
+
   def point_params
-    params.require(:point).permit(:title, :source, :analysis, :topic_id)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id)
   end
 end
