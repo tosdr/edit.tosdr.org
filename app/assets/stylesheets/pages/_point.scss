@@ -1,0 +1,58 @@
+.mw5 {
+  max-width: 70rem;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bgw {
+  background-color: white;
+}
+
+.p15 {
+  padding: 15px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}
+
+.point-info {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.point-items {
+  display: flex;
+  align-items: center;
+}
+
+.point-status {
+  padding-left: 50px;
+}
+
+.point-rating {
+  padding-left: 50px;
+}
+
+.status-changes {
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.lighter {
+  font-weight: light;
+  letter-spacing: 2px;
+}
+
+.bolder {
+  font-weight: bolder;
+  letter-spacing: 1.5px;
+}
