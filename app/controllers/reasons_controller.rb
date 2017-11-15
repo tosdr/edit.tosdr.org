@@ -10,6 +10,8 @@ class ReasonsController < ApplicationController
     @reason = Reason.new(reason_params)
     @reason.point = @point
     @point.update(point_params)
+    @reason.status = @point.status
+
     @reason.user = @point.user
     if @reason.save
       flash[:notice] = "Status saved!"

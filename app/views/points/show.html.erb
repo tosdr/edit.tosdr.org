@@ -37,7 +37,7 @@
     <% @point.reasons.each do |reason| %>
     <tbody>
       <tr>
-        <th scope="row"><%= @point.status %></th>
+        <th scope="row"><%= reason.status %></th>
         <td><%= reason.content %></td>
         <td><%= time_ago_in_words reason.created_at %> ago</td>
       </tr>
@@ -52,6 +52,7 @@
 <div class="mt30">
     <ul class="point-info">
       <li class="point-items">
+
         <div class="point-service">
           <%= link_to 'Update Point', edit_point_path(@point), class: 'btn btn-primary' %>
         </div>
