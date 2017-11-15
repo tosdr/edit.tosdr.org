@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   def index
     unless params[:q].nil? || params[:q].empty?
 
-      @services = Service.where("name LIKE ?", "%#{params[:q]}%")
+      @services = Service.where("LOWER(name) LIKE ?", "%#{params[:q]}%")
     else
       @services = Service.all
     end
