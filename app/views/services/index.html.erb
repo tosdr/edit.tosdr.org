@@ -1,14 +1,24 @@
-<div class="container">
+<div class="col-xs-12 col-md-12 col-xs-6">
   <div class="row">
     <h1>All services</h1>
-    <% @services.each do |service| %>
-    <ul>
-      <li>
-        <%= service.name %>
-        <%= service.url %>
-        <%= service.service_ratings %>
-      </li>
-    </ul>
-    <% end %>
+
+    <center><%= render 'shared/search' %></center>
+    <div class="service-list">
+      <% @services.each do |service| %>
+      <ul>
+        <div class="service-item">
+          <div class="service-title">
+            <%= service.name %>
+          </div>
+          <div class="service-url">
+            <%= service.url %>
+          </div>
+          <div class="service-rating">
+            <%= service.service_ratings %>
+          </div>
+        </ul>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
