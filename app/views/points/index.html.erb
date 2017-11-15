@@ -1,7 +1,69 @@
-<% @points.each do |p| %>
-  <p><%= p.service.name %></p>
-  <p> <%= p.title %> </p>
-  <p> <%= p.status %> </p>
-  <p> <%= p.rating %> </p>
-<% end %>
-
+<div class="row">
+  <div class="title">
+    <h1>
+      <strong>Your contributions</strong>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <%= render "shared/searchbar" %>
+  </div>
+</div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-service">
+            Services
+          </div>
+          <div class="card-inline-item card-inline-point">
+            Points
+          </div>
+          <div class="card-inline-item card-inline-rating">
+            Ratings
+          </div>
+          <div class="card-inline-item card-inline-status">
+            Status
+          </div>
+          <div class="card-inline-item card-inline-options">
+            Options
+          </div>
+        </div>
+        <!-- actual card-inline -->
+          <% @points.each do |p| %>
+          <% if p.rating.between?(7, 10)%>
+            <% pointbox = "point-good" %>
+          <% elsif p.rating.between?(4,6) %>
+            <% pointbox = "point-neutral" %>
+          <% elsif p.rating.between?(2,3) %>
+            <% pointbox = "point-bad" %>
+          <% elsif p.rating.between?(0,2) %>
+            <% pointbox = "point-blocker" %>
+          <% end %>
+          <div class="card-inline">
+            <div class="card-inline-item card-inline-service">
+              <%= p.service.name %>
+            </div>
+            <div class="card-inline-item card-inline-point <%= pointbox %>">
+              <%= p.title %>
+            </div>
+            <div class="card-inline-item card-inline-rating">
+              <%= p.rating %>
+            </div>
+            <div class="card-inline-item card-inline-status">
+              <%= p.status %>
+            </div>
+            <div class="card-inline-item card-inline-options">
+              <%= link_to "E", point_path(p), class: "btn btn-default btn-xs" %>
+              <%= link_to "D", "#", class: "btn btn-default btn-xs" %>
+            </div>
+          </div>
+          <!-- card-inline-END -->
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
