@@ -13,7 +13,7 @@ class ReasonsController < ApplicationController
     @reason.user = @point.user
     if @reason.save
       flash[:notice] = "Status saved!"
-      redirect_to points_path
+      redirect_to point_path(@point)
     else
       redirect_to new_point_reason_path
     end
