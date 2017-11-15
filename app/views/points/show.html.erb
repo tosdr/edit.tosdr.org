@@ -1,14 +1,22 @@
-<h1>Points#show</h1>
-<p>Find me in app/views/points/show.html.erb</p>
+<ul>
 
-<p class="rank">0</p>
-<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+<li>Service: <%= @point.service.name %></li>
+  <li>Title: <%= @point.title %> </li>
+  <li>Status: <%= @point.status %> </li>
+  <li>Rating: <%= @point.rating %> </li>
 
-<script>
-  document.querySelector(".fa-thumbs-o-up").addEventListener("click", event => {
-      console.log("preparing event");
-      console.log(event);
-      let rankUp = document.querySelector(".rank");
-      const totalRank = <%= @point.rank %> + rankUp.innerHTML++;
-    });
-</script>
+</ul>
+
+
+  <% if @point.reasons.any? %>
+    <h3>Reasons:</h3>
+    <ul>
+
+  <% @point.reasons.each do |reason| %>
+    <li><%= reason.reason %> <%= time_ago_in_words reason.created_at %> ago</li>
+  <% end %>
+    </ul>
+
+<% end %>
+
+<p> <%= link_to 'Update Point', edit_point_path(@point) %> </p>
