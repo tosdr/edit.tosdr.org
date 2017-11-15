@@ -31,24 +31,51 @@
       font-size: 0.9em;
       line-height: 1em;
       padding: 5px;
+      height: 180px;
+      text-overflow: ellipsis;
+      overflow-y: hidden;
     }
     & .card-text p {
       margin: 0.5em;
       text-align: justify;
+      max-height: 100px;
+    }
+    & .card-text ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 0 5px;
+      & li {
+        text-align: justify;
+        margin-bottom: 5px;
+      }
     }
   }
 }
 
-.pointbox {
-  height: 20px;
-  width: 20px;
-  border-radius: 4px;
-  text-align: center;
-  color: white;
+$pointPaddingLeft : 24px;
+
+li.point-good {
+  background: url(point-good.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
 }
-.point-bad {
-  background-color: #D02620;
+li.point-neutral {
+  background: url(point-neutral.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
 }
+li.point-bad {
+  background: url(point-bad.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+li.point-blocker {
+  background: url(point-blocker.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+
+
 .card-badge {
   height: 70px;
   width: 70px;
