@@ -33,7 +33,7 @@ class ReasonsController < ApplicationController
   end
 
   def reason_params
-    params.require(:reason).permit(:reason)
+    params.require(:reason).permit(:content)
   end
   def point_params
     params.require(:point).permit(:status)

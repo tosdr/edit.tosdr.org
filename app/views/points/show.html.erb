@@ -13,7 +13,7 @@
     <ul>
 
   <% @point.reasons.each do |reason| %>
-    <li><%= reason.reason %> <%= time_ago_in_words reason.created_at %> ago</li>
+    <li><%= reason.content %> <%= time_ago_in_words reason.created_at %> ago</li>
   <% end %>
     </ul>
 
