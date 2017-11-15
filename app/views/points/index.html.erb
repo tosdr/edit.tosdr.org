@@ -1,9 +1,69 @@
+<div class="row">
+  <div class="title">
+    <h1>
+      <strong>Your contributions</strong>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <%= render "shared/searchbar" %>
+  </div>
+</div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline -->
+        <div class="card-inline">
+          <div class="card-inline-item card-inline-service">
+            test service
+          </div>
+          <div class="card-inline-item card-inline-point point-good">
+            test point 1
+          </div>
+          <div class="card-inline-item card-inline-rating">
+            3
+          </div>
+          <div class="card-inline-item card-inline-status">
+            pending
+          </div>
+          <div class="card-inline-item card-inline-options">
+            <%= link_to "E", "#", class: "btn btn-default btn-xs" %>
+            <%= link_to "D", "#", class: "btn btn-default btn-xs" %>
+          </div>
+        </div>
+        <!-- card-inline-END -->
+        <!-- card-inline -->
+        <div class="card-inline">
+          <div class="card-inline-item card-inline-service">
+            test service
+          </div>
+          <div class="card-inline-item card-inline-point">
+            test point 1
+          </div>
+          <div class="card-inline-item card-inline-rating">
+            3
+          </div>
+          <div class="card-inline-item card-inline-status">
+            pending
+          </div>
+          <div class="card-inline-item card-inline-options">
+            <%= link_to "E", "#", class: "btn btn-default btn-xs" %>
+            <%= link_to "D", "#", class: "btn btn-default btn-xs" %>
+          </div>
+        </div>
+        <!-- card-inline-END -->
+      </div>
+    </div>
+  </div>
+</div>
 <% @points.each do |p| %>
   <p><%= p.service.name %></p>
   <p> <%= p.title %> </p>
   <p> <%= p.status %> </p>
   <p> <%= p.rating %> </p>
 
-  <p> <%= link_to 'Status update!', point_path(p) if p.reason %> </p>
+  <p> <%= link_to 'Status update!', point_path(p) if p.reasons %> </p>
 <% end %>
 
