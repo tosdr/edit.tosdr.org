@@ -1,0 +1,73 @@
+<header class="tc ph4">
+  <h1 class="fw2 mv3">
+    <%= @topic.title %>
+  </h1>
+  <h2 class="fw2 mt0 lh-copy">
+    <%= @topic.description %>
+  </h2>
+</header>
+
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <%= render "shared/searchbar" %>
+  </div>
+</div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-service">
+            Services
+          </div>
+          <div class="card-inline-item card-inline-point">
+            Topic
+          </div>
+          <div class="card-inline-item card-inline-rating">
+            Rating
+          </div>
+          <div class="card-inline-item card-inline-status">
+            Status
+          </div>
+          <div class="card-inline-item card-inline-options">
+            View
+          </div>
+        </div>
+        <!-- actual card-inline -->
+          <% @topic.points.each do |p| %>
+          <% if p.rating.between?(7, 10)%>
+            <% pointbox = "point-good" %>
+          <% elsif p.rating.between?(4,6) %>
+            <% pointbox = "point-neutral" %>
+          <% elsif p.rating.between?(2,3) %>
+            <% pointbox = "point-bad" %>
+          <% elsif p.rating.between?(0,2) %>
+            <% pointbox = "point-blocker" %>
+          <% end %>
+          <div class="card-inline">
+            <div class="card-inline-item card-inline-service">
+              <%= p.service.name %>
+            </div>
+            <div class="card-inline-item card-inline-point <%= pointbox %>">
+              <%= p.topic.title %>
+            </div>
+            <div class="card-inline-item card-inline-rating">
+              <%= p.rating %>
+            </div>
+            <div class="card-inline-item card-inline-status">
+              <%= p.status %>
+            </div>
+            <div class="card-inline-item card-inline-options">
+              <%= link_to(point_path(p), :class => 'btn') do %>
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          </div>
+          <!-- card-inline-END -->
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

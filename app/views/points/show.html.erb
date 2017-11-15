@@ -52,11 +52,12 @@
 <div class="mt30">
     <ul class="point-info">
       <li class="point-items">
-
-        <div class="point-service">
+        <% if current_user.id == @point.user_id %>
+        <div>
           <%= link_to 'Update Point', edit_point_path(@point), class: 'btn btn-primary' %>
         </div>
-        <div class="point-status">
+        <% end %>
+        <div class="pl15">
           <%= link_to 'All Points', points_path, class: 'btn btn-primary' %>
         </div>
       </li>
