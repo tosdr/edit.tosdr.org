@@ -118,15 +118,22 @@ $pointPaddingLeft : 35px;
   align-items: center;
   margin: 0px 0;
   padding: 10px 20px;
-}
-.card-inline:nth-child(odd) {
-  background-color: #FCFCFC;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+
 }
 .card-inline:nth-child(even) {
+  background-color: #FCFCFC;
+}
+.card-inline:nth-child(odd) {
   background-color: #F6F6F6;
 }
 .card-inline:first-child {
   border-radius: 4px 4px 0 0;
+}
+.card-inline-header {
+  margin-top: 30px;
+  background-color: #ededed !important;
+  text-align: center;
 }
 .card-inline-service {
 
