@@ -1,14 +1,16 @@
 <div class="container">
   <div class="row">
     <h1>All services</h1>
+
+    <%= render 'shared/search' %>
+
     <% @services.each do |service| %>
-    <ul>
-      <li>
-        <%= service.name %>
-        <%= service.url %>
-        <%= service.service_ratings %>
-      </li>
-    </ul>
+    <div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)), url('https://kitt.lewagon.com/placeholder/cities/shanghai');">
+      <div class="card-description">
+        <h2><%= service.name %></h2>
+        <p><%= service.url %>, <%= service.service_ratings %></p>
+      </div>
+    </div>
     <% end %>
   </div>
 </div>
