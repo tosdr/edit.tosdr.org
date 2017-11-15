@@ -8,18 +8,16 @@
     <div class="navbar-tosdr-title">
       <strong>ToS;</strong>DR
     </div>
-    <div class="btn btn-primary btn-sm">
-      Add Point
-    </div>
+    <%= link_to "Add a point", new_point_path, class: "btn btn-primary btn-sm" %>
   </div>
   <!-- Right Navigation -->
   <div class="navbar-tosdr-right hidden-xs hidden-sm">
 
     <!-- Links -->
     <div class="navbar-tosdr-group">
-      <%= link_to "Points", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
-      <%= link_to "Topics", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
-      <%= link_to "Services", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Points", points_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Services", services_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
     </div>
     <div class="navbar-tosdr-group">
       <%= link_to "About", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
@@ -29,18 +27,8 @@
       <!-- todo make the data toggle when user is logged in -->
       <div class="dropdown">
         <% if current_user %>
-        <strong><%= link_to "Menu", "#", class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu", "data-toggle" => "dropdown" %></strong>
+        <%= link_to "Menu", "#", class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu", 'data-toggle' => "dropdown" %>
         <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
-          <li>
-            <%= link_to "#" do %>
-            <i class="fa fa-user"></i> <%= t(".profile", default: "Profile") %>
-            <% end %>
-          </li>
-          <li>
-            <%= link_to "#" do %>
-            <i class="fa fa-home"></i> <%= t(".profile", default: "Home") %>
-            <% end %>
-          </li>
           <li>
             <%= link_to destroy_user_session_path, method: :delete do %>
             <i class="fa fa-sign-out"></i> <%= t(".profile", default: "Log out") %>
@@ -59,10 +47,14 @@
     <div class="dropdown">
       <i class="fa fa-bars dropdown-toggle" data-toggle="dropdown"></i>
       <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Points</a></li>
-        <li><a href="#">Topics</a></li>
-        <li><a href="#">Services</a></li>
+        <% if current_user %>
+        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+        <% else %>
+        <%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %>
+        <% end %>
+        <li><%= link_to "Points", points_path  %></li>
+        <li><%= link_to "Topics", topics_path %></li>
+        <li><%= link_to "Services", services_path  %></li>
       </ul>
     </div>
   </div>
