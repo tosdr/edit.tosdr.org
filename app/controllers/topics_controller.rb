@@ -38,6 +38,7 @@ class TopicsController < ApplicationController
       @topic.destroy
       flash[:notice] = "Topic has been deleted!"
       redirect_to topics_path
+    end
   end
 
   private
@@ -49,4 +50,5 @@ class TopicsController < ApplicationController
   def topic_params
     params.require(:topic).permit(:title, :subtitle, :description)
   end
+
 end
