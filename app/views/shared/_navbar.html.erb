@@ -50,9 +50,7 @@
       <i class="fa fa-bars dropdown-toggle" data-toggle="dropdown"></i>
       <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
         <% if current_user %>
-        <%= link_to destroy_user_session_path, mehtod: :delete do %>
-        <i class="fa fa-sign-out"></i> <%= t(".profile", default: "Log out") %>
-        <% end %>
+        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
         <% else %>
         <%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %>
         <% end %>
