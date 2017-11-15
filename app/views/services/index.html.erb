@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <h1>All services</h1>
+    <% @services.each do |service| %>
+    <ul>
+      <li>
+        <%= service.name %>
+        <%= service.url %>
+        <%= service.service_ratings %>
+      </li>
+    </ul>
+    <% end %>
+  </div>
+</div>
