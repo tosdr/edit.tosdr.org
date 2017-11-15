@@ -2,5 +2,5 @@ class Reason < ApplicationRecord
   belongs_to :user
   belongs_to :point
 
-  validates :reason, presence: true
+  validates :content, presence: true
 end
