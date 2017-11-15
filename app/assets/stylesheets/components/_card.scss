@@ -1,0 +1,106 @@
+.card {
+  margin: 10px;
+  height: 260px;
+  min-width: 350px;
+  background-color: white;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+
+  & .card-service {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom: 0.25px solid rgba(0, 0, 0, 0.3) ;
+  }
+  & .card-block {
+    display: flex;
+    padding: 10px 10px;
+
+    & .card-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 200px;
+      flex: 0 0 70px;
+      padding: 20px 10px;
+    }
+    & .card-left-item {
+      margin: 50px 0;
+    }
+    & .card-text {
+      flex: 0 1 auto;
+      font-size: 0.9em;
+      line-height: 1em;
+      padding: 5px;
+      height: 180px;
+      text-overflow: ellipsis;
+      overflow-y: hidden;
+    }
+    & .card-text p {
+      margin: 0.5em;
+      text-align: justify;
+      max-height: 100px;
+    }
+    & .card-text ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 0 5px;
+      & li {
+        text-align: justify;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+$pointPaddingLeft : 24px;
+
+li.point-good {
+  background: url(point-good.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+li.point-neutral {
+  background: url(point-neutral.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+li.point-bad {
+  background: url(point-bad.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+li.point-blocker {
+  background: url(point-blocker.png) no-repeat left top;
+  padding-left: $pointPaddingLeft;
+  padding-top: 0px;
+}
+
+
+.card-badge {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.rating-a {
+  background-color: #1BA321;
+}
+.rating-b {
+  background-color: #C7E128;
+}
+.rating-c {
+  background-color: #FFB727;
+}
+.rating-d {
+  background-color: #F26A15;
+}
+.rating-f {
+  background-color: #D02620;
+}
+
+
