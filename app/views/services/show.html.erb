@@ -9,7 +9,7 @@
 </header>
 
 <div class="row">
-  <div class="col-xs-12 text-center">
+  <div class="col-xs-12 text-center search-bar">
     <%= render "shared/searchbar" %>
   </div>
 </div>
@@ -23,7 +23,7 @@
             Name
           </div>
           <div class="card-inline-item card-inline-point">
-            Topic
+            Title
           </div>
           <div class="card-inline-item card-inline-rating">
             Rating
@@ -50,10 +50,10 @@
             <div class="card-inline-item card-inline-service">
               <%= p.service.name %>
             </div>
-            <div class="card-inline-item card-inline-point <%= pointbox %>">
-              <%= p.topic.title %>
+            <div class="card-inline-item card-inline-point ">
+              <%= p.title %>
             </div>
-            <div class="card-inline-item card-inline-rating">
+            <div class="card-inline-item card-inline-rating <%= pointbox %>">
               <%= p.rating %>
             </div>
             <div class="card-inline-item card-inline-status">
