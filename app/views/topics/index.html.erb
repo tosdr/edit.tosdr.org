@@ -2,9 +2,9 @@
   <h1 class="fw2 mv3">
     Data Protection Topics
   </h1>
-  <% if current_user.admin? %>
-<%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
-<% end %>
+  <% unless current_user.admin? %>
+  <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
+  <% end %>
 </header>
 
 <div class="row">
@@ -29,30 +29,30 @@
           </div>
         </div>
         <!-- actual card-inline -->
-          <% @topics.each do |t| %>
-          <div class="card-inline">
-            <div class="card-inline-item card-inline-service">
-              <%= t.title %>
-            </div>
-            <div class="card-inline-item card-inline-rating">
-              <%= t.points.count %>
-            </div>
-            <div class="card-inline-item card-inline-options">
-              <%= link_to(topic_path(t), :class => 'btn') do %>
-              <i class="fa fa-eye" aria-hidden="true"></i>
-              <% end %>
-
-              <% if current_user.admin? %>
-
-              <%= link_to(edit_topic_path(t), :class => 'btn') do %>
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-              <% end %>
-
-              <% end %>
-
-            </div>
+        <% @topics.each do |t| %>
+        <div class="card-inline">
+          <div class="card-inline-item card-inline-service">
+            <%= t.title %>
           </div>
-          <!-- card-inline-END -->
+          <div class="card-inline-item card-inline-rating">
+            <%= t.points.count %>
+          </div>
+          <div class="card-inline-item card-inline-options">
+            <%= link_to(topic_path(t), :class => 'btn') do %>
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <% end %>
+
+            <% if current_user.admin? %>
+
+            <%= link_to(edit_topic_path(t), :class => 'btn') do %>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <% end %>
+
+            <% end %>
+
+          </div>
+        </div>
+        <!-- card-inline-END -->
         <% end %>
       </div>
     </div>

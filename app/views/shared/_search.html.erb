@@ -1,5 +1,8 @@
 <%= form_tag("/services", method: "get") do %>
-  <%= label_tag(:q, "Search for:") %>
-  <%= text_field_tag(:q) %>
-  <%= submit_tag("Search") %>
+<div id="custom-search-input">
+  <div class="input-group col-md-12">
+    <input type="text" class="  search-query form-control" placeholder="Search: Point, Topic, Service..." value="<%= text_field_tag(:q) %>" ></input>
+    <%= submit_tag('Search') %>
+  </div>
+</div>
 <% end %>
