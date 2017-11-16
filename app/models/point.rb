@@ -2,7 +2,7 @@ class Point < ApplicationRecord
   belongs_to :user
   belongs_to :topic
   belongs_to :service
-  has_many :reasons
+  has_many :reasons, dependent: :destroy
 
   validates :title, presence: true
   validates :title, length: { in: 5..140 }
