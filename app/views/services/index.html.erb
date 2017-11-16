@@ -1,23 +1,67 @@
-<div class="col-xs-12 col-md-12 col-xs-6">
-  <div class="row">
-    <h1>All services</h1>
-
-    <center><%= render 'shared/search' %></center>
-    <div class="service-list">
-      <% @services.each do |service| %>
-      <ul>
-        <div class="service-item">
-          <div class="service-title">
-            <%= service.name %>
+<div class="row">
+  <div class="title">
+    <h1>
+      <strong>All Services</strong>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <%= render "shared/searchbar" %>
+  </div>
+</div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-150 text-left">
+            Name
           </div>
-          <div class="service-url">
-            <%= service.url %>
+          <div class="card-inline-item card-inline-autogrow">
+            URL
           </div>
-          <div class="service-rating">
-            <%= service.service_ratings %>
+          <div class="card-inline-item card-inline-shrink-40">
+            Ratings
           </div>
-        </ul>
+          <div class="card-inline-item card-inline-shrink-80 text-right">
+            Options
+          </div>
+        </div>
+        <!-- actual card-inline -->
+        <% @services.each do |s| %>
+          <% if s.service_ratings == "A" %>
+            <% badge_rating = "card-badge rating-a" %>
+          <% elsif s.service_ratings == "B" %>
+            <% badge_rating = "card-badge rating-b" %>
+          <% elsif s.service_ratings == "C" %>
+            <% badge_rating = "card-badge rating-c" %>
+          <% elsif s.service_ratings == "D" %>
+            <% badge_rating = "card-badge rating-d" %>
+          <% elsif s.service_ratings == "F" %>
+            <% badge_rating = "card-badge rating-f" %>
         <% end %>
+        <div class="card-inline">
+          <div class="card-inline-item card-inline-150 text-left">
+            <%= s.name %>
+          </div>
+          <div class="card-inline-item card-inline-autogrow">
+            <%= s.url %>
+          </div>
+          <div class="card-inline-item card-inline-shrink-40">
+            <div class="service-badge <%= badge_rating %> ">
+               <%= s.service_ratings %>
+            </div>
+          </div>
+          <div class="card-inline-item card-inline-shrink-80 text-right">
+            <%= link_to(service_path(s), :class => 'btn') do %>
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              <% end %>
+          </div>
+        </div>
+        <!-- card-inline-END -->
+      <% end %>
       </div>
     </div>
   </div>
