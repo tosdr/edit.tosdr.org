@@ -54,12 +54,18 @@
       <li class="point-items">
         <% if current_user.id == @point.user_id %>
         <div>
-          <%= link_to 'Update Point', edit_point_path(@point), class: 'btn btn-primary' %>
+          <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
         </div>
         <% end %>
         <div class="pl15">
-          <%= link_to 'All Points', points_path, class: 'btn btn-primary' %>
+          <%= link_to 'All', points_path, class: 'btn btn-primary' %>
         </div>
+
+        <% if current_user.admin? %>
+        <div class="pl15">
+          <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
+        </div>
+        <% end %>
       </li>
     </ul>
 </div>
