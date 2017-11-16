@@ -12,4 +12,10 @@ class Point < ApplicationRecord
   validates :rating, presence: true
   validates :rating, numericality: true
 
+
+# VOTE CONTROLLER ! TODO
+  # def has_voted(point)
+  #   Vote.where(point_id: point.id, user_id: current_user.id)
+  # end
+
 end
