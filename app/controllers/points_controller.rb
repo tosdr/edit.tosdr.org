@@ -1,6 +1,6 @@
 class PointsController < ApplicationController
-  before_action :set_point, only: [:show, :edit, :update, :destroy]
-  before_action :set_point_by_point_id, only: [:featured]
+  before_action :set_point, only: [:show, :edit,:featured, :update, :destroy]
+
   # before_action :set_service
   # before_action :set_topic
 
@@ -66,11 +66,21 @@ class PointsController < ApplicationController
     redirect_to points_path
   end
 
+  # def upvote
+  #   @vote = Vote.new(point_id: @point.id, user_id: current_user.id)
+  #   if @vote.save
+  #     respond_to do |format|
+  #       format.html { redirect_to point_path(@point)}
+  #       format.js
+  #     end
+  #   end
+  # end
+
   private
 
-  def set_point_by_point_id
-    @point = Point.find(params[:point_id])
-  end
+  # def set_point_by_point_id
+  #   @point = Point.find(params[:point_id])
+  # end
 
   def set_point
     @point = Point.find(params[:id])

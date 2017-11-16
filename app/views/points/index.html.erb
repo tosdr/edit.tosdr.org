@@ -39,11 +39,9 @@
           <div class="card-inline-item card-inline-status">
             Status
           </div>
-          <% if current_user.admin? %>
           <div class="card-inline-item card-inline-options">
             Featured?
           </div>
-          <% end %>
           <div class="card-inline-item card-inline-options">
             Options
           </div>
@@ -74,9 +72,9 @@
           </div>
           <div class="card-inline-item card-inline-status">
             <% if p.is_featured? %>
-                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                <i class="fa fa-check" aria-hidden="true"></i>
             <% else %>
-                <i class="fa fa-square-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             <% end %>
           </div>
           <div class="card-inline-item card-inline-options">
