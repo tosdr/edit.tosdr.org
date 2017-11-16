@@ -1,7 +1,6 @@
 .card {
   margin: 10px;
   height: 260px;
-  min-width: 350px;
   background-color: white;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
 
@@ -113,6 +112,8 @@ $pointPaddingLeft : 35px;
   width: 25px;
   color: white;
   font-size: 18px;
+  text-align:center;
+  margin: 0 10px;
 }
 
 // Card-inline
@@ -122,13 +123,16 @@ $pointPaddingLeft : 35px;
 .card-inline {
   display: flex;
   font-size: 0.9em;
-  min-width: 360px;
+  min-width: 300px;
   justify-content: space-between;
   align-items: center;
   margin: 0px 0;
   padding: 10px 20px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  & .btn {
+  padding: 4px;
 
+}
 }
 .card-inline-item {
 }
@@ -145,24 +149,54 @@ $pointPaddingLeft : 35px;
   margin-top: 30px;
   background-color: #ededed !important;
 }
+.card-inline-vote {
+  flex: 0 0 20px;
+}
 .card-inline-service {
-
+  flex: 1 1 10%;
+  padding-right: 5px;
+  text-align: left;
+  text-overflow: ellipsis;
 }
 .card-inline-point {
   padding: 5px 0px 5px 35px;
 }
+.card-inline-rating {
+
+}
 .card-inline-status {
   text-align: center;
 }
+.card-inline-featured {
+
+}
+.card-inline-topic {
+
+}
+.card-inline-contribution {
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 0 5px;
+  max-width: 120px;
+}
+.card-inline-url {
+  flex: 1 1 auto;
+  padding: 0 5px;
+  overflow: auto;
+}
+.card-inline-grade {
+  flex: 0 1 64px;
+  text-align: center;
+  padding: 0 10px;
+}
 .card-inline-options {
-  flex: 0 0 50px;
+  flex: 0 0 58px;
   text-align: right;
 }
 
-
 // better CSS by attributes
 .card-inline-150 {
-  flex: 1 1 100px;
+  flex: 1 1 150px;
   padding-right: 5px;
 }
 .card-inline-shrink-80 {
@@ -175,3 +209,5 @@ $pointPaddingLeft : 35px;
   flex: 1 1 auto;
   padding: 0 5px;
 }
+
+
