@@ -14,11 +14,13 @@
   <div class="navbar-tosdr-right hidden-xs hidden-sm">
 
     <!-- Links -->
+    <% unless current_user.nil? %>
     <div class="navbar-tosdr-group">
       <%= link_to "Points", points_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
       <%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
       <%= link_to "Services", services_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
     </div>
+    <% end %>
     <div class="navbar-tosdr-group">
       <%= link_to "About", "#", class: "navbar-tosdr-item navbar-tosdr-link" %>
     </div>
