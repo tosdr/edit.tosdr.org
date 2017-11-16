@@ -2,6 +2,7 @@
   <h1 class="fw2 mv3">
     <%= @service.name %>
   </h1>
+  <%= link_to 'Add Service', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
 </header>
 
 <div class="row">
