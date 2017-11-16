@@ -1,10 +1,8 @@
-<div class="row">
-  <div class="title">
-    <h1>
-      <strong>All Services</strong>
-    </h1>
-  </div>
-</div>
+<header class="tc ph4">
+  <h1 class="fw2 mv3">
+    All Services
+  </h1>
+  </header>
 <div class="row">
   <div class="col-xs-12 text-center">
     <%= render "shared/searchbar" %>
@@ -16,16 +14,16 @@
       <div class="col-xs-12">
         <!-- card-inline-header -->
         <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-150 text-left">
+          <div class="card-inline-item card-inline-service">
             Name
           </div>
-          <div class="card-inline-item card-inline-autogrow">
+          <div class="card-inline-item card-inline-url">
             URL
           </div>
-          <div class="card-inline-item card-inline-shrink-40">
-            Ratings
+          <div class="card-inline-item card-inline-grade">
+            Grade
           </div>
-          <div class="card-inline-item card-inline-shrink-80 text-right">
+          <div class="card-inline-item card-inline-options">
             Options
           </div>
         </div>
@@ -43,18 +41,18 @@
             <% badge_rating = "card-badge rating-f" %>
         <% end %>
         <div class="card-inline">
-          <div class="card-inline-item card-inline-150 text-left">
+          <div class="card-inline-item card-inline-service text-left">
             <%= s.name %>
           </div>
-          <div class="card-inline-item card-inline-autogrow">
+          <div class="card-inline-item card-inline-url">
             <%= s.url %>
           </div>
-          <div class="card-inline-item card-inline-shrink-40">
+          <div class="card-inline-item card-inline-grade">
             <div class="service-badge <%= badge_rating %> ">
                <%= s.service_ratings %>
             </div>
           </div>
-          <div class="card-inline-item card-inline-shrink-80 text-right">
+          <div class="card-inline-item card-inline-options">
             <%= link_to(service_path(s), :class => 'btn') do %>
               <i class="fa fa-eye" aria-hidden="true"></i>
               <% end %>
