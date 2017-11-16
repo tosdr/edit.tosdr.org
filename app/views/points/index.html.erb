@@ -1,21 +1,20 @@
-<% if params.key?("all") %>
-  <% points_to_show = @points %>
-  <% title = "All Contributions" %>
-  <%= link_to "My Contributions", points_path %>
-<% else %>
-  <% points_to_show = @points.where(user: current_user) %>
-  <%= link_to "Show all", "?all" %>
-  <% title = "Your Contributions" %>
-<% end %>
 
+<header class="tc ph4">
+  <% if params.key?("all") %>
+    <% points_to_show = @points %>
+    <% title = "All Contributions" %>
+    <% link =  link_to "My Contributions", points_path, class:"btn btn-default btn-xs" %>
+  <% else %>
+    <% points_to_show = @points.where(user: current_user) %>
+    <% link = link_to "Show all", "?all", class:"btn btn-default btn-xs" %>
+    <% title = "Your Contributions" %>
+  <% end %>
+  <h1 class="fw2 mv3">
+    <%= title %>
+  </h1>
 
-<div class="row">
-  <div class="title">
-    <h1>
-      <strong><%= title %></strong>
-    </h1>
-  </div>
-</div>
+  <%= link %>
+</header>
 <div class="row">
   <div class="col-xs-12 text-center">
     <%= render "shared/searchbar" %>
