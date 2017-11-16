@@ -159,15 +159,22 @@ $pointPaddingLeft : 35px;
   text-overflow: ellipsis;
 }
 .card-inline-point {
+  flex: 1 1 50%;
   padding: 5px 0px 5px 35px;
 }
 .card-inline-rating {
-
+  flex: 0 0 56px;
+  text-align: center;
+  padding: 0 5px;
 }
 .card-inline-status {
+  flex: 0 0 70px;
   text-align: center;
 }
 .card-inline-featured {
+  flex: 0 0 81px;
+  text-align: center;
+  padding: 0 5px;
 
 }
 .card-inline-topic {
