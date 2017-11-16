@@ -107,6 +107,13 @@ $pointPaddingLeft : 35px;
 .rating-f {
   background-color: #D02620;
 }
+// Service Rating badge
+.service-badge {
+  height: 25px;
+  width: 25px;
+  color: white;
+  font-size: 18px;
+}
 
 // Card-inline
 .container.card-container {
@@ -114,12 +121,16 @@ $pointPaddingLeft : 35px;
 }
 .card-inline {
   display: flex;
+  font-size: 0.9em;
+  min-width: 360px;
   justify-content: space-between;
   align-items: center;
   margin: 0px 0;
   padding: 10px 20px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
 
+}
+.card-inline-item {
 }
 .card-inline:nth-child(even) {
   background-color: #FCFCFC;
@@ -133,7 +144,6 @@ $pointPaddingLeft : 35px;
 .card-inline-header {
   margin-top: 30px;
   background-color: #ededed !important;
-  text-align: center;
 }
 .card-inline-service {
 
@@ -141,15 +151,27 @@ $pointPaddingLeft : 35px;
 .card-inline-point {
   padding: 5px 0px 5px 35px;
 }
-.card-inline-rating {
-
-}
 .card-inline-status {
-  flex: 0 0 auto;
   text-align: center;
 }
 .card-inline-options {
-  flex: 0 0 auto;
+  flex: 0 0 50px;
+  text-align: right;
 }
 
-// status color
+
+// better CSS by attributes
+.card-inline-150 {
+  flex: 1 1 100px;
+  padding-right: 5px;
+}
+.card-inline-shrink-80 {
+  flex: 0 1 80px;
+}
+.card-inline-shrink-40 {
+  flex: 0 1 40px;
+}
+.card-inline-autogrow {
+  flex: 1 1 auto;
+  padding: 0 5px;
+}
