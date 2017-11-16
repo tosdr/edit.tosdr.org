@@ -106,6 +106,11 @@ $pointPaddingLeft : 35px;
 .rating-f {
   background-color: #D02620;
 }
+.rating-na {
+  color: #363636 !important;
+  font-weight: lighter;
+  background-color: transparent;
+}
 // Service Rating badge
 .service-badge {
   height: 25px;
@@ -148,6 +153,9 @@ $pointPaddingLeft : 35px;
 .card-inline-header {
   margin-top: 0px;
   background-color: #ededed !important;
+  & .card-inline-rating {
+    padding: 0 5px;
+  }
 }
 .card-inline-vote {
   flex: 0 0 20px;
@@ -160,12 +168,12 @@ $pointPaddingLeft : 35px;
 }
 .card-inline-point {
   flex: 1 1 50%;
-  padding: 5px 0px 5px 35px;
+  padding: 0px 5px;
 }
 .card-inline-rating {
   flex: 0 0 56px;
   text-align: center;
-  padding: 0 5px;
+  padding: 5px 5px 5px 35px;
 }
 .card-inline-status {
   flex: 0 0 70px;
