@@ -53,27 +53,32 @@
   }
 }
 
-$pointPaddingLeft : 24px;
+$pointPaddingLeft : 35px;
 
-li.point-good {
-  background: url(point-good.png) no-repeat left top;
-  padding-left: $pointPaddingLeft;
-  padding-top: 0px;
+.xs-icon {
+  background-size: 16px;
+  background-position: left top !important;
+  padding-left: 24px !important;
 }
-li.point-neutral {
-  background: url(point-neutral.png) no-repeat left top;
-  padding-left: $pointPaddingLeft;
-  padding-top: 0px;
+.point-good {
+  background-image: url(point-good.png);
+  background-repeat: no-repeat;
+  background-position: left;
 }
-li.point-bad {
-  background: url(point-bad.png) no-repeat left top;
-  padding-left: $pointPaddingLeft;
-  padding-top: 0px;
+.point-neutral {
+  background-image: url(point-neutral.png);
+  background-repeat: no-repeat;
+  background-position: left;
 }
-li.point-blocker {
-  background: url(point-blocker.png) no-repeat left top;
-  padding-left: $pointPaddingLeft;
-  padding-top: 0px;
+.point-bad {
+  background-image: url(point-bad.png);
+  background-repeat: no-repeat;
+  background-position: left;
+}
+.point-blocker {
+  background-image: url(point-blocker.png);
+  background-repeat: no-repeat;
+  background-position: left;
 }
 
 
@@ -103,4 +108,48 @@ li.point-blocker {
   background-color: #D02620;
 }
 
+// Card-inline
+.container.card-container {
+  margin: 0px 0px;
+}
+.card-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0;
+  padding: 10px 20px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
 
+}
+.card-inline:nth-child(even) {
+  background-color: #FCFCFC;
+}
+.card-inline:nth-child(odd) {
+  background-color: #F6F6F6;
+}
+.card-inline:first-child {
+  border-radius: 4px 4px 0 0;
+}
+.card-inline-header {
+  margin-top: 30px;
+  background-color: #ededed !important;
+  text-align: center;
+}
+.card-inline-service {
+
+}
+.card-inline-point {
+  padding: 5px 0px 5px 35px;
+}
+.card-inline-rating {
+
+}
+.card-inline-status {
+  flex: 0 0 auto;
+  text-align: center;
+}
+.card-inline-options {
+  flex: 0 0 auto;
+}
+
+// status color

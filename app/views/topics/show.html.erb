@@ -1,7 +1,10 @@
 <header class="tc ph4">
   <h1 class="fw2 mv3">
-    <%= @service.name %>
+    <%= @topic.title %>
   </h1>
+  <h2 class="fw2 mt0 lh-copy">
+    <%= @topic.description %>
+  </h2>
 </header>
 
 <div class="row">
@@ -16,7 +19,7 @@
         <!-- card-inline-header -->
         <div class="card-inline card-inline-header">
           <div class="card-inline-item card-inline-service">
-            Name
+            Services
           </div>
           <div class="card-inline-item card-inline-point">
             Topic
@@ -32,7 +35,7 @@
           </div>
         </div>
         <!-- actual card-inline -->
-          <% @service.points.each do |p| %>
+          <% @topic.points.each do |p| %>
           <% if p.rating.between?(7, 10)%>
             <% pointbox = "point-good" %>
           <% elsif p.rating.between?(4,6) %>
@@ -67,5 +70,4 @@
     </div>
   </div>
 </div>
-
 

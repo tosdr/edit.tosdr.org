@@ -1,5 +1,5 @@
 class PointsController < ApplicationController
-  before_action :set_point, only: [:show, :edit, :update, :destroy]
+  before_action :set_point, only: [:show, :edit, :update, :destroy, :featured]
   # before_action :set_service
   # before_action :set_topic
 
@@ -43,13 +43,20 @@ class PointsController < ApplicationController
   def update
     @point.update(point_params)
     flash[:notice] = "Point successfully updated!"
-    redirect_to points_path
+    redirect_to point_path(@point)
   end
 
   def destroy
     @point.destroy
     redirect_to points_path
   end
+
+  # def featured
+  #   if @point.is_featured?
+  #     respond_to do |format|
+  #       format.html { redirect_to point_path(@point) }
+  #       format.js
+  # end
 
   private
 

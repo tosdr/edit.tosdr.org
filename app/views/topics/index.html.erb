@@ -1,7 +1,10 @@
 <header class="tc ph4">
   <h1 class="fw2 mv3">
-    <%= @service.name %>
+    Data Protection Topics
   </h1>
+  <% if current_user.admin? %>
+<%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
+<% end %>
 </header>
 
 <div class="row">
@@ -16,49 +19,37 @@
         <!-- card-inline-header -->
         <div class="card-inline card-inline-header">
           <div class="card-inline-item card-inline-service">
-            Name
-          </div>
-          <div class="card-inline-item card-inline-point">
-            Topic
+            Title
           </div>
           <div class="card-inline-item card-inline-rating">
-            Rating
-          </div>
-          <div class="card-inline-item card-inline-status">
-            Status
+            Contributions
           </div>
           <div class="card-inline-item card-inline-options">
             View
           </div>
         </div>
         <!-- actual card-inline -->
-          <% @service.points.each do |p| %>
-          <% if p.rating.between?(7, 10)%>
-            <% pointbox = "point-good" %>
-          <% elsif p.rating.between?(4,6) %>
-            <% pointbox = "point-neutral" %>
-          <% elsif p.rating.between?(2,3) %>
-            <% pointbox = "point-bad" %>
-          <% elsif p.rating.between?(0,2) %>
-            <% pointbox = "point-blocker" %>
-          <% end %>
+          <% @topics.each do |t| %>
           <div class="card-inline">
             <div class="card-inline-item card-inline-service">
-              <%= p.service.name %>
-            </div>
-            <div class="card-inline-item card-inline-point <%= pointbox %>">
-              <%= p.topic.title %>
+              <%= t.title %>
             </div>
             <div class="card-inline-item card-inline-rating">
-              <%= p.rating %>
-            </div>
-            <div class="card-inline-item card-inline-status">
-              <%= p.status %>
+              <%= t.points.count %>
             </div>
             <div class="card-inline-item card-inline-options">
-              <%= link_to(point_path(p), :class => 'btn') do %>
+              <%= link_to(topic_path(t), :class => 'btn') do %>
               <i class="fa fa-eye" aria-hidden="true"></i>
               <% end %>
+
+              <% if current_user.admin? %>
+
+              <%= link_to(edit_topic_path(t), :class => 'btn') do %>
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+              <% end %>
+
+              <% end %>
+
             </div>
           </div>
           <!-- card-inline-END -->
@@ -67,5 +58,3 @@
     </div>
   </div>
 </div>
-
-

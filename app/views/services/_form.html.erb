@@ -1,0 +1,9 @@
+<%= simple_form_for([@service]) do |f| %>
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :url %>
+    <div class="form-inputs">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

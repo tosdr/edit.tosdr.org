@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :services
   resources :topics
 
+  # put "/points/:id/:is_featured", to: "points#featured", as: :featured
+
 end
