@@ -2,7 +2,8 @@
   <h1 class="fw2 mv3">
     All Services
   </h1>
-  </header>
+  <%= link_to 'Add Service', new_service_path, method: :put, class: 'btn btn-primary' %>
+</header>
 <div class="row">
   <div class="col-xs-12 text-center">
     <%= render "shared/searchbar" %>

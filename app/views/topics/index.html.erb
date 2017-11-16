@@ -2,7 +2,7 @@
   <h1 class="fw2 mv3">
     Data Protection Topics
   </h1>
-  <% unless current_user.admin? %>
+  <% if current_user.admin? %>
   <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
   <% end %>
 </header>

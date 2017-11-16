@@ -70,9 +70,12 @@
             <% if !@point.is_featured? %>
               <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
             <% else %>
-             <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-danger' %>
+             <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
             <% end %>
           <% end %>
+        </div>
+        <div class="pl15">
+          <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
         </div>
         <% end %>
       </li>
