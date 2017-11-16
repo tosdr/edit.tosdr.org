@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/IU0hPgqKlcA",
+  "id": "IU0hPgqKlcA",
+  "needModeration": true,
+  "services": [
+    "arc-games"
+  ],
+  "title": "arc games",
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/4INNts2pVFo/discussion",
+  "id": "4INNts2pVFo",
+  "needModeration": true,
+  "services": [
+    "allrecipe"
+  ],
+  "set": "set+service+and+topic",
+  "title": "Allrecipe.com receives extensive license to use and commercialize your work",
+  "topics": [
+    "copyright-scope"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

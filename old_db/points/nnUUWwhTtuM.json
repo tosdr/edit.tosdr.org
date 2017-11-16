@@ -1,0 +1,13 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/nnUUWwhTtuM",
+  "id": "nnUUWwhTtuM",
+  "needModeration": false,
+  "services": [
+    "facebook"
+  ],
+  "title": "Fwd: Facebook stores your data",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": "dismissed+by+the+curator"
+  }
+}

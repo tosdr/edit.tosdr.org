@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/gZFQsLrrZLk",
+  "id": "gZFQsLrrZLk",
+  "needModeration": true,
+  "services": [
+    "microsoft"
+  ],
+  "title": "[bad] All purchases final and non-refundable",
+  "tosdr": {
+    "binding": true
+  }
+}

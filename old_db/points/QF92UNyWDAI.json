@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/forum/#!topic/tosdr/QF92UNyWDAI",
+  "id": "QF92UNyWDAI",
+  "needModeration": true,
+  "services": [
+    "indeed.com"
+  ],
+  "set": "set+service+and+topic",
+  "title": "indeed.com--scope of the copyright license",
+  "topics": [
+    "copyright-scope"
+  ],
+  "tosdr": {
+    "binding": true,
+    "tldr": "indeed.com--scope of the copyright license"
+  }
+}

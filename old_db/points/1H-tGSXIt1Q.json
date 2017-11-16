@@ -1,0 +1,16 @@
+{
+  "discussion": "https://groups.google.com/forum/#!topic/tosdr/1H-tGSXIt1Q",
+  "id": "1H-tGSXIt1Q",
+  "needModeration": false,
+  "services": [
+    "Google"
+  ],
+  "set": "set+service",
+  "title": "Google Transparency Report",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": true,
+    "reason": "dismissed+by+the+curator",
+    "tldr": "Google Transparency Report"
+  }
+}

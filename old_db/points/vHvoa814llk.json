@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/vHvoa814llk",
+  "id": "vHvoa814llk",
+  "needModeration": true,
+  "services": [
+    "snapchat"
+  ],
+  "title": "[Good] Snapchat offers safety guidelines.",
+  "tosdr": {
+    "binding": true
+  }
+}

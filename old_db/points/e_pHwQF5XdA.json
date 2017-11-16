@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/e_pHwQF5XdA",
+  "id": "e_pHwQF5XdA",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "title": "Other Tumblr users can use your custom themes",
+  "tosdr": {
+    "binding": true
+  }
+}

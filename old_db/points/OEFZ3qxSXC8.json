@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/OEFZ3qxSXC8",
+  "id": "OEFZ3qxSXC8",
+  "needModeration": true,
+  "services": [
+    "gittip"
+  ],
+  "title": "Gittip: [Good] Privacy policy is easy to read",
+  "tosdr": {
+    "binding": true
+  }
+}

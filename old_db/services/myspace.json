@@ -1,0 +1,37 @@
+{
+  "alexa": 186,
+  "class": "",
+  "date": "",
+  "eff_hasyourback": {
+    "in-Congress": 0,
+    "in-court": 0,
+    "tell-you": 0,
+    "transparent": 0
+  },
+  "freesoftware": false,
+  "fulltos": {
+    "privacy": {
+      "url": "https://new.myspace.com/pages/privacy"
+    },
+    "terms": {
+      "url": "https://new.myspace.com/pages/terms"
+    }
+  },
+  "id": "myspace",
+  "last-diff": "",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "myspace",
+  "related": {},
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "myspace.com",
+  "urls": [
+    "myspace.com"
+  ]
+}

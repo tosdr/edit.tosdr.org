@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/dBsQxVSeW3I",
+  "id": "dBsQxVSeW3I",
+  "needModeration": true,
+  "services": [
+    "feedly"
+  ],
+  "title": "Feedly",
+  "tosdr": {
+    "binding": true
+  }
+}

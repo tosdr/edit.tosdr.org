@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/ej-fRGOwcFQ",
+  "id": "ej-fRGOwcFQ-1",
+  "needModeration": true,
+  "services": [
+    "jacplus"
+  ],
+  "title": "jacplus ToS link",
+  "tosdr": {
+    "binding": true
+  }
+}

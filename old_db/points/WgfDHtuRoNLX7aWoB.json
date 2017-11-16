@@ -1,0 +1,21 @@
+{
+  "approved": false,
+  "id": "WgfDHtuRoNLX7aWoB",
+  "needModeration": true,
+  "services": [
+    "pinterest"
+  ],
+  "submittedBy": "euuLXKG9G2vNLbLDK",
+  "title": "[Good] Pinterest respects copyrights.",
+  "topics": [
+    "copyright-scope"
+  ],
+  "tosdr": {
+    "binding": true,
+    "point": "good",
+    "sources": [
+      "https://about.pinterest.com/en/copyright"
+    ],
+    "tldr": "Pinterest has a Copyright Policy in accordance with the Digital Millennium Copyright Act."
+  }
+}

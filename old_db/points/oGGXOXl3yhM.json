@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/oGGXOXl3yhM",
+  "id": "oGGXOXl3yhM",
+  "needModeration": true,
+  "services": [
+    "coinbase"
+  ],
+  "title": "coinbase.com",
+  "tosdr": {
+    "binding": true
+  }
+}

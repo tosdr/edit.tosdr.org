@@ -1,0 +1,36 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "apple-icloud",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Apple iCloud",
+  "related": [
+    "dropbox",
+    "apple"
+  ],
+  "tosback2": {
+    "privacy": {
+      "name": "Privacy Policy",
+      "url": "http://www.apple.com/privacy/"
+    },
+    "sitename": "apple.com",
+    "terms": {
+      "name": "iCloud Terms of Service",
+      "url": "http://www.apple.com/legal/icloud/en/terms.html"
+    }
+  },
+  "tosdr": {
+    "alexa": 1000000,
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "icloud.com",
+  "urls": [
+    "icloud.com"
+  ]
+}

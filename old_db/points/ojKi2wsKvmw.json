@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/ojKi2wsKvmw",
+  "id": "ojKi2wsKvmw",
+  "needModeration": true,
+  "services": [
+    "microsoft-store"
+  ],
+  "title": "[bad] Targeted advertising requires opt-out",
+  "tosdr": {
+    "binding": true
+  }
+}

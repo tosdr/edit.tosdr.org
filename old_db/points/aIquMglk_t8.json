@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/aIquMglk_t8",
+  "id": "aIquMglk_t8",
+  "needModeration": true,
+  "services": [
+    "godaddy"
+  ],
+  "title": "GoDaddy",
+  "tosdr": {
+    "binding": true
+  }
+}

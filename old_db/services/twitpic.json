@@ -1,0 +1,45 @@
+{
+  "alexa": 453,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "twitpic",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Twitpic",
+  "related": [
+    "identi-ca",
+    "twitter",
+    "flickr"
+  ],
+  "tosback2": {
+    "privacy": {
+      "last-archive": {
+        "time": "",
+        "uri": ""
+      },
+      "name": "Privacy Policy",
+      "url": "http://twitpic.com/privacy.do"
+    },
+    "sitename": "twitpic.com",
+    "terms": {
+      "last-archive": {
+        "time": "",
+        "uri": ""
+      },
+      "name": "Terms of Service",
+      "url": "http://twitpic.com/terms.do"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": "E",
+    "related": []
+  },
+  "twitter": "@TwitPic",
+  "type": "service",
+  "url": "twitpic.com",
+  "urls": [
+    "twitpic.com"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "alexa": 129098,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "seenthis",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "SeenThis",
+  "related": [
+    "twitter",
+    "status-net"
+  ],
+  "tosback2": {
+    "terms": {
+      "name": "Propriété intellectuelle",
+      "url": "http://seenthis.net/fran%C3%A7ais/mentions/article/propri%C3%A9t%C3%A9-intellectuelle"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": "A",
+    "related": []
+  },
+  "twitter": "@SeenThis",
+  "type": "service",
+  "url": "seenthis.net",
+  "urls": [
+    "seenthis.net"
+  ]
+}

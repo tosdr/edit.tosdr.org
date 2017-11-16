@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/6AofgOeCko8",
+  "id": "6AofgOeCko8",
+  "needModeration": true,
+  "services": [
+    "king"
+  ],
+  "title": "King Digital ToS",
+  "tosdr": {
+    "binding": true
+  }
+}

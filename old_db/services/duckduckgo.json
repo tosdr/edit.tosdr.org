@@ -1,0 +1,34 @@
+{
+  "alexa": 2095,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "duckduckgo",
+  "keywords": [
+    "search",
+    "search engine"
+  ],
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "DuckDuckGo",
+  "related": [
+    "google"
+  ],
+  "tosback2": {
+    "privacy": {
+      "name": "Privacy Policy",
+      "url": "https://duckduckgo.com/privacy.html"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": "A",
+    "related": []
+  },
+  "twitter": "@duckduckgo",
+  "type": "service",
+  "url": "duckduckgo.com",
+  "urls": [
+    "duckduckgo.com"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "approved": false,
+  "id": "c8E96GoazCox4qZZa",
+  "needModeration": true,
+  "services": [
+    "groupon"
+  ],
+  "submittedBy": "euuLXKG9G2vNLbLDK",
+  "title": "[Good]  You may unsubscribe from Groupon at anytime.",
+  "topics": [
+    "leave"
+  ],
+  "tosdr": {
+    "binding": true,
+    "point": "good",
+    "sources": [
+      "https://www.groupon.com/terms"
+    ],
+    "tldr": ""
+  }
+}

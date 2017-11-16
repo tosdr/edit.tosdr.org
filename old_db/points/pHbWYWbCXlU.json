@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/pHbWYWbCXlU",
+  "id": "pHbWYWbCXlU",
+  "needModeration": true,
+  "services": [
+    "skype"
+  ],
+  "title": "You indemnify Skype",
+  "tosdr": {
+    "binding": true
+  }
+}

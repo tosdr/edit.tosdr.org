@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/S-8VOzpTR2U",
+  "id": "S-8VOzpTR2U",
+  "needModeration": true,
+  "services": [
+    "microsoft"
+  ],
+  "title": "You may cancel your account or paid services at any time",
+  "tosdr": {
+    "binding": true
+  }
+}
