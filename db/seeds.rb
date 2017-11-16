@@ -6,11 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-puts "Starts seeding"
+puts "Starts new seeding"
 test_user = User.new(email: "test@email.com", username: "test user", password: "testnonadminuser", password_confirmation: "testnonadminuser")
 test_user.save
-test_service = Service.new(name: "Test service", url: "http://perdu.com", grade: "A")
-test_service.save
+admin_test_user = User.new(email: "admintest@email.com", username: "admin test user", password: "testadminuser", password_confirmation: "testadminuser", admin: true)
+admin_test_user.save
+test_service_1 = Service.new(name: "Test service 1", url: "http://perdu.com", grade: "A")
+test_service_1.save
+test_service_2 = Service.new(name: "Test service 2", url: "http://perdu.com", grade: "B")
+test_service_2.save
 test_topic = Topic.new(title: "Test topic", subtitle: "Test subtitle", description: "Test topic description")
 test_topic.save
 test_point_1 = Point.new(user_id: 1, title: "Test point 1", source: "http://perdu.com", status: "pending", analysis: "Bla bla bla", rating: 3, topic_id: 1, service_id: 1)
