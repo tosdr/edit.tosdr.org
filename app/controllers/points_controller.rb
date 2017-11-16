@@ -6,6 +6,16 @@ class PointsController < ApplicationController
 
   def index
     @points = Point.all
+    if params[:query]
+      points = Point.all.selez  ct { |p| p.service.name == params[:query] }
+      if points.any?
+        @points = points
+        render :index
+      end
+    else
+      flash[:alert] = "No results"
+      redirect_to :index
+    end
   end
 
   def new
@@ -95,6 +105,6 @@ class PointsController < ApplicationController
   # end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
   end
 end
