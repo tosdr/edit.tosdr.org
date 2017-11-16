@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/MLnMci53tnQ",
+  "id": "MLnMci53tnQ",
+  "needModeration": true,
+  "services": [
+    "microsoft"
+  ],
+  "title": "Microsoft's recently updated privacy statement and service agreement",
+  "tosdr": {
+    "binding": true
+  }
+}

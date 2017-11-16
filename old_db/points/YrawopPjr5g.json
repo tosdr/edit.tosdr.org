@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/YrawopPjr5g",
+  "id": "YrawopPjr5g",
+  "needModeration": true,
+  "services": [
+    "sony"
+  ],
+  "title": "Sony SOE Terms of Service: changes without notice",
+  "tosdr": {
+    "binding": true
+  }
+}

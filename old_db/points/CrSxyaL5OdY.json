@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/CrSxyaL5OdY",
+  "id": "CrSxyaL5OdY",
+  "needModeration": true,
+  "services": [
+    "microsoft-store"
+  ],
+  "title": "[bad] You may not be notified in case of sale or merger",
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/9EtGQvNiNPE",
+  "id": "9EtGQvNiNPE",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "title": "[neutral] Tumblr does store token regarding your financial info",
+  "tosdr": {
+    "binding": true
+  }
+}

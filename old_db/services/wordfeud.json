@@ -1,0 +1,17 @@
+{
+  "alexa": 545775,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "wordfeud",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Wordfeud",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

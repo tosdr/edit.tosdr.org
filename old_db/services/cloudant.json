@@ -1,0 +1,38 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "cloudant",
+  "keywords": [
+    "cloud",
+    "developing",
+    "web",
+    "mobile"
+  ],
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Cloudant",
+  "tosback2": {
+    "privacy": {
+      "name": "Privacy",
+      "url": "https://www.cloudant.com/privacy/"
+    },
+    "sitename": "cloudant.com",
+    "terms": {
+      "name": "Terms of Service",
+      "url": "https://www.cloudant.com/terms/"
+    }
+  },
+  "tosdr": {
+    "alexa": 1000000,
+    "keywords": [],
+    "rated": "B",
+    "related": []
+  },
+  "type": "service",
+  "url": "cloudant.com",
+  "urls": [
+    "cloudant.com"
+  ]
+}

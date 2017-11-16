@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/GyUgCOCvIis",
+  "id": "GyUgCOCvIis",
+  "needModeration": true,
+  "services": [
+    "tinkercad"
+  ],
+  "title": "[good] tinkercad is pretty clear about what data it keeps about you",
+  "tosdr": {
+    "binding": true
+  }
+}

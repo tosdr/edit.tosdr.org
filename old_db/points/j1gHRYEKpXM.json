@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/j1gHRYEKpXM",
+  "id": "j1gHRYEKpXM",
+  "needModeration": true,
+  "services": [
+    "wikipedia"
+  ],
+  "title": "Wikipedia doesn't require real name",
+  "tosdr": {
+    "binding": true
+  }
+}

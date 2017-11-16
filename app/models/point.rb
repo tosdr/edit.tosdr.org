@@ -1,6 +1,5 @@
 class Point < ApplicationRecord
-  belongs_to :user
-  belongs_to :topic
+  belongs_to :user, optional: true
   belongs_to :service
   has_many :reasons
 

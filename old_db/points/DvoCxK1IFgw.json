@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/DvoCxK1IFgw",
+  "id": "DvoCxK1IFgw",
+  "needModeration": true,
+  "services": [
+    "fetster"
+  ],
+  "title": "ToS on Fetster",
+  "tosdr": {
+    "binding": true
+  }
+}

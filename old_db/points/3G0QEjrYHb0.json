@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/3G0QEjrYHb0",
+  "id": "3G0QEjrYHb0",
+  "needModeration": true,
+  "services": [
+    "vimeo"
+  ],
+  "title": "Vimeo: copyright license granted to them",
+  "tosdr": {
+    "binding": true
+  }
+}

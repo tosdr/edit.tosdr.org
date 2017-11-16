@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/ZxvcZKAWEYg",
+  "id": "ZxvcZKAWEYg",
+  "needModeration": true,
+  "services": [
+    "vimeo"
+  ],
+  "title": "Vimeo indemnification",
+  "tosdr": {
+    "binding": true
+  }
+}

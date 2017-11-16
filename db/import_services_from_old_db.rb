@@ -1,14 +1,19 @@
 require 'json'
 require 'pry'
 
-filepath_services = "../old_db/services/"
-filename = JSON.read(filepath_services)
-
-puts "Importing services..."
-File.readlines(filename).each do |line|
+puts "Starting the loop and the import..."
+Dir[File.join(Rails.root,"old_db/services/*.json")].each do |json_file|
+  hash = JSON.parse(File.read(json_file))
   imported_service = Service.new(
-    name: line['name'],
-    url: line['fulltos']['url'])
+    name: hash['name'],
+    url: hash['fulltos']['terms']['url'])
   imported_service.save
+  byebug
+  unless imported_service.valid?
+    puts "### #{imported_service.name} not imported ! ###"
+  else
+    puts "Imported and saved: #{imported_service.name}"
+  end
+  puts "Exiting loop"
 end
-puts "Finishing importing service"
+puts "Finishing importing topics!"

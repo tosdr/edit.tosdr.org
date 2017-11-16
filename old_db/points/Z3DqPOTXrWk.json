@@ -1,0 +1,11 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/Z3DqPOTXrWk",
+  "id": "Z3DqPOTXrWk",
+  "needModeration": false,
+  "services": [],
+  "title": "Terms that aren´t in the database",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": "dismissed+by+the+curator"
+  }
+}
