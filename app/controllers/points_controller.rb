@@ -1,5 +1,6 @@
 class PointsController < ApplicationController
-  before_action :set_point, only: [:show, :edit, :update, :destroy, :featured]
+  before_action :set_point, only: [:show, :edit, :update, :destroy]
+  before_action :set_point_by_point_id, only: [:featured]
   # before_action :set_service
   # before_action :set_topic
 
@@ -51,28 +52,39 @@ class PointsController < ApplicationController
     redirect_to points_path
   end
 
-  # def featured
-  #   if @point.is_featured?
-  #     respond_to do |format|
-  #       format.html { redirect_to point_path(@point) }
-  #       format.js
-  # end
+  def featured
+    if !@point.is_featured? && @point.status == "approved"
+      if @point.service.points.reject { |p| !p.is_featured }.count < 5
+        @point.update(is_featured: !@point.is_featured)
+      else
+        flash[:alert] = "There are already five featured points!"
+        redirect_to point_path(@point)
+      end
+    elsif @point.is_featured?
+      @point.update(is_featured: !@point.is_featured)
+    end
+    redirect_to points_path
+  end
 
   private
+
+  def set_point_by_point_id
+    @point = Point.find(params[:point_id])
+  end
 
   def set_point
     @point = Point.find(params[:id])
   end
 
-  # def set_service
-  #   @service = Service.find(params[:service_id])
-  # end
+  def set_service
+    @service = Service.find(params[:service_id])
+  end
 
   # def set_topic
   #   @topic = Topic.find(params[:topic_id])
   # end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured)
   end
 end

@@ -65,6 +65,13 @@
         <div class="pl15">
           <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
         </div>
+        <div class="pl15">
+          <% if !@point.is_featured? %>
+          <%= link_to 'Feature', point_featured_path(@point), method: :put, class: 'btn btn-primary' %>
+          <% else %>
+          <%= link_to 'Un-Feature', point_featured_path(@point), method: :put, class: 'btn btn-danger' %>
+          <% end %>
+        </div>
         <% end %>
       </li>
     </ul>

@@ -31,14 +31,19 @@
             Services
           </div>
           <div class="card-inline-item card-inline-point">
-            Points
+            Title
           </div>
           <div class="card-inline-item card-inline-rating">
-            Ratings
+            Rating
           </div>
           <div class="card-inline-item card-inline-status">
             Status
           </div>
+          <% if current_user.admin? %>
+          <div class="card-inline-item card-inline-options">
+            Featured?
+          </div>
+          <% end %>
           <div class="card-inline-item card-inline-options">
             Options
           </div>
@@ -58,7 +63,7 @@
           <div class="card-inline-item card-inline-service">
             <%= p.service.name %>
           </div>
-          <div class="card-inline-item card-inline-point <%= pointbox %>">
+          <div class="card-inline-item card-inline-point">
             <%= p.title %>
           </div>
           <div class="card-inline-item card-inline-rating">
@@ -66,6 +71,13 @@
           </div>
           <div class="card-inline-item card-inline-status">
             <%= p.status %>
+          </div>
+          <div class="card-inline-item card-inline-status">
+            <% if p.is_featured? %>
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            <% else %>
+                <i class="fa fa-square-o" aria-hidden="true"></i>
+            <% end %>
           </div>
           <div class="card-inline-item card-inline-options">
             <%= link_to(point_path(p), :class => 'btn') do %>
