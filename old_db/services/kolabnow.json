@@ -1,7 +1,11 @@
 {
   "alexa": 1000000,
   "freesoftware": true,
-  "fulltos": {},
+  "fulltos": {
+    "terms": {
+      "url": "https://kolabnow.com/tos"
+    }
+  },
   "id": "kolabnow",
   "meta": {
     "spec-version": "1.1"

@@ -1,7 +1,9 @@
 {
   "alexa": 138,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://www.reddit.com/help/useragreement"
+  },
   "id": "reddit",
   "meta": {
     "spec-version": "1.1"

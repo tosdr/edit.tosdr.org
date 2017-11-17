@@ -2,7 +2,9 @@
   "alexa": 8,
   "dataexport": false,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://twitter.com/en/tos"
+  },
   "id": "twitter",
   "meta": {
     "spec-version": "1.1"

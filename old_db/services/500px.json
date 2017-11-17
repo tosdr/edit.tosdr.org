@@ -1,7 +1,9 @@
 {
   "alexa": 1496,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://500px.com/terms"
+  },
   "id": "500px",
   "meta": {
     "spec-version": "1.1"

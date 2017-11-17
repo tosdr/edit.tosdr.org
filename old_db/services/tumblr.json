@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://www.tumblr.com/policy/en/terms_of_service"
+  },
   "id": "tumblr",
   "keywords": [
     "blog"

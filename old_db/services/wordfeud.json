@@ -1,7 +1,9 @@
 {
   "alexa": 545775,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://wordfeud.com/tos/"
+  },
   "id": "wordfeud",
   "meta": {
     "spec-version": "1.1"

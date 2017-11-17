@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://docs.disqus.com/kb/terms-and-policies/"
+  },
   "id": "disqus",
   "keywords": [
     "blog",

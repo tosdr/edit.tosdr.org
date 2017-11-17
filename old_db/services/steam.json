@@ -1,7 +1,9 @@
 {
   "alexa": 80348,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://store.steampowered.com/privacy_agreement/"
+  },
   "id": "steam",
   "meta": {
     "spec-version": "1.1"

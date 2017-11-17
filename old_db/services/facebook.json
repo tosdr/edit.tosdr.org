@@ -1,7 +1,9 @@
 {
   "alexa": 1,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://www.facebook.com/legal/terms"
+  },
   "id": "facebook",
   "keywords": [
     "social network"

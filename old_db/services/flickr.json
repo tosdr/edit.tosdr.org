@@ -1,7 +1,9 @@
 {
   "alexa": 56,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://policies.yahoo.com/us/en/yahoo/terms/utos/index.htm"
+  },
   "id": "flickr",
   "keywords": [
     "photos",

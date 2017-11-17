@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "https://www.cloudant.com/terms/"
+  },
   "id": "cloudant",
   "keywords": [
     "cloud",

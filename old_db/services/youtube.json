@@ -1,7 +1,9 @@
 {
   "alexa": 3,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://www.google.com/intl/en/policies/privacy/"
+  },
   "id": "youtube",
   "keywords": [
     "video",

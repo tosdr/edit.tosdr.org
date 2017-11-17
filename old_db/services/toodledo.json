@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://www.toodledo.com/info/terms.php"
+  },
   "id": "toodledo",
   "meta": {
     "spec-version": "1.1"

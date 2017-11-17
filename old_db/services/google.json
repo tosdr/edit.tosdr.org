@@ -1,7 +1,9 @@
 {
   "alexa": 2,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "https://www.google.com/intl/en/policies/terms/"
+  },
   "id": "google",
   "keywords": [
     "search",

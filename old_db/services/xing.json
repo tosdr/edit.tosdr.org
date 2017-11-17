@@ -1,7 +1,9 @@
 {
   "alexa": 254,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://www.xing.com/terms"
+  },
   "id": "xing",
   "keywords": [
     "professional",

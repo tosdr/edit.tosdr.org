@@ -1,7 +1,9 @@
 {
   "alexa": 184,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "http://www.skype.com/intl/en-us/legal/business/terms/"
+  },
   "id": "skype",
   "meta": {
     "spec-version": "1.1"

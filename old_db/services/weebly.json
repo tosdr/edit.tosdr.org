@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://www.weebly.com/terms-of-service"
+  },
   "id": "weebly",
   "meta": {
     "spec-version": "1.1"

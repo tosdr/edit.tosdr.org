@@ -1,7 +1,9 @@
 {
   "alexa": 1000000,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://eu.experteer.com/terms/terms_of_use"
+  },
   "id": "experteer",
   "meta": {
     "spec-version": "1.1"

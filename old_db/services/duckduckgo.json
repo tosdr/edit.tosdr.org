@@ -1,7 +1,9 @@
 {
   "alexa": 2095,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "https://duckduckgo.com/privacy"
+  },
   "id": "duckduckgo",
   "keywords": [
     "search",

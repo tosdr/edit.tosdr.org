@@ -8,7 +8,9 @@
     "transparent": 0
   },
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+    "url": "http://www.apple.com/legal/terms/site.html"
+  },
   "id": "apple",
   "last-diff": "http://www.tosback.org/policy.php?pid=43",
   "meta": {

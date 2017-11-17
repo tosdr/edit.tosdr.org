@@ -47,5 +47,8 @@
   "url": "soundcloud.com/",
   "urls": [
     "soundcloud.com/"
-  ]
+  ],
+  "fulltos": {
+      "url": "https://pages.soundcloud.com/legal/terms-of-use.html"
+  }
 }

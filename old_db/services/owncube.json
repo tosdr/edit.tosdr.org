@@ -1,7 +1,9 @@
 {
   "alexa": 652362,
   "freesoftware": false,
-  "fulltos": {},
+  "fulltos": {
+      "url": "https://owncube.com/terms-en.php"
+  },
   "id": "owncube",
   "meta": {
     "spec-version": "1.1"
