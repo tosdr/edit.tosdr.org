@@ -8,7 +8,11 @@
     <div class="navbar-tosdr-title">
       <strong>ToS;</strong>DR
     </div>
-    <%= link_to "Add Analysis", new_point_path, class: "btn btn-primary btn-sm" %>
+    <% unless current_user.nil? %>
+    <%= link_to "Contribute", new_point_path, class: "btn btn-primary btn-sm" %>
+    <% else %>
+    <%= link_to "Sign up to contribute", new_user_session_path, class: "btn btn-primary btn-sm" %>
+    <% end %>
   </div>
   <!-- Right Navigation -->
   <div class="navbar-tosdr-right hidden-xs hidden-sm">
