@@ -1,11 +1,21 @@
 class PointsController < ApplicationController
-  before_action :set_point, only: [:show, :edit, :update, :destroy]
-  before_action :set_point_by_point_id, only: [:featured]
+  before_action :set_point, only: [:show, :edit,:featured, :update, :destroy]
+
   # before_action :set_service
   # before_action :set_topic
 
   def index
     @points = Point.all
+    # if params[:query]
+    #   points = Point.all.selez  ct { |p| p.service.name == params[:query] }
+    #   if points.any?
+    #     @points = points
+    #     render :index
+    #   end
+    # else
+    #   flash[:alert] = "No results"
+    #   redirect_to :index
+    # end
   end
 
   def new
@@ -56,21 +66,32 @@ class PointsController < ApplicationController
     if !@point.is_featured? && @point.status == "approved"
       if @point.service.points.reject { |p| !p.is_featured }.count < 5
         @point.update(is_featured: !@point.is_featured)
+        redirect_to points_path
       else
-        flash[:alert] = "There are already five featured points!"
+        flash[:alert] = "There are already five featured points for this service!"
         redirect_to point_path(@point)
       end
     elsif @point.is_featured?
       @point.update(is_featured: !@point.is_featured)
+      redirect_to points_path
     end
-    redirect_to points_path
   end
+
+  # def upvote
+  #   @vote = Vote.new(point_id: @point.id, user_id: current_user.id)
+  #   if @vote.save
+  #     respond_to do |format|
+  #       format.html { redirect_to point_path(@point)}
+  #       format.js
+  #     end
+  #   end
+  # end
 
   private
 
-  def set_point_by_point_id
-    @point = Point.find(params[:point_id])
-  end
+  # def set_point_by_point_id
+  #   @point = Point.find(params[:point_id])
+  # end
 
   def set_point
     @point = Point.find(params[:id])
@@ -85,6 +106,6 @@ class PointsController < ApplicationController
   # end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
   end
 end

@@ -21,10 +21,10 @@ class Service < ApplicationRecord
       when 0..2
         "F"
       else
-        "No ratings yet"
+        "N/A"
       end
     else
-      "No ratings yet"
+      "N/A"
     end
   end
 end

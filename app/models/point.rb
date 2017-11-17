@@ -1,7 +1,7 @@
 class Point < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :service
-  has_many :reasons
+  has_many :reasons, dependent: :destroy
 
   validates :title, presence: true
   validates :title, length: { in: 5..140 }
@@ -10,5 +10,11 @@ class Point < ApplicationRecord
   validates :analysis, presence: true
   validates :rating, presence: true
   validates :rating, numericality: true
+
+
+# VOTE CONTROLLER ! TODO
+  # def has_voted(point)
+  #   Vote.where(point_id: point.id, user_id: current_user.id)
+  # end
 
 end

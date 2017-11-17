@@ -2,13 +2,13 @@
   <h1 class="fw2 mv3">
     Data Protection Topics
   </h1>
-  <% unless current_user.admin? %>
+  <% if current_user.admin? %>
   <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
   <% end %>
 </header>
 
 <div class="row">
-  <div class="col-xs-12 text-center">
+  <div class="col-xs-12 text-center search-bar">
     <%= render "shared/searchbar" %>
   </div>
 </div>
@@ -21,11 +21,11 @@
           <div class="card-inline-item card-inline-service">
             Title
           </div>
-          <div class="card-inline-item card-inline-rating">
+          <div class="card-inline-item card-inline-contribution">
             Contributions
           </div>
           <div class="card-inline-item card-inline-options">
-            View
+            Options
           </div>
         </div>
         <!-- actual card-inline -->
@@ -34,7 +34,7 @@
           <div class="card-inline-item card-inline-service">
             <%= t.title %>
           </div>
-          <div class="card-inline-item card-inline-rating">
+          <div class="card-inline-item card-inline-contribution">
             <%= t.points.count %>
           </div>
           <div class="card-inline-item card-inline-options">

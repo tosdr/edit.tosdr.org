@@ -1,18 +1,27 @@
-<%= simple_form_for([@point]) do |f| %>
-<div class="form-inputs">
-  <%= f.association :service %>
-  <%= f.association :topic %>
-  <%= f.input :title %>
-  <%= f.input :source %>
-  <% if current_user.admin? %>
-  <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
-  <% else %>
-  <%= f.input :status, collection: ["pending", "draft"] %>
-  <% end %>
-  <%= f.input :analysis %>
-  <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
-  <div class="form-inputs">
-    <%= f.submit class: 'btn btn-primary' %>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+      <!-- Insert form here -->
+
+      <%= simple_form_for([@point]) do |f| %>
+  <div class="form-login">
+    <%= f.association :service %>
+    <%= f.input :analysis %>
+    <%= f.association :topic %>
+    <%= f.input :title %>
+    <%= f.input :source %>
+    <% if current_user.admin? %>
+    <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+    <% else %>
+    <%= f.input :status, collection: ["pending", "draft"] %>
+    <% end %>
+    <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
+    <div class="form-actions">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
   </div>
 </div>
 <% end %>
+    </div>
+  </div>
+</div>
