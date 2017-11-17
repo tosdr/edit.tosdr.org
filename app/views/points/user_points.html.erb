@@ -1,17 +1,22 @@
+
 <header class="tc ph4">
   <h1 class="fw2 mv3">
-    All contributions
+    My contributions
   </h1>
 </header>
 
+
 <div class="row">
   <div class="col-xs-12 text-center search-bar">
-    <%= render "shared/search" %>
+  <%= form_tag(my_points_path, method: :get) do %>
+    <%= text_field_tag :query %>
+  <%= submit_tag 'Search' %>
+<% end %>
   </div>
 </div>
 <div class="row">
   <div class="container card-container">
-    <div class="text-right"><%= link_to "Show all", points_path, class:"btn btn-default btn-xs" %>
+    <div class="text-right"><%= link_to "Show all", my_points_path, class:"btn btn-default btn-xs" %>
     </div>
   <%= render 'table', points: @points %>
   </div>

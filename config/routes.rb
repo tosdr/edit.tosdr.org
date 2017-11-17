@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  get 'my_points', to: 'points#user_points', as: :my_points
+
   resources :points do
     member do
       put "/is_featured", to: "points#featured", as: :featured

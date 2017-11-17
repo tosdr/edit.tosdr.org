@@ -1,3 +1,4 @@
+
 class PointsController < ApplicationController
   before_action :set_point, only: [:show, :edit,:featured, :update, :destroy]
 
@@ -5,17 +6,11 @@ class PointsController < ApplicationController
   # before_action :set_topic
 
   def index
-    @points = Point.all
-    # if params[:query]
-    #   points = Point.all.selez  ct { |p| p.service.name == params[:query] }
-    #   if points.any?
-    #     @points = points
-    #     render :index
-    #   end
-    # else
-    #   flash[:alert] = "No results"
-    #   redirect_to :index
-    # end
+   @points = Point.all
+    if query = params[:query]
+      @points = Point.search_by_service_name(query)
+      flash[:alert] = "No results" if @points.empty?
+    end
   end
 
   def new
@@ -86,6 +81,15 @@ class PointsController < ApplicationController
   #     end
   #   end
   # end
+
+  def user_points
+    @points = current_user.points
+    if query = params[:query]
+      @points = @points.select { |p| p.service.name.downcase == query.downcase }
+      flash[:alert] = "No results" if @points.empty?
+    end
+  end
+
 
   private
 
