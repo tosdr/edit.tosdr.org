@@ -13,6 +13,10 @@ class Point < ApplicationRecord
   validates :rating, numericality: true
 
 
+
+  def self.search_by_service_name(query)
+    Point.all.select { |p| p.service.name.downcase == query.downcase }
+  end
 # VOTE CONTROLLER ! TODO
   # def has_voted(point)
   #   Vote.where(point_id: point.id, user_id: current_user.id)
