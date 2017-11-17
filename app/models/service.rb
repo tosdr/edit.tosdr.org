@@ -27,4 +27,8 @@ class Service < ApplicationRecord
       "N/A"
     end
   end
+
+  def self.search_by_name(query)
+    Service.all.select { |s| s.name.downcase == query.downcase }
+  end
 end

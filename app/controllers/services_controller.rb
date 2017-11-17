@@ -2,11 +2,10 @@ class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index
-    unless params[:q].nil? || params[:q].empty?
-
-      @services = Service.where("LOWER(name) LIKE ?", "%#{params[:q]}%")
-    else
-      @services = Service.all
+    @services = Service.all
+    if query = params[:query]
+      @services = Service.search_by_name(query)
+      flash[:alert] = "No results" if @services.empty?
     end
   end
 
@@ -54,7 +53,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :url)
+    params.require(:service).permit(:name, :url, :query)
   end
 
 end

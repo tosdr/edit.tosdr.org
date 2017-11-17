@@ -6,13 +6,15 @@
     The Internet's fine print, written for humans, not lawyers.
   </p>
 </header>
+
 <div class="col-xs-12 text-center search-bar">
-  <%= render "shared/searchbar" %>
 </div>
+
   <div class="row">
     <% @services = Service.all %>
     <% @services.each do |s| %>
       <div class="col-xs-12 col-sm-6 col-lg-4">
+
         <% if s.service_ratings == "A" %>
           <% grade = "rating-a" %>
         <% elsif s.service_ratings == "B" %>

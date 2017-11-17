@@ -3,6 +3,10 @@ class TopicsController < ApplicationController
 
   def index
     @topics = Topic.all
+    if query = params[:query]
+      @topics = Topic.search_by_topic_title(query)
+      flash[:alert] = "No results" if @topics.empty?
+    end
   end
 
   def create
@@ -48,7 +52,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:title, :subtitle, :description)
+    params.require(:topic).permit(:title, :subtitle, :description, :query)
   end
 
 end

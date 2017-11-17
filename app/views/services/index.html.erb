@@ -6,7 +6,10 @@
 </header>
 <div class="row">
   <div class="col-xs-12 text-center search-bar">
-    <%= render "shared/searchbar" %>
+    <%= form_tag(services_path, method: :get) do %>
+    <%= text_field_tag :query %>
+    <%= submit_tag 'Search' %>
+    <% end %>
   </div>
 </div>
 <div class="row">
