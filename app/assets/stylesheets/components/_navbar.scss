@@ -11,8 +11,8 @@
 
   & .btn-sm {
     font-size: 1em;
-    padding: 0 25px;
-    font-weight: bold;
+    padding: 0 15px;
+    font-weight: 400;
     border-radius: 4px;
   }
 }
@@ -63,7 +63,9 @@
 /* Navbar link */
 .navbar-tosdr-link {
   color: #616668;
-  font-size: 1em;
+  font-size: 0.9em;
+  letter-spacing: 1.3px;
+  font-weight: 400;
 }
 .navbar-tosdr-link:hover {
   color: #da552f;
