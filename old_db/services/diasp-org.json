@@ -1,0 +1,28 @@
+{
+  "alexa": 865310,
+  "class": "",
+  "date": "",
+  "freesoftware": false,
+  "fulltos": {
+    "terms": {
+      "url": "https://diasp.org/terms"
+    }
+  },
+  "id": "diasp-org",
+  "last-diff": "",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Diasporg",
+  "parent": "diaspora",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "diasp.org",
+  "urls": [
+    "diasp.org"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "https://www.fightforthefuture.org/privacy/"
+  },
+  "id": "fightforthefuture.org",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "fightforthefuture.org",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

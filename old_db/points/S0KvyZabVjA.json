@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/S0KvyZabVjA",
+  "id": "S0KvyZabVjA",
+  "needModeration": true,
+  "services": [
+    "yummly"
+  ],
+  "title": "yummly.com",
+  "tosdr": {
+    "binding": true
+  }
+}

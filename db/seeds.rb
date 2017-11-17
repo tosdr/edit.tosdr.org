@@ -6,6 +6,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# puts "Cleaning up the database..."
+# Reason.destroy_all
+# Point.destroy_all
+# Service.destroy_all
+# Topic.destroy_all
+# puts "Importing topics"
+# load File.join(Rails.root,"db","import_topics_from_old_db.rb")
+# puts "Importing services"
+# load File.join(Rails.root,"db","import_services_from_old_db.rb")
+# load File.join(Rails.root,"db","import_points_from_old_db.rb")
+
 puts "Starts new seeding"
 test_user = User.new(email: "test@email.com", username: "test user", password: "testnonadminuser", password_confirmation: "testnonadminuser")
 test_user.save

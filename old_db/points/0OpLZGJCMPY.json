@@ -1,0 +1,25 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/0OpLZGJCMPY/discussion",
+  "id": "0OpLZGJCMPY",
+  "needModeration": true,
+  "services": [
+    "whatsapp"
+  ],
+  "set": "set+service+and+topic",
+  "title": "Whatsapp Account Removal",
+  "topics": [
+    "leave"
+  ],
+  "tosdr": {
+    "binding": false,
+    "case": "",
+    "disputed": false,
+    "irrelevant": true,
+    "point": "neutral",
+    "score": "",
+    "sources": [
+      ""
+    ],
+    "tldr": "  "
+  }
+}

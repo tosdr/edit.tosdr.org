@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/oTivaGXclGA",
+  "id": "oTivaGXclGA",
+  "needModeration": true,
+  "services": [
+    "myspace"
+  ],
+  "title": "Myspace [bad] copyright license on user data is broader than necessary",
+  "tosdr": {
+    "binding": true
+  }
+}

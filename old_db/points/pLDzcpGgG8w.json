@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/pLDzcpGgG8w",
+  "id": "pLDzcpGgG8w",
+  "needModeration": true,
+  "services": [
+    "myspace"
+  ],
+  "title": "Myspace has binding arbitration",
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/jN2Ult8EVsg/discussion",
+  "id": "jN2Ult8EVsg",
+  "needModeration": false,
+  "services": [
+    "amazon"
+  ],
+  "title": "you agree not to reverse-engineer Amazon&#39;s software",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": true,
+    "reason": "dismissed+by+the+curator"
+  }
+}

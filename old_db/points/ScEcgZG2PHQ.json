@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/ScEcgZG2PHQ",
+  "id": "ScEcgZG2PHQ",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "title": "Tumblr may modify or eliminate Paid Services",
+  "tosdr": {
+    "binding": true
+  }
+}

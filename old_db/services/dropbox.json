@@ -1,0 +1,38 @@
+{
+  "alexa": 139,
+  "date": "",
+  "eff_hasyourback": {
+    "in-Congress": 1,
+    "in-court": 0,
+    "tell-you": 1,
+    "transparent": 1
+  },
+  "freesoftware": false,
+  "fulltos": {
+    "privacy": {
+      "url": "https://www.dropbox.com/privacy"
+    },
+    "terms": {
+      "url": "https://www.dropbox.com/terms"
+    }
+  },
+  "id": "dropbox",
+  "last-diff": "",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Dropbox",
+  "related": [
+    "spideroak"
+  ],
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "dropbox.com",
+  "urls": [
+    "dropbox.com"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/86a8D6UPrrU/discussion",
+  "id": "86a8D6UPrrU",
+  "needModeration": false,
+  "services": [
+    "websaver"
+  ],
+  "title": "Websaver.ca: no robots/spiders",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": true,
+    "reason": "dismissed+by+the+curator"
+  }
+}

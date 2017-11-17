@@ -1,0 +1,19 @@
+{
+  "alexa": 2709,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "https://www.jagex.com/terms"
+  },
+  "id": "runescape",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "RuneScape",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

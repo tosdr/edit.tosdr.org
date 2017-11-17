@@ -1,0 +1,19 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "https://www.atlassian.com/legal/customer-agreement"
+  },
+  "id": "bitbucket",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "bitbucket",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

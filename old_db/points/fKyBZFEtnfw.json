@@ -1,0 +1,13 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/fKyBZFEtnfw",
+  "id": "fKyBZFEtnfw",
+  "needModeration": false,
+  "services": [
+    "kolabnow"
+  ],
+  "title": "KolabNow provides an opt-out for their Piwik web analytics",
+  "tosdr": {
+    "binding": true,
+    "irrelevant": "dismissed+by+the+curator"
+  }
+}

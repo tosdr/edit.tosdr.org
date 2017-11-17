@@ -1,0 +1,49 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "https://www.spotify.com/be-nl/legal/end-user-agreement/"
+  },
+  "id": "spotify",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Spotify",
+  "related": [
+    "soundcloud"
+  ],
+  "tosback2": {
+    "mobile": {
+      "name": "Terms and Conditions (Mobile)",
+      "url": "https://www.spotify.com/se/legal/mobile-terms-and-conditions/"
+    },
+    "premium": {
+      "name": "Terms and Conditions (Premium)",
+      "url": "https://www.spotify.com/se/legal/premium-code-terms-and-conditions/"
+    },
+    "privacy": {
+      "name": "Privacy Policy",
+      "url": "https://www.spotify.com/se/legal/privacy-policy"
+    },
+    "sitename": "spotify.com",
+    "terms": {
+      "name": "Terms and Conditions of Use",
+      "url": "https://www.spotify.com/se/legal/end-user-agreement/"
+    },
+    "unlimited": {
+      "name": "Terms and Conditions (Unlimited)",
+      "url": "https://www.spotify.com/se/legal/unlimited-code-terms-and-conditions/"
+    }
+  },
+  "tosdr": {
+    "alexa": 1000000,
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "spotify.com",
+  "urls": [
+    "spotify.com"
+  ]
+}

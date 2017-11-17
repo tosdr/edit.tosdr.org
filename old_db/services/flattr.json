@@ -1,0 +1,30 @@
+{
+  "alexa": 22743,
+  "freesoftware": false,
+  "fulltos": {
+    "privacy": {
+      "url": "https://flattr.com/privacy"
+    },
+    "terms": {
+      "url": "https://flattr.com/terms"
+    }
+  },
+  "id": "flattr",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Flattr",
+  "related": [
+    "paypal"
+  ],
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "flattr.com",
+  "urls": [
+    "flattr.com"
+  ]
+}

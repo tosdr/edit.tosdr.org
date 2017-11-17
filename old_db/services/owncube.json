@@ -1,0 +1,33 @@
+{
+  "alexa": 652362,
+  "freesoftware": false,
+  "fulltos": {
+      "url": "https://owncube.com/terms-en.php"
+  },
+  "id": "owncube",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "OwnCube",
+  "tosback2": {
+    "privacy": {
+      "name": "Privacy",
+      "url": "https://owncube.com/privacy-en.php"
+    },
+    "sitename": "owncube.com",
+    "terms": {
+      "name": "Terms",
+      "url": "https://owncube.com/terms-en.php"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "owncube.com",
+  "urls": [
+    "owncube.com"
+  ]
+}

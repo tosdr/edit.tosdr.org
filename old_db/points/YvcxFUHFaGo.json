@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/YvcxFUHFaGo",
+  "id": "YvcxFUHFaGo",
+  "needModeration": true,
+  "services": [
+    "whatpulse"
+  ],
+  "title": "Whatpulse",
+  "tosdr": {
+    "binding": true
+  }
+}

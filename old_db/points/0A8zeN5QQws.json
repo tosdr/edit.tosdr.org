@@ -1,0 +1,16 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/0A8zeN5QQws/discussion",
+  "id": "0A8zeN5QQws",
+  "needModeration": true,
+  "services": [
+    "allrecipe"
+  ],
+  "set": "set+service+and+topic",
+  "title": "allrecipe.com uses cookies, web beacons and flash cookies to target advertising.",
+  "topics": [
+    "track"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

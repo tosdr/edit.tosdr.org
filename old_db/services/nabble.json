@@ -1,0 +1,19 @@
+{
+  "alexa": 2369,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "http://www.nabble.com/Terms.jtp"
+  },
+  "id": "nabble",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Nabble",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

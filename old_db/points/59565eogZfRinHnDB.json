@@ -1,0 +1,21 @@
+{
+  "approved": false,
+  "id": "59565eogZfRinHnDB",
+  "needModeration": true,
+  "services": [
+    "uber"
+  ],
+  "submittedBy": "euuLXKG9G2vNLbLDK",
+  "title": "[Neutral]  Uber reserves the right to terminate the Terms or Services at any time for any reason.",
+  "topics": [
+    "changes"
+  ],
+  "tosdr": {
+    "binding": true,
+    "point": "neutral",
+    "sources": [
+      "https://www.uber.com/legal/terms/us/"
+    ],
+    "tldr": "[Neutral]  Uber reserves the right to terminate the Terms or Services at any time for any reason."
+  }
+}

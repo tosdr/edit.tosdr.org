@@ -1,0 +1,19 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "https://www.livejournal.com/legal/tos-en.bml"
+  },
+  "id": "livejournal",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "livejournal",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

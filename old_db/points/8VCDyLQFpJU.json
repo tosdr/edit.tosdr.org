@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/8VCDyLQFpJU",
+  "id": "8VCDyLQFpJU",
+  "needModeration": true,
+  "services": [
+    "instagram"
+  ],
+  "title": "Instagram may transfer personal info to a country with different data protection laws",
+  "tosdr": {
+    "binding": true
+  }
+}

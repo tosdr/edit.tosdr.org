@@ -1,0 +1,44 @@
+{
+  "alexa": 4,
+  "freesoftware": false,
+  "fulltos": {
+      "url": "https://policies.yahoo.com/us/en/yahoo/terms/utos/index.htm"
+  },
+  "id": "yahoo",
+  "keywords": [
+    "search",
+    "groups"
+  ],
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Yahoo!",
+  "related": [
+    "google"
+  ],
+  "tosback2": {
+    "guidelines": {
+      "name": "Community Guidelines",
+      "url": "http://docs.yahoo.com/info/guidelines/community.html"
+    },
+    "privacy": {
+      "name": "Privacy Policy",
+      "url": "http://info.yahoo.com/privacy/us/yahoo/details.html"
+    },
+    "sitename": "yahoo.com",
+    "terms": {
+      "name": "Yahoo Terms of Service",
+      "url": "https://policies.yahoo.com/us/en/yahoo/terms/utos/index.htm"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "yahoo.com",
+  "urls": [
+    "yahoo.com"
+  ]
+}

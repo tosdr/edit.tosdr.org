@@ -1,0 +1,12 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/WE7TiI7haPc",
+  "id": "WE7TiI7haPc",
+  "needModeration": true,
+  "services": [
+    "grooveshark"
+  ],
+  "title": "Grooveshark",
+  "tosdr": {
+    "binding": true
+  }
+}

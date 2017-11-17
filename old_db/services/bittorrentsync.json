@@ -1,0 +1,19 @@
+{
+  "alexa": 1000000,
+  "freesoftware": false,
+  "fulltos": {
+    "url": "http://www.bittorrent.com/legal/terms-syncapi"
+  },
+  "id": "bittorrentsync",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "bittorrentsync",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": []
+}

@@ -1,0 +1,41 @@
+{
+  "alexa": 80348,
+  "freesoftware": false,
+  "fulltos": {
+      "url": "http://store.steampowered.com/privacy_agreement/"
+  },
+  "id": "steam",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Steam",
+  "tosback2": {
+    "privacy": {
+      "last-archive": {
+        "time": "",
+        "uri": ""
+      },
+      "name": "Privacy Policy Agreement",
+      "url": "http://store.steampowered.com/privacy_agreement/"
+    },
+    "sitename": "steampowered.com",
+    "terms": {
+      "last-archive": {
+        "time": "",
+        "uri": ""
+      },
+      "name": "Steam Subscriber Agreement",
+      "url": "http://store.steampowered.com/subscriber_agreement/"
+    }
+  },
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "store.steampowered.com",
+  "urls": [
+    "store.steampowered.com"
+  ]
+}
