@@ -33,7 +33,7 @@
       padding: 5px;
       height: 180px;
       text-overflow: ellipsis;
-      overflow-y: hidden;
+      overflow: scroll;
     }
     & .card-text p {
       margin: 0.5em;
