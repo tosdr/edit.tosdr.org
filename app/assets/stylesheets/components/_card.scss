@@ -1,15 +1,19 @@
 .card {
-  margin: 10px;
-  height: 260px;
+  margin: 10px -5px;
+  height: 300px;
+  min-width: 300px;
   background-color: white;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
 
   & .card-service {
+    height: 51.25px;
     font-size: 36px;
     font-weight: bold;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.05);
     border-bottom: 0.25px solid rgba(0, 0, 0, 0.3) ;
+    text-overflow: ellipsis;
+    overflow: auto;
   }
   & .card-block {
     display: flex;
@@ -19,7 +23,6 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      height: 200px;
       flex: 0 0 70px;
       padding: 20px 10px;
     }

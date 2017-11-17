@@ -9,71 +9,59 @@
 <div class="col-xs-12 text-center search-bar">
   <%= render "shared/searchbar" %>
 </div>
-<% @services = Service.all %>
-<div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-6">
-      <!-- CARD -->
-      <% @services.each do |s| %>
-      <% if s.service_ratings == "A" %>
-        <% grade = "rating-a" %>
-      <% elsif s.service_ratings == "B" %>
-        <% grade = "rating-b" %>
-      <% elsif s.service_ratings == "C" %>
-        <% grade = "rating-c" %>
-      <% elsif s.service_ratings == "D" %>
-        <% grade = "rating-d" %>
-      <% elsif s.service_ratings == "F" %>
-        <% grade = "rating-f" %>
-      <% else %>
-        <% grade = "rating-na" %>
-      <% end %>
-      <div class="card">
-        <div class="card-service">
-          <%= s.name %>
-        </div>
-        <div class="card-block">
-          <div class="card-left">
-            <div class="card-left-item card-badge <%= grade %>">
-              <%= s.service_ratings %>
+    <% @services = Service.all %>
+    <% @services.each do |s| %>
+      <div class="col-xs-12 col-sm-6 col-lg-4">
+        <% if s.service_ratings == "A" %>
+          <% grade = "rating-a" %>
+        <% elsif s.service_ratings == "B" %>
+          <% grade = "rating-b" %>
+        <% elsif s.service_ratings == "C" %>
+          <% grade = "rating-c" %>
+        <% elsif s.service_ratings == "D" %>
+          <% grade = "rating-d" %>
+        <% elsif s.service_ratings == "F" %>
+          <% grade = "rating-f" %>
+        <% else %>
+          <% grade = "rating-na" %>
+        <% end %>
+
+        <!-- CARD -->
+        <div class="card">
+          <div class="card-service">
+            <%= s.name %>
+          </div>
+          <div class="card-block">
+            <div class="card-left">
+              <div class="card-left-item card-badge <%= grade %>">
+                <%= s.service_ratings %>
+              </div>
+              <%= link_to "More", service_path(s.id), class: "btn btn-primary" %>
             </div>
-            <%= link_to "More", service_path(s.id), class: "btn btn-primary" %>
-          </div>
-          <div class="card-text">
-            <% s.points.each do |p| %>
-            <% if p.is_featured? %>
-            <% if p.rating.between?(7,10) %>
-            <ul>
-              <li class="point-good xs-icon">
-                <%= p.title  %>
-              </li>
-            </ul>
-            <% elsif p.rating.between?(4,6) %>
-            <ul>
-              <li class="point-neutral xs-icon">
-                <%= p.title  %>
-              </li>
-            </ul>
-            <% elsif p.rating.between?(2,3) %>
-            <ul>
-              <li class="point-bad xs-icon">
-                <%= p.title  %>
-              </li>
-            </ul>
-            <% elsif p.rating.between?(0,2) %>
-            <ul>
-              <li class="point-blocker xs-icon">
-                <%= p.title  %>
-              </li>
-            </ul>
-            <% end %>
-            <% end %>
-            <% end %>
+            <div class="card-text">
+              <ul>
+                <% s.points.each do |p| %>
+                  <% if p.is_featured? %>
+                    <% if p.rating.between?(7,10) %>
+                      <% point_icon = "point-good" %>
+                    <% elsif p.rating.between?(4,6) %>
+                      <% point_icon = "point-neutral" %>
+                    <% elsif p.rating.between?(2,3) %>
+                      <% point_icon = "point-bad" %>
+                    <% elsif p.rating.between?(0,2) %>
+                      <% point_icon = "point-blocker" %>
+                    <% end %>
+                    <li class="<%= point_icon %> xs-icon">
+                      <%= p.title  %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            </div>
           </div>
         </div>
+        <!-- CARD-END -->
       </div>
-      <% end %>
-      <!-- CARD-END -->
-    </div>
+    <% end %>
   </div>
-</div>
