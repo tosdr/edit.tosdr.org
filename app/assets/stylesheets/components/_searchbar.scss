@@ -2,10 +2,9 @@
   margin: 10px 0 30px 0;
 }
 #custom-search-input {
-        margin:0;
-        margin-top: 10px;
-        margin-left: 28px;
+        margin: 10px 15px 0;
         padding: 0;
+        position: relative;
     }
 
     #custom-search-input .search-query {
@@ -25,7 +24,8 @@
         /** belows styles are working good */
         padding: 2px 5px;
         margin-top: 2px;
-        position: relative;
+        position: absolute;
+        top: 5px;
         left: -35px;
         /* IE7-8 doesn't have border-radius, so don't indent the padding */
         margin-bottom: 0;
