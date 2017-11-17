@@ -6,6 +6,16 @@ class PointsController < ApplicationController
 
   def index
     @points = Point.all
+    # if params[:query]
+    #   points = Point.all.selez  ct { |p| p.service.name == params[:query] }
+    #   if points.any?
+    #     @points = points
+    #     render :index
+    #   end
+    # else
+    #   flash[:alert] = "No results"
+    #   redirect_to :index
+    # end
   end
 
   def new
@@ -56,14 +66,15 @@ class PointsController < ApplicationController
     if !@point.is_featured? && @point.status == "approved"
       if @point.service.points.reject { |p| !p.is_featured }.count < 5
         @point.update(is_featured: !@point.is_featured)
+        redirect_to points_path
       else
         flash[:alert] = "There are already five featured points for this service!"
         redirect_to point_path(@point)
       end
     elsif @point.is_featured?
       @point.update(is_featured: !@point.is_featured)
+      redirect_to points_path
     end
-    redirect_to points_path
   end
 
   # def upvote
@@ -95,6 +106,6 @@ class PointsController < ApplicationController
   # end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
   end
 end

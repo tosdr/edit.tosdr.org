@@ -2,6 +2,9 @@
   <h1 class="fw2 mv3">
     <%= @service.name %>
   </h1>
+
+<% if current_user %>
+
   <% if current_user.admin? %>
   <%= link_to 'Edit Service', edit_service_path, method: :put, class: 'btn btn-primary' %>
   <%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
@@ -19,9 +22,6 @@
       <div class="col-xs-12">
         <!-- card-inline-header -->
         <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-service">
-            Name
-          </div>
           <div class="card-inline-item card-inline-point">
             Title
           </div>
@@ -47,9 +47,6 @@
             <% pointbox = "point-blocker" %>
           <% end %>
           <div class="card-inline">
-            <div class="card-inline-item card-inline-service">
-              <%= p.service.name %>
-            </div>
             <div class="card-inline-item card-inline-point ">
               <%= p.title %>
             </div>
@@ -71,5 +68,38 @@
     </div>
   </div>
 </div>
+
+<% else %>
+
+<% @service.points.each do |p| %>
+
+  <% if p.rating.between?(7, 10)%>
+    <% pointbox = "point-good" %>
+    <% elsif p.rating.between?(4,6) %>
+    <% pointbox = "point-neutral" %>
+    <% elsif p.rating.between?(2,3) %>
+    <% pointbox = "point-bad" %>
+    <% elsif p.rating.between?(0,2) %>
+    <% pointbox = "point-blocker" %>
+  <% end %>
+
+<article class="holder">
+
+  <h1 class="article-header">
+    <%= p.title %>
+  </h1>
+
+  <div class="article-text-holder">
+    <p class="article-text">
+      <%= p.analysis %>
+    </p>
+  </div>
+
+</article>
+
+
+<% end %>
+
+<% end %>
 
 
