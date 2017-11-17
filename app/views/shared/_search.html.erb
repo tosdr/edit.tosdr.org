@@ -1,4 +1,4 @@
-<%= form_tag(points_path, method: :get), url: my_points_path if url do %>
+<%= form_tag(points_path, method: :get) do %>
   <%= text_field_tag :query %>
   <%= submit_tag 'Search' %>
 <% end %>
