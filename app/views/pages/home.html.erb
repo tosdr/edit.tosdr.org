@@ -8,10 +8,14 @@
 </header>
 
 <div class="col-xs-12 text-center search-bar">
+<%= form_tag(root_path, method: :get) do %>
+    <%= text_field_tag :query %>
+    <%= submit_tag 'Search' %>
+    <% end %>
+
 </div>
 
   <div class="row">
-    <% @services = Service.all %>
     <% @services.each do |s| %>
       <div class="col-xs-12 col-sm-6 col-lg-4">
 
