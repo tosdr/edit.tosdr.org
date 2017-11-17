@@ -4,6 +4,8 @@
   <% current_path = topics_path %>
 <% elsif current_page?(services_path) %>
   <% current_path = services_path %>
+<% elsif current_page?(root_path)%>
+  <% current_path = root_path %>
 <% end %>
 
 <div id="custom-search-input">
