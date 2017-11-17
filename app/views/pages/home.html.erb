@@ -9,120 +9,71 @@
 <div class="col-xs-12 text-center search-bar">
   <%= render "shared/searchbar" %>
 </div>
-
 <% @services = Service.all %>
-
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-
+    <div class="col-xs-12 col-sm-6">
       <!-- CARD -->
       <% @services.each do |s| %>
-
-        <div class="card">
-            <div class="card-service">
-              <%= s.name %>
+      <% if s.service_ratings == "A" %>
+        <% grade = "rating-a" %>
+      <% elsif s.service_ratings == "B" %>
+        <% grade = "rating-b" %>
+      <% elsif s.service_ratings == "C" %>
+        <% grade = "rating-c" %>
+      <% elsif s.service_ratings == "D" %>
+        <% grade = "rating-d" %>
+      <% elsif s.service_ratings == "F" %>
+        <% grade = "rating-f" %>
+      <% else %>
+        <% grade = "rating-na" %>
+      <% end %>
+      <div class="card">
+        <div class="card-service">
+          <%= s.name %>
         </div>
-
         <div class="card-block">
-
           <div class="card-left">
-
-            <% if s.grade == "A" %>
-
-              <div class="card-left-item card-badge rating-a">
-                <%= s.grade %>
-              </div>
-
-            <% elsif s.grade == "B" %>
-
-              <div class="card-left-item card-badge rating-b">
-                <%= s.grade %>
-              </div>
-
-            <% elsif s.grade == "C" %>
-
-              <div class="card-left-item card-badge rating-c">
-                <%= s.grade %>
-              </div>
-
-            <% elsif s.grade == "D" %>
-
-              <div class="card-left-item card-badge rating-d">
-                <%= s.grade %>
-              </div>
-
-            <% elsif s.grade == "F" %>
-
-              <div class="card-left-item card-badge rating-f">
-                <%= s.grade %>
-              </div>
-
-            <% elsif s.grade.nil? %>
-
-              <div class="card-left-item card-badge rating-na">
-                <%= s.grade %>
-              </div>
-
-            <% end %>
-
+            <div class="card-left-item card-badge <%= grade %>">
+              <%= s.service_ratings %>
+            </div>
             <%= link_to "More", service_path(s.id), class: "btn btn-primary" %>
-
-
-
           </div>
-
           <div class="card-text">
-
-          <% s.points.each do |p| %>
-
-          <% if p.is_featured? %>
-
+            <% s.points.each do |p| %>
+            <% if p.is_featured? %>
             <% if p.rating.between?(7,10) %>
-
-              <ul>
-                <li class="point-good xs-icon">
-                  <%= p.title  %>
-                </li>
-              </ul>
-
+            <ul>
+              <li class="point-good xs-icon">
+                <%= p.title  %>
+              </li>
+            </ul>
             <% elsif p.rating.between?(4,6) %>
-
-              <ul>
-                <li class="point-neutral xs-icon">
-                  <%= p.title  %>
-                </li>
-              </ul>
-
+            <ul>
+              <li class="point-neutral xs-icon">
+                <%= p.title  %>
+              </li>
+            </ul>
             <% elsif p.rating.between?(2,3) %>
-
-              <ul>
-                <li class="point-bad xs-icon">
-                  <%= p.title  %>
-                </li>
-              </ul>
-
+            <ul>
+              <li class="point-bad xs-icon">
+                <%= p.title  %>
+              </li>
+            </ul>
             <% elsif p.rating.between?(0,2) %>
-
-              <ul>
-                <li class="point-blocker xs-icon">
-                  <%= p.title  %>
-                </li>
-              </ul>
-
+            <ul>
+              <li class="point-blocker xs-icon">
+                <%= p.title  %>
+              </li>
+            </ul>
             <% end %>
-
-          <% end %>
-
-          <% end %>
-
-        </div>
+            <% end %>
+            <% end %>
+          </div>
         </div>
       </div>
-
-  <% end %>
+      <% end %>
       <!-- CARD-END -->
     </div>
   </div>
 </div>
-

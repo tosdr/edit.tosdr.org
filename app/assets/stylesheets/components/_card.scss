@@ -33,7 +33,7 @@
       padding: 5px;
       height: 180px;
       text-overflow: ellipsis;
-      overflow: scroll;
+      overflow: auto;
     }
     & .card-text p {
       margin: 0.5em;
@@ -110,6 +110,11 @@ $pointPaddingLeft : 35px;
   color: #363636 !important;
   font-weight: lighter;
   background-color: transparent;
+}
+.card-left {
+  & .rating-na {
+    font-size: 1em;
+  }
 }
 // Service Rating badge
 .service-badge {
