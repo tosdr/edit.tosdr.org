@@ -36,6 +36,11 @@
         <%= link_to "Menu", "#", class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu", 'data-toggle' => "dropdown" %>
         <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
           <li>
+            <%= link_to my_points_path do  %>
+            <i class="fa fa-check-square-o"></i> <%= t(".profile", default: "My points") %>
+            <% end %>
+          </li>
+          <li>
             <%= link_to destroy_user_session_path, method: :delete do %>
             <i class="fa fa-sign-out"></i> <%= t(".profile", default: "Log out") %>
             <% end %>
