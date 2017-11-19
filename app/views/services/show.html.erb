@@ -3,12 +3,16 @@
     <%= @service.name %>
   </h1>
 
+  <p>
+
 <% if current_user %>
 
   <% if current_user.admin? %>
   <%= link_to 'Edit Service', edit_service_path, method: :put, class: 'btn btn-primary' %>
   <%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
   <% end %>
+
+  </p>
 </header>
 
 <div class="row">
