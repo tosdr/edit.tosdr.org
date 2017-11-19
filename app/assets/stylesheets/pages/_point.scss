@@ -1,10 +1,28 @@
-.mw5 {
-  max-width: 70rem;
-}
-
-.center {
+.point-holder {
   margin-right: auto;
   margin-left: auto;
+  max-width: 60rem;
+}
+
+.border {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.smaller-title {
+  font-size: smaller;
+}
+
+.pad-left {
+  padding-left: 5rem;
+}
+
+.pad-right {
+  padding-right: 5rem;
+}
+
+.mw6 {
+  max-width: 60rem;
 }
 
 .bgw {
@@ -19,6 +37,11 @@
   padding-left: 15px;
 }
 
+.m15 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .mt30 {
   margin-top: 30px;
 }
@@ -31,6 +54,7 @@
   padding: 0;
   list-style: none;
   margin: 0;
+  font-size: medium;
 }
 
 .point-items {
@@ -61,3 +85,5 @@
   font-weight: bolder;
   letter-spacing: 1.5px;
 }
+
+
