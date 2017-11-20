@@ -25,8 +25,8 @@ class ServicesController < ApplicationController
   def show
     # @service.points = Point.where(service_id: @service)
     @points = @service.points
-    if @query = params[:query]
-      @points = @service.points_by_topic(@query)
+    if @query = params[:topic]
+      @points = @points.where(topic_id: params[:topic][:id])
       flash[:alert] = "No results" if @points.empty?
     end
   end
