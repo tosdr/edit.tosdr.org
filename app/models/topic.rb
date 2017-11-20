@@ -9,4 +9,8 @@ class Topic < ApplicationRecord
     Topic.where("title ILIKE ?", "%#{query}%")
   end
 
+  def self.search_by_topic_service(query)
+    Topic.joins(:point).where("points.name ILIKE ?", "%#{query}%")
+  end
+
 end
