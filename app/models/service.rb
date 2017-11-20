@@ -5,6 +5,14 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
 
+  def points_by_topic(query)
+    points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
+  end
+
+  def self.search_by_name(query)
+    Service.where("name ILIKE ?", "%#{query}%")
+  end
+
   def service_ratings
     total_ratings = points.map { |p| p.rating }
     avg = (total_ratings.sum.to_f) / (total_ratings.size.to_f)
@@ -28,7 +36,4 @@ class Service < ApplicationRecord
     end
   end
 
-  def self.search_by_name(query)
-    Service.all.select { |s| s.name.downcase == query.downcase }
-  end
 end

@@ -11,8 +11,7 @@
 <div id="custom-search-input">
   <div class="input-group col-xs-12">
     <%= form_tag(current_path, method: :get) do %>
-      <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search" %>
-
+      <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search", value: @query %>
       <span class="input-group-btn">
         <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
           <span class="glyphicon glyphicon-search"></span>

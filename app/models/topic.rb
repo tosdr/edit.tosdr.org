@@ -6,6 +6,7 @@ class Topic < ApplicationRecord
   validates :description, presence: true
 
   def self.search_by_topic_title(query)
-    Topic.all.select { |t| t.title.downcase == query.downcase }
+    Topic.where("title ILIKE ?", "%#{query}%")
   end
+
 end
