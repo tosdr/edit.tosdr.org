@@ -9,8 +9,8 @@
 
 <div class="col-xs-12 text-center search-bar">
 <%= form_tag(root_path, method: :get) do %>
-    <%= text_field_tag :query %>
-    <%= submit_tag 'Search' %>
+    <%= text_field_tag :name, params[:name] %>
+    <%= submit_tag 'Search', name: nil %>
     <% end %>
 
 </div>
