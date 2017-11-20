@@ -18,12 +18,6 @@
   <div class="input-group col-xs-12 mb15">
     <%= form_tag(service_path(@service), method: :get) do %>
       <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
-
-      <span class="input-group-btn">
-        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
-          <span class="glyphicon glyphicon-search"></span>
-        <% end %>
-      </span>
     <% end %>
   </div>
 </div>
