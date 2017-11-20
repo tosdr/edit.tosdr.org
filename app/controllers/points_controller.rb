@@ -7,8 +7,8 @@ class PointsController < ApplicationController
 
   def index
    @points = Point.all
-    if query = params[:query]
-      @points = Point.search_by_service_name(query)
+    if @query = params[:query]
+      @points = Point.search_points_by_multiple(@query)
       flash[:alert] = "No results" if @points.empty?
     end
   end
@@ -84,8 +84,8 @@ class PointsController < ApplicationController
 
   def user_points
     @points = current_user.points
-    if query = params[:query]
-      @points = @points.select { |p| p.service.name.downcase == query.downcase }
+    if @query = params[:query]
+      @points = Point.search_points_by_multiple(@query)
       flash[:alert] = "No results" if @points.empty?
     end
   end

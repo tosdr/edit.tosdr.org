@@ -8,11 +8,25 @@
 <% if current_user %>
 
   <% if current_user.admin? %>
-  <%= link_to 'Edit Service', edit_service_path, method: :put, class: 'btn btn-primary' %>
+  <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
   <%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
   <% end %>
 
   </p>
+
+<div id="custom-search-input">
+  <div class="input-group col-xs-12 mb15">
+    <%= form_tag(@service, url: service_path, method: :get) do %>
+      <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search", value: @query %>
+
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
+          <span class="glyphicon glyphicon-search"></span>
+        <% end %>
+      </span>
+    <% end %>
+  </div>
+</div>
 </header>
 
 <div class="row">
@@ -33,6 +47,9 @@
           <div class="card-inline-item card-inline-status">
             Status
           </div>
+          <div class="card-inline-item card-inline-rating">
+            Topic
+          </div>
           <div class="card-inline-item card-inline-featured">
             Featured?
           </div>
@@ -41,7 +58,7 @@
           </div>
         </div>
         <!-- actual card-inline -->
-          <% @service.points.each do |p| %>
+          <% @points.each do |p| %>
           <% if p.rating.between?(7, 10)%>
             <% pointbox = "point-good" %>
           <% elsif p.rating.between?(4,6) %>
@@ -60,6 +77,9 @@
             </div>
             <div class="card-inline-item card-inline-status">
               <%= p.status %>
+            </div>
+                <div class="card-inline-item card-inline-status">
+              <%= p.topic.title %>
             </div>
             <div class="card-inline-item card-inline-featured">
               <% if p.is_featured? %>
@@ -83,7 +103,21 @@
 
 <% else %>
 
-<% @service.points.each do |p| %>
+<div id="custom-search-input">
+  <div class="input-group col-xs-12 mb15">
+    <%= form_tag(service_path(@service), method: :get) do %>
+      <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search" %>
+
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
+          <span class="glyphicon glyphicon-search"></span>
+        <% end %>
+      </span>
+    <% end %>
+  </div>
+</div>
+
+<% @points.each do |p| %>
 
   <% if p.rating.between?(7, 10)%>
     <% pointbox = "point-good" %>

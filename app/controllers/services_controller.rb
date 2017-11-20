@@ -3,8 +3,8 @@ class ServicesController < ApplicationController
 
   def index
     @services = Service.all
-    if query = params[:query]
-      @services = Service.search_by_name(query)
+    if @query = params[:query]
+      @services = Service.search_by_name(@query)
       flash[:alert] = "No results" if @services.empty?
     end
   end
@@ -23,7 +23,12 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service.points = Point.where(service_id: @service)
+    # @service.points = Point.where(service_id: @service)
+    @points = @service.points
+    if @query = params[:query]
+      @points = @service.points_by_topic(@query)
+      flash[:alert] = "No results" if @points.empty?
+    end
   end
 
   def edit

@@ -1,7 +1,7 @@
 
 <header class="tc ph4">
   <h1 class="fw2 mv3">
-    My contributions
+    My Contributions
   </h1>
 </header>
 
@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-xs-12 text-center search-bar">
   <%= form_tag(my_points_path, method: :get) do %>
-    <%= text_field_tag :query %>
+    <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search", value: @query %>
   <%= submit_tag 'Search' %>
 <% end %>
   </div>

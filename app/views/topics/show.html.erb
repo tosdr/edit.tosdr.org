@@ -8,10 +8,24 @@
 
   <p>
   <% if current_user.admin? %>
-  <%= link_to 'Edit Topic', edit_topic_path, method: :put, class: 'btn btn-primary' %>
+  <%= link_to 'Edit Topic', edit_topic_path(@topic), class: 'btn btn-primary' %>
   <%= link_to 'Delete Topic', @topic, method: :delete, class: 'btn btn-danger' %>
   <% end %>
   </p>
+
+<div id="custom-search-input">
+  <div class="input-group col-xs-12 mb15">
+    <%= form_tag(topic_path(@topic), method: :get) do %>
+      <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search", value: @query %>
+
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
+          <span class="glyphicon glyphicon-search"></span>
+        <% end %>
+      </span>
+    <% end %>
+  </div>
+</div>
 
 </header>
 
@@ -45,7 +59,7 @@
           </div>
         </div>
         <!-- actual card-inline -->
-          <% @topic.points.each do |p| %>
+          <% @points.each do |p| %>
           <% if p.rating.between?(7, 10)%>
             <% pointbox = "point-good" %>
           <% elsif p.rating.between?(4,6) %>
