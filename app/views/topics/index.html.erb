@@ -2,7 +2,7 @@
   <h1 class="fw2 mv3">
     Data Protection Topics
   </h1>
-  <% if current_user.admin? %>
+  <% if current_user.curator? %>
   <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary' %>
   <% end %>
 </header>
@@ -42,7 +42,7 @@
             <i class="fa fa-eye" aria-hidden="true"></i>
             <% end %>
 
-            <% if current_user.admin? %>
+            <% if current_user.curator? %>
 
             <%= link_to(edit_topic_path(t), :class => 'btn') do %>
             <i class="fa fa-pencil" aria-hidden="true"></i>

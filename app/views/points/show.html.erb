@@ -12,7 +12,7 @@
           <%= link_to 'All', points_path, class: 'btn btn-primary' %>
         </div>
 
-        <% if current_user.admin? %>
+        <% if current_user.curator? %>
         <div class="pl15">
           <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
         </div>

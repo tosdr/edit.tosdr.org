@@ -24,9 +24,9 @@ class ReasonsController < ApplicationController
   private
 
   def set_admin
-    unless current_user.admin?
+    unless current_user.curator?
       redirect_to root_path
-      flash[:alert] = "You must be an admin"
+      flash[:alert] = "You must be a curator"
     end
   end
 

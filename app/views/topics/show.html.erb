@@ -7,7 +7,7 @@
   </h2>
 
   <p>
-  <% if current_user.admin? %>
+  <% if current_user.curator? %>
   <%= link_to 'Edit Topic', edit_topic_path(@topic), class: 'btn btn-primary' %>
   <%= link_to 'Delete Topic', @topic, method: :delete, class: 'btn btn-danger' %>
   <% end %>
