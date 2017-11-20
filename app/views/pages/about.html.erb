@@ -1,0 +1,73 @@
+about.html.erb
+
+<article class="holder">
+  <div class="header-holder">
+  <h1 class="article-header <%= pointbox %>">
+    <p>About</p>
+  </h1>
+  </div>
+
+  <div class="article-text-holder">
+    <p class="article-text">
+      “Terms of Service; Didn't Read," or ToS;DR for short, was created in June 2012 to help reverse the biggest lie on the web: "I have read and agree to the terms of service."
+    </p>
+
+    <p class="article-text">
+      The name ToS;DR is inspired by the internet acronym TL;DR, which stands for "Too Long; Didn't Read" and is often used on blogs and emails when a block of text is too lengthy or verbose. The idea behind ToS;DR emerged during the 2011 <%= link_to "Chaos Communication Camp", "https://events.ccc.de/camp/2011/wiki/ToS;DR", target: "_blank" %> near Berlin with people from <%= "Unhosted", "http://unhosted.org/", target: "_blank" %>, which is a movement to create web applications that allow users more control over their data and privacy. In the summer of 2012, Hugo Roy (<%= link_to "@hugoroyd", "https://twitter.com/hugoroyd", target: "_blank" %>) started the legal analysis required for ToS;DR and brought the project to life. Since then, more people have joined the team and have contributed through ToS;DR's vibrant reviewer community. ToS;DR aims to promote transparency, as the discussions around the terms of service for various web applications occur in public and are subject to debate and review by everyone. Our work is funded by non-profit organizations and individual donations. If you would like to donate, feel free to do so via <%= link_to "Flattr", "https://flattr.com/thing/3628260", target: "_blank" %>. ToS;DR's data and <%= link_to "software is also open", "http://fsfe.org/about/basics/freesoftware.html", target: "_blank" %> to the public.
+    </p>
+
+    <p class="article-text">
+      Please bear in mind that the latest iteration of the project is still in its early phase, and that most data is subject to important changes. For information about how we classify the various terms of service, please read the following explainer below.
+    </p>
+  </div>
+
+</article>
+
+<article class="holder">
+  <div class="header-holder">
+  <h1 class="article-header <%= pointbox %>">
+    <p>Classification</p>
+  </h1>
+  </div>
+
+  <div class="article-text-holder">
+    <p class="article-text">
+      ToS;DR aims to foster a transparent and peer-reviewed process to rate and analyze terms of service and privacy policies. The goal is to generate a rating for the terms or policies from Class A to Class F, similar to a grade on a school assignment.
+    </p>
+
+    <p class="article-text">
+      Various terms of service are reviewed by ToS;DR contributors and divided into small points that can be discussed and compared. Ultimately, a score between one and 10 is assigned to each individual point. These points are visually represented by the following icons: <%= image_tag("point-good.png")%> <%= image_tag("point-neutral.png")%> <%= image_tag("point-bad.png")%> <%= image_tag("point-blocker.png")%>.
+    </p>
+
+    <p class="article-text">
+      A class is assigned to each service by averaging the scores of the points for the service. We do this via a function that automatically sums the scores, and divides that sum by the number of points listed for the service. Many services still do not have a class. We need more data and more reviews before we can start assigning classes, which is why our community of contributors is so important. For the services that do have classes, this is how they work:
+    </p>
+
+    <ul>
+      <li>A - These are the best terms of service. This web service treats you fairly, respects your rights, and will not abuse your data.</li>
+      <li>B - These terms of service are fair towards the user but could be improved.</li>
+      <li>C - These terms of service are okay, but some issues require your consideration.</li>
+      <li>D - These terms of service are likely skewed against you, or there are some important issues that require your attention.</li>
+      <li>F - These terms of service raise very serious concerns.</li>
+      <li>N/A - There is not enough data to determine the class.</li>
+    </ul>
+
+  </div>
+</article>
+
+<article class="holder">
+  <div class="header-holder">
+  <h1 class="article-header <%= pointbox %>">
+    <p>Contact Us</p>
+  </h1>
+  </div>
+
+  <div class="article-text-holder">
+    <p class="article-text">
+      <%= link_to "Follow us on Twitter!", "https://twitter.com/ToSDR", target: "_blank" %> You can also reach us directly on <%= "#tosdr at freenode", "http://webchat.freenode.net/?channels=#tosdr", target: "_blank" %> (ping hugoroyd or alphonce). If you get no answers, for instance because a lot of our contributors are not in your timezone, feel free to leave your contact information. You can also contact us by email: team@tosdr.org
+    </p>
+  </div>
+</article>
+
+
+
