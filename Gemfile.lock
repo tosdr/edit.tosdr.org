@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/activeadmin/activeadmin.git
-  revision: b1901e8ba6c9a024018a1803c26375b9cb971add
+  revision: 48d0156e41de366ddde8559e016405dd5cfcccb7
   specs:
     activeadmin (2.0.0.alpha)
       arbre (>= 1.1.1)
@@ -83,7 +83,7 @@ GEM
     byebug (9.1.0)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
-    crass (1.0.2)
+    crass (1.0.3)
     devise (4.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -146,7 +146,7 @@ GEM
     pg (0.21.0)
     polyamorous (1.3.1)
       activerecord (>= 3.0)
-    pry (0.11.2)
+    pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     pry-byebug (3.5.0)
@@ -156,7 +156,7 @@ GEM
       pry (>= 0.10.4)
     puma (3.10.0)
     rack (2.0.3)
-    rack-test (0.7.0)
+    rack-test (0.8.0)
       rack (>= 1.0, < 3)
     rails (5.1.4)
       actioncable (= 5.1.4)
@@ -181,7 +181,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.2.1)
+    rake (12.3.0)
     ransack (1.8.4)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
@@ -200,7 +200,7 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.0.6)
+    sass-rails (5.0.7)
       railties (>= 4.0.0, < 6)
       sass (~> 3.1)
       sprockets (>= 2.8, < 4.0)
@@ -253,6 +253,7 @@ DEPENDENCIES
   devise
   figaro
   font-awesome-sass
+  formtastic
   inherited_resources!
   jbuilder (~> 2.0)
   jquery-rails
