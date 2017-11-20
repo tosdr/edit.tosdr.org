@@ -1,16 +1,5 @@
 Rails.application.routes.draw do
-  get 'user/index'
-
-  get 'user/new'
-
-  get 'user/show'
-
-  get 'user/create'
-
-  get 'user/update'
-
-  get 'user/destroy'
-
+  ActiveAdmin.routes(self)
   devise_for :users
   root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
