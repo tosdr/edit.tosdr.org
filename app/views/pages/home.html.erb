@@ -8,11 +8,7 @@
 </header>
 
 <div class="col-xs-12 text-center search-bar">
-<%= form_tag(root_path, method: :get) do %>
-    <%= text_field_tag :query, params[:query] %>
-    <%= submit_tag 'Search' %>
-    <% end %>
-
+<%= render "shared/search" %>
 </div>
 
   <div class="row row-form">
