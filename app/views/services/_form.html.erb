@@ -1,9 +1,13 @@
-<%= simple_form_for([@service]) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :url %>
-    <div class="form-inputs">
-      <%= f.submit class: 'btn btn-primary' %>
-    </div>
+<div class="form-login">
+  <div class="row">
+    <%= simple_form_for([@service]) do |f| %>
+      <div class="form-inputs col-xs-12">
+        <%= f.input :name, placeholder: "Service's name" %>
+        <%= f.input :url, placeholder: "Address of the service"%>
+      </div>
+      <div class="form-actions col-xs-12 col-sm-4 col-sm-offset-8">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
