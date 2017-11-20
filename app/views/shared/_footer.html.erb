@@ -1,1 +1,28 @@
-_footer.html.erb
+<footer class="footer">
+  <div class="footer-links hidden-xs">
+    <%= link_to "GitHub", "#" %>
+    <%= link_to "Twitter", "#" %>
+    <%= link_to "API", "#" %>
+  </div>
+  <div class="footer-links hidden-xs">
+    <%= link_to "Contact", "#" %>
+    <%= link_to "Team", "#" %>
+    <%= link_to "Blog", "#" %>
+    <%= link_to "Donate", "#" %>
+    <%= link_to "Terms of Service", "#" %>
+  </div>
+
+
+  <!-- Mobile Footer -->
+
+  <div class="footer-links footer-mobile hidden-sm hidden-md hidden-lg">
+      <%= link_to "", "#", class: "fa fa-github fa-lg" %>
+      <%= link_to "", "#", class: "fa fa-twitter fa-lg" %>
+      <%= link_to "API", "#" %>
+      <%= link_to "Contact", "#" %>
+      <%= link_to "Team", "#" %>
+      <%= link_to "Blog", "#" %>
+      <%= link_to "Donate", "#" %>
+      <%= link_to "ToS", "#" %>
+  </div>
+</footer>
