@@ -8,7 +8,7 @@
 
 # puts "Cleaning up the database..."
 # Reason.destroy_all
-# Point.destroy_all
+Point.destroy_all
 # Service.destroy_all
 Topic.destroy_all
 puts "Importing topics"
