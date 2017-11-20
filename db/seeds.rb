@@ -20,6 +20,8 @@
 puts "Starts new seeding"
 test_user = User.new(email: "test@email.com", username: "test user", password: "testnonadminuser", password_confirmation: "testnonadminuser")
 test_user.save
+curator_test_user = User.new(email: "curatortest@email.com", password: "testcuratoruser", password_confirmation: "testcuratoruser", curator: true)
+curator_test_user.save
 admin_test_user = User.new(email: "admintest@email.com", username: "admin test user", password: "testadminuser", password_confirmation: "testadminuser", admin: true)
 admin_test_user.save
 test_service_1 = Service.new(name: "Test service 1", url: "http://perdu.com", grade: "A")
