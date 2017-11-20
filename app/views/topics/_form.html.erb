@@ -1,10 +1,19 @@
-<%= simple_form_for([@topic]) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :title %>
-    <%= f.input :subtitle %>
-    <%= f.input :description %>
-    <div class="form-inputs">
-      <%= f.submit class: 'btn btn-primary' %>
-    </div>
+<div class="form-login">
+  <div class="row">
+    <%= simple_form_for([@topic]) do |f| %>
+      <div class="form-inputs col-xs-12">
+        <%= f.input :title, placeholder: "Topic title", label: false %>
+        <%= f.input :subtitle, placeholder: "Subtitle", label: false %>
+        <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
+      </div>
   </div>
-<% end %>
+  <div class="row">
+    <div class="form-actions col-xs-4 col-sm-2 col-md-2">
+        <%= link_to "Back", :back, class: "btn btn-default" %>
+    </div>
+      <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
