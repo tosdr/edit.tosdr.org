@@ -36,9 +36,14 @@ body {
 .footer-links a:hover {
   opacity: 0.9;
 }
-
+.footer-mobile {
+  width: 100%;
+  margin: 0 15px;
+  padding: 0 0;
+}
 .footer-mobile a {
   font-size: 1.5rem;
+  padding: 0 0;
 }
 
 
