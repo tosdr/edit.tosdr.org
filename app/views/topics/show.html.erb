@@ -5,10 +5,13 @@
   <h2 class="fw2 mt0 lh-copy">
     <%= @topic.description %>
   </h2>
+
+  <p>
   <% if current_user.admin? %>
   <%= link_to 'Edit Topic', edit_topic_path, method: :put, class: 'btn btn-primary' %>
   <%= link_to 'Delete Topic', @topic, method: :delete, class: 'btn btn-danger' %>
   <% end %>
+  </p>
 
 </header>
 
