@@ -211,7 +211,8 @@ $pointPaddingLeft : 35px;
 
 }
 .card-inline-topic {
-
+  flex: 0 0 80px;
+  text-align: center;
 }
 .card-inline-contribution {
   flex: 1 1 auto;
