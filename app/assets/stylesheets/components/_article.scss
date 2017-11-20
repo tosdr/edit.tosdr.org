@@ -1,23 +1,31 @@
 .holder {
   margin-right: auto;
   margin-left: auto;
-  max-width: 40rem;
+  max-width: 70rem;
   border-style: solid;
   border-width: 1px;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  border-radius: 3px;
+}
+
+.header-holder {
+  padding-left: 24px;
+  background-color: #FFFFFF;
 }
 
 .article-header {
   font-size: 1.75rem;
-  background-color: #111;
-  color: #fff;
+  font-size: 2.5rem;
+    /* background-color: #111; */
+  background-color: #FFFFFF;
+  color: #111;
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
 .article-text-holder {

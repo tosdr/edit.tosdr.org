@@ -3,12 +3,16 @@
     <%= @service.name %>
   </h1>
 
+  <p>
+
 <% if current_user %>
 
   <% if current_user.admin? %>
   <%= link_to 'Edit Service', edit_service_path, method: :put, class: 'btn btn-primary' %>
   <%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
   <% end %>
+
+  </p>
 </header>
 
 <div class="row">
@@ -92,10 +96,11 @@
   <% end %>
 
 <article class="holder">
-
-  <h1 class="article-header">
+  <div class="header-holder">
+  <h1 class="article-header <%= pointbox %>">
     <%= p.title %>
   </h1>
+  </div>
 
   <div class="article-text-holder">
     <p class="article-text">
@@ -105,9 +110,10 @@
 
 </article>
 
+  <% end %>
 
 <% end %>
 
-<% end %>
+
 
 

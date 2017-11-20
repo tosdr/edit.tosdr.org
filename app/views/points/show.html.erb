@@ -1,55 +1,6 @@
-<div class="mw5 center bgw p15 mt30 mb30">
+<div class="point-holder">
 
-
-<div>
-  <div>
-    <ul class="point-info">
-      <li class="point-items">
-        <div class="point-service">
-          <span class="bolder">Service:</span> <%= @point.service.name %>
-        </div>
-        <div class="point-status">
-          <span class="bolder">Status:</span> <%= @point.status %>
-        </div>
-        <div class="point-rating">
-          <span class="bolder">Rating:</span> <%= @point.rating %>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <h3 class="lighter"><%= @point.title %></h3>
-  <div class="mt30">
-    <span class="bolder">Analysis:</span> <%= @point.analysis %>
-  </div>
-</div>
-
-
-<% if @point.reasons.any? %>
-
-<div class="status-changes mt30">
-
-  <table class="table table-striped">
-    <thead class="thead thead-dark">
-      <th scope="col">STATUS UPDATES</th>
-      <th scope="col">REASON</th>
-      <th scope="col">WHEN</th>
-    </thead>
-    <% @point.reasons.each do |reason| %>
-    <tbody>
-      <tr>
-        <th scope="row"><%= reason.status %></th>
-        <td><%= reason.content %></td>
-        <td><%= time_ago_in_words reason.created_at %> ago</td>
-      </tr>
-    </tbody>
-  <% end %>
-</table>
-
-</div>
-
-<% end %>
-
-<div class="mt30">
+  <div class="m15 mw6">
     <ul class="point-info">
       <li class="point-items">
         <% if current_user.id == @point.user_id %>
@@ -82,4 +33,63 @@
     </ul>
 </div>
 
+<div class="article-holder border mw6">
+  <div class="article-header">
+    <ul class="point-info">
+      <li class="point-items">
+        <div class="point-service">
+          <span class="bolder">Service:</span> <%= @point.service.name %>
+        </div>
+        <div class="point-status">
+          <span class="bolder">Status:</span> <%= @point.status %>
+        </div>
+        <div class="point-rating">
+          <span class="bolder">Rating:</span> <%= @point.rating %>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
+
+<div class="article-holder border mw6">
+
+  <div class="article-header">
+  <h3 class="lighter smaller-title"><%= @point.title %></h3>
+  </div>
+
+  <div class="article-text-holder bgw p15">
+  <div class="article-text pad-left pad-right">
+    <span class="bolder">Analysis:</span> <%= @point.analysis %>
+  </div>
+  </div>
+
+</div>
+
+
+<% if @point.reasons.any? %>
+
+<div class="status-changes article-holder border mw6 p15">
+
+  <table class="table table-striped">
+    <thead class="thead thead-dark">
+      <th scope="col">STATUS UPDATES</th>
+      <th scope="col">REASON</th>
+      <th scope="col">WHEN</th>
+    </thead>
+    <% @point.reasons.each do |reason| %>
+    <tbody>
+      <tr>
+        <th scope="row"><%= reason.status %></th>
+        <td><%= reason.content %></td>
+        <td><%= time_ago_in_words reason.created_at %> ago</td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>
+
+</div>
+
+<% end %>
+
+</div>
+
