@@ -61,7 +61,7 @@
         <% if current_user %>
         <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
         <% else %>
-        <%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %>
+        <li><%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %></li>
         <% end %>
         <li><%= link_to "Points", points_path  %></li>
         <li><%= link_to "Topics", topics_path %></li>
