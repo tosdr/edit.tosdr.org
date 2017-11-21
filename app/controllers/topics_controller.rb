@@ -28,7 +28,8 @@ class TopicsController < ApplicationController
   def show
     @points = @topic.points
     if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
+      @points = Point.search_points_by_multiple(@query).where(topic: @topic)
+      puts @topic_points
       flash[:alert] = "No results" if @points.empty?
     end
   end
