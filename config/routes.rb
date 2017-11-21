@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get 'my_points', to: 'points#user_points', as: :my_points
 
+  get 'about', to: 'pages#about'
+
   resources :points do
     member do
       put "/is_featured", to: "points#featured", as: :featured
@@ -20,9 +22,9 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :topics, only: [ :index ]
-      resources :services, only: [ :index ]
-      resources :points, only: [ :index ]
+      resources :topics, only: [ :index, :show ]
+      resources :services, only: [ :index, :show ]
+      resources :points, only: [ :index, :show ]
     end
   end
 end
