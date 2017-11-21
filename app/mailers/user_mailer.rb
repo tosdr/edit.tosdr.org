@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
 
     @greeting = "You're now a confirmed contributor. Happy contributing!"
 
-    mail to: user.email
+    mail to: @user.email
   end
 
   def status_update(reason)
