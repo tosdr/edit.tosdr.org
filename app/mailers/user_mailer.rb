@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
 
     @greeting = "You're now a confirmed contributor. Happy contributing!"
 
-    mail to: @user.email
+    mail(to: @user.email, subject: 'Welcome')
   end
 
   def status_update(reason)
@@ -18,6 +18,6 @@ class UserMailer < ApplicationMailer
 
     @message = "The status of your analysis has been reviewed by a curator. Please log into ToS;DR to review changes to your analyses."
 
-    mail to: @user.email
+    mail(to: @user.email, subject: 'Status update')
   end
 end
