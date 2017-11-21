@@ -4,15 +4,10 @@
   </h1>
 </header>
 
-<div class="row">
-  <div class="col-xs-12 text-center search-bar">
-    <%= render "shared/search" %>
-  </div>
-</div>
+<%= render "shared/search" %>
+
 <div class="row">
   <div class="container card-container">
-    <div class="text-right"><%= link_to "Show all", points_path, class:"btn btn-default btn-xs" %>
-    </div>
-  <%= render 'table', points: @points %>
+    <%= render 'table', points: @points %>
   </div>
 </div>

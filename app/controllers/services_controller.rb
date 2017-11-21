@@ -5,7 +5,6 @@ class ServicesController < ApplicationController
     @services = Service.all
     if @query = params[:query]
       @services = Service.search_by_name(@query)
-      flash[:alert] = "No results" if @services.empty?
     end
   end
 
@@ -27,7 +26,6 @@ class ServicesController < ApplicationController
     @points = @service.points
     if @query = params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])
-      flash[:alert] = "No results" if @points.empty?
     end
   end
 

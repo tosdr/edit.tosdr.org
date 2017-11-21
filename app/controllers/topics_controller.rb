@@ -5,7 +5,6 @@ class TopicsController < ApplicationController
     @topics = Topic.all
     if @query = params[:query]
       @topics = Topic.search_by_topic_title(@query)
-      flash[:alert] = "No results" if @topics.empty?
     end
   end
 
@@ -28,9 +27,10 @@ class TopicsController < ApplicationController
   def show
     @points = @topic.points
     if @query = params[:query]
+
       @points = Point.search_points_by_multiple(@query).where(topic: @topic)
       puts @topic_points
-      flash[:alert] = "No results" if @points.empty?
+
     end
   end
 
