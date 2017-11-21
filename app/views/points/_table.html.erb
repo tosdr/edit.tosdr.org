@@ -22,67 +22,75 @@
       </div>
     </div>
     <!-- actual card-inline -->
-    <% points.each do |p| %>
-    <% if p.rating.between?(7, 10)%>
-    <% pointbox = "point-good" %>
-    <% elsif p.rating.between?(4,6) %>
-    <% pointbox = "point-neutral" %>
-    <% elsif p.rating.between?(2,3) %>
-    <% pointbox = "point-bad" %>
-    <% elsif p.rating.between?(0,2) %>
-    <% pointbox = "point-blocker" %>
-    <% end %>
-    <div class="card-inline">
-      <div class="card-inline-item card-inline-service">
-        <%= p.service.name %>
+    <% if points.empty? %>
+      <div class="card-inline">
+        <div class="card-inline-item">
+          No points found
+        </div>
       </div>
-      <div class="card-inline-item card-inline-point">
-        <%= p.title %>
+    <% else %>
+      <% points.each do |p| %>
+      <% if p.rating.between?(7, 10)%>
+      <% pointbox = "point-good" %>
+      <% elsif p.rating.between?(4,6) %>
+      <% pointbox = "point-neutral" %>
+      <% elsif p.rating.between?(2,3) %>
+      <% pointbox = "point-bad" %>
+      <% elsif p.rating.between?(0,2) %>
+      <% pointbox = "point-blocker" %>
+      <% end %>
+      <div class="card-inline">
+        <div class="card-inline-item card-inline-service">
+          <%= p.service.name %>
+        </div>
+        <div class="card-inline-item card-inline-point">
+          <%= p.title %>
+        </div>
+        <div class="card-inline-item card-inline-rating <%= pointbox %>">
+          <%= p.rating %>
+        </div>
+        <div class="card-inline-item card-inline-status">
+          <%= p.status %>
+        </div>
+        <div class="card-inline-item card-inline-featured">
+          <% if p.is_featured? %>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          <% else %>
+          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <% end %>
+        </div>
+        <div class="card-inline-item card-inline-options">
+
+          <% if current_user.curator? %>
+
+          <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <% end %>
+          <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <% end %>
+
+          <% elsif current_user.id == p.user_id %>
+
+          <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <% end %>
+          <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <% end %>
+
+          <% else %>
+
+          <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <% end %>
+
+          <% end %>
+
+        </div>
       </div>
-      <div class="card-inline-item card-inline-rating <%= pointbox %>">
-        <%= p.rating %>
-      </div>
-      <div class="card-inline-item card-inline-status">
-        <%= p.status %>
-      </div>
-      <div class="card-inline-item card-inline-featured">
-        <% if p.is_featured? %>
-        <i class="fa fa-check" aria-hidden="true"></i>
-        <% else %>
-        <i class="fa fa-circle-o" aria-hidden="true"></i>
-        <% end %>
-      </div>
-      <div class="card-inline-item card-inline-options">
-
-        <% if current_user.curator? %>
-
-        <%= link_to(point_path(p), :class => 'btn') do %>
-        <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-        <%= link_to(edit_point_path(p), :class => 'btn') do %>
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
-
-        <% elsif current_user.id == p.user_id %>
-
-        <%= link_to(point_path(p), :class => 'btn') do %>
-        <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-        <%= link_to(edit_point_path(p), :class => 'btn') do %>
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
-
-        <% else %>
-
-        <%= link_to(point_path(p), :class => 'btn') do %>
-        <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-
-        <% end %>
-
-      </div>
-    </div>
-    <!-- card-inline-END -->
+      <!-- card-inline-END -->
+      <% end %>
     <% end %>
   </div>
 </div>

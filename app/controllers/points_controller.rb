@@ -9,7 +9,7 @@ class PointsController < ApplicationController
    @points = Point.all
     if @query = params[:query]
       @points = Point.search_points_by_multiple(@query)
-      flash[:alert] = "No results" if @points.empty?
+
     end
   end
 
