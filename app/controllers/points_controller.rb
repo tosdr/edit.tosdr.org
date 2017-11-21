@@ -33,16 +33,10 @@ class PointsController < ApplicationController
     # @point.service = @service
     # if yes, TODO: create the setting private methods
     if @point.save
-      respond_to do |format|
-        format.html { redirect_to points_path }
-        format.js
-      end
+      redirect_to points_path
       flash[:notice] = "You created a point!"
     else
-      respond_to do |format|
-        format.html { redirect_to new_point_path }
-        format.js
-      end
+      render :new
     end
   end
 
