@@ -4,6 +4,10 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
 
+  config.action_mailer.delivery_method     = :postmark
+  config.action_mailer.postmark_settings   = { api_key: ENV['290a0b89-c4f9-4e32-b57a-ecd6b2acfb7a'] }
+  config.action_mailer.default_url_options = { host: "tosdr-phoenix.herokuapp.com" }
+
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
