@@ -24,6 +24,7 @@ curator_test_user = User.new(email: "curatortest@email.com", password: "testcura
 curator_test_user.save
 admin_test_user = User.new(email: "admintest@email.com", username: "admin test user", password: "testadminuser", password_confirmation: "testadminuser", admin: true)
 admin_test_user.save
+madeline = User.new(email: "madeline.w.oleary@gmail.com", username: "madeline", password: "testpassword", password_confirmation: "testpassword", curator: true, admin: true)
 test_service_1 = Service.new(name: "Test service 1", url: "http://perdu.com", grade: "A")
 test_service_1.save
 test_service_2 = Service.new(name: "Test service 2", url: "http://perdu.com", grade: "B")
