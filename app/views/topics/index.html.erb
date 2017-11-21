@@ -7,11 +7,8 @@
   <% end %>
 </header>
 
-<div class="row">
-  <div class="col-xs-12 text-center search-bar">
-    <%= render "shared/search"%>
-  </div>
-</div>
+<%= render "shared/search"%>
+
 <div class="row">
   <div class="container card-container">
     <div class="row">
@@ -29,30 +26,38 @@
           </div>
         </div>
         <!-- actual card-inline -->
-        <% @topics.each do |t| %>
-        <div class="card-inline">
-          <div class="card-inline-item card-inline-service">
-            <%= t.title %>
+        <% if @topics.empty? %>
+          <div class="card-inline">
+            <div class="card-inline-item">
+              No topics found
+            </div>
           </div>
-          <div class="card-inline-item card-inline-contribution">
-            <%= t.points.count %>
+        <% else %>
+          <% @topics.each do |t| %>
+          <div class="card-inline">
+            <div class="card-inline-item card-inline-service">
+              <%= t.title %>
+            </div>
+            <div class="card-inline-item card-inline-contribution">
+              <%= t.points.count %>
+            </div>
+            <div class="card-inline-item card-inline-options">
+              <%= link_to(topic_path(t), :class => 'btn') do %>
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              <% end %>
+
+              <% if current_user.curator? %>
+
+              <%= link_to(edit_topic_path(t), :class => 'btn') do %>
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+              <% end %>
+
+              <% end %>
+
+            </div>
           </div>
-          <div class="card-inline-item card-inline-options">
-            <%= link_to(topic_path(t), :class => 'btn') do %>
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <% end %>
-
-            <% if current_user.curator? %>
-
-            <%= link_to(edit_topic_path(t), :class => 'btn') do %>
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            <% end %>
-
-            <% end %>
-
-          </div>
-        </div>
-        <!-- card-inline-END -->
+          <!-- card-inline-END -->
+          <% end %>
         <% end %>
       </div>
     </div>
