@@ -1,5 +1,4 @@
 require 'json'
-require 'pry'
 
 puts "Starting the loop and the import..."
 Dir[File.join(Rails.root,"old_db/topics/*.json")].each do |json_file|

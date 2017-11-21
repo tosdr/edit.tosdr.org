@@ -9,7 +9,7 @@ class PointsController < ApplicationController
    @points = Point.all
     if @query = params[:query]
       @points = Point.search_points_by_multiple(@query)
-      flash[:alert] = "No results" if @points.empty?
+
     end
   end
 
@@ -33,10 +33,10 @@ class PointsController < ApplicationController
     # @point.service = @service
     # if yes, TODO: create the setting private methods
     if @point.save
-      flash[:notice] = "You created a point!"
       redirect_to points_path
+      flash[:notice] = "You created a point!"
     else
-      redirect_to new_point_path
+      render :new
     end
   end
 

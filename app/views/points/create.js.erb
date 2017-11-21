@@ -1,0 +1,6 @@
+const newPointForm = document.getElementById('new_point');
+<% if @point.errors.any? %>
+  newPointForm.innerHTML = "<%= j render 'points/new', point: @point %>";
+<% else %>
+  window.location = "/points";
+<% end %>

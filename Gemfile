@@ -23,6 +23,7 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'formtastic'
+gem 'pundit'
 
 group :development, :test do
   gem 'pry-byebug'

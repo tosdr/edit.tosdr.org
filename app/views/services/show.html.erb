@@ -19,11 +19,8 @@
     <%= form_tag(service_path(@service), method: :get) do %>
       <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
 
-      <span class="input-group-btn">
-        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
-          <span class="glyphicon glyphicon-search"></span>
-        <% end %>
-      </span>
+      <%= submit_tag 'Search', class: "btn btn-default btn-xs btn-search"%>
+
     <% end %>
   </div>
 </div>
@@ -108,13 +105,8 @@
 <div id="custom-search-input">
   <div class="input-group col-xs-12 mb15">
     <%= form_tag(service_path(@service), method: :get) do %>
-      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
-
-      <span class="input-group-btn">
-        <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
-          <span class="glyphicon glyphicon-search"></span>
-        <% end %>
-      </span>
+      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "dropdown" %>
+    <%= submit_tag 'Search', class: "btn btn-default btn-xs btn-search" %>
     <% end %>
   </div>
 </div>
@@ -141,6 +133,12 @@
   <div class="article-text-holder">
     <p class="article-text">
       <%= p.analysis %>
+    </p>
+  </div>
+
+  <div class="article-text-holder">
+    <p class="article-text">
+      Topic: <%= p.topic.title %>
     </p>
   </div>
 

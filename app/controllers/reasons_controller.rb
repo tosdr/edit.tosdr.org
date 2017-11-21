@@ -17,7 +17,7 @@ class ReasonsController < ApplicationController
       flash[:notice] = "Status saved!"
       redirect_to point_path(@point)
     else
-      redirect_to new_point_reason_path
+      render :new
     end
   end
 
