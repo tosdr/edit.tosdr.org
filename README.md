@@ -1,6 +1,6 @@
 # Phoenix
 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=tosdr-phoenix)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=tosdr-phoenix)
 
 Phoenix is a web app to submit points to the Terms of Service; Didn't Read project. The template used is located [here](https://github.com/lewagon/rails-templates)
 
