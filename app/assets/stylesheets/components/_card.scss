@@ -137,8 +137,12 @@ $pointPaddingLeft : 35px;
   width: 25px;
   color: white;
   font-size: 18px;
-  text-align:center;
+  text-align: center;
   margin: 0 10px;
+  &.rating-na {
+    font-size: 0.65em;
+    padding-top: 0.5rem;
+  }
 }
 
 // Card-inline
@@ -156,7 +160,6 @@ $pointPaddingLeft : 35px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
   & .btn {
   padding: 4px;
-
 }
 
 .box-shadow-for-button {

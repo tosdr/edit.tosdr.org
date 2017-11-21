@@ -18,15 +18,11 @@ Rails.application.routes.draw do
   resources :services
   resources :topics
 
-
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :topics, only: [ :index ]
+      resources :services, only: [ :index ]
+      resources :points, only: [ :index ]
+    end
+  end
 end
-
-# def upvote
-#   @point = Point.find(params[:id])
-#   @point.votes += 1
-#   redirect_to point_path
-# end
-
-# def top_3
-#   @top_points = Point.where(likes: 5).limit(3)
-# end
