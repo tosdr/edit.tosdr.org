@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>ToS;DR - Phoenix</title>
-    <%= csrf_meta_tags %>
-    <%= action_cable_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-  </head>
-  <body>
-    <%= render "shared/navbar" %>
-    <%= render "shared/flashes" %>
-      <div class="container">
-        <%= yield %>
-      </div>
-    <%= render "shared/footer" %>
-    <%= javascript_include_tag 'application' %>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <!-- Open graph -->
+  <meta property="og:title" content="Terms of Service; Didn't Read - Phoenix" />
+  <meta property="og:url" content="https://phoenix.tosdr.org" />
+  <!-- FIXME: Change the OG image -->
+  <meta property="og:image" content="/img/favicon.ico" />
+  <meta property="og:site_name" content="Phoenix" />
+  <meta property="og:description" content="I've read and agreed to the Terms of Service is the biggest lie of the Internet. We aim to fix that." />
+
+  <!-- Twitter cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tosdr" />
+  <meta name="twitter:title" content="Terms of Service; Didn't Read - Phoenix">
+  <meta name="twitter:image" content="/img/favicon.ico">
+  <meta name="twitter:description" content="I've read and agreed to the Terms of Service is the biggest lie of the Internet. We aim to fix that.">
+
+  <title>ToS;DR - Phoenix</title>
+  <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+</head>
+<body>
+  <%= render "shared/navbar" %>
+  <%= render "shared/flashes" %>
+  <div class="container">
+    <%= yield %>
+  </div>
+  <%= render "shared/footer" %>
+  <%= javascript_include_tag 'application' %>
+</body>
 </html>
