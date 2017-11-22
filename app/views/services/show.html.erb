@@ -19,7 +19,8 @@
     <%= form_tag(service_path(@service), method: :get) do %>
       <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
 
-      <%= submit_tag 'Search', class: "btn btn-default btn-xs btn-search"%>
+      <%= submit_tag 'Search', class: "btn btn-default" %>
+      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
 
     <% end %>
   </div>
@@ -106,7 +107,8 @@
   <div class="input-group col-xs-12 mb15">
     <%= form_tag(service_path(@service), method: :get) do %>
       <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "dropdown" %>
-    <%= submit_tag 'Search', class: "btn btn-default btn-xs btn-search" %>
+    <%= submit_tag 'Search', class: "btn btn-default" %>
+    <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
     <% end %>
   </div>
 </div>
