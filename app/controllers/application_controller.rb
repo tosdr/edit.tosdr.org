@@ -6,4 +6,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
   end
 
+  def default_url_options
+    { host: ENV["HOST"] || "localhost:3000" }
+  end
 end
