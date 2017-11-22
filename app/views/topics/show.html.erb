@@ -2,9 +2,9 @@
   <h1 class="fw2 mv3">
     <%= @topic.title %>
   </h1>
-  <h2 class="fw2 mt0 lh-copy">
-    <%= @topic.description %>
-  </h2>
+  <p> class="fw2 mt0 lh-copy">
+    <%= @topic.subtitle %>
+  </p>
 
   <p>
   <% if current_user.curator? %>
