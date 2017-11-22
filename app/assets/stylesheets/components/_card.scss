@@ -77,22 +77,22 @@ $pointPaddingLeft : 35px;
   padding-left: 24px !important;
 }
 .point-good {
-  background-image: url(point-good.png);
+  background-image: image-url(point-good.png);
   background-repeat: no-repeat;
   background-position: left;
 }
 .point-neutral {
-  background-image: url(point-neutral.png);
+  background-image: image-url(point-neutral.png);
   background-repeat: no-repeat;
   background-position: left;
 }
 .point-bad {
-  background-image: url(point-bad.png);
+  background-image: image-url(point-bad.png);
   background-repeat: no-repeat;
   background-position: left;
 }
 .point-blocker {
-  background-image: url(point-blocker.png);
+  background-image: image-url(point-blocker.png);
   background-repeat: no-repeat;
   background-position: left;
 }
