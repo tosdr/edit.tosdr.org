@@ -8,13 +8,18 @@ Phoenix is a web app to submit points to the Terms of Service; Didn't Read proje
 
 The app was developped with Ruby on Rails 5.1.4 and Ruby 2.3.5. The database uses PostgreSQL. You must have those if you want to run the app.
 
+Use github version or [rbenv](https://github.com/rbenv/rbenv) to manage your ruby version.
+
 ## Install
 
 ```
 git clone git@github.com:tosdr/phoenix.git
 cd phoenix
 bundle install
+rails db:create db:migrate
+rails s
 ```
+No test/development seeds are available for the moment.
 
 ## Database
 
