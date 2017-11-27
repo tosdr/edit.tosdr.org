@@ -23,7 +23,7 @@ No test/development seeds are available for the moment.
 
 ## Database
 
-All the details on the database schema can be found on the [wiki](https://github.com/tosdr/wiki/database).
+All the details on the database schema can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/database).
 
 
 ## API
