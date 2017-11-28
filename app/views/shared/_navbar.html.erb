@@ -3,11 +3,11 @@
   <div class="navbar-tosdr-left">
     <!-- Logo -->
     <%= link_to root_path, class: "navbar-tosdr-brand" do %>
-    <%= image_tag "favicon.ico" %>
-    <% end %>
     <div class="navbar-tosdr-title">
+      <%= image_tag "favicon.ico" %>
       <strong>ToS;</strong>DR
     </div>
+    <% end %>
     <% unless current_user.nil? %>
     <%= link_to "Contribute", new_point_path, class: "btn btn-primary btn-sm" %>
     <% else %>
