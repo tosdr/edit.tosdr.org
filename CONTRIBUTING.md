@@ -65,20 +65,19 @@ a systemwide install.
 
 In your code directory:
 
-    ~~~ sh
     git clone https://github.com/tosdr/phoenix
     cd phoenix
+    rbenv install 2.3.5
     rbenv local 2.3.5
     bundle install
     rails db:seed
     rails s
-    ~~~
-    
+
 And you're ready to code !
 
 ## Committing & Pull Requests
 
-    * If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh]. 
-    * When you create a pull request, please make sure you checked everything in the PR template. 
+* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh]. 
+* When you create a pull request, please make sure you checked everything in the PR template. 
     
 Have fun!
