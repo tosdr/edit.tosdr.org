@@ -63,6 +63,10 @@ a systemwide install.
 
 ## When it's done
 
+Install Rails and Postgres
+
+    apt install rails postgres
+
 In your code directory:
 
     git clone https://github.com/tosdr/phoenix
