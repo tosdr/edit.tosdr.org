@@ -52,7 +52,7 @@
           <% end %>
           <div class="card-inline">
             <div class="card-inline-item card-inline-service text-left">
-              <%= s.name %>
+              <%= link_to s.name, service_path(s.id) %>
             </div>
             <div class="card-inline-item card-inline-url">
               <%= link_to s.url, s.url %>
