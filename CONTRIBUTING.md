@@ -74,7 +74,7 @@ In your code directory:
     rbenv install 2.3.5
     rbenv local 2.3.5
     bundle install
-    rails db:seed
+    rails db:create db:migrate db:seed
     rails s
 
 And you're ready to code !
