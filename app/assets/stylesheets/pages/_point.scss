@@ -1,7 +1,12 @@
 .point-holder {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 60rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.article-point-header {
+  padding-top: 10px;
+  font-weight: bolder;
+  font-size: larger;
 }
 
 .border {
