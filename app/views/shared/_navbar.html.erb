@@ -62,13 +62,14 @@
       <i class="fa fa-bars dropdown-toggle" data-toggle="dropdown"></i>
       <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
         <% if current_user %>
-        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
-        <% else %>
-        <li><%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %></li>
-        <% end %>
         <li><%= link_to "Points", points_path  %></li>
         <li><%= link_to "Topics", topics_path %></li>
         <li><%= link_to "Services", services_path  %></li>
+        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+        <% else %>
+        <li><%= link_to "About", about_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+        <li><%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %></li>
+        <% end %>
       </ul>
     </div>
   </div>
