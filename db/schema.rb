@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120110106) do
+ActiveRecord::Schema.define(version: 20171214143225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,25 @@ ActiveRecord::Schema.define(version: 20171120110106) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
+  create_table "cases", force: :cascade do |t|
+    t.string "classification"
+    t.integer "score"
+    t.string "title"
+    t.text "description"
+    t.bigint "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_cases_on_topic_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "point_id"
+    t.string "summary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_id"], name: "index_comments_on_point_id"
+  end
+
   create_table "points", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "rank", default: 0
@@ -42,6 +61,9 @@ ActiveRecord::Schema.define(version: 20171120110106) do
     t.datetime "updated_at", null: false
     t.bigint "topic_id"
     t.bigint "service_id"
+    t.string "quote"
+    t.bigint "case_id"
+    t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
     t.index ["user_id"], name: "index_points_on_user_id"
@@ -94,6 +116,9 @@ ActiveRecord::Schema.define(version: 20171120110106) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cases", "topics"
+  add_foreign_key "comments", "points"
+  add_foreign_key "points", "cases"
   add_foreign_key "points", "services"
   add_foreign_key "points", "topics"
   add_foreign_key "points", "users"
