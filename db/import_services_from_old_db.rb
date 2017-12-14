@@ -8,8 +8,10 @@ def importService(data)
   puts data 
   puts 'new data:'
   imported_service = Service.new(
-    id: data['id'],
-    name: data['name']
+    # old_id: data['id'],
+    name: data['name'],
+    url: data['urls'][0],
+    grade: 'grade'
   )
   puts imported_service
   imported_service.save

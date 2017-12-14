@@ -12,11 +12,30 @@ def importPoint(data, service)
   puts service
   puts 'new data:'
   imported_point = Point.new(
-    id: data['id'] + '-' + service,
-    title: data['title']
-    # service: service # todo: tell rails that this is a foreign key
+    # old_id: data['id'] + '-' + service,
+    title: data['title'],
+    user_id: 9,
+    source: "http://perdu.com",
+    status: "pending",
+    analysis: "Bla bla bla",
+    rating: 3,
+    topic_id: 1,
+    service_id: 101
   )
-  puts imported_point
+
+#  validates :title, presence: true
+#  validates :title, length: { in: 5..140 }
+#  validates :source, presence: true
+#  validates :status, inclusion: { in: ["approved", "pending", "declined", "disputed", "draft"], allow_nil: false }
+#  validates :analysis, presence: true
+#  validates :rating, presence: true
+#  validates :rating, numericality: true
+
+  unless imported_point.valid?
+    puts "### #{imported_point.title} not imported ! ###"
+  else
+    puts "Imported and saved: #{imported_point.title}"
+  end
 #    service = Service.find_by_name(line['services'])
 #    binding.pry
 #    service_id: service.id,

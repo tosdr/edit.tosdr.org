@@ -9,7 +9,8 @@ def importTopic(data)
   puts 'new data:'
   imported_topic = Topic.new(
     title: data['title'],
-    subtitle: data['subtitle']
+    subtitle: data['subtitle'],
+    description: data['description']
   )
   puts imported_topic
   imported_topic.save
