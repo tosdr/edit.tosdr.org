@@ -11,16 +11,19 @@ def importPoint(data, service)
   puts data
   puts service
   puts 'new data:'
+  serviceObjDefault = Service.find_by_name('amazon')
+  serviceObj = Service.find_by_name(service) || serviceObjDefault
+  puts serviceObj.id
   imported_point = Point.new(
     # old_id: data['id'] + '-' + service,
     title: data['title'],
-    user_id: 9,
+    user_id: 3,
     source: "http://perdu.com",
     status: "pending",
     analysis: "Bla bla bla",
     rating: 3,
-    topic_id: 1,
-    service_id: 101
+    topic_id: 31,
+    service_id: serviceObj.id
   )
 
 #  validates :title, presence: true
@@ -33,10 +36,8 @@ def importPoint(data, service)
 
   unless imported_point.valid?
     puts "### #{imported_point.title} not imported ! ###"
-  else
-    puts "Imported and saved: #{imported_point.title}"
+    # panic
   end
-#    service = Service.find_by_name(line['services'])
 #    binding.pry
 #    service_id: service.id,
 #    topic = Topic.find_by_title(line['topics']) #need to import the services first and match it by string

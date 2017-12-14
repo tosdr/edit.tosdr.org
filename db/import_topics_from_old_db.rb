@@ -8,11 +8,15 @@ def importTopic(data)
   puts data 
   puts 'new data:'
   imported_topic = Topic.new(
-    title: data['title'],
-    subtitle: data['subtitle'],
-    description: data['description']
+    title: data['title'] || 'title',
+    subtitle: data['subtitle'] || 'subtitle',
+    description: data['description'] || 'description'
   )
   puts imported_topic
+  unless imported_topic.valid?
+    puts "### #{imported_topic.title} not imported ! ###"
+    panic
+  end
   imported_topic.save
   puts 'saved.'
 end

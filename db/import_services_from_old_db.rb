@@ -9,11 +9,14 @@ def importService(data)
   puts 'new data:'
   imported_service = Service.new(
     # old_id: data['id'],
-    name: data['name'],
-    url: data['urls'][0],
+    name: data['name'].downcase,
+    url: data['urls'][0] || 'url',
     grade: 'grade'
   )
   puts imported_service
+  unless imported_service.valid?
+    puts "### #{imported_service.name} not imported ! ###" #+ panic
+  end
   imported_service.save
   puts 'saved.'
 end
