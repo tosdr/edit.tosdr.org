@@ -1,9 +1,10 @@
 require 'json'
 require 'pry'
-require 'ApplicationRecord'
-require '../app/models/point'
 
-filepath_points = "../old_db/points/"
+# in repo root, run
+# rails runner db/import_points_from_old_db.rb
+
+filepath_points = "old_db/points/"
 
 puts "Importing points..."
 Dir.foreach(filepath_points) do |filename|
