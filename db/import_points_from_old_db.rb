@@ -15,6 +15,8 @@ def importPoint(data, service)
   topicObj = Topic.find_by_title('Personal Data')
   serviceObjDefault = Service.find_by_name('amazon')
   serviceObj = Service.find_by_name(service) || serviceObjDefault
+  caseObjDefault = Case.find_by_title('info given about security practices')
+  caseObj = Case.find_by_title(data['tosdr']['case']) || caseObjDefault
   imported_point = Point.new(
     # old_id: data['id'] + '-' + service,
     title: data['title'],
@@ -24,7 +26,8 @@ def importPoint(data, service)
     analysis: "Bla bla bla",
     rating: 3,
     topic: topicObj,
-    service: serviceObj
+    service: serviceObj,
+    case_id: caseObj.id
   )
 
 #  validates :title, presence: true
