@@ -10,7 +10,8 @@ def importTopic(data)
   imported_topic = Topic.new(
     title: data['title'] || 'title',
     subtitle: data['subtitle'] || 'subtitle',
-    description: data['description'] || 'description'
+    description: data['description'] || 'description',
+    oldId: data['id']
   )
   puts imported_topic
   unless imported_topic.valid?
