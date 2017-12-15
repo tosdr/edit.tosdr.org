@@ -1,4 +1,3 @@
-
 class PointsController < ApplicationController
   before_action :set_point, only: [:show, :edit,:featured, :update, :destroy]
 
