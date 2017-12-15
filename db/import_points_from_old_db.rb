@@ -18,7 +18,7 @@ def importPoint(data, service)
   caseObjDefault = Case.find_by_title('info given about security practices')
   caseObj = Case.find_by_title(data['tosdr']['case']) || caseObjDefault
   imported_point = Point.new(
-    # old_id: data['id'] + '-' + service,
+    oldId: data['id'],
     title: data['title'],
     user: userObj,
     source: "http://perdu.com",
