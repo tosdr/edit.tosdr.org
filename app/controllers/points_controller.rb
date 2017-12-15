@@ -43,6 +43,9 @@ class PointsController < ApplicationController
   end
 
   def show
+    puts @point.id
+    # @comments = @point.comments
+    @comments = Comment.where(point_id: @point.id)
   end
 
   def update

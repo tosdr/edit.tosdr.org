@@ -29,4 +29,6 @@ puts "Importing cases"
 load File.join(Rails.root,"db","import_cases_from_old_db.rb")
 puts "Importing points"
 load File.join(Rails.root,"db","import_points_from_old_db.rb")
+puts "Importing posts"
+load File.join(Rails.root,"db","import_posts_from_old_db.rb")
 puts "Done!"

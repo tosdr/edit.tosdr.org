@@ -14,7 +14,7 @@ def importPost(data)
   )
   puts imported_post
   unless imported_post.valid?
-    puts "### #{imported_post.title} not imported ! ###" #+ panic
+    puts "### #{imported_post.summary} not imported ! ###" #+ panic
     puts topic
   end
   imported_post.save
