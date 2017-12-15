@@ -44,7 +44,9 @@
             <% end %>
           </li>
           <li>
-            <%= link_to "Setting", edit_user_registration_path %>
+            <%= link_to edit_user_registration_path do %>
+            <i class="fa fa-cogs"></i> <%= t(".profile", default: "Settings") %>
+            <% end %>
           </li>
           <li>
             <%= link_to destroy_user_session_path, method: :delete do %>
