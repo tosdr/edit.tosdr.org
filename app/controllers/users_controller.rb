@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+    flash[:confirmation] = "Are your sure you want to delete your account?"
     flash[:notice] = "Your account has been deleted! Goodbye!"
     redirect_to root_path
   end
