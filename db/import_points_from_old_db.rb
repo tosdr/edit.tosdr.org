@@ -11,19 +11,20 @@ def importPoint(data, service)
   puts data
   puts service
   puts 'new data:'
+  userObj = User.find_by_email('admintest@email.com')
+  topicObj = Topic.find_by_title('Personal Data')
   serviceObjDefault = Service.find_by_name('amazon')
   serviceObj = Service.find_by_name(service) || serviceObjDefault
-  puts serviceObj.id
   imported_point = Point.new(
     # old_id: data['id'] + '-' + service,
     title: data['title'],
-    user_id: 3,
+    user: userObj,
     source: "http://perdu.com",
     status: "pending",
     analysis: "Bla bla bla",
     rating: 3,
-    topic_id: 31,
-    service_id: serviceObj.id
+    topic: topicObj,
+    service: serviceObj
   )
 
 #  validates :title, presence: true
@@ -43,6 +44,13 @@ def importPoint(data, service)
 #    topic = Topic.find_by_title(line['topics']) #need to import the services first and match it by string
 #    topic_id: topic.id, #need to import topics first and match it by string
   imported_point.save
+  puts imported_point.id
+  puts data['id']
+  creationComment = Comment.new(
+    point: imported_point,
+    summary: 'imported from '+data['id']
+  )
+  creationComment.save
   puts 'saved.'
 end
 
