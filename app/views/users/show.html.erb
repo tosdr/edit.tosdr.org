@@ -1,3 +1,18 @@
-<h1>Hello <%= User.name %>!</h1>
+<h1>Hello <%= current_user.username.nil? ? "you" : current_user.username %>!</h1>
+
+<p>Here is your dashboard:</p>
+
+<ul>
+  <li>Edit your username</li>
+  <li>Edit your email</li>
+  <li>Reset your password</li>
+  <li>Delete your account</li>
+</ul>
+
+<!-- to do
+<p>You have submitted XX points</p>
+
+list the points
+-->
 
 
