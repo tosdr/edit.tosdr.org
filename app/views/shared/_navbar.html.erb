@@ -44,6 +44,9 @@
             <% end %>
           </li>
           <li>
+            <%= link_to "Setting", edit_user_registration_path %>
+          </li>
+          <li>
             <%= link_to destroy_user_session_path, method: :delete do %>
             <i class="fa fa-sign-out"></i> <%= t(".profile", default: "Log out") %>
             <% end %>
@@ -65,6 +68,7 @@
         <li><%= link_to "Points", points_path  %></li>
         <li><%= link_to "Topics", topics_path %></li>
         <li><%= link_to "Services", services_path  %></li>
+        <li><%= link_to "Setting", edit_user_registration_path %></li>
         <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
         <% else %>
         <li><%= link_to "About", about_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
