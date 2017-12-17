@@ -4,7 +4,40 @@
   </h1>
 
   <p>
-
+    <button class="btn btn-success" id="orderByPoint"> order by Rating </button>
+    
+    <%= javascript_tag do %>
+    document.getElementById('orderByPoint').addEventListener("click", (event) => {
+     let elems =  document.querySelectorAll(".card-point");
+      // convert nodelist to array
+      var array = [];
+      for (var i = elems.length >>> 0; i--;) {
+          array[i] = elems[i];
+      }
+      // perform sort depending on classname
+      if(event.currentTarget.className=="btn btn-success"){
+        array.sort(function(a, b) {
+          return a.dataset.rating - b.dataset.rating;
+         });
+         event.currentTarget.classList.remove("btn-success");
+         event.currentTarget.classList.add("btn-danger");
+       }
+       else if(event.currentTarget.className== "btn btn-danger"){
+         array.sort(function(a, b) {
+            return b.dataset.rating -  a.dataset.rating;
+          });
+          event.currentTarget.classList.remove("btn-danger");
+          event.currentTarget.classList.add("btn-success");
+        }
+        // join the array back into HTML
+        var output = "";
+        for (var i = 0; i < array.length; i++) {
+            output += array[i].outerHTML;
+        }
+        // append output to div 'points-table-container'
+        document.getElementById('points-table-container').innerHTML = output;
+    });
+    <% end %>
 <% if current_user %>
 
   <% if current_user.curator? %>
@@ -58,7 +91,10 @@
           </div>
         </div>
         <!-- actual card-inline -->
+        <div id="points-table-container">
           <% @points.each do |p| %>
+          <div class="card-point" data-rating="<%= p.rating %>">
+
           <% if p.rating.between?(7, 10)%>
             <% pointbox = "point-good" %>
           <% elsif p.rating.between?(4,6) %>
@@ -94,8 +130,12 @@
               <% end %>
             </div>
           </div>
+        </div>
+
           <!-- card-inline-END -->
         <% end %>
+      </div>
+
       </div>
     </div>
   </div>
@@ -112,8 +152,10 @@
     <% end %>
   </div>
 </div>
+<div id="points-table-container">
 
 <% @points.each do |p| %>
+<div class="card-point" data-rating="<%= p.rating %>">
 
   <% if p.rating.between?(7, 10)%>
     <% pointbox = "point-good" %>
@@ -145,11 +187,9 @@
   </div>
 
 </article>
+</div>
 
   <% end %>
+</div>
 
 <% end %>
-
-
-
-
