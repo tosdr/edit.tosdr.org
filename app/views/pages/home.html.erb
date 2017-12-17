@@ -10,58 +10,48 @@
 <div class="col-xs-12 text-center search-bar">
 <%= render "shared/search" %>
 </div>
-  <button class="btn btn-lg" onClick=orderByName()> order by name </button>
+  <button class="btn btn-lg btn-success" id="orderByRating"> order by rating </button>
   <%= javascript_tag do %>
-
-  function swapSibling(node1, node2) {
-       node1.parentNode.replaceChild(node1, node2);
-       node1.parentNode.insertBefore(node2, node1);
+  document.getElementById('orderByRating').addEventListener("click", (event) => {
+   let elems =  document.querySelectorAll(".serviceDiv");
+    // convert nodelist to array
+    var array = [];
+    for (var i = elems.length >>> 0; i--;) {
+        array[i] = elems[i];
+    }
+    // perform sort depending on classname
+    if(event.currentTarget.className=="btn btn-lg btn-success"){
+      array.sort(function(a, b) {
+        var ratingA=a.dataset.rating.toLowerCase(), ratingB=b.dataset.rating.toLowerCase()
+       if (ratingA < ratingB) //sort string ascending
+           return -1
+       if (ratingA > ratingB)
+           return 1
+       return 0 //default return value (no sorting)
+       });
+       event.currentTarget.classList.remove("btn-success");
+       event.currentTarget.classList.add("btn-danger");
      }
-   function bubbleSort(a)
-   {
-       var swapped;
-       do {
-           swapped = false;
-           for (var i=0; i < a.length-1; i++) {
-               if (a[i] > a[i+1]) {
-                   var temp = a[i];
-                   a[i] = a[i+1];
-                   a[i+1] = temp;
-                   swapped = true;
-               }
-           }
-       } while (swapped);
-   }
-   orderByName = function(){
-    let elems =  document.querySelectorAll(".serviceDiv");
-
-// convert nodelist to array
-var array = [];
-for (var i = elems.length >>> 0; i--;) {
-    array[i] = elems[i];
-}
-console.log(array[0].dataset);
-// perform sort
-array.sort(function(a, b) {
-  var titleA=a.dataset.rating.toLowerCase(), titleB=b.dataset.rating.toLowerCase()
- if (titleA < titleB) //sort string ascending
-     return -1
- if (titleA > titleB)
-     return 1
- return 0 //default return value (no sorting)
-
-});
-console.log(array);
-// join the array back into HTML
-var output = "";
-for (var i = 0; i < array.length; i++) {
-    output += array[i].outerHTML;
-}
-// append output to div 'myDiv'
-document.getElementById('service-container').innerHTML = output;
-
-
-      };
+     else if(event.currentTarget.className== "btn btn-lg btn-danger"){
+       array.sort(function(a, b) {
+         var ratingA=a.dataset.rating.toLowerCase(), ratingB=b.dataset.rating.toLowerCase()
+        if (ratingA > ratingB) //sort string ascending
+            return -1
+        if (ratingA < ratingB)
+            return 1
+        return 0 //default return value (no sorting)
+        });
+        event.currentTarget.classList.remove("btn-danger");
+        event.currentTarget.classList.add("btn-success");
+      }
+      // join the array back into HTML
+      var output = "";
+      for (var i = 0; i < array.length; i++) {
+          output += array[i].outerHTML;
+      }
+      // append output to div 'service-container'
+      document.getElementById('service-container').innerHTML = output;
+  });
     <% end %>
   <div class="row row-form" id="service-container">
     <% @services.each do |s| %>
