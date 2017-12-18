@@ -17,14 +17,25 @@ def importPoint(data, service)
   serviceObj = Service.find_by_name(service) || serviceObjDefault
   caseObjDefault = Case.find_by_title('info given about security practices')
   caseObj = Case.find_by_title(data['tosdr']['case']) || caseObjDefault
+
+  if data['disputed']
+    status = 'disputed'
+  elsif data['irrelevant'] || !data['binding']
+    status = 'declined'
+  elsif data['tosdr'] && data['tosdr']['point'] && data['tosdr']['score']
+    status = 'approved'
+  else
+    status = 'pending'
+  end
+
   imported_point = Point.new(
     oldId: data['id'],
     title: data['title'],
     user: userObj,
-    source: "http://perdu.com",
-    status: "pending",
-    analysis: "Bla bla bla",
-    rating: 3,
+    source: data['discussion'],
+    status: status,
+    analysis: data['tosdr'] ? data['tosdr']['tldr'] : '',
+    rating: (data['tosdr'] && data['tosdr']['score']) ? data['tosdr']['score'] / 10 : 0,
     topic: topicObj,
     service: serviceObj,
     case_id: caseObj.id
