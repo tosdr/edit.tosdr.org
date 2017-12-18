@@ -20,7 +20,7 @@ def importPoint(data, service)
 
   if data['disputed']
     status = 'disputed'
-  elsif data['irrelevant'] || !data['binding']
+  elsif data['irrelevant']
     status = 'declined'
   elsif data['tosdr'] && data['tosdr']['point'] && data['tosdr']['score']
     status = 'approved'
