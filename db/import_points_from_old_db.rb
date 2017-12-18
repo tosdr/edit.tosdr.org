@@ -6,6 +6,8 @@ require 'pry'
 
 filepath_points = "old_db/points/"
 
+$featured_counts = {}
+
 def importPoint(data, service)
   puts 'old data:'
   puts data
@@ -28,6 +30,18 @@ def importPoint(data, service)
     status = 'pending'
   end
 
+  puts 'checking featured counts'
+  puts serviceObj.id
+  if !$featured_counts[serviceObj.id]
+    $featured_counts[serviceObj.id] = 0
+  end
+  if $featured_counts[serviceObj.id] < 5
+    is_featured = true
+    $featured_counts[serviceObj.id] += 1
+  else
+    is_featured = false
+  end
+
   imported_point = Point.new(
     oldId: data['id'],
     title: data['title'],
@@ -38,7 +52,8 @@ def importPoint(data, service)
     rating: (data['tosdr'] && data['tosdr']['score']) ? data['tosdr']['score'] / 10 : 0,
     topic: topicObj,
     service: serviceObj,
-    case_id: caseObj.id
+    case_id: caseObj.id,
+    is_featured: is_featured
   )
 
 #  validates :title, presence: true
