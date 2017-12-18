@@ -6,6 +6,8 @@ require 'pry'
 
 filepath_points = "old_db/points/"
 
+$featured_counts = {}
+
 def importPoint(data, service)
   puts 'old data:'
   puts data
@@ -17,17 +19,41 @@ def importPoint(data, service)
   serviceObj = Service.find_by_name(service) || serviceObjDefault
   caseObjDefault = Case.find_by_title('info given about security practices')
   caseObj = Case.find_by_title(data['tosdr']['case']) || caseObjDefault
+
+  if data['disputed']
+    status = 'disputed'
+  elsif data['irrelevant']
+    status = 'declined'
+  elsif data['tosdr'] && data['tosdr']['point'] && data['tosdr']['score']
+    status = 'approved'
+  else
+    status = 'pending'
+  end
+
+  puts 'checking featured counts'
+  puts serviceObj.id
+  if !$featured_counts[serviceObj.id]
+    $featured_counts[serviceObj.id] = 0
+  end
+  if $featured_counts[serviceObj.id] < 5
+    is_featured = true
+    $featured_counts[serviceObj.id] += 1
+  else
+    is_featured = false
+  end
+
   imported_point = Point.new(
     oldId: data['id'],
     title: data['title'],
     user: userObj,
-    source: "http://perdu.com",
-    status: "pending",
-    analysis: "Bla bla bla",
-    rating: 3,
+    source: data['discussion'],
+    status: status,
+    analysis: data['tosdr'] ? data['tosdr']['tldr'] : '',
+    rating: (data['tosdr'] && data['tosdr']['score']) ? data['tosdr']['score'] / 10 : 0,
     topic: topicObj,
     service: serviceObj,
-    case_id: caseObj.id
+    case_id: caseObj.id,
+    is_featured: is_featured
   )
 
 #  validates :title, presence: true
