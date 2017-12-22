@@ -16,7 +16,7 @@
    let elems =  document.querySelectorAll(".serviceDiv");
     // convert nodelist to array
     var array = [];
-    for (var i = elems.length >>> 0; i--;) {
+    for (var i = 0; i < elems.length; i++) {
         array[i] = elems[i];
     }
     // perform sort depending on classname
