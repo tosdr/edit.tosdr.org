@@ -5,13 +5,13 @@
 
   <p>
     <button class="btn btn-success" id="orderByPoint"> order by Rating </button>
-    
+
     <%= javascript_tag do %>
     document.getElementById('orderByPoint').addEventListener("click", (event) => {
      let elems =  document.querySelectorAll(".card-point");
       // convert nodelist to array
       var array = [];
-      for (var i = elems.length >>> 0; i--;) {
+      for (var i = 0; i < elems.length; i++) {
           array[i] = elems[i];
       }
       // perform sort depending on classname
