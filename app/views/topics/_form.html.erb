@@ -4,7 +4,7 @@
       <div class="form-inputs col-xs-12">
         <%= f.input :title, placeholder: "Topic title", label: false %>
         <%= f.input :subtitle, placeholder: "Subtitle", label: false %>
-        <%= f.input :privacy_related, as: :boolean, label: 'Privacy related' %>
+        <%= f.input :privacy_related, as: :boolean, label: 'Privacy related', checked_value: true, unchecked_value: false %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
       </div>
   </div>

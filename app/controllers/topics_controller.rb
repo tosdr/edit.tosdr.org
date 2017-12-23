@@ -57,7 +57,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:title, :subtitle, :description, :query)
+    params.require(:topic).permit(:title, :subtitle, :description, :query, :privacy_related)
   end
 
 end
