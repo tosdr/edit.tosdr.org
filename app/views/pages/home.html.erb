@@ -8,9 +8,12 @@
 </header>
 
 <div class="col-xs-12 text-center search-bar">
-<%= render "shared/search" %>
+  <%= render "shared/search" %>
 </div>
+<div class="col-xs-12 text-center sorting-buttons">
   <button class="btn btn-lg btn-success" id="orderByRating"> order by rating </button>
+</div>
+
   <%= javascript_tag do %>
   document.getElementById('orderByRating').addEventListener("click", (event) => {
    let elems =  document.querySelectorAll(".serviceDiv");
