@@ -18,4 +18,12 @@ class User < ApplicationRecord
   def send_welcome_mail
     UserMailer.welcome(self).deliver_now
   end
+
+  def destroy
+    update_attributes(email: "deactivated_account@tosdr.org", username: "Camille", deactivated: true) unless deactivated
+  end
+
+  def active_for_authentication?
+    super && !deactivated
+  end
 end

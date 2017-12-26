@@ -3,7 +3,10 @@
     <%= @topic.title %>
   </h1>
   <p class="fw2 mt0 lh-copy">
-    <%= @topic.subtitle %>
+    <%= @topic.subtitle %>.
+  </p>
+  <p class="fw2 mt0 lh-copy">
+    Privacy related: <%= @topic.privacy_related? ? "yes" : "no" %>
   </p>
 
   <p>
