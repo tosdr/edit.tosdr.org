@@ -8,15 +8,18 @@
 </header>
 
 <div class="col-xs-12 text-center search-bar">
-<%= render "shared/search" %>
+  <%= render "shared/search" %>
 </div>
+<div class="col-xs-12 text-center sorting-buttons">
   <button class="btn btn-lg btn-success" id="orderByRating"> order by rating </button>
+</div>
+
   <%= javascript_tag do %>
   document.getElementById('orderByRating').addEventListener("click", (event) => {
    let elems =  document.querySelectorAll(".serviceDiv");
     // convert nodelist to array
     var array = [];
-    for (var i = elems.length >>> 0; i--;) {
+    for (var i = 0; i < elems.length; i++) {
         array[i] = elems[i];
     }
     // perform sort depending on classname
