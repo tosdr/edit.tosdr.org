@@ -22,7 +22,6 @@ class ServicesController < ApplicationController
   end
 
   def show
-    # @service.points = Point.where(service_id: @service)
     @points = @service.points
     @points = @points.where(status: 'approved')
 
