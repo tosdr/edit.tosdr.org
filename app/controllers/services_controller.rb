@@ -40,7 +40,6 @@ class ServicesController < ApplicationController
   end
 
   def destroy
-    # @service.points = Point.where(service_id: @service)
     if @service.points.any?
       flash[:alert] = "Users have contributed valuable insight to this service!"
       redirect_to service_path(@service)
