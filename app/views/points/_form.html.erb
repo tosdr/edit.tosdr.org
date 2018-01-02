@@ -1,38 +1,43 @@
 <div class="form-login">
   <div class="row row-form">
+    <div class="point-form-text">
+      <p>When submiting a contribution. You submit what we call a point. It's an analysis on one specific point of the ToS of the service you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of the all those points. See the <a href="/about#classification">about page</a> for more information.</p>
+
+      <p>Each point submitted by a user has to be reviewed by a curator before being displayed on the website. You will recieve a message by email from the curator who reviewed your point.</p>
+    </div>
     <%= simple_form_for [@point] do |f| %>
-        <div class="col-xs-12 col-sm-6">
-          <%= f.association :service %>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-          <%= f.association :topic %>
-        </div>
-        <div class="col-xs-12">
-          <%= f.input :title %>
-        </div>
-        <div class="col-xs-12">
-          <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }%>
-        </div>
-        <div class="col-xs-12 col-sm-7">
-          <%= f.input :source %>
-        </div>
-        <div class="col-xs-6 col-sm-2">
-          <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-          <% if current_user.curator? %>
-            <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
-          <% else %>
-            <%= f.input :status, collection: ["pending", "draft"] %>
-          <% end %>
-        </div>
-        <div class="form-actions col-xs-4 col-sm-2 col-md-2">
-            <%= link_to "Back", :back, class: "btn btn-default" %>
-        </div>
-        <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
-          <%= f.submit class: 'btn btn-primary' %>
-        </div>
-      </div>
-    <% end %>
+    <div class="col-xs-12 col-sm-6">
+      <%= f.association :service, hint: "If your service isn't on the list, please contact the team" %>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <%= f.association :topic, hint: "Category of the point" %>
+    </div>
+    <div class="col-xs-12">
+      <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+    </div>
+    <div class="col-xs-12">
+      <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+    </div>
+    <div class="col-xs-12 col-sm-7">
+      <%= f.input :source %>
+    </div>
+    <div class="col-xs-6 col-sm-2">
+      <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
+    </div>
+    <div class="col-xs-6 col-sm-3">
+      <% if current_user.curator? %>
+      <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+      <% else %>
+      <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+      <% end %>
+    </div>
+    <div class="form-actions col-xs-4 col-sm-2 col-md-2">
+      <%= link_to "Back", :back, class: "btn btn-default" %>
+    </div>
+    <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
   </div>
+  <% end %>
+</div>
 </div>
