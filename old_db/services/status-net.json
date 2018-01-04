@@ -1,27 +1,20 @@
 {
-  "alexa": 1000000,
-  "federated": true,
-  "freesoftware": false,
-  "fulltos": {},
   "id": "status-net",
-  "license": "agpl-3+",
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "Status.net instances",
+  "name": "status.net instances",
+  "keywords": [
+
+  ],
   "related": [
     "facebook",
     "seenthis"
   ],
-  "tosdr": {
-    "alexa": 1000000,
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "software",
-  "url": "//status.net",
   "urls": [
     "//status.net"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

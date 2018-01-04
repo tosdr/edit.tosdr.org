@@ -1,54 +1,19 @@
 {
-  "alexa": 514,
-  "clause": [
-    "t-INoE6fH98",
-    "t-INoE6fH982",
-    "LbwpukmRtgg",
-    "0oKZG_o_Zu0",
-    "aXOIDbzevYE"
-  ],
-  "freesoftware": false,
-  "fulltos": {
-    "privacy": {
-      "url": "http://www.delicious.com/privacy"
-    },
-    "terms": {
-      "url": "http://www.delicious.com/terms"
-    }
-  },
   "id": "delicious",
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "Delicious",
-  "tosback2": {
-    "last-archive": {
-      "time": "",
-      "uri": ""
-    },
-    "privacy": {
-      "name": "Delicious Privacy Policy",
-      "url": "http://www.delicious.com/privacy"
-    },
-    "sitename": "delicious.com",
-    "terms": {
-      "last-archive": {
-        "time": "",
-        "uri": ""
-      },
-      "name": "Terms of Service",
-      "url": "http://www.delicious.com/terms"
-    }
-  },
-  "tosdr": {
-    "keywords": [],
-    "rated": "D",
-    "related": []
-  },
-  "twitter": "@Delicious",
-  "type": "service",
-  "url": "delicious.com",
+  "name": "delicious",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "delicious.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "D"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

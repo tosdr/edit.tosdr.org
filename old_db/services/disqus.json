@@ -1,42 +1,20 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-      "url": "http://docs.disqus.com/kb/terms-and-policies/"
-  },
   "id": "disqus",
+  "name": "disqus",
   "keywords": [
     "blog",
     "comments"
   ],
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "Disqus",
-  "tosback2": {
-    "privacy": {
-      "name": "Privacy Policy",
-      "url": "http://help.disqus.com/customer/portal/articles/466259-privacy-policy"
-    },
-    "sitename": "disqus.com",
-    "terms": {
-      "name": "Terms and Policies",
-      "url": "http://docs.disqus.com/kb/terms-and-policies/"
-    },
-    "terms-service": {
-      "name": "Terms of Service",
-      "url": "http://help.disqus.com/customer/portal/articles/466260-terms-of-service"
-    }
-  },
-  "tosdr": {
-    "alexa": 1000000,
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "disqus.com",
+  "related": [
+
+  ],
   "urls": [
     "disqus.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

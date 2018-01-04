@@ -1,27 +1,19 @@
 {
-  "alexa": 22,
-  "date": "",
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-    "url": "https://en.wordpress.com/tos/"
-    }
-  },
   "id": "wordpress-com",
-  "last-diff": "",
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "Wordpress.com",
-  "related": {},
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "wordpress.com",
+  "name": "wordpress.com",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "wordpress.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }
