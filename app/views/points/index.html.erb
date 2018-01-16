@@ -1,16 +1,51 @@
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    All Points
-  </h1>
-  <%= link_to 'Add A Point', new_point_path, class: 'btn btn-primary' %>
+<% javascript_tag do %>
+# function openTab(tabName) {
+# var i;
+# var x = document.getElementsByClassName("tab");
+# for (i = 0; i < x.length; i++) {
+# x[i].style.display = "none";
+# }
+# document.getElementById(tabName).style.display = "block";
+# }
+<% end %>
+
+<div class="">
+  <button class="" onclick="openTab('curatorView')">Curator View</button>
+  <button class="" onclick="openTab('allTabs')">All Tabs</button>
+</div>
+
+
+<!-- <div id="curatorView" class="tab"> -->
+  <header class="tc ph4">
+    <h1 class="fw2 mv3">
+      Curator view
+    </h1>
+  </header>
+  <div class="row">
+    <h2>Pending points</h2>
+   <div class="container card-container">
+     <%= render 'table', points: @points.where(status:'pending')  %>
+   </div>
+ </div>
+<!-- </div> -->
+
+
+
+<!-- <div id="allPoints" class="tab" style="display:none"> -->
+  <header class="tc ph4">
+    <h1 class="fw2 mv3">
+      All Points
+    </h1>
+    <%= link_to 'Add A Point', new_point_path, class: 'btn btn-primary' %>
 
     <p class="mt30">A featured point is displayed on the front page.</p>
-</header>
+  </header>
 
-<%= render "shared/search" %>
+  <%= render "shared/search" %>
 
-<div class="row">
-  <div class="container card-container">
-    <%= render 'table', points: @points %>
+  <div class="row">
+    <div class="container card-container">
+      <%= render 'table', points: @points %>
+    </div>
   </div>
-</div>
+<!-- </div> -->
