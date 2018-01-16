@@ -24,5 +24,4 @@ end
   # def has_voted(point)
   #   Vote.where(point_id: point.id, user_id: current_user.id)
   # end
-
 end
