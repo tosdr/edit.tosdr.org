@@ -12,6 +12,7 @@ User.destroy_all
 Reason.destroy_all
 Point.destroy_all
 Service.destroy_all
+Case.destroy_all
 Topic.destroy_all
 
 puts "Starts new seeding"
