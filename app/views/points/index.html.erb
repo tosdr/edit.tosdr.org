@@ -23,15 +23,18 @@
   </header>
   <div class="row">
     <h2>Pending points</h2>
-   <div class="container card-container">
+    <div class="container card-container">
      <%= render 'table', points: @points.where(status:'pending')  %>
    </div>
+
+   <h2>Latest modifications</h2>
+   <%= render 'table_diff', points: @points.each { |p| p.versions }  %>
  </div>
-<!-- </div> -->
+ <!-- </div> -->
 
 
 
-<!-- <div id="allPoints" class="tab" style="display:none"> -->
+ <!-- <div id="allPoints" class="tab" style="display:none"> -->
   <header class="tc ph4">
     <h1 class="fw2 mv3">
       All Points
@@ -48,4 +51,4 @@
       <%= render 'table', points: @points %>
     </div>
   </div>
-<!-- </div> -->
+  <!-- </div> -->

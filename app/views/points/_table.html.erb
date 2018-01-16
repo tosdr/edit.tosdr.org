@@ -83,11 +83,11 @@ document.getElementById('points-table-container').innerHTML = output;
   <% pointbox = "point-blocker" %>
   <% end %>
   <div class="card-inline" >
-    <div class="card-inline-item card-inline-service">
-      <%= p.service.name %>
-    </div>
     <div class="card-inline-item card-inline-point">
       <%= p.title %>
+    </div>
+    <div class="card-inline-item card-inline-service">
+      <%= p.service.name %>
     </div>
     <div class="card-inline-item card-inline-rating <%= pointbox %>">
       <%= p.rating %>
