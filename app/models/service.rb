@@ -1,4 +1,5 @@
 class Service < ApplicationRecord
+  has_paper_trail
   has_many :points
 
   validates :name, presence: true
