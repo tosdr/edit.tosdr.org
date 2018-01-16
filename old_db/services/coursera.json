@@ -1,19 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://www.coursera.org/about/terms"
-  },
   "id": "coursera",
+  "name": "coursera",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
+  "urls": [
+    "url"
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
   "meta": {
     "spec-version": "1.1"
-  },
-  "name": "coursera",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "urls": []
+  }
 }

@@ -1,24 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "name": "Legal: Terms of Use, Privacy Policy",
-      "url": "https://indabamusic.com/legal"
-    }
-  },
   "id": "indabamusic",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "indabamusic",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "https://indabamusic.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

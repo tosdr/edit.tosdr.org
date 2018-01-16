@@ -1,19 +1,19 @@
 {
-  "alexa": 138,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://www.reddit.com/help/useragreement"
-  },
   "id": "reddit",
+  "name": "reddit",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
+  "urls": [
+    "url"
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
   "meta": {
     "spec-version": "1.1"
-  },
-  "name": "reddit",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "urls": []
+  }
 }

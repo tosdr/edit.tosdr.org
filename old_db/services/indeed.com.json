@@ -1,19 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://be.indeed.com/legal?hl=en#cookies"
-  },
   "id": "indeed.com",
+  "name": "indeed.com",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
+  "urls": [
+    "url"
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
   "meta": {
     "spec-version": "1.1"
-  },
-  "name": "indeed.com",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "urls": []
+  }
 }

@@ -1,19 +1,19 @@
 {
-  "alexa": 5167,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://www.whatsapp.com/legal/"
-  },
   "id": "whatsapp",
+  "name": "whatsapp",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
+  "urls": [
+    "url"
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
   "meta": {
     "spec-version": "1.1"
-  },
-  "name": "WhatsApp",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "urls": []
+  }
 }
