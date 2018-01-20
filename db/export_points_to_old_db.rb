@@ -21,6 +21,10 @@ Point.all.each do |point|
   File.write(filepath_points + filename, JSON.pretty_unparse({
     id: point.oldId,
     title: point.title,
+    tosdr: {
+      tldr: point.analysis,
+      tmp_rating: point.rating
+    },
     services: [
       point.service.slug
     ]
