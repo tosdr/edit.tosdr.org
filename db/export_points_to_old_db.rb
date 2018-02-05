@@ -29,7 +29,9 @@ Point.all.each do |point|
   data['title'] = point.title
   data['tosdr']['tldr'] = point.analysis
   # data['tosdr']['tmp_rating'] = point.rating
-  data['services'] = [ point.service.slug ]
+  if (data['services'].nil?) then
+    data['services'] = [ point.service.slug ]
+  end
   File.write(filepath_points + filename, JSON.pretty_unparse(data))
 end
 puts "Finishing exporting points"
