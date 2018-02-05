@@ -14,6 +14,18 @@ Please refer to the CONTRIBUTING.md guide for more information. If anything is m
 
 All the details on the database schema can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/database).
 
+## Export
+
+```sh
+rm latest.dump*
+heroku pg:backups:capture --app edit-tosdr-org
+heroku pg:backups:download --app edit-tosdr-org
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -d phoenix_development latest.dump
+rails db:migrate
+rails runner db/export_points_to_old_db.rb
+cp old_db/points/* ../tosdr-build/src/points
+# then build tosdr-build as usual, see https://github.com/tosdr/tosdr-build#build
+```
 
 ## API
 

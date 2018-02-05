@@ -4,7 +4,7 @@ require 'json'
 # in repo root, run:
 # rails runner db/import_points_from_old_db.rb
 
-filepath_points = "old_db/points/"
+filepath_points = "../tosdr-build/src/points/"
 
 $featured_counts = {}
 
@@ -15,10 +15,8 @@ def importPoint(data, service)
   puts 'new data:'
   userObj = User.find_by_email('admintest@email.com')
   topicObj = Topic.find_by_title('Personal Data')
-  serviceObjDefault = Service.find_by_name('amazon')
-  serviceObj = Service.find_by_name(service) || serviceObjDefault
-  caseObjDefault = Case.find_by_title('info given about security practices')
-  caseObj = Case.find_by_title(data['tosdr']['case']) || caseObjDefault
+  serviceObj = Service.find_by_slug(service)
+  caseObj = Case.find_by_title(data['tosdr']['case']) # may be null
 
   if data['disputed']
     status = 'disputed'
@@ -31,6 +29,7 @@ def importPoint(data, service)
   end
 
   puts 'checking featured counts'
+  puts serviceObj
   puts serviceObj.id
   if !$featured_counts[serviceObj.id]
     $featured_counts[serviceObj.id] = 0
@@ -52,7 +51,7 @@ def importPoint(data, service)
     rating: (data['tosdr'] && data['tosdr']['score']) ? data['tosdr']['score'] / 10 : 0,
     topic: topicObj,
     service: serviceObj,
-    case_id: caseObj.id,
+    case_id: caseObj ? caseObj.id : nil,
     is_featured: is_featured
   )
 

@@ -3,7 +3,7 @@
 
 require 'json'
 
-filepath_services = "old_db/services/"
+filepath_services = "../tosdr-build/src/services/"
 
 puts "Exporting services..."
 Service.all.each do |service|
