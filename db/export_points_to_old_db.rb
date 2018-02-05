@@ -16,19 +16,21 @@ Point.all.each do |point|
     puts point.to_json
     point.oldId = counter
     counter = counter + 1
+    filename = point.oldId + '.json'
+    data = {}
+    data['tosdr'] = {}
+  else
+    filename = point.oldId + '.json'
+    file = File.read(filepath_points + filename)
+    data = JSON.parse(file)
   end
-  filename = point.oldId + '.json'
-  File.write(filepath_points + filename, JSON.pretty_unparse({
-    id: point.oldId,
-    title: point.title,
-    tosdr: {
-      tldr: point.analysis,
-      tmp_rating: point.rating
-    },
-    services: [
-      point.service.slug
-    ]
-  }))
+  puts data
+  data['id'] = point.oldId
+  data['title'] = point.title
+  data['tosdr']['tldr'] = point.analysis
+  # data['tosdr']['tmp_rating'] = point.rating
+  data['services'] = [ point.service.slug ]
+  File.write(filepath_points + filename, JSON.pretty_unparse(data))
 end
 puts "Finishing exporting points"
 puts "Done!"
