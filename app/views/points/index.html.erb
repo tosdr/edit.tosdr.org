@@ -1,22 +1,22 @@
 <% javascript_tag do %>
-# function openTab(tabName) {
-# var i;
-# var x = document.getElementsByClassName("tab");
-# for (i = 0; i < x.length; i++) {
-# x[i].style.display = "none";
-# }
-# document.getElementById(tabName).style.display = "block";
-# }
+function openTab(tabName) {
+var i;
+var x = document.getElementsByClassName("tab");
+for (i = 0; i < x.length; i++) {
+x[i].style.display = "none";
+}
+document.getElementById(tabName).style.display = "block";
+}
 <% end %>
 
 <div class="">
-  <button class="" onclick="openTab('pendingPoints')">Pending points</button>
-  <button class="" onclick="openTab('lastChanges')">Last Changes</button>
-  <button class="" onclick="openTab('allPoints')">All points</button>
+  <button class="" onclick="openTab('pendingPoints')" onclick="this.parentElement.style.display='none'" >Pending points</button>
+  <!-- <button class="" onclick="openTab('lastChanges')">Last Changes</button> -->
+  <button class="" onclick="openTab('allPoints')" onclick="this.parentElement.style.display='none'">All points</button>
 </div>
 
 
-<!-- <div id="pendingPoints" class="tab"> -->
+<div id="pendingPoints" class="tab">
   <header class="tc ph4">
     <h1 class="fw2 mv3">
       Pending points
@@ -27,9 +27,9 @@
      <%= render 'table', points: @points.where(status:'pending')  %>
    </div>
  </div>
- <!-- </div> -->
+</div>
 
- <!-- <div id="lastChanges" class="tab"> -->
+ <!-- <div id="lastChanges" class="tab">
   <header class="tc ph4">
     <h1 class="fw2 mv3">
       Last changes
@@ -37,26 +37,25 @@
   </header>
   <div class="row">
     <div class="container card-container">
-      <%= render 'table_diff', points: @points  %>
     </div>
   </div>
-  <!-- </div> -->
+</div> -->
 
-  <!-- <div id="allPoints" class="tab" style="display:none"> -->
-    <header class="tc ph4">
-      <h1 class="fw2 mv3">
-        All Points
-      </h1>
-      <%= link_to 'Add A Point', new_point_path, class: 'btn btn-primary' %>
+<div id="allPoints" class="tab" style="display:none">
+  <header class="tc ph4">
+    <h1 class="fw2 mv3">
+      All Points
+    </h1>
+    <%= link_to 'Add A Point', new_point_path, class: 'btn btn-primary' %>
 
-      <p class="mt30">A featured point is displayed on the front page.</p>
-    </header>
+    <p class="mt30">A featured point is displayed on the front page.</p>
+  </header>
 
-    <%= render "shared/search" %>
+  <%= render "shared/search" %>
 
-    <div class="row">
-      <div class="container card-container">
-        <%= render 'table', points: @points %>
-      </div>
+  <div class="row">
+    <div class="container card-container">
+      <%= render 'table', points: @points %>
     </div>
-    <!-- </div> -->
+  </div>
+</div>
