@@ -1,24 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "name": "Terms of Service",
-      "url": "http://www.cafemom.com/about/tos.php"
-    }
-  },
   "id": "cafemom",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "cafemom",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "https://cafemom.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

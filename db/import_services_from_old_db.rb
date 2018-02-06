@@ -8,10 +8,12 @@ def importService(data)
   puts data 
   puts 'new data:'
   imported_service = Service.new(
-    # old_id: data['id'],
     name: data['name'].downcase,
     url: data['urls'][0] || 'url',
-    grade: 'grade'
+    slug: data['id'],
+    keywords: (data['keywords'] ? data['keywords'].join(',') : ''),
+    related: (data['related'] ? data['related'].join(',') : ''),
+    grade: data['tosdr']['rated']
   )
   puts imported_service
   unless imported_service.valid?

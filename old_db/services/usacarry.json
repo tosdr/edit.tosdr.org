@@ -1,24 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "name": "Terms & Conditions",
-      "url": "http://www.usacarry.com/terms-conditions.html"
-    }
-  },
   "id": "usacarry",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "usacarry",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "https://usacarry.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }
