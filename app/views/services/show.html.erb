@@ -2,7 +2,7 @@
   <h1 class="fw2 mv3">
     <%= @service.name %>
   </h1>
-  <p class="fw2 mt0 lh-copy">
+  <p class="mt0 lh-copy">
     <%= link_to "Website", service_path(@service.url) %>
     <% if @service.wikipedia? %>
     <%= link_to "Wikipedia", service_path(@service.wikipedia) %>
@@ -48,156 +48,155 @@
     <% end %>
 <% if current_user %>
 
-<% if current_user.curator? %>
-<%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
-<%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
-<% end %>
+  <% if current_user.curator? %>
+    <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
+  <% end %>
 
-</p>
+  </p>
 
-<div id="custom-search-input">
-  <div class="input-group col-xs-12 mb15">
-    <%= form_tag(service_path(@service), method: :get) do %>
-    <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
+  <div id="custom-search-input">
+    <div class="input-group col-xs-12 mb15">
+      <%= form_tag(service_path(@service), method: :get) do %>
+      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
 
-    <%= submit_tag 'Search', class: "btn btn-default" %>
-    <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+      <%= submit_tag 'Search', class: "btn btn-default" %>
+      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
 
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
 
 
-</header>
+  </header>
 
-<div class="row">
+  <div class="row">
 
-</div>
-<div class="row">
-  <div class="container card-container">
-    <div class="row">
-      <div class="col-xs-12">
-        <!-- card-inline-header -->
-        <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-point">
-            Title
-          </div>
-          <div class="card-inline-item card-inline-rating">
-            Rating
-          </div>
-          <div class="card-inline-item card-inline-status">
-            Status
-          </div>
-          <div class="card-inline-item card-inline-topic">
-            Topic
-          </div>
-          <div class="card-inline-item card-inline-featured">
-            Featured?
-          </div>
-          <div class="card-inline-item card-inline-options">
-            View
-          </div>
-        </div>
-        <!-- actual card-inline -->
-        <div id="points-table-container">
-          <% @points.each do |p| %>
-          <div class="card-point" data-rating="<%= p.rating %>">
-
-            <% if p.rating.between?(7, 10)%>
-            <% pointbox = "point-good" %>
-            <% elsif p.rating.between?(4,6) %>
-            <% pointbox = "point-neutral" %>
-            <% elsif p.rating.between?(2,3) %>
-            <% pointbox = "point-bad" %>
-            <% elsif p.rating.between?(0,2) %>
-            <% pointbox = "point-blocker" %>
-            <% end %>
-            <div class="card-inline">
-              <div class="card-inline-item card-inline-point ">
-                <%= p.title %>
-              </div>
-              <div class="card-inline-item card-inline-rating <%= pointbox %>">
-                <%= p.rating %>
-              </div>
-              <div class="card-inline-item card-inline-status">
-                <%= p.status %>
-              </div>
-              <div class="card-inline-item card-inline-topic">
-                <%= p.topic.title %>
-              </div>
-              <div class="card-inline-item card-inline-featured">
-                <% if p.is_featured? %>
-                <i class="fa fa-check" aria-hidden="true"></i>
-                <% else %>
-                <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <% end %>
-              </div>
-              <div class="card-inline-item card-inline-options">
-                <%= link_to(point_path(p), :class => 'btn') do %>
-                <i class="fa fa-eye" aria-hidden="true"></i>
-                <% end %>
-              </div>
+  </div>
+  <div class="row">
+    <div class="container card-container">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- card-inline-header -->
+          <div class="card-inline card-inline-header">
+            <div class="card-inline-item card-inline-point">
+              Title
+            </div>
+            <div class="card-inline-item card-inline-rating">
+              Rating
+            </div>
+            <div class="card-inline-item card-inline-status">
+              Status
+            </div>
+            <div class="card-inline-item card-inline-topic">
+              Topic
+            </div>
+            <div class="card-inline-item card-inline-featured">
+              Featured?
+            </div>
+            <div class="card-inline-item card-inline-options">
+              View
             </div>
           </div>
+          <!-- actual card-inline -->
+          <div id="points-table-container">
+            <% @points.each do |p| %>
+            <div class="card-point" data-rating="<%= p.rating %>">
 
-          <!-- card-inline-END -->
-          <% end %>
+              <% if p.rating.between?(7, 10)%>
+              <% pointbox = "point-good" %>
+              <% elsif p.rating.between?(4,6) %>
+              <% pointbox = "point-neutral" %>
+              <% elsif p.rating.between?(2,3) %>
+              <% pointbox = "point-bad" %>
+              <% elsif p.rating.between?(0,2) %>
+              <% pointbox = "point-blocker" %>
+              <% end %>
+              <div class="card-inline">
+                <div class="card-inline-item card-inline-point ">
+                  <%= p.title %>
+                </div>
+                <div class="card-inline-item card-inline-rating <%= pointbox %>">
+                  <%= p.rating %>
+                </div>
+                <div class="card-inline-item card-inline-status">
+                  <%= p.status %>
+                </div>
+                <div class="card-inline-item card-inline-topic">
+                  <%= p.topic.title %>
+                </div>
+                <div class="card-inline-item card-inline-featured">
+                  <% if p.is_featured? %>
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                  <% else %>
+                  <i class="fa fa-circle-o" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+                <div class="card-inline-item card-inline-options">
+                  <%= link_to(point_path(p), :class => 'btn') do %>
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <!-- card-inline-END -->
+            <% end %>
+          </div>
+
         </div>
-
       </div>
     </div>
   </div>
-</div>
 
-<% else %>
+  <% else %>
 
-<div id="custom-search-input">
-  <div class="input-group col-xs-12 mb15">
-    <%= form_tag(service_path(@service), method: :get) do %>
-    <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "dropdown" %>
-    <%= submit_tag 'Search', class: "btn btn-default" %>
-    <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+  <div id="custom-search-input">
+    <div class="input-group col-xs-12 mb15">
+      <%= form_tag(service_path(@service), method: :get) do %>
+      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "dropdown" %>
+      <%= submit_tag 'Search', class: "btn btn-default" %>
+      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+      <% end %>
+    </div>
+  </div>
+  <div id="points-table-container">
+
+    <% @points.each do |p| %>
+    <div class="card-point" data-rating="<%= p.rating %>">
+
+      <% if p.rating.between?(7, 10)%>
+      <% pointbox = "point-good" %>
+      <% elsif p.rating.between?(4,6) %>
+      <% pointbox = "point-neutral" %>
+      <% elsif p.rating.between?(2,3) %>
+      <% pointbox = "point-bad" %>
+      <% elsif p.rating.between?(0,2) %>
+      <% pointbox = "point-blocker" %>
+      <% end %>
+
+      <article class="holder">
+        <div class="header-holder">
+          <h1 class="article-header <%= pointbox %>">
+            <%= p.title %>
+          </h1>
+        </div>
+
+        <div class="article-text-holder">
+          <p class="article-text">
+            <%= p.analysis %>
+          </p>
+        </div>
+
+        <div class="article-text-holder">
+          <p class="article-text">
+            Topic: <%= p.topic.title %>
+          </p>
+        </div>
+
+      </article>
+    </div>
+
     <% end %>
   </div>
-</div>
-<div id="points-table-container">
-
-  <% @points.each do |p| %>
-  <div class="card-point" data-rating="<%= p.rating %>">
-
-    <% if p.rating.between?(7, 10)%>
-    <% pointbox = "point-good" %>
-    <% elsif p.rating.between?(4,6) %>
-    <% pointbox = "point-neutral" %>
-    <% elsif p.rating.between?(2,3) %>
-    <% pointbox = "point-bad" %>
-    <% elsif p.rating.between?(0,2) %>
-    <% pointbox = "point-blocker" %>
-    <% end %>
-
-    <article class="holder">
-      <div class="header-holder">
-        <h1 class="article-header <%= pointbox %>">
-          <%= p.title %>
-        </h1>
-      </div>
-
-      <div class="article-text-holder">
-        <p class="article-text">
-          <%= p.analysis %>
-        </p>
-      </div>
-
-      <div class="article-text-holder">
-        <p class="article-text">
-          Topic: <%= p.topic.title %>
-        </p>
-      </div>
-
-    </article>
-  </div>
-
-  <% end %>
-</div>
 
 <% end %>
