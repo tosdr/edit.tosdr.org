@@ -16,187 +16,133 @@
 
     <%= javascript_tag do %>
     document.getElementById('orderByPoint').addEventListener("click", (event) => {
-     let elems =  document.querySelectorAll(".card-point");
-      // convert nodelist to array
-      var array = [];
-      for (var i = 0; i < elems.length; i++) {
-          array[i] = elems[i];
-      }
-      // perform sort depending on classname
-      if(event.currentTarget.className=="btn btn-success"){
-        array.sort(function(a, b) {
-          return a.dataset.rating - b.dataset.rating;
-         });
-         event.currentTarget.classList.remove("btn-success");
-         event.currentTarget.classList.add("btn-danger");
-       }
-       else if(event.currentTarget.className== "btn btn-danger"){
-         array.sort(function(a, b) {
-            return b.dataset.rating -  a.dataset.rating;
-          });
-          event.currentTarget.classList.remove("btn-danger");
-          event.currentTarget.classList.add("btn-success");
-        }
-        // join the array back into HTML
-        var output = "";
-        for (var i = 0; i < array.length; i++) {
-            output += array[i].outerHTML;
-        }
-        // append output to div 'points-table-container'
-        document.getElementById('points-table-container').innerHTML = output;
-    });
+    let elems =  document.querySelectorAll(".card-point");
+    // convert nodelist to array
+    var array = [];
+    for (var i = 0; i < elems.length; i++) {
+    array[i] = elems[i];
+  }
+  // perform sort depending on classname
+  if(event.currentTarget.className=="btn btn-success"){
+  array.sort(function(a, b) {
+  return a.dataset.rating - b.dataset.rating;
+});
+event.currentTarget.classList.remove("btn-success");
+event.currentTarget.classList.add("btn-danger");
+}
+else if(event.currentTarget.className== "btn btn-danger"){
+array.sort(function(a, b) {
+return b.dataset.rating -  a.dataset.rating;
+});
+event.currentTarget.classList.remove("btn-danger");
+event.currentTarget.classList.add("btn-success");
+}
+// join the array back into HTML
+var output = "";
+for (var i = 0; i < array.length; i++) {
+output += array[i].outerHTML;
+}
+// append output to div 'points-table-container'
+document.getElementById('points-table-container').innerHTML = output;
+});
+<% end %>
+
+
+<% if current_user && current_user.curator? %>
+
+<%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
+<% end %>
+
+</p>
+
+<div id="custom-search-input">
+  <div class="input-group col-xs-12 mb15">
+    <%= form_tag(service_path(@service), method: :get) do %>
+    <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
+
+    <%= submit_tag 'Search', class: "btn btn-default" %>
+    <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+
     <% end %>
-<% if current_user %>
-
-  <% if current_user.curator? %>
-    <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
-  <% end %>
-
-  </p>
-
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12 mb15">
-      <%= form_tag(service_path(@service), method: :get) do %>
-      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
-
-      <%= submit_tag 'Search', class: "btn btn-default" %>
-      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
-
-      <% end %>
-    </div>
   </div>
+</div>
 
 
-  </header>
+</header>
 
-  <div class="row">
-
-  </div>
-  <div class="row">
-    <div class="container card-container">
-      <div class="row">
-        <div class="col-xs-12">
-          <!-- card-inline-header -->
-          <div class="card-inline card-inline-header">
-            <div class="card-inline-item card-inline-point">
-              Title
-            </div>
-            <div class="card-inline-item card-inline-rating">
-              Rating
-            </div>
-            <div class="card-inline-item card-inline-status">
-              Status
-            </div>
-            <div class="card-inline-item card-inline-topic">
-              Topic
-            </div>
-            <div class="card-inline-item card-inline-featured">
-              Featured?
-            </div>
-            <div class="card-inline-item card-inline-options">
-              View
-            </div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-point">
+            Title
           </div>
-          <!-- actual card-inline -->
-          <div id="points-table-container">
-            <% @points.each do |p| %>
-            <div class="card-point" data-rating="<%= p.rating %>">
+          <div class="card-inline-item card-inline-rating">
+            Rating
+          </div>
+          <div class="card-inline-item card-inline-status">
+            Status
+          </div>
+          <div class="card-inline-item card-inline-topic">
+            Topic
+          </div>
+          <div class="card-inline-item card-inline-featured">
+            Featured?
+          </div>
+          <div class="card-inline-item card-inline-options">
+            View
+          </div>
+        </div>
+        <!-- actual card-inline -->
+        <div id="points-table-container">
+          <% @points.each do |p| %>
+          <div class="card-point" data-rating="<%= p.rating %>">
 
-              <% if p.rating.between?(7, 10)%>
-              <% pointbox = "point-good" %>
-              <% elsif p.rating.between?(4,6) %>
-              <% pointbox = "point-neutral" %>
-              <% elsif p.rating.between?(2,3) %>
-              <% pointbox = "point-bad" %>
-              <% elsif p.rating.between?(0,2) %>
-              <% pointbox = "point-blocker" %>
-              <% end %>
-              <div class="card-inline">
-                <div class="card-inline-item card-inline-point ">
-                  <%= p.title %>
-                </div>
-                <div class="card-inline-item card-inline-rating <%= pointbox %>">
-                  <%= p.rating %>
-                </div>
-                <div class="card-inline-item card-inline-status">
-                  <%= p.status %>
-                </div>
-                <div class="card-inline-item card-inline-topic">
-                  <%= p.topic.title %>
-                </div>
-                <div class="card-inline-item card-inline-featured">
-                  <% if p.is_featured? %>
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                  <% else %>
-                  <i class="fa fa-circle-o" aria-hidden="true"></i>
-                  <% end %>
-                </div>
-                <div class="card-inline-item card-inline-options">
-                  <%= link_to(point_path(p), :class => 'btn') do %>
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                  <% end %>
-                </div>
+            <% if p.rating.between?(7, 10)%>
+            <% pointbox = "point-good" %>
+            <% elsif p.rating.between?(4,6) %>
+            <% pointbox = "point-neutral" %>
+            <% elsif p.rating.between?(2,3) %>
+            <% pointbox = "point-bad" %>
+            <% elsif p.rating.between?(0,2) %>
+            <% pointbox = "point-blocker" %>
+            <% end %>
+            <div class="card-inline">
+              <div class="card-inline-item card-inline-point ">
+                <%= p.title %>
+              </div>
+              <div class="card-inline-item card-inline-rating <%= pointbox %>">
+                <%= p.rating %>
+              </div>
+              <div class="card-inline-item card-inline-status">
+                <%= p.status %>
+              </div>
+              <div class="card-inline-item card-inline-topic">
+                <%= p.topic.title %>
+              </div>
+              <div class="card-inline-item card-inline-featured">
+                <% if p.is_featured? %>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <% else %>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <% end %>
+              </div>
+              <div class="card-inline-item card-inline-options">
+                <%= link_to(point_path(p), :class => 'btn') do %>
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                <% end %>
               </div>
             </div>
-
-            <!-- card-inline-END -->
-            <% end %>
           </div>
 
+          <!-- card-inline-END -->
+          <% end %>
         </div>
+
       </div>
     </div>
   </div>
+</div>
 
-  <% else %>
-
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12 mb15">
-      <%= form_tag(service_path(@service), method: :get) do %>
-      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "dropdown" %>
-      <%= submit_tag 'Search', class: "btn btn-default" %>
-      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
-      <% end %>
-    </div>
-  </div>
-  <div id="points-table-container">
-
-    <% @points.each do |p| %>
-    <div class="card-point" data-rating="<%= p.rating %>">
-
-      <% if p.rating.between?(7, 10)%>
-      <% pointbox = "point-good" %>
-      <% elsif p.rating.between?(4,6) %>
-      <% pointbox = "point-neutral" %>
-      <% elsif p.rating.between?(2,3) %>
-      <% pointbox = "point-bad" %>
-      <% elsif p.rating.between?(0,2) %>
-      <% pointbox = "point-blocker" %>
-      <% end %>
-
-      <article class="holder">
-        <div class="header-holder">
-          <h1 class="article-header <%= pointbox %>">
-            <%= p.title %>
-          </h1>
-        </div>
-
-        <div class="article-text-holder">
-          <p class="article-text">
-            <%= p.analysis %>
-          </p>
-        </div>
-
-        <div class="article-text-holder">
-          <p class="article-text">
-            Topic: <%= p.topic.title %>
-          </p>
-        </div>
-
-      </article>
-    </div>
-
-    <% end %>
-  </div>
-
-<% end %>
