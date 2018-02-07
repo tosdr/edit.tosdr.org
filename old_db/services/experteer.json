@@ -1,19 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://eu.experteer.com/terms/terms_of_use"
-  },
   "id": "experteer",
+  "name": "experteer",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
+  "urls": [
+    "url"
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
   "meta": {
     "spec-version": "1.1"
-  },
-  "name": "experteer",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "urls": []
+  }
 }

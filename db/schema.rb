@@ -88,6 +88,9 @@ ActiveRecord::Schema.define(version: 20180116111454) do
     t.datetime "updated_at", null: false
     t.string "grade"
     t.string "wikipedia"
+    t.string "keywords"
+    t.string "related"
+    t.string "slug"
   end
 
   create_table "topics", force: :cascade do |t|

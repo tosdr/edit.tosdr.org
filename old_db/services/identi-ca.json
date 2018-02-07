@@ -1,29 +1,19 @@
 {
-  "alexa": 7846,
-  "class": "",
-  "freesoftware": false,
-  "fulltos": {
-    "privacy": {
-      "url": "http://identi.ca/doc/privacy"
-    },
-    "terms": {
-      "url": "https://identi.ca/doc/tos"
-    }
-  },
   "id": "identi-ca",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "identi.ca",
-  "parent": "status-net",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "identi.ca",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "identi.ca"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

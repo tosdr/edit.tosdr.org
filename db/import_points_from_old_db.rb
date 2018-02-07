@@ -1,5 +1,5 @@
 require 'json'
-require 'pry'
+# require 'pry'
 
 # in repo root, run:
 # rails runner db/import_points_from_old_db.rb

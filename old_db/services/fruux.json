@@ -1,24 +1,19 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "name": "Privacy Policy",
-      "url": "https://fruux.com/privacy/"
-    }
-  },
   "id": "fruux",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "fruux",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "https://fruux.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

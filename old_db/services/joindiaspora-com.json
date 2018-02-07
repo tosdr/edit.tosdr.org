@@ -1,28 +1,19 @@
 {
-  "alexa": 43519,
-  "class": "",
-  "date": "",
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "url": "https://joindiaspora.com/terms"
-    }
-  },
   "id": "joindiaspora-com",
-  "last-diff": "",
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "JoinDiaspora.com",
-  "parent": "diaspora",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "http://joindiaspora.com/",
+  "name": "joindiaspora.com",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "http://joindiaspora.com/"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

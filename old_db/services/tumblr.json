@@ -1,42 +1,21 @@
 {
-  "alexa": 1000000,
-  "freesoftware": false,
-  "fulltos": {
-      "url": "http://www.tumblr.com/policy/en/terms_of_service"
-  },
   "id": "tumblr",
+  "name": "tumblr",
   "keywords": [
     "blog"
   ],
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "Tumblr",
   "related": [
     "wordpress-com",
     "facebook",
     "twitter"
   ],
-  "tosback2": {
-    "privacy": {
-      "name": "Privacy Policy",
-      "url": "http://www.tumblr.com/policy/en/privacy"
-    },
-    "sitename": "tumblr.com",
-    "terms": {
-      "name": "Terms of Service",
-      "url": "http://www.tumblr.com/policy/en/terms_of_service"
-    }
-  },
-  "tosdr": {
-    "alexa": 1000000,
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "tumblr.com",
   "urls": [
     "tumblr.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

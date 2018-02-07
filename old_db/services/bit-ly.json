@@ -1,24 +1,19 @@
 {
-  "alexa": 519,
-  "freesoftware": false,
-  "fulltos": {
-    "terms": {
-      "url": "https://bitly.com/pages/terms-of-service"
-    }
-  },
   "id": "bit-ly",
-  "meta": {
-    "spec-version": "1.1"
-  },
   "name": "bitly",
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "https://bitly.com/",
+  "keywords": [
+
+  ],
+  "related": [
+
+  ],
   "urls": [
     "https://bitly.com/"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

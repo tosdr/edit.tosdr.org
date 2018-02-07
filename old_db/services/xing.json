@@ -1,40 +1,20 @@
 {
-  "alexa": 254,
-  "freesoftware": false,
-  "fulltos": {
-    "url": "https://www.xing.com/terms"
-  },
   "id": "xing",
+  "name": "xing",
   "keywords": [
     "professional",
     "jobs"
   ],
-  "meta": {
-    "spec-version": "1.1"
-  },
-  "name": "XING",
   "related": [
     "linkedin"
   ],
-  "tosback2": {
-    "privacy": {
-      "name": "Privacy Policy",
-      "url": "http://www.xing.com/privacy"
-    },
-    "sitename": "xing.com",
-    "terms": {
-      "name": "Terms and Conditions",
-      "url": "http://www.xing.com/terms"
-    }
-  },
-  "tosdr": {
-    "keywords": [],
-    "rated": false,
-    "related": []
-  },
-  "type": "service",
-  "url": "xing.com",
   "urls": [
     "xing.com"
-  ]
+  ],
+  "tosdr": {
+    "rated": "f"
+  },
+  "meta": {
+    "spec-version": "1.1"
+  }
 }

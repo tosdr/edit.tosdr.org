@@ -3,12 +3,8 @@
     <%= @service.name %>
   </h1>
   <p class="mt0 lh-copy">
-    <%= link_to "Website", service_path(@service.url) %>
-    <% if @service.wikipedia? %>
-    <%= link_to "Wikipedia", service_path(@service.wikipedia) %>
-    <% else %>
-    Wikipedia
-    <% end %>
+    <a href="<%= @service.url %>">Website</a>
+    <a href="<%= @service.wikipedia %>">Wikipedia</a>
   </p>
 
   <p>
