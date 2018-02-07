@@ -6,28 +6,23 @@
     <a href="<%= @service.url %>">Website</a>
     <a href="<%= @service.wikipedia %>">Wikipedia</a>
   </p>
-
   <p>
-
-
-
-<% unless current_user.nil? %>
-  <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
-<% end %>
-
-</p>
-
-<div id="custom-search-input">
-  <div class="input-group col-xs-12 mb15">
-    <%= form_tag(service_path(@service), method: :get) do %>
-    <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
-
-    <%= submit_tag 'Search', class: "btn btn-default" %>
-    <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
-
+    <% unless current_user.nil? %>
+    <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
     <% end %>
+  </p>
+
+  <div id="custom-search-input">
+    <div class="input-group col-xs-12 mb15">
+      <%= form_tag(service_path(@service), method: :get) do %>
+      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
+
+      <%= submit_tag 'Search', class: "btn btn-default" %>
+      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+
+      <% end %>
+    </div>
   </div>
-</div>
 </header>
 
 <div class="row">
