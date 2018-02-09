@@ -41,9 +41,32 @@
 </header>
 
 <div class="row">
-  <div class="container card-container">
-    <%= render 'table', points: @points %>
+  <div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button" onclick="openTab('Points')">Points</button>
+    <button class="w3-bar-item w3-button" onclick="openTab('Versions')">Versions</button>
   </div>
-</div>
+  <div id="Points" class="tabs-container tab" style="">
+    <h2>Points</h2>
+    <div class="container card-container">
+      <%= render 'table', points: @points %>
+    </div>
+  </div>
+
+  <div id="Versions" class="tabs-container tab" style="display:none">
+    <h2>Versions</h2>
+  </div>
+
 </div>
 
+
+<script>
+function openTab(tabName) {
+    var i;
+    var x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";
+    }
+    document.getElementById(tabName).style.display = "block";
+}
+</script>
+</div>
