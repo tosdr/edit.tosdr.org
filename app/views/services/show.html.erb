@@ -1,16 +1,77 @@
 <header class="tc ph4">
-  <h1 class="fw2 mv3">
+  <h1 class="fw2 mv3 service-title">
     <%= @service.name %>
+    <% if @service.service_ratings == "A" %>
+    <% grade = "rating-a" %>
+    <% elsif @service.service_ratings == "B" %>
+    <% grade = "rating-b" %>
+    <% elsif @service.service_ratings == "C" %>
+    <% grade = "rating-c" %>
+    <% elsif @service.service_ratings == "D" %>
+    <% grade = "rating-d" %>
+    <% elsif @service.service_ratings == "F" %>
+    <% grade = "rating-f" %>
+    <% else %>
+    <% grade = "rating-na" %>
+    <% end %>
+    <div class="grade <%= grade %>">
+      <%= @service.service_ratings %>
+    </div>
   </h1>
   <p class="mt0 lh-copy">
     <a href="<%= @service.url %>">Website</a>
     <a href="<%= @service.wikipedia %>">Wikipedia</a>
   </p>
   <p>
+<<<<<<< HEAD
     <% unless current_user.nil? %>
     <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
     <% end %>
   </p>
+=======
+    <button class="btn btn-success" id="orderByPoint"> order by Rating </button>
+
+    <%= javascript_tag do %>
+    document.getElementById('orderByPoint').addEventListener("click", (event) => {
+    let elems =  document.querySelectorAll(".card-point");
+    // convert nodelist to array
+    var array = [];
+    for (var i = 0; i < elems.length; i++) {
+    array[i] = elems[i];
+  }
+  // perform sort depending on classname
+  if(event.currentTarget.className=="btn btn-success"){
+  array.sort(function(a, b) {
+  return a.dataset.rating - b.dataset.rating;
+});
+event.currentTarget.classList.remove("btn-success");
+event.currentTarget.classList.add("btn-danger");
+}
+else if(event.currentTarget.className== "btn btn-danger"){
+array.sort(function(a, b) {
+return b.dataset.rating -  a.dataset.rating;
+});
+event.currentTarget.classList.remove("btn-danger");
+event.currentTarget.classList.add("btn-success");
+}
+// join the array back into HTML
+var output = "";
+for (var i = 0; i < array.length; i++) {
+output += array[i].outerHTML;
+}
+// append output to div 'points-table-container'
+document.getElementById('points-table-container').innerHTML = output;
+});
+<% end %>
+<% if current_user %>
+
+<% if current_user.curator? %>
+<%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
+<%= link_to 'Delete Service', @service, method: :delete, class: 'btn btn-danger' %>
+<% end %>
+
+</p>
+>>>>>>> 0d3ad4d12b084d0fb023419f5864d6e1fe011d70
 
   <div id="custom-search-input">
     <div class="input-group col-xs-12 mb15">
