@@ -41,9 +41,9 @@
 </header>
 
 <div class="row">
-  <div class="w3-bar w3-black">
-    <button class="w3-bar-item w3-button" onclick="openTab('Points')">Points</button>
-    <button class="w3-bar-item w3-button" onclick="openTab('Versions')">Versions</button>
+  <div class="tabs-bar-container">
+    <div class="tabs-bar" onclick="openTab('Points')">Points</div>
+    <div class="tabs-bar" onclick="openTab('Versions')">Versions</div>
   </div>
   <div id="Points" class="tabs-container tab" style="">
     <h2>Points</h2>
@@ -57,7 +57,6 @@
   </div>
 
 </div>
-
 
 <script>
 function openTab(tabName) {
