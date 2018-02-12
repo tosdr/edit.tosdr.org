@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
-    <%= @service.versions %>
+    <p>Number of changes of the class: <%= @service.versions.length %></p>
+    <p><%= @service.versions.last.changeset %></p>
 
   </div>
 </div>
