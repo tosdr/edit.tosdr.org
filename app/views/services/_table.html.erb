@@ -152,9 +152,10 @@ document.getElementById('points-table-container').innerHTML = output;
           <% end %>
 
         <% end %>
-      <% end %>
-      <%= link_to(point_path(p), :class => 'btn') do %>
-      <i class="fa fa-eye" aria-hidden="true"></i>
+      <% else %>
+        <%= link_to(point_path(p), :class => 'btn') do %>
+        <i class="fa fa-eye" aria-hidden="true"></i>
+        <% end %>
       <% end %>
     </div>
 
