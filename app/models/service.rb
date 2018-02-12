@@ -20,19 +20,26 @@ class Service < ApplicationRecord
     unless avg.nan?
       case avg.round
       when 9..10
+        self.update_attributes(grade:"A")
         "A"
       when 7..8
+        self.update_attributes(grade:"B")
         "B"
       when 5..6
+        self.update_attributes(grade:"C")
         "C"
       when 3..4
+        self.update_attributes(grade:"D")
         "D"
       when 0..2
+        self.update_attributes(grade:"F")
         "F"
       else
+        self.update_attributes(grade:"N/A")
         "N/A"
       end
     else
+      self.update_attributes(grade:"N/A")
       "N/A"
     end
   end
