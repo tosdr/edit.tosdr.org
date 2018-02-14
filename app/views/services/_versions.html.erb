@@ -1,7 +1,14 @@
 <div class="row">
   <div class="col-xs-12">
     <p>Number of changes of the class: <%= @service.versions.length %></p>
-    <p><%= @service.versions.last.changeset %></p>
-
+      <% @service.versions.last.changeset.each do |k, v| %>
+        <% if k == 'grade' %>
+          <p><%= "Latest change: #{v[0]} to #{v[1]}" %></p>
+          <% end %>
+          <% if k == 'updated_at' %>
+          <p><%= "Created on: #{v[0]}" %></p>
+          <P><%= "Changed on: #{v[1]}" %></P>
+          <% end %>
+      <% end %>
   </div>
 </div>
