@@ -4,14 +4,17 @@
     <div class="article-point-header">
       <ul class="point-info">
         <li class="point-items">
-          <div class="point-service">
+          <div class="pl50">
             <span class="bolder">Service:</span> <%= @point.service.name %>
           </div>
-          <div class="point-status">
+          <div class="pl50">
             <span class="bolder">Status:</span> <%= @point.status %>
           </div>
-          <div class="point-rating">
+          <div class="pl50">
             <span class="bolder">Rating:</span> <%= @point.rating %>
+          </div>
+          <div class="pl50">
+            <span class="bolder">Changes:</span> <%= @point.versions.size %>
           </div>
         </li>
       </ul>
