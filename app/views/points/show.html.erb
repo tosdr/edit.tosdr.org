@@ -35,32 +35,9 @@
 
   </div>
 
-
   <% if @point.reasons.any? %>
-
-  <div class="status-changes article-holder border mw6 p15">
-
-    <table class="table table-striped">
-      <thead class="thead thead-dark">
-        <th scope="col">STATUS UPDATES</th>
-        <th scope="col">REASON</th>
-        <th scope="col">WHEN</th>
-      </thead>
-      <% @point.reasons.each do |reason| %>
-      <tbody>
-        <tr>
-          <th scope="row"><%= reason.status %></th>
-          <td><%= reason.content %></td>
-          <td><%= time_ago_in_words reason.created_at %> ago</td>
-        </tr>
-      </tbody>
-      <% end %>
-    </table>
-
-  </div>
-
+    <%= render 'table_reasons' %>
   <% end %>
-
 
   <div class="row">
     <div class="container card-container">
@@ -72,34 +49,34 @@
     <ul class="point-info">
       <li class="point-items">
         <% unless current_user.nil? %>
-          <% if current_user.id == @point.user_id %>
-          <div>
-            <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
-          </div>
-          <% end %>
+        <% if current_user.id == @point.user_id %>
+        <div>
+          <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
+        </div>
+        <% end %>
         <% end %>
         <div class="pl15">
           <%= link_to 'All', points_path, class: 'btn btn-primary' %>
         </div>
 
         <% unless current_user.nil? %>
-          <% if current_user.curator? %>
-          <div class="pl15">
-            <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
-          </div>
-          <div class="pl15">
-            <% if @point.status == "approved" %>
-            <% if !@point.is_featured? %>
-            <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
-            <% else %>
-            <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
-            <% end %>
-            <% end %>
-          </div>
-          <div class="pl15">
-            <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
-          </div>
+        <% if current_user.curator? %>
+        <div class="pl15">
+          <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
+        </div>
+        <div class="pl15">
+          <% if @point.status == "approved" %>
+          <% if !@point.is_featured? %>
+          <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
+          <% else %>
+          <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
           <% end %>
+          <% end %>
+        </div>
+        <div class="pl15">
+          <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
+        </div>
+        <% end %>
         <% end %>
       </li>
     </ul>
