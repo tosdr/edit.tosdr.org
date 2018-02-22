@@ -8,40 +8,31 @@ x[i].style.display = "none";
 document.getElementById(tabName).style.display = "block";
 }
 <% end %>
-
-<div class="">
-  <button class="" onclick="openTab('pendingPoints')" onclick="this.parentElement.style.display='none'" >Pending points</button>
-  <!-- <button class="" onclick="openTab('lastChanges')">Last Changes</button> -->
-  <button class="" onclick="openTab('allPoints')" onclick="this.parentElement.style.display='none'">All points</button>
-</div>
-
-
-<div id="pendingPoints" class="tab">
-  <header class="tc ph4">
-    <h1 class="fw2 mv3">
-      Pending points
-    </h1>
-  </header>
-  <div class="row">
-    <div class="container card-container">
-     <%= render 'table', points: @points.where(status:'pending')  %>
-   </div>
- </div>
-</div>
-
- <!-- <div id="lastChanges" class="tab">
-  <header class="tc ph4">
-    <h1 class="fw2 mv3">
-      Last changes
-    </h1>
-  </header>
-  <div class="row">
-    <div class="container card-container">
-    </div>
+<% if current_user %>
+<% if current_user.curator? %>
+  <div class="">
+    <button class="" onclick="openTab('pendingPoints')" onclick="this.parentElement.style.display='none'" >Pending points</button>
+    <!-- <button class="" onclick="openTab('lastChanges')">Last Changes</button> -->
+    <button class="" onclick="openTab('allPoints')" onclick="this.parentElement.style.display='none'">All points</button>
   </div>
-</div> -->
 
-<div id="allPoints" class="tab" style="display:none">
+
+  <div id="pendingPoints" class="tab">
+    <header class="tc ph4">
+      <h1 class="fw2 mv3">
+        Pending points
+      </h1>
+    </header>
+    <div class="row">
+      <div class="container card-container">
+       <%= render 'table', points: @points.where(status:'pending')  %>
+     </div>
+   </div>
+  </div>
+<% end %>
+<% end %>
+
+<div id="allPoints" class="tab" style="">
   <header class="tc ph4">
     <h1 class="fw2 mv3">
       All Points

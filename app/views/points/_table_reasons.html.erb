@@ -6,8 +6,8 @@
       <th scope="col">REASON</th>
       <th scope="col">WHEN</th>
     </thead>
-    <% @point.reasons.each do |reason| %>
     <tbody>
+    <% @point.reasons.each do |reason| %>
       <tr>
         <th scope="row"><%= reason.status %></th>
         <td><%= reason.content %></td>
@@ -15,5 +15,24 @@
       </tr>
     </tbody>
     <% end %>
+  </table>
+
+  <table class="table">
+    <thead class="thead thead-dark">
+      <th scope="col">ANALYSIS UPDATES</th>
+      <th scope="col">TEXT CHANGES</th>
+      <th scope="col">WHEN</th>
+      <th scope="col">WHO</th>
+    </thead>
+    <tbody>
+      <% @point.versions.each do |v| %>
+      <tr>
+        <th scope="row"><%= v.event %></th>
+        <td><%= v.changeset["analysis"] %></td>
+        <td><%= v.changeset["updated_at"] %></td>
+        <td><%= v.whodunnit %></td>
+      </tr>
+      <% end %>
+    </tbody>
   </table>
 </div>
