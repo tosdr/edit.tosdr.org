@@ -1,0 +1,40 @@
+document.getElementById('orderByRating').addEventListener("click", (event) => {
+ let elems =  document.querySelectorAll(".serviceDiv");
+    // convert nodelist to array
+    var array = [];
+    for (var i = 0; i < elems.length; i++) {
+      array[i] = elems[i];
+    }
+    // perform sort depending on classname
+    if(event.currentTarget.className=="btn btn-lg btn-success"){
+      array.sort(function(a, b) {
+        var ratingA=a.dataset.rating.toLowerCase(), ratingB=b.dataset.rating.toLowerCase()
+       if (ratingA < ratingB) //sort string ascending
+         return -1
+       if (ratingA > ratingB)
+         return 1
+       return 0 //default return value (no sorting)
+     });
+      event.currentTarget.classList.remove("btn-success");
+      event.currentTarget.classList.add("btn-danger");
+    }
+    else if(event.currentTarget.className== "btn btn-lg btn-danger"){
+     array.sort(function(a, b) {
+       var ratingA=a.dataset.rating.toLowerCase(), ratingB=b.dataset.rating.toLowerCase()
+        if (ratingA > ratingB) //sort string ascending
+          return -1
+        if (ratingA < ratingB)
+          return 1
+        return 0 //default return value (no sorting)
+      });
+     event.currentTarget.classList.remove("btn-danger");
+     event.currentTarget.classList.add("btn-success");
+   }
+      // join the array back into HTML
+      var output = "";
+      for (var i = 0; i < array.length; i++) {
+        output += array[i].outerHTML;
+      }
+      // append output to div 'service-container'
+      document.getElementById('service-container').innerHTML = output;
+    });

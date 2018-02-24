@@ -4,14 +4,17 @@
     <div class="article-point-header">
       <ul class="point-info">
         <li class="point-items">
-          <div class="point-service">
+          <div class="pl50">
             <span class="bolder">Service:</span> <%= @point.service.name %>
           </div>
-          <div class="point-status">
+          <div class="pl50">
             <span class="bolder">Status:</span> <%= @point.status %>
           </div>
-          <div class="point-rating">
+          <div class="pl50">
             <span class="bolder">Rating:</span> <%= @point.rating %>
+          </div>
+          <div class="pl50">
+            <span class="bolder">Changes:</span> <%= @point.versions.size %>
           </div>
         </li>
       </ul>
@@ -32,51 +35,25 @@
 
   </div>
 
-
   <% if @point.reasons.any? %>
-
-  <div class="status-changes article-holder border mw6 p15">
-
-    <table class="table table-striped">
-      <thead class="thead thead-dark">
-        <th scope="col">STATUS UPDATES</th>
-        <th scope="col">REASON</th>
-        <th scope="col">WHEN</th>
-      </thead>
-      <% @point.reasons.each do |reason| %>
-      <tbody>
-        <tr>
-          <th scope="row"><%= reason.status %></th>
-          <td><%= reason.content %></td>
-          <td><%= time_ago_in_words reason.created_at %> ago</td>
-        </tr>
-      </tbody>
-      <% end %>
-    </table>
-
-  </div>
-
+  <%= render 'table_reasons' %>
   <% end %>
-
-
-  <div class="row">
-    <div class="container card-container">
-      <%= render 'comments', comments: @comments %>
-    </div>
-  </div>
 
   <div class="m15 mw6">
     <ul class="point-info">
       <li class="point-items">
-        <% if current_user.id == @point.user_id %>
-        <div>
-          <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
-        </div>
+        <% unless current_user.nil? %>
+          <% if current_user.id == @point.user_id %>
+          <div>
+            <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
+          </div>
+          <% end %>
         <% end %>
         <div class="pl15">
           <%= link_to 'All', points_path, class: 'btn btn-primary' %>
         </div>
 
+        <% unless current_user.nil? %>
         <% if current_user.curator? %>
         <div class="pl15">
           <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
@@ -93,6 +70,7 @@
         <div class="pl15">
           <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
         </div>
+        <% end %>
         <% end %>
       </li>
     </ul>

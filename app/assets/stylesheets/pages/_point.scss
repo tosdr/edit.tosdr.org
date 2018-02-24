@@ -42,6 +42,10 @@
   padding-left: 15px;
 }
 
+.pl50 {
+  padding-left: 50px;
+}
+
 .m15 {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -67,18 +71,7 @@
   align-items: center;
 }
 
-.point-status {
-  padding-left: 50px;
-}
-
-
-.point-rating {
-  padding-left: 50px;
-}
-
 .status-changes {
-  max-height: 200px;
-  overflow: scroll;
 }
 
 .lighter {

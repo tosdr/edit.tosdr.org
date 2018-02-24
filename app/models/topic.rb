@@ -1,4 +1,5 @@
 class Topic < ApplicationRecord
+  has_paper_trail
   has_many :points
 
   validates :title, presence: true, uniqueness: true
@@ -12,5 +13,4 @@ class Topic < ApplicationRecord
   def self.search_by_topic_service(query)
     Topic.joins(:point).where("points.name ILIKE ?", "%#{query}%")
   end
-
 end

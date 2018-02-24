@@ -1,0 +1,31 @@
+
+<div class="article-holder status-changes">
+
+  <table class="table">
+    <thead class="thead thead-dark">
+      <th scope="col">ANALYSIS UPDATES</th>
+      <th scope="col">TEXT CHANGES</th>
+      <th scope="col">WHEN</th>
+      <!-- <th scope="col">WHO</th> -->
+    </thead>
+    <tbody>
+      <% @service.versions.each do |v| %>
+      <tr>
+        <th scope="row"><%= v.event %></th>
+        <td>
+          <% if v.changeset["analysis"] %>
+          Analysis change: <%= v.changeset["analysis"] %>
+          <% elsif v.changeset["status"] %>
+          Status change: <%= v.changeset["status"] %>
+          <% else %>
+          No changes recorded
+          <% end %>
+        </td>
+        <td><%= v.changeset["updated_at"] %></td>
+        <!-- make a better view for username <td><%= v.whodunnit %></td> -->
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
