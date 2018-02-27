@@ -11,7 +11,7 @@
 
     </div>
     <div class="col-xs-12 col-sm-6">
-      <%= f.association :topic, collection: Topic.order('name ASC') hint: "Category of the point" %>
+      <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
     </div>
     <div class="col-xs-12">
       <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
