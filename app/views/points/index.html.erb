@@ -1,38 +1,27 @@
-<% javascript_tag do %>
-function openTab(tabName) {
-var i;
-var x = document.getElementsByClassName("tab");
-for (i = 0; i < x.length; i++) {
-x[i].style.display = "none";
-}
-document.getElementById(tabName).style.display = "block";
-}
-<% end %>
 <% if current_user %>
 <% if current_user.curator? %>
-  <div class="">
-    <button class="" onclick="openTab('pendingPoints')" onclick="this.parentElement.style.display='none'" >Pending points</button>
-    <!-- <button class="" onclick="openTab('lastChanges')">Last Changes</button> -->
-    <button class="" onclick="openTab('allPoints')" onclick="this.parentElement.style.display='none'">All points</button>
-  </div>
+<div class="tabs-bar-container">
+  <div class="tabs-bar btn-primary" onclick="openTab('pendingPoints', event)">Pending points</div>
+  <div class="tabs-bar btn-primary active" onclick="openTab('allPoints', event)">All points</div>
+</div>
 
 
-  <div id="pendingPoints" class="tab">
-    <header class="tc ph4">
-      <h1 class="fw2 mv3">
-        Pending points
-      </h1>
-    </header>
-    <div class="row">
-      <div class="container card-container">
-       <%= render 'table', points: @points.where(status:'pending')  %>
-     </div>
+<div id="pendingPoints" class="tabs-container tab">
+  <header class="tc ph4">
+    <h1 class="fw2 mv3">
+      Pending points
+    </h1>
+  </header>
+  <div class="row">
+    <div class="container card-container">
+     <%= render 'table', points: @points.where(status:'pending')  %>
    </div>
-  </div>
+ </div>
+</div>
 <% end %>
 <% end %>
 
-<div id="allPoints" class="tab" style="">
+<div id="allPoints" class="tabs-container tab" style="display:none">
   <header class="tc ph4">
     <h1 class="fw2 mv3">
       All Points
@@ -50,3 +39,19 @@ document.getElementById(tabName).style.display = "block";
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  function openTab(tabName, event) {
+  document.querySelectorAll(".tabs-bar").forEach(
+    function(tab){
+      tab.classList.add('active');
+    });
+  event.currentTarget.classList.remove("active");
+    var i;
+    var x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";
+    }
+    document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).style.backgroundColor = "none";
+}
+</script>
