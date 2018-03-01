@@ -35,7 +35,7 @@
 
   </div>
 
-  <% if @point.reasons.any? %>
+  <% if @point.reasons.any? || @point.versions.any? %>
   <%= render 'table_reasons' %>
   <% end %>
 
