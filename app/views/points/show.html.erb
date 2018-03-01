@@ -59,6 +59,9 @@
           <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
         </div>
         <div class="pl15">
+          <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
+        </div>
+        <div class="pl15">
           <% if @point.status == "approved" %>
           <% if !@point.is_featured? %>
           <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
