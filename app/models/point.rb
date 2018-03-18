@@ -13,6 +13,8 @@ class Point < ApplicationRecord
  validates :rating, presence: true
  validates :rating, numericality: true
 
+ # after_save :create_associated_reason
+
  def self.search_points_by_multiple(query)
   Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ?", "%#{query}%", "%#{query}%")
 end
@@ -20,8 +22,5 @@ end
 def self.search_points_by_topic(query)
   Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
 end
-# VOTE CONTROLLER ! TODO
-  # def has_voted(point)
-  #   Vote.where(point_id: point.id, user_id: current_user.id)
-  # end
+
 end

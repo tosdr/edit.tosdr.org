@@ -29,6 +29,11 @@
       <% if current_user.curator? %>
 
       <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+    </div>
+
+    <div class="form-inputs col-xs-12">
+      <%= f.input :reason, label: "Reason for status change" %>
+    </div>
 
       <% else %>
 
@@ -37,13 +42,13 @@
       <% end %>
 
     </div>
+
     <div class="form-actions col-xs-4 col-sm-2 col-md-2">
       <%= link_to "Back", :back, class: "btn btn-default" %>
     </div>
 
     <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
-      <%= f.submit "Post Point", name: "only_create", class: 'btn btn-primary' %>
-      <%= f.submit "Post + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+      <%= f.submit "Update Point", class: 'btn btn-primary' %>
     </div>
   </div>
   <% end %>
