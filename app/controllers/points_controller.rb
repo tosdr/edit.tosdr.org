@@ -44,6 +44,8 @@ class PointsController < ApplicationController
 
   def update
     @point.update(point_params)
+    Reason.create(point_id: @point.id, content: @point.reason, user_id: current_user.id, status: @point.status)
+
     flash[:notice] = "Point successfully updated!"
     redirect_to point_path(@point)
   end
@@ -86,6 +88,6 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :reason)
   end
 end
