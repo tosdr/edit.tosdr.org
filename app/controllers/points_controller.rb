@@ -43,12 +43,12 @@ class PointsController < ApplicationController
   end
 
   def update
-    r = Reason.new(point_id: @point.id, content: @point.reason, user_id: current_user.id, status: @point.status)
-    if r.content.empty?
+    r = Reason.new(point_id: @point.id, content: point_params[:reason], user_id: current_user.id, status: @point.status)
+    if r.content.nil?
         flash[:alert] = "You must provide a reason for your changes"
+        r.save
         render :edit
       else
-        r.save
         @point.update(point_params)
         flash[:notice] = "Point successfully updated!"
         redirect_to point_path(@point)
