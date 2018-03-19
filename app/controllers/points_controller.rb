@@ -44,7 +44,7 @@ class PointsController < ApplicationController
 
   def update
     r = Reason.new(point_id: @point.id, content: point_params[:reason], user_id: current_user.id, status: @point.status)
-    if r.content.nil?
+    if r.content.empty?
         flash[:alert] = "You must provide a reason for your changes"
         r.save
         render :edit
