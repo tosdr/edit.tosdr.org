@@ -35,22 +35,22 @@
       <%= f.input :reason, required: true, label: "Reason for status change" %>
     </div>
 
-      <% else %>
+    <% else %>
 
-      <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending so that the curators can review your point" %>
+    <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending so that the curators can review your point" %>
 
-      <% end %>
+    <% end %>
 
-    </div>
-
-    <div class="form-actions col-xs-4 col-sm-2 col-md-2">
-      <%= link_to "Back", :back, class: "btn btn-default" %>
-    </div>
-
-    <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
-      <%= f.submit "Update Point", class: 'btn btn-primary' %>
-    </div>
   </div>
-  <% end %>
+
+  <div class="form-actions col-xs-4 col-sm-2 col-md-2">
+    <%= link_to "Back", :back, class: "btn btn-default" %>
+  </div>
+
+  <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+    <%= f.submit "Update Point", class: 'btn btn-primary' %>
+  </div>
+</div>
+<% end %>
 </div>
 </div>
