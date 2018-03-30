@@ -3,7 +3,7 @@ class PagesController < ApplicationController
     if params[:query]
       @services = Service.where('name ILIKE ? or grade ILIKE ?', "%#{params[:query]}%", "%#{params[:query]}%")
     else
-      @services = Service.all
+      @services = Service.with_points
     end
   end
 end
