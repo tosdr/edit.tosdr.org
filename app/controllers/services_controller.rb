@@ -23,8 +23,19 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @points = @service.points
-    @points = @points.where(status: 'approved')
+    if current_user
+      @points = @service.points
+    else
+      @points = @service.points.where(status: 'approved')
+    end
+
+    @rating = @service.rating_for_view
+
+    @service_info = {
+      name: @service.name,
+      website: @service.url,
+      wiki: @service.wikipedia
+    }
 
     if @query = params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])
@@ -53,7 +64,7 @@ class ServicesController < ApplicationController
   private
 
   def set_service
-    @service = Service.find(params[:id])
+    @service = Service.find(params[:id] || params[:service_id])
   end
 
   def service_params

@@ -1,63 +1,24 @@
-<header class="tc ph4">
-  <h1 class="fw2 mv3 service-title">
-    <%= @service.name %>
-    <% if @service.service_ratings == "A" %>
-    <% grade = "rating-a" %>
-    <% elsif @service.service_ratings == "B" %>
-    <% grade = "rating-b" %>
-    <% elsif @service.service_ratings == "C" %>
-    <% grade = "rating-c" %>
-    <% elsif @service.service_ratings == "D" %>
-    <% grade = "rating-d" %>
-    <% elsif @service.service_ratings == "F" %>
-    <% grade = "rating-f" %>
-    <% else %>
-    <% grade = "rating-na" %>
-    <% end %>
-    <div class="grade <%= grade %>">
+
+  <div class="row mb15">
+    <div class="col-sm-6">
+      <span class="fl"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service_info[:wikipedia] %></span>
+    </div>
+  </div>
+
+  <h1 class="service-title fw2 mv3">
+    <a href="<%= @service_info[:website] %>"><%= @service_info[:name] %></a>
+
+    <% unless @service.service_ratings == "N/A" %>
+    <div class="grade <%= @rating %>">
       <%= @service.service_ratings %>
     </div>
-  </h1>
-  <p class="mt0 lh-copy">
-    <a href="<%= @service.url %>">Website</a>
-    <a href="<%= @service.wikipedia %>">Wikipedia</a>
-  </p>
-  <p>
-    <% unless current_user.nil? %>
-    <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
     <% end %>
-  </p>
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12 mb15">
-      <%= form_tag(service_path(@service), method: :get) do %>
-      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
+  </h1>
 
-      <%= submit_tag 'Search', class: "btn btn-default" %>
-      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
+  <br>
 
-      <% end %>
-    </div>
-  </div>
-</header>
+  <%= render 'table', points: @points %>
 
-<div class="row">
-  <div class="tabs-bar-container">
-    <div class="tabs-bar btn-primary" onclick="openTab('Points', event)">Points</div>
-    <div class="tabs-bar btn-primary active" onclick="openTab('Versions', event)">Versions</div>
-  </div>
-  <div id="Points" class="tabs-container tab" style="">
-    <h2>Points</h2>
-    <div class="container card-container">
-      <%= render 'table', points: @points %>
-    </div>
-  </div>
-
-  <div id="Versions" class="tabs-container tab" style="display:none">
-    <h2>Versions</h2>
-    <%= render 'versions', service: @service %>
-  </div>
-
-</div>
 
 <script>
 function openTab(tabName, event) {
@@ -75,4 +36,3 @@ function openTab(tabName, event) {
     document.getElementById(tabName).style.backgroundColor = "none";
 }
 </script>
-</div>
