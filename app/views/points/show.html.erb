@@ -35,7 +35,7 @@
 
   </div>
 
-  <% if @point.reasons.any? %>
+  <% if @point.reasons.any? || @point.versions.any? %>
   <%= render 'table_reasons' %>
   <% end %>
 
@@ -57,6 +57,9 @@
         <% if current_user.curator? %>
         <div class="pl15">
           <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
+        </div>
+        <div class="pl15">
+          <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
         </div>
         <div class="pl15">
           <% if @point.status == "approved" %>
