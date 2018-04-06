@@ -1,16 +1,16 @@
 <div class="form-login">
   <div class="row row-form">
     <div class="step-1">
-      <div class="point-form-text">
+      <div class="p15">
         <p>When submitting a contribution, you submit what we call a "point." It's an analysis on one specific aspect of the ToS of the service that you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of all those ratings. See the <a href="/about#classification">about page</a> for more information.</p>
 
         <p>Each point submitted by a user has to be reviewed by a curator before being displayed on the website. You will recieve a message by email from the curator who reviewed your point.</p>
       </div>
       <%= simple_form_for [@point] do |f| %>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-6">
         <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+        <button>Next</button>
       </div>
-      <button>Next</button>
     </div>
 
     <div class="step-2" style="display:none">
