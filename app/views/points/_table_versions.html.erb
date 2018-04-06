@@ -25,7 +25,7 @@
       <!-- <th scope="col">WHO</th> -->
     </thead>
     <tbody>
-      <% @point.versions.each do |v| %>
+      <% @versions.each do |v| %>
       <tr>
         <th scope="row"><%= v.event %></th>
         <td>
@@ -37,7 +37,7 @@
           No changes recorded
           <% end %>
         </td>
-        <td><%= v.changeset["updated_at"] %></td>
+        <td><%= v.changeset["updated_at"].second.time %></td>
         <!-- make a better view for username <td><%= v.whodunnit %></td> -->
       </tr>
       <% end %>

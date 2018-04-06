@@ -39,14 +39,43 @@ class PointsController < ApplicationController
   end
 
   def show
-    puts @point.id
+    @versions = @point.versions
+    @reasons = @point.reasons
     @comments = Comment.where(point_id: @point.id)
+
+    @point_info = {
+      service_name: @point.service.name,
+      status: @point.status,
+      rating: @point.rating,
+      changes: @point.versions.size,
+      title: @point.title,
+      analysis: @point.analysis
+    }
+
+    # formats the versions in advance so the logic is done in the controller
+    # and not in the view
+    # not in use right now, but may be a good idea to use when improving
+    # the UX of the versions table in the point show page
+    # the method figures_for_versions_object is in the point model, along with an explanation
+    @formatted_versions = @point.figures_for_versions_object(@point)
   end
 
   def update
-    @point.update(point_params)
-    flash[:notice] = "Point successfully updated!"
-    redirect_to point_path(@point)
+    # the logic beforehand was incorrect; the reason must be created after the point has been updated, and then the reason must be saved in the same block that the point is being updated in
+    # to check if the reasons are persisting, do this in the rails console:
+    # 1. point = Point.find(id)
+    # 2. point.reasons
+
+    if point_params[:reason].empty?
+      flash[:alert] = "You must provide a reason for your changes"
+      render :edit
+    else
+      @point.update(point_params)
+      r = Reason.new(point_id: @point.id, content: @point.reason, user_id: current_user.id, status: @point.status)
+      r.save!
+      flash[:notice] = "Point successfully updated!"
+      redirect_to point_path(@point)
+    end
   end
 
   def destroy
@@ -87,6 +116,6 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :reason)
   end
 end

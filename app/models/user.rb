@@ -20,6 +20,7 @@ class User < ApplicationRecord
   end
 
   def destroy
+    # fix this, it isn't working
     update_attributes(email: "deactivated_account@tosdr.org", username: "Camille", deactivated: true) unless deactivated
   end
 

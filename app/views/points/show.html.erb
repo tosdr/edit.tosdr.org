@@ -1,43 +1,42 @@
-<div class="point-holder">
+<br>
 
-  <div class="article-holder">
-    <div class="article-point-header">
-      <ul class="point-info">
-        <li class="point-items">
-          <div class="pl50">
-            <span class="bolder">Service:</span> <%= @point.service.name %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Status:</span> <%= @point.status %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Rating:</span> <%= @point.rating %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Changes:</span> <%= @point.versions.size %>
-          </div>
-        </li>
-      </ul>
+<div class="center-div">
+  <div class="row">
+    <div class="col-md-3">
+      <span class="text-center"> Service: <%= @point_info[:service_name] %> </span>
+    </div>
+    <div class="col-md-3">
+      <span class="text-center"> Status: <%= @point_info[:status] %> </span>
+    </div>
+    <div class="col-md-3">
+      <span class="text-center"> Rating: <%= @point_info[:rating] %> </span>
+    </div>
+    <div class="col-md-3">
+      <span class="text-center"> Versions: <%= @point_info[:changes] %> </span>
     </div>
   </div>
 
-  <div class="article-holder">
+  <br>
 
-    <div class="article-point-header">
-      <h3 class="lighter"><%= @point.title %></h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <h3> <%= @point_info[:title] %> </h3>
     </div>
+    <div class="col-sm-12">
+      <%= @point_info[:analysis] %>
+    </div>
+  </div>
 
-    <div class="article-point-text-holder p15">
-      <div class="article-point-text pad-left pad-right">
-        <span class="bolder">Analysis:</span> <%= @point.analysis %>
+  <br>
+
+  <div class="row">
+    <% if @point.reasons.any? || @point.versions.any? %>
+      <div class="col-sm-12">
+        <%= render 'table_versions' %>
       </div>
-    </div>
-
+    <% end %>
   </div>
 
-  <% if @point.reasons.any? || @point.versions.any? %>
-  <%= render 'table_reasons' %>
-  <% end %>
 
   <div class="m15 mw6">
     <ul class="point-info">
@@ -55,9 +54,6 @@
 
         <% unless current_user.nil? %>
         <% if current_user.curator? %>
-        <div class="pl15">
-          <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
-        </div>
         <div class="pl15">
           <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
         </div>
