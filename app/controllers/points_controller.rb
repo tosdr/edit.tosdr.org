@@ -42,6 +42,11 @@ def create
       else
         render :new
       end
+    else
+      # the page goes directly here and doesn't get in the loop
+      # there is definitly something wrong with this method
+      # investigating...
+      flash[:error] = @point.errors.full_messages
     end
   end
 
