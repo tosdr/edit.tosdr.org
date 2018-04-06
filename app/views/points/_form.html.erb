@@ -1,6 +1,6 @@
 <div class="form-login">
   <div class="row row-form">
-    <div class="step">
+    <div class="step active" style="">
       <div class="p15 col-xs-6">
         <p>When submitting a contribution, you submit what we call a "point." It's an analysis on one specific aspect of the ToS of the service that you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of all those ratings. See the <a href="/about#classification">about page</a> for more information.</p>
 
@@ -9,20 +9,22 @@
       <%= simple_form_for [@point] do |f| %>
       <div class="col-xs-6">
         <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick a the service you want to review" %>
-        <button onclick="openStep('step-2')">Next</button>
+        <button onclick="openStep('step-2', event)">Next</button>
       </div>
     </div>
 
-    <div class="step" style="display:none">
+    <div id="step-2" style="display:none">
       <div class="col-xs-12 col-sm-6">
         <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
       </div>
       <div class="col-xs-12 col-sm-6">
         <%= f.association :case, collection: Case.order('title ASC') %>
       </div>
+        <button onclick="openStep('step-3', event)">Next</button>
+
     </div>
 
-    <div class="step" style="display:none">
+    <div id="step-3" style="display:none">
       <div class="col-xs-12">
         <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
       </div>
@@ -32,9 +34,11 @@
       <div class="col-xs-12 col-sm-7">
         <%= f.input :source %>
       </div>
+        <button onclick="openStep('step-4', event)">Next</button>
+
     </div>
 
-    <div class="step" style="display:none">
+    <div id="step-4" style="display:none">
       <div class="col-xs-6 col-sm-2">
         <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
       </div>
