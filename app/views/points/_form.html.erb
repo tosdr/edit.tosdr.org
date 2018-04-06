@@ -21,6 +21,7 @@
         <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
         <button onclick="openStep('step-3', event)">Cannot find your case</button>
         <button onclick="openStep('step-6', event)">Next</button>
+        <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
       </div>
     </div>
 

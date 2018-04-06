@@ -4,20 +4,29 @@ class PointsController < ApplicationController
 
   def index
    @points = Point.all
-    if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
-    end
+   if @query = params[:query]
+    @points = Point.search_points_by_multiple(@query)
   end
+end
 
-  def new
-    @point = Point.new
-    @services = Service.all
-    @topics = Topic.all
-  end
+def new
+  @point = Point.new
+  @services = Service.all
+  @topics = Topic.all
+end
 
-  def create
+def create
     @point = Point.new(point_params)
     @point.user = current_user
+    if params[:has_case]
+      @point.update_parameters(title: @case.title, rating: @case.score, analysis: @case.description, topic_id: @case.topic_id, service_id: @case.service_id)
+      if @point.save
+        redirect_to points_path
+        flash[:notice] = "You created a point!"
+      else
+        render :new
+      end
+    end
     if params[:only_create]
       if @point.save
         redirect_to points_path
@@ -86,7 +95,11 @@ class PointsController < ApplicationController
     @service = Service.find(params[:service_id])
   end
 
+  def set_case
+    @case = Case.find(params[:case_id])
+  end
+
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :case_id, :topic_id, :service_id, :is_featured, :query)
   end
 end
