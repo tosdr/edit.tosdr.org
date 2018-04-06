@@ -14,7 +14,7 @@
     <div class="col-xs-12 col-sm-6">
       <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
     </div>
-    <div class="col-xs-12 col-sm-6l">
+    <div class="col-xs-12 col-sm-6">
       <%= f.association :case, collection: Case.order('title ASC') %>
     </div>
     <div class="col-xs-12">

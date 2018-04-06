@@ -4,6 +4,7 @@ class Point < ApplicationRecord
  belongs_to :service
  has_many :reasons, dependent: :destroy
  belongs_to :topic
+ has_many :case, through: :topic
 
  validates :title, presence: true
  validates :title, length: { in: 5..140 }
