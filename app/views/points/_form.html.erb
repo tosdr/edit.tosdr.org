@@ -19,12 +19,17 @@
       </div>
       <div class="col-xs-6">
         <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
-        <button><a href="new_point_with_topic">Cannot find your case</a></button>
         <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
+        <% end %>
+        <button onclick="openStep('step-3', event)">Cannot find your case</button>
       </div>
     </div>
-    <% end %>
-</div>
+
+    <div id="step-3" style="display:none">
+      <%= render 'topic' %>
+    </div>
+
+  </div>
 </div>
 <script>
   function openStep(tabName, event) {
