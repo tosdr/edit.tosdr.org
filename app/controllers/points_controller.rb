@@ -18,6 +18,7 @@ end
 def create
     @point = Point.new
     @point.user = current_user
+
     if params[:has_case]
       @point.update_parameters(title: @case.title, rating: @case.score, analysis: @case.description, topic_id: @case.topic_id, service_id: @case.service_id)
       if @point.save
@@ -46,6 +47,7 @@ def create
       # the page goes directly here and doesn't get in the loop
       # there is definitly something wrong with this method
       # investigating...
+      # raise
       flash[:error] = @point.errors.full_messages
     end
   end
