@@ -1,57 +1,55 @@
 <% if current_user %>
-<% if current_user.curator? %>
-<div class="tabs-bar-container">
-  <div class="tabs-bar btn-primary" onclick="openTab('pendingPoints', event)">Pending points</div>
-  <div class="tabs-bar btn-primary active" onclick="openTab('allPoints', event)">All points</div>
+
+<% if params[:scope].nil? || params[:scope] == "all" %>
+
+<div class="row mb15">
+  <div class="col-sm-4">
+    <div class="fl">
+      <%= link_to 'All', points_path(scope: 'all'), class: 'btn btn-primary active' %>
+      <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-primary' %>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <%= render "shared/search" %>
+  </div>
+  <div class="col-sm-4">
+    <span class="fr"><button class="btn btn-success" id="orderByPoint">Order by Rating</button></span>
+  </div>
 </div>
 
-
-<div id="pendingPoints" class="tabs-container tab">
-  <header class="tc ph4">
-    <h1 class="fw2 mv3">
-      Pending points
-    </h1>
-  </header>
+<div class="tabs-container tab">
   <div class="row">
     <div class="container card-container">
-     <%= render 'table', points: @points.where(status:'pending')  %>
+     <%= render 'table', points: @points %>
    </div>
  </div>
 </div>
-<% end %>
-<% end %>
 
-<div id="allPoints" class="tabs-container tab" style="display:none">
-  <header class="tc ph4">
-    <h1 class="fw2 mv3">
-      All Points
-    </h1>
-    <%= link_to 'Add A Point', new_point_path, class: 'btn btn-primary' %>
+<% elsif params[:scope] == "pending" %>
 
-    <p class="mt30">A featured point is displayed on the front page.</p>
-  </header>
-
-  <%= render "shared/search" %>
-
-  <div class="row">
-    <div class="container card-container">
-      <%= render 'table', points: @points %>
+<div class="row mb15">
+  <div class="col-sm-4">
+    <div class="fl">
+      <%= link_to 'All', points_path(scope: 'all'), class: 'btn btn-primary' %>
+      <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-primary active' %>
     </div>
   </div>
+  <div class="col-sm-4">
+    <%= render "shared/search" %>
+  </div>
+  <div class="col-sm-4">
+    <span class="fr"><button class="btn btn-success" id="orderByPoint">Order by Rating</button></span>
+  </div>
 </div>
-<script type="text/javascript">
-  function openTab(tabName, event) {
-  document.querySelectorAll(".tabs-bar").forEach(
-    function(tab){
-      tab.classList.add('active');
-    });
-  event.currentTarget.classList.remove("active");
-    var i;
-    var x = document.getElementsByClassName("tab");
-    for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";
-    }
-    document.getElementById(tabName).style.display = "block";
-    document.getElementById(tabName).style.backgroundColor = "none";
-}
-</script>
+
+<div class="tabs-container tab">
+  <div class="row">
+    <div class="container card-container">
+     <%= render 'table', points: @points %>
+   </div>
+ </div>
+</div>
+
+<% end %>
+
+<% end %>

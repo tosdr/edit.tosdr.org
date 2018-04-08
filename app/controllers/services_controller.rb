@@ -24,7 +24,7 @@ class ServicesController < ApplicationController
 
   def show
     @points = @service.points
-    @points = @points.where(status: 'approved')
+    # @points = @points.where(status: 'approved')
 
     if @query = params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])

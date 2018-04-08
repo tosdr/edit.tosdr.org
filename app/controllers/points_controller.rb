@@ -1,9 +1,9 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_point, only: [:show, :edit,:featured, :update, :destroy]
+  before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
+  before_action :points_get, only: [:index]
 
   def index
-   @points = Point.all
     if @query = params[:query]
       @points = Point.search_points_by_multiple(@query)
     end
@@ -39,6 +39,7 @@ class PointsController < ApplicationController
   end
 
   def show
+    @point
     puts @point.id
     @comments = Comment.where(point_id: @point.id)
   end
@@ -88,5 +89,13 @@ class PointsController < ApplicationController
 
   def point_params
     params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query)
+  end
+
+  def points_get
+    if params[:scope].nil? || params[:scope] == "all"
+      @points = Point.all
+    elsif params[:scope] == "pending"
+      @points = Point.all.where(status: "pending")
+    end
   end
 end
