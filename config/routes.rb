@@ -8,10 +8,6 @@ Rails.application.routes.draw do
 
   get 'about', to: 'pages#about'
 
-  # get 'points/pending', to: 'points#index'
-
-  # get "points/(:scope)", to "points#index",
-
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
 
   resources :points, except: [:index] do
@@ -21,7 +17,8 @@ Rails.application.routes.draw do
     resources :reasons, only: [:new, :create]
   end
 
-  resources :services
+  resources :services, except: [:show]
+  get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
 

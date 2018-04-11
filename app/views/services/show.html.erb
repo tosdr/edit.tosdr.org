@@ -1,38 +1,33 @@
 
   <div class="row mb15">
     <div class="col-sm-6">
-      <span class="fl"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service_info[:wikipedia] %></span>
+      <h2 class="service-title fw2 mv fl">
+        <a href="<%= @service.url %>"><%= @service.name %></a>
+        <% unless @service.service_ratings == "N/A" %>
+        <div class="grade <%= @rating %>">
+          <%= @service.service_ratings %>
+        </div>
+        <% end %>
+      </h2>
+    </div>
+    <div class="col-sm-6">
+      <h3 class="fw2 fr"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %> |
+        <% if params[:scope] == 'pending' || params[:scope].nil? %>
+          <%= link_to 'Archived Versions', service_path(scope: 'archived-versions') %></h3>
+        <% elsif %>
+          <%= link_to 'Back', service_path(scope: nil) %></h3>
+        <% end %>
     </div>
   </div>
 
-  <h1 class="service-title fw2 mv3">
-    <a href="<%= @service_info[:website] %>"><%= @service_info[:name] %></a>
-
-    <% unless @service.service_ratings == "N/A" %>
-    <div class="grade <%= @rating %>">
-      <%= @service.service_ratings %>
-    </div>
-    <% end %>
-  </h1>
-
   <br>
 
-  <%= render 'table', points: @points %>
+  <% if params[:scope] == "pending" || params[:scope].nil? %>
 
+    <%= render 'table', points: @points %>
 
-<script>
-function openTab(tabName, event) {
-  document.querySelectorAll(".tabs-bar").forEach(
-    function(tab){
-      tab.classList.add('active');
-    });
-  event.currentTarget.classList.remove("active");
-    var i;
-    var x = document.getElementsByClassName("tab");
-    for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";
-    }
-    document.getElementById(tabName).style.display = "block";
-    document.getElementById(tabName).style.backgroundColor = "none";
-}
-</script>
+  <% elsif params[:scope] == "archived-versions" %>
+
+    <%= render 'versions', versions: @versions %>
+
+  <% end %>

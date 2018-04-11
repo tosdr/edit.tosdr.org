@@ -24,18 +24,21 @@ class ServicesController < ApplicationController
 
   def show
     if current_user
-      @points = @service.points
+      case params[:scope]
+      when nil
+        @points = @service.points
+      when 'pending'
+        @points = @service.points.where(status: 'pending')
+      when 'archived-versions'
+        @versions = @service.versions
+      end
     else
       @points = @service.points.where(status: 'approved')
     end
 
     @rating = @service.rating_for_view
 
-    @service_info = {
-      name: @service.name,
-      website: @service.url,
-      wiki: @service.wikipedia
-    }
+    @versions = @service.versions
 
     if @query = params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])

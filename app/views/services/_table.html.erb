@@ -1,146 +1,167 @@
 <div class="row mb15">
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <%= form_tag(service_path(@service), method: :get) do %>
     <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"}, class: "custom-search-input search" %>
 
     <%= button_tag(type: 'search', class: "btn btn-default") do%>
-      <span class="glyphicon glyphicon-search"></span>
+      <span class="glyphicon glyphicon-search custom-text"></span>
     <% end %>
-    <%= link_to '<i class="fas fa-undo-alt text-right"></i>'.html_safe, service_path(@service), class: "btn btn-default" %>
+    <%= link_to '<i class="fas fa-undo-alt text-right"></i>'.html_safe, service_path(@service), class: "btn btn-default custom-text custom-padding" %>
     <% end %>
   </div>
-  <div class="col-sm-6">
-    <button class="btn btn-success" id="orderByPointOnService"><span class="glyphicon glyphicon-sort"></span></button>
+  <div class="col-sm-4">
+    <% if current_user %>
+    <span class="fr">
+      <% if params[:scope].nil? %>
+        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-primary active' %>
+        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-primary' %>
+      <% elsif params[:scope] == 'pending' %>
+        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-primary' %>
+        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-primary active' %>
+      <% end %>
+    <% end %>
+    </span>
+  </div>
+  <div class="col-sm-4">
+    <span class="fr">
+      <button class="btn btn-success" id="orderByPoint">Order by Rating</button>
+    </span>
   </div>
 </div>
 
-<%= javascript_tag do %>
-  document.getElementById('orderByPointOnService').addEventListener("click", (event) => {
-  let elems =  document.querySelectorAll(".card-point");
-  // convert nodelist to array
-  var array = [];
-  for (var i = 0; i < elems.length; i++) {
-  array[i] = elems[i];
-}
-  // perform sort depending on classname
-  if(event.currentTarget.className=="btn btn-success"){
-  array.sort(function(a, b) {
-  return a.dataset.rating - b.dataset.rating;
-  });
-  event.currentTarget.classList.remove("btn-success");
-  event.currentTarget.classList.add("btn-danger");
-}
-  else if(event.currentTarget.className== "btn btn-danger"){
-  array.sort(function(a, b) {
-  return b.dataset.rating -  a.dataset.rating;
-});
-  event.currentTarget.classList.remove("btn-danger");
-  event.currentTarget.classList.add("btn-success");
-}
-  // join the array back into HTML
-  var output = "";
-  for (var i = 0; i < array.length; i++) {
-  output += array[i].outerHTML;
-}
-  // append output to div 'points-table-container'
-  document.getElementById('points-table-container').innerHTML = output;
-});
-<% end %>
-
-<% if @points.empty? %>
-  There are no points to display at this time.
-<% else %>
-
-<div id="points-table-container">
-  <%= javascript_tag do %>
-    document.getElementById('orderByPointOnService').addEventListener("click", (event) => {
-    let elems =  document.querySelectorAll(".card-point");
-    // convert nodelist to array
-    var array = [];
-    for (var i = 0; i < elems.length; i++) {
-    array[i] = elems[i];
-    }
-    // perform sort depending on classname
-    if(event.currentTarget.className=="btn btn-success"){
-    array.sort(function(a, b) {
-    return a.dataset.rating - b.dataset.rating;
-    });
-    event.currentTarget.classList.remove("btn-success");
-    event.currentTarget.classList.add("btn-danger");
-    }
-    else if(event.currentTarget.className== "btn btn-danger"){
-    array.sort(function(a, b) {
-    return b.dataset.rating -  a.dataset.rating;
-    });
-    event.currentTarget.classList.remove("btn-danger");
-    event.currentTarget.classList.add("btn-success");
-    }
-    // join the array back into HTML
-    var output = "";
-    for (var i = 0; i < array.length; i++) {
-    output += array[i].outerHTML;
-    }
-    // append output to div 'points-table-container'
-    document.getElementById('points-table-container').innerHTML = output;
-    });
-  <% end %>
-
-<div class="panel-group" id="accordion">
-  <% counter = 1 %>
-  <% @points.each do |point| %>
-
-  <% if point.rating.between?(7,10) %>
-    <% point_icon = "point-good" %>
-  <% elsif point.rating.between?(4,6) %>
-    <% point_icon = "point-neutral" %>
-  <% elsif point.rating.between?(2,3) %>
-    <% point_icon = "point-bad" %>
-  <% elsif point.rating.between?(0,2) %>
-    <% point_icon = "point-blocker" %>
-  <% end %>
-
-  <% counter += 1 %>
-  <div class="panel panel-default card-point" id="panel<%=counter%>" data-rating="<%= point.rating %>">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-sm-4">
-          <h5 class="<%=point_icon%> xs-icon">
-              Rating: <%= point.rating %>
-          </h5>
-        </div>
-        <div class="col-sm-4">
-          <h5>
-            <a data-toggle="collapse" data-target="#collapse<%=counter%>"
-              href="#collapse<%=counter%>" class="collapsed">
-              <%= point.title %>
-            </a>
-          </h5>
-        </div>
-        <div class="col-sm-4 text-right">
-          <a data-toggle="collapse" data-target="#collapse<%=counter%>"
-              href="#collapse<%=counter%>" class="collapsed">
-              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-          </a>
-        </div>
-    </div>
-  </div>
-    <div id="collapse<%=counter%>" class="panel-collapse collapse">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-6 mb15">
-            <span class="fl">Status: <%= point.status %></span>
-          </div>
-          <div class="col-sm-6 mb15">
-            <span class="fr"><%= link_to '<i class="fas fa-eye"></i>'.html_safe, point_path(point.id)%></span>
-          </div>
-          <div class="col-sm-12">
-            <%= point.analysis %>
-          </div>
-        </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card-inline card-inline-header ">
+      <div class="card-inline-item card-inline-service">
+        Services
+      </div>
+      <div class="card-inline-item card-inline-point">
+        Title
+      </div>
+      <div class="card-inline-item card-inline-rating">
+        Rating
+      </div>
+      <div class="card-inline-item card-inline-status">
+        Status
+      </div>
+      <div class="card-inline-item card-inline-featured">
+        Featured?
+      </div>
+      <div class="card-inline-item card-inline-options">
+        Options
       </div>
     </div>
-  </div>
+    <!-- actual card-inline -->
+    <% if points.empty? %>
+    <div class="card-inline">
+      <div class="card-inline-item">
+        No points found
+      </div>
+    </div>
+    <% else %>
+    <div id="points-table-container">
+      <%= javascript_tag do %>
+      document.getElementById('orderByPoint').addEventListener("click", (event) => {
+      let elems =  document.querySelectorAll(".card-point");
+      // convert nodelist to array
+      var array = [];
+      for (var i = 0; i < elems.length; i++) {
+      array[i] = elems[i];
+      }
+      // perform sort depending on classname
+      if(event.currentTarget.className=="btn btn-success"){
+      array.sort(function(a, b) {
+      return a.dataset.rating - b.dataset.rating;
+      });
+      event.currentTarget.classList.remove("btn-success");
+      event.currentTarget.classList.add("btn-danger");
+      }
+      else if(event.currentTarget.className== "btn btn-danger"){
+      array.sort(function(a, b) {
+      return b.dataset.rating -  a.dataset.rating;
+      });
+      event.currentTarget.classList.remove("btn-danger");
+      event.currentTarget.classList.add("btn-success");
+      }
+      // join the array back into HTML
+      var output = "";
+      for (var i = 0; i < array.length; i++) {
+      output += array[i].outerHTML;
+      }
+      // append output to div 'points-table-container'
+      document.getElementById('points-table-container').innerHTML = output;
+      });
+    <% end %>
+
+<% points.each do |p| %>
+<div class="card-point" data-rating="<%= p.rating %>">
+  <% if p.rating.between?(7, 10)%>
+  <% pointbox = "point-good" %>
+  <% elsif p.rating.between?(4,6) %>
+  <% pointbox = "point-neutral" %>
+  <% elsif p.rating.between?(2,3) %>
+  <% pointbox = "point-bad" %>
+  <% elsif p.rating.between?(0,2) %>
+  <% pointbox = "point-blocker" %>
   <% end %>
+  <div class="card-inline" >
+    <div class="card-inline-item card-inline-service">
+      <%= p.service.name %>
+    </div>
+    <div class="card-inline-item card-inline-point">
+      <%= p.title %>
+    </div>
+    <div class="card-inline-item card-inline-rating <%= pointbox %>">
+      <%= p.rating %>
+    </div>
+    <div class="card-inline-item card-inline-status">
+      <%= p.status %>
+    </div>
+    <div class="card-inline-item card-inline-featured">
+      <% if p.is_featured? %>
+      <i class="fa fa-check" aria-hidden="true"></i>
+      <% else %>
+      <i class="fa fa-circle-o" aria-hidden="true"></i>
+      <% end %>
+    </div>
+    <div class="card-inline-item card-inline-options">
+      <% if current_user %>
+        <% if current_user.curator? %>
+
+          <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        <% end %>
+          <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        <% end %>
+
+        <% elsif current_user.id == p.user_id %>
+
+        <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        <% end %>
+        <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        <% end %>
+
+        <% end %>
+
+        <% else %>
+
+        <%= link_to(point_path(p), :class => 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        <% end %>
+
+      <% end %>
+
+    </div>
+  </div>
 </div>
+<!-- card-inline-END -->
+<% end %>
 <% end %>
 </div>
+</div>
+</div>
+
+
