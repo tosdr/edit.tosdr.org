@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   get 'about', to: 'pages#about'
 
+  get 'points/new', to: 'points#new'
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
 
   resources :points, except: [:index] do
