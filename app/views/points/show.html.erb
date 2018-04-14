@@ -35,10 +35,6 @@
 
   </div>
 
-  <% if @point.reasons.any? || @point.versions.any? %>
-  <%= render 'table_reasons' %>
-  <% end %>
-
   <div class="m15 mw6">
     <ul class="point-info">
       <li class="point-items">
@@ -80,4 +76,8 @@
   </div>
 
 </div>
+
+<% if @point.versions.any? %>
+  <%= render 'table_reasons' %>
+<% end %>
 

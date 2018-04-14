@@ -42,6 +42,8 @@ class PointsController < ApplicationController
     @point
     puts @point.id
     @comments = Comment.where(point_id: @point.id)
+    @versions = @point.versions
+    @reaons = @point.reasons
   end
 
   def update

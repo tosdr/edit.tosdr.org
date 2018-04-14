@@ -1,46 +1,50 @@
-<div class="article-holder status-changes">
-
-  <!-- <table class="table">
-    <thead class="thead thead-dark">
-      <th scope="col">STATUS UPDATES</th>
-      <th scope="col">REASON</th>
-      <th scope="col">WHEN</th>
-    </thead>
-    <tbody>
-    <% @point.reasons.each do |reason| %>
-      <tr>
-        <th scope="row"><%= reason.status %></th>
-        <td><%= reason.content %></td>
-        <td><%= time_ago_in_words reason.created_at %> ago</td>
-      </tr>
-    </tbody>
-    <% end %>
-  </table> -->
-
-  <table class="table">
-    <thead class="thead thead-dark">
-      <th scope="col">ANALYSIS UPDATES</th>
-      <th scope="col">TEXT CHANGES</th>
-      <th scope="col">WHEN</th>
-      <!-- <th scope="col">WHO</th> -->
-    </thead>
-    <tbody>
-      <% @point.versions.each do |v| %>
-      <tr>
-        <th scope="row"><%= v.event %></th>
-        <td>
-          <% if v.changeset["analysis"] %>
-          Analysis change: <%= v.changeset["analysis"] %>
-          <% elsif v.changeset["status"] %>
-          Status change: <%= v.changeset["status"] %>
-          <% else %>
-          No changes recorded
-          <% end %>
-        </td>
-        <td><%= v.changeset["updated_at"] %></td>
-        <!-- make a better view for username <td><%= v.whodunnit %></td> -->
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="panel-group" id="accordion">
+  <% counter = 1 %>
+  <% @versions.each do |version| %>
+  <% event = version.event == "create" ? "Analysis created" : "Analysis updated" %>
+  <% analysis = version.changeset["analysis"] %>
+  <% status = version.changeset["status"] %>
+  <% version.changeset['reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["reason"].second %>
+  <% counter += 1 %>
+  <div class="panel panel-default" id="panel<%=counter%>">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-4">
+          <h5>
+              Version <%= counter - 1 %>: <%= format_time(version.changeset["updated_at"].second.time) %>
+          </h5>
+        </div>
+        <div class="col-sm-4">
+          <h5>
+            <a data-toggle="collapse" data-target="#collapse<%=counter%>"
+              href="#collapse<%=counter%>" class="collapsed">
+              <%= event %>
+            </a>
+          </h5>
+        </div>
+        <div class="col-sm-4 text-right">
+          <a data-toggle="collapse" data-target="#collapse<%=counter%>"
+              href="#collapse<%=counter%>" class="collapsed">
+              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+          </a>
+        </div>
+    </div>
+  </div>
+    <div id="collapse<%=counter%>" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12 mb15">
+            <p>Reason for changes: <%= reason %></p>
+            <p>Previous Analysis: <%= format_figures(analysis) %></p>
+            <p>Updated Analysis: <%= format_figures(analysis, first = false) %></p>
+            <p>Previous Status: <%= format_figures(status) %></p>
+            <p>Updated Status: <%= format_figures(status, first = false) %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
 </div>
+</div>
+
