@@ -1,81 +1,71 @@
-<div class="point-holder">
-
-  <div class="article-holder">
-    <div class="article-point-header">
-      <ul class="point-info">
-        <li class="point-items">
-          <div class="pl50">
-            <span class="bolder">Service:</span> <%= @point.service.name %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Status:</span> <%= @point.status %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Rating:</span> <%= @point.rating %>
-          </div>
-          <div class="pl50">
-            <span class="bolder">Changes:</span> <%= @point.versions.size %>
-          </div>
-        </li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-sm-6">
+    <h4 class="lighter fl"><%= @point.title %></h4>
   </div>
-
-  <div class="article-holder">
-
-    <div class="article-point-header">
-      <h3 class="lighter"><%= @point.title %></h3>
+  <div class="col-sm-6">
+    <% if current_user %>
+    <div class="dropdown btn-group fr">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+            Update Point
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><%= link_to 'Edit Content', edit_point_path(@point) %></li>
+            <li><%= link_to 'Update Status', new_point_reason_path(@point) %></li>
+            <li>
+              <% if @point.status == "approved" %>
+              <% if !@point.is_featured? %>
+              <%= link_to 'Feature', featured_point_path(@point), method: :put%>
+              <% else %>
+              <%= link_to 'Un-Feature', featured_point_path(@point), method: :put %>
+              <% end %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to 'Delete Point', @point, method: :delete %>
+            </li>
+        </ul>
     </div>
-
-    <div class="article-point-text-holder p15">
-      <div class="article-point-text pad-left pad-right">
-        <span class="bolder">Analysis:</span> <%= @point.analysis %>
-      </div>
-    </div>
-
+    <% end %>
   </div>
-
-  <div class="m15 mw6">
-    <ul class="point-info">
-      <li class="point-items">
-        <% unless current_user.nil? %>
-          <% if current_user.id == @point.user_id %>
-          <div>
-            <%= link_to 'Edit', edit_point_path(@point), class: 'btn btn-primary' %>
-          </div>
-          <% end %>
-        <% end %>
-        <div class="pl15">
-          <%= link_to 'All', points_path, class: 'btn btn-primary' %>
-        </div>
-
-        <% unless current_user.nil? %>
-        <% if current_user.curator? %>
-        <div class="pl15">
-          <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
-        </div>
-        <div class="pl15">
-          <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
-        </div>
-        <div class="pl15">
-          <% if @point.status == "approved" %>
-          <% if !@point.is_featured? %>
-          <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
-          <% else %>
-          <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
-          <% end %>
-          <% end %>
-        </div>
-        <div class="pl15">
-          <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
-        </div>
-        <% end %>
-        <% end %>
-      </li>
-    </ul>
-  </div>
-
 </div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-3">
+    <span class="bolder">Service:</span> <%= @point.service.name %>
+  </div>
+  <div class="col-sm-3">
+    <span class="bolder">Status:</span> <%= @point.status %>
+  </div>
+  <div class="col-sm-3">
+    <span class="bolder">Rating:</span> <%= @point.rating %>
+  </div>
+  <div col-sm-3>
+    <span class="bolder">Changes:</span> <%= @point.versions.size %>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= @point.analysis %>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <span class="bolder">We track editorial changes to analyses and updates to a point's status and display the previous versions here as part of an effort to promote transparency regarding our curation process.</span>
+  </div>
+</div>
+
+<br>
 
 <% if @point.versions.any? %>
   <%= render 'table_reasons' %>
