@@ -59,6 +59,8 @@
 <br>
 <br>
 
+<% if @point.versions.any? %>
+
 <div class="row">
   <div class="col-sm-12">
     <span class="bolder">We track editorial changes to analyses and updates to a point's status and display the previous versions here as part of an effort to promote transparency regarding our curation process.</span>
@@ -67,7 +69,7 @@
 
 <br>
 
-<% if @point.versions.any? %>
-  <%= render 'table_reasons' %>
+<%= render 'table_reasons' %>
+
 <% end %>
 
