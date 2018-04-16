@@ -3,13 +3,15 @@
       <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
     </div>
     <div class="col-sm-6">
+      <h5 class="fw2 fr gray">
+        <% if current_user %>
         <% if current_user.curator? %>
-        <h5 class="fw2 fr gray">
           <%= link_to "Edit Service", edit_service_path(@service) %>
          |
         <% end %>
+        <% end %>
         <% if params[:scope] == 'pending' || params[:scope].nil? %>
-          <%= link_to 'Archived Versions', service_path(scope: 'archived-versions') %>
+          <%= link_to 'Archived Versions', service_path(scope: 'archived-versions') %> </h5>
         <% elsif %>
           <%= link_to 'Back', service_path(scope: nil) %></h5>
         <% end %>
