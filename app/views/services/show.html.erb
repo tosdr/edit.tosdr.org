@@ -1,10 +1,10 @@
   <div class="row">
     <div class="col-sm-6">
-      <h5 class="fw2 fl"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
+      <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
     </div>
     <div class="col-sm-6">
         <% if current_user.curator? %>
-        <h5 class="fw2 fr">
+        <h5 class="fw2 fr gray">
           <%= link_to "Edit Service", edit_service_path(@service) %>
          |
         <% end %>
@@ -20,7 +20,7 @@
 
   <div class="row mb15">
     <div class="col-sm-6">
-      <h2 class="service-title fw2 mv fl">
+      <h2 class="service-title fw2 mv fl gray">
         <a href="<%= @service.url %>"><%= @service.name %></a>
         <% unless @service.service_ratings == "N/A" %>
         <div class="grade <%= @rating %>">
