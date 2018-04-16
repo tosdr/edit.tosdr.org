@@ -3,11 +3,13 @@
     All Services
   </h1>
   <% if current_user.curator? %>
-  <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
+  <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary mb15' %>
   <% end %>
 </header>
 
-<%= render "shared/search"%>
+<div class="text-center search-bar mb15">
+  <%= render "shared/search" %>
+</div>
 
 <div class="row">
   <div class="container card-container">

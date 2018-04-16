@@ -1,78 +1,46 @@
-<header class="tc ph4">
-  <h1 class="fw2 mv3 service-title">
-    <%= @service.name %>
-    <% if @service.service_ratings == "A" %>
-    <% grade = "rating-a" %>
-    <% elsif @service.service_ratings == "B" %>
-    <% grade = "rating-b" %>
-    <% elsif @service.service_ratings == "C" %>
-    <% grade = "rating-c" %>
-    <% elsif @service.service_ratings == "D" %>
-    <% grade = "rating-d" %>
-    <% elsif @service.service_ratings == "F" %>
-    <% grade = "rating-f" %>
-    <% else %>
-    <% grade = "rating-na" %>
-    <% end %>
-    <div class="grade <%= grade %>">
-      <%= @service.service_ratings %>
+  <div class="row">
+    <div class="col-sm-6">
+      <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
     </div>
-  </h1>
-  <p class="mt0 lh-copy">
-    <a href="<%= @service.url %>">Website</a>
-    <a href="<%= @service.wikipedia %>">Wikipedia</a>
-  </p>
-  <p>
-    <% unless current_user.nil? %>
-    <%= link_to 'Edit Service', edit_service_path, class: 'btn btn-primary' %>
-    <% end %>
-  </p>
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12 mb15">
-      <%= form_tag(service_path(@service), method: :get) do %>
-      <%= collection_select :topic, :id , Topic.all, :id, :title, {prompt: "Select a Topic"} %>
-
-      <%= submit_tag 'Search', class: "btn btn-default" %>
-      <%= link_to "Reset", service_path(@service), class: "btn btn-default" %>
-
-      <% end %>
+    <div class="col-sm-6">
+        <% if current_user.curator? %>
+        <h5 class="fw2 fr gray">
+          <%= link_to "Edit Service", edit_service_path(@service) %>
+         |
+        <% end %>
+        <% if params[:scope] == 'pending' || params[:scope].nil? %>
+          <%= link_to 'Archived Versions', service_path(scope: 'archived-versions') %>
+        <% elsif %>
+          <%= link_to 'Back', service_path(scope: nil) %></h5>
+        <% end %>
     </div>
-  </div>
-</header>
 
-<div class="row">
-  <div class="tabs-bar-container">
-    <div class="tabs-bar btn-primary" onclick="openTab('Points', event)">Points</div>
-    <div class="tabs-bar btn-primary active" onclick="openTab('Versions', event)">Versions</div>
   </div>
-  <div id="Points" class="tabs-container tab" style="">
-    <h2>Points</h2>
-    <div class="container card-container">
-      <%= render 'table', points: @points %>
+
+
+  <div class="row mb15">
+    <div class="col-sm-6">
+      <h2 class="service-title fw2 mv fl gray">
+        <a href="<%= @service.url %>"><%= @service.name %></a>
+        <% unless @service.service_ratings == "N/A" %>
+        <div class="grade <%= @rating %>">
+          <%= @service.service_ratings %>
+        </div>
+        <% end %>
+      </h2>
+    </div>
+    <div class="col-sm-6">
     </div>
   </div>
 
-  <div id="Versions" class="tabs-container tab" style="display:none">
-    <h2>Versions</h2>
-    <%= render 'versions', service: @service %>
-  </div>
+  <br>
 
-</div>
+  <% if params[:scope] == "pending" || params[:scope].nil? %>
 
-<script>
-function openTab(tabName, event) {
-  document.querySelectorAll(".tabs-bar").forEach(
-    function(tab){
-      tab.classList.add('active');
-    });
-  event.currentTarget.classList.remove("active");
-    var i;
-    var x = document.getElementsByClassName("tab");
-    for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";
-    }
-    document.getElementById(tabName).style.display = "block";
-    document.getElementById(tabName).style.backgroundColor = "none";
-}
-</script>
-</div>
+    <%= render 'table', points: @points %>
+
+  <% elsif params[:scope] == "archived-versions" %>
+
+    <%= render 'versions', versions: @versions %>
+
+  <% end %>

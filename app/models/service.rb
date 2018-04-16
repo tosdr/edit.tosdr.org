@@ -16,6 +16,22 @@ class Service < ApplicationRecord
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
+  def rating_for_view
+    grade = if self.service_ratings == "A"
+      "rating-a"
+    elsif self.service_ratings == "B"
+      "rating-b"
+    elsif self.service_ratings == "C"
+      "rating-c"
+    elsif self.service_ratings == "D"
+      "rating-d"
+    elsif self.service_ratings == "F"
+      "rating-f"
+    else
+      ""
+    end
+  end
+
   def service_ratings
     total_ratings = points.map { |p| p.rating }
     avg = (total_ratings.sum.to_f) / (total_ratings.size.to_f)
