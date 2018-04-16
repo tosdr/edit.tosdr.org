@@ -49,31 +49,39 @@
           </div>
           <% end %>
         <% end %>
-        <div class="pl15">
-          <%= link_to 'All', points_path, class: 'btn btn-primary' %>
-        </div>
 
         <% unless current_user.nil? %>
-        <% if current_user.curator? %>
-        <div class="pl15">
-          <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
-        </div>
-        <div class="pl15">
-          <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
-        </div>
-        <div class="pl15">
-          <% if @point.status == "approved" %>
-          <% if !@point.is_featured? %>
-          <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
-          <% else %>
-          <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
-          <% end %>
-          <% end %>
-        </div>
-        <div class="pl15">
-          <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
-        </div>
-        <% end %>
+          <% if current_user.curator? %>
+            <div class="pl15">
+              <%= link_to 'Update Status', new_point_reason_path(@point), class: 'btn btn-primary' %>
+            </div>
+            <div class="pl15">
+              <%= link_to 'Edit Point', edit_point_path(@point), class: 'btn btn-primary' %>
+            </div>
+            <div class="pl15">
+              <% if @point.status == "approved" %>
+                <% if !@point.is_featured? %>
+                  <%= link_to 'Feature', featured_point_path(@point), method: :put, class: 'btn btn-primary' %>
+                <% else %>
+                  <%= link_to 'Un-Feature', featured_point_path(@point), method: :put, class: 'btn btn-warning' %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="pl15">
+              <%= link_to 'Delete', @point, method: :delete, class: 'btn btn-danger' %>
+            </div>
+            <% else %>
+            <div class="pl15">
+              <%= link_to 'All points', points_path, class: 'btn btn-primary' %>
+              </div>
+            <div class="pl15">
+              <%= link_to 'Back', :back, class: 'btn btn-primary' %>
+            </div>
+            <% end %>
+        <% else %>
+          <div class="pl15">
+            <%= link_to 'Back', :back, class: 'btn btn-primary' %>
+          </div>
         <% end %>
       </li>
     </ul>

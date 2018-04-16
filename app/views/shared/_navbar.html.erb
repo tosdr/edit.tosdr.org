@@ -31,7 +31,6 @@
     <div class="navbar-tosdr-group">
       <%= link_to "About", about_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
     </div>
-    <!-- Avatar with dropdown menu -->
     <div class="navbar-tosdr-item">
       <!-- todo make the data toggle when user is logged in -->
       <div class="dropdown">
@@ -49,7 +48,7 @@
             <% end %>
           </li>
           <li>
-            <%= link_to destroy_user_session_path, method: :delete do %>
+            <%= link_to destroy_user_session_path, method: :get do %>
             <i class="fa fa-sign-out"></i> <%= t(".profile", default: "Log out") %>
             <% end %>
           </li>

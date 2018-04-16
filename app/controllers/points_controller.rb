@@ -4,34 +4,52 @@ class PointsController < ApplicationController
   before_action :points_get, only: [:index]
 
   def index
-    if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
-    end
+   @points = Point.all
+   if @query = params[:query]
+    @points = Point.search_points_by_multiple(@query)
   end
+end
 
-  def new
-    @point = Point.new
-    @services = Service.all
-    @topics = Topic.all
-  end
+def new
+  @point = Point.new
+  @services = Service.all
+  @topics = Topic.all
+end
 
-  def create
+def create
     @point = Point.new(point_params)
     @point.user = current_user
-    if params[:only_create]
+
+    if params[:has_case]
+      @point.update_parameters(title: @case.title, rating: @case.score, analysis: @case.description, topic_id: @case.topic_id, service_id: @case.service_id)
       if @point.save
         redirect_to points_path
         flash[:notice] = "You created a point!"
       else
         render :new
       end
+    elsif params[:only_create]
+      # @point.update_parameters(point_params)
+      if @point.save!
+        redirect_to points_path
+        flash[:notice] = "You created a point!"
+      else
+        render :new
+      end
     elsif params[:create_add_another]
-      if @point.save
+      # @point.update_parameters(point_params)
+      if @point.save!
         redirect_to new_point_path
         flash[:notice] = "You created a point! Feel free to add another."
       else
         render :new
       end
+    else
+      # the page goes directly here and doesn't get in the loop
+      # there is definitly something wrong with this method
+      # investigating...
+      # raise
+      flash[:error] = @point.errors.full_messages
     end
   end
 
@@ -85,6 +103,10 @@ class PointsController < ApplicationController
 
   def set_service
     @service = Service.find(params[:service_id])
+  end
+
+  def set_case
+    @case = Case.find(params[:case_id])
   end
 
   def point_params
