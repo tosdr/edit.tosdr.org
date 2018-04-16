@@ -54,13 +54,13 @@
                 <% end %>
             </div>
             <div class="card-inline-item card-inline-options">
-              <%= link_to(topic_path(t), :class => 'btn') do %>
+              <%= link_to(topic_path(t), class: 'btn') do %>
               <i class="fa fa-eye" aria-hidden="true"></i>
               <% end %>
 
               <% if current_user.curator? %>
 
-              <%= link_to(edit_topic_path(t), :class => 'btn') do %>
+              <%= link_to(edit_topic_path(t), class: 'btn') do %>
               <i class="fa fa-pencil" aria-hidden="true"></i>
               <% end %>
 
