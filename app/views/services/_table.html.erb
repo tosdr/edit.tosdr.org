@@ -128,29 +128,35 @@
       <% if current_user %>
         <% if current_user.curator? %>
 
-          <%= link_to(point_path(p), :class => 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-          <%= link_to(edit_point_path(p), :class => 'btn') do %>
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
+            <%= link_to(point_path(p), class: 'btn') do %>
+            <i class="fa fa-eye" aria-hidden="true"></i>
+             <% end %>
+            <%= link_to(edit_point_path(p), class: 'btn') do %>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <% end %>
 
-        <% elsif current_user.id == p.user_id %>
+          <% elsif current_user.id == p.user_id %>
 
-        <%= link_to(point_path(p), :class => 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-        <%= link_to(edit_point_path(p), :class => 'btn') do %>
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
+            <%= link_to(point_path(p), class: 'btn') do %>
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <% end %>
+            <%= link_to(edit_point_path(p), class: 'btn') do %>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <% end %>
 
-        <% end %>
+          <% else %>
+
+            <%= link_to(point_path(p), class: 'btn') do %>
+              <li class="fa fa-eye" aria-hidden="true"></li>
+            <% end %>
+
+            <% end %>
 
         <% else %>
 
-        <%= link_to(point_path(p), :class => 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
+            <%= link_to(point_path(p), class: 'btn') do %>
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <% end %>
 
       <% end %>
 
