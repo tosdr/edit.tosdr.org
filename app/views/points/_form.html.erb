@@ -11,7 +11,7 @@
 
     <div class="col-xs-6">
       <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick a the service you want to review" %>
-      <button onclick="openStep('step-2', event)">Next</button>
+      <span onclick="openStep('step-2', event)", class="btn btn-default">Next</span>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
         <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
         <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
         <% end %>
-        <button onclick="openStep('step-3', event)">Cannot find your case</button>
+        <span onclick="openStep('step-3', event)", class="btn btn-default">No Case Available</span>
       </div>
     </div>
 
@@ -42,5 +42,6 @@
      x[i].style.display = "none";
    }
    document.getElementById(tabName).style.display = "block";
+   console.log(event);
  }
 </script>

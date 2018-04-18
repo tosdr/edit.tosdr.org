@@ -1,18 +1,20 @@
 <div id="step-3" style="display:none">
     <%= simple_form_for [@point] do |f| %>
-    <div class="col-xs-12 col-sm-6">
-      <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
-    </div>
-    <div class="col-xs-6">
-      <button onclick="openStep('step-4', event)">Next</button>
-    </div>
-
     <div class="col-xs-12">
       <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
     </div>
     <div class="col-xs-12">
       <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
     </div>
+    <div class="col-xs-6">
+      <span onclick="openStep('step-4', event)", class="btn btn-default">Next</span>
+    </div>
+</div>
+
+  <div id="step-4" style="display:none">
     <div class="col-xs-12 col-sm-7">
       <%= f.input :source %>
     </div>
@@ -35,5 +37,27 @@
       <% end %>
     </div>
   </div>
-</div>
-</div>
+
+  <!-- <script>
+    function openDiv(tabName, event) {
+      document.getElementById("last-step").style.display = 'block';
+     console.log(event);
+    }
+  </script> -->
+
+  <script>
+    function openStep(tabName, event) {
+      document.querySelectorAll(".step").forEach(
+        function(tab){
+          tab.classList.add('active');
+        });
+      event.currentTarget.classList.remove("active");
+      var i;
+      var x = document.getElementsByClassName("step");
+      for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";
+     }
+     document.getElementById(tabName).style.display = "block";
+     console.log(event);
+   }
+  </script>

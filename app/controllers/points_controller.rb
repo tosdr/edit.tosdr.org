@@ -19,7 +19,7 @@ def create
     @point = Point.new(point_params)
     @point.user = current_user
     if params[:has_case]
-      @point.update_parameters(title: @case.title, rating: @case.score, analysis: @case.description, topic_id: @case.topic_id, service_id: @case.service_id)
+      @point.update(title: @case.title, rating: @case.score, analysis: @case.description, topic_id: @case.topic_id, service_id: @case.service_id)
       if @point.save
         redirect_to points_path
         flash[:notice] = "You created a point!"
@@ -27,7 +27,7 @@ def create
         render :new
       end
     elsif params[:only_create]
-      # @point.update_parameters(point_params)
+      @point.update(point_params)
       if @point.save!
         redirect_to points_path
         flash[:notice] = "You created a point!"
@@ -35,7 +35,7 @@ def create
         render :new
       end
     elsif params[:create_add_another]
-      # @point.update_parameters(point_params)
+      @point.update(point_params)
       if @point.save!
         redirect_to new_point_path
         flash[:notice] = "You created a point! Feel free to add another."
