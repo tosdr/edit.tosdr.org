@@ -61,14 +61,14 @@ class PointsController < ApplicationController
     if !@point.is_featured? && @point.status == "approved"
       if @point.service.points.reject { |p| !p.is_featured }.count < 5
         @point.update(is_featured: !@point.is_featured)
-        redirect_to points_path
+        redirect_to point_path(@point)
       else
         flash[:alert] = "There are already five featured points for this service!"
         redirect_to point_path(@point)
       end
     elsif @point.is_featured?
       @point.update(is_featured: !@point.is_featured)
-      redirect_to points_path
+      redirect_to point_path(@point)
     end
   end
 

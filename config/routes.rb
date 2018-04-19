@@ -8,21 +8,15 @@ Rails.application.routes.draw do
 
   get 'about', to: 'pages#about'
 
-  # get 'points/pending', to: 'points#index'
-
-  # get "points/(:scope)", to "points#index",
-
   get 'points/new', to: 'points#new'
+  get 'points/:id/is_featured', to: 'points#featured', as: :featured_point
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
-
   resources :points, except: [:index] do
-    member do
-      put "/is_featured", to: "points#featured", as: :featured
-    end
     resources :reasons, only: [:new, :create]
   end
 
-  resources :services
+  resources :services, except: [:show]
+  get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
 

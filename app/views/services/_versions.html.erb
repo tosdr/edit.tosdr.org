@@ -1,6 +1,4 @@
-
 <div class="article-holder status-changes">
-
   <table class="table">
     <thead class="thead thead-dark">
       <th scope="col">ANALYSIS UPDATES</th>
@@ -9,7 +7,7 @@
       <!-- <th scope="col">WHO</th> -->
     </thead>
     <tbody>
-      <% @service.versions.each do |v| %>
+      <% @versions.each do |v| %>
       <tr>
         <th scope="row"><%= v.event %></th>
         <td>

@@ -25,4 +25,17 @@ end
   # def has_voted(point)
   #   Vote.where(point_id: point.id, user_id: current_user.id)
   # end
+
+def rating_for_table
+  pointbox = if self.rating.between?(7, 10)
+    "point-good"
+  elsif self.rating.between?(4,6)
+    "point-neutral"
+  elsif self.rating.between?(2,3)
+    "point-bad"
+  elsif self.rating.between?(0,2)
+    "point-blocker"
+  end
+end
+
 end

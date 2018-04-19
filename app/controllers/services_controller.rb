@@ -23,8 +23,22 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @points = @service.points
-    # @points = @points.where(status: 'approved')
+    if current_user
+      case params[:scope]
+      when nil
+        @points = @service.points
+      when 'pending'
+        @points = @service.points.where(status: 'pending')
+      when 'archived-versions'
+        @versions = @service.versions
+      end
+    else
+      @points = @service.points.where(status: 'approved')
+    end
+
+    @rating = @service.rating_for_view
+
+    @versions = @service.versions
 
     if @query = params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])
@@ -53,7 +67,7 @@ class ServicesController < ApplicationController
   private
 
   def set_service
-    @service = Service.find(params[:id])
+    @service = Service.find(params[:id] || params[:service_id])
   end
 
   def service_params
