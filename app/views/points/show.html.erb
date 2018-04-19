@@ -4,6 +4,7 @@
   </div>
   <div class="col-sm-6">
     <% if current_user %>
+    <% if current_user.curator %>
     <div class="dropdown btn-group fr">
         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
             Update Point
@@ -26,6 +27,7 @@
             </li>
         </ul>
     </div>
+    <% end %>
     <% end %>
   </div>
 </div>
