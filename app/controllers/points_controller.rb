@@ -1,5 +1,6 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_curator, except: [:index, :show]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
   before_action :points_get, only: [:index]
 
@@ -96,6 +97,12 @@ class PointsController < ApplicationController
       @points = Point.all
     elsif params[:scope] == "pending"
       @points = Point.all.where(status: "pending")
+    end
+  end
+
+  def set_curator
+    unless current_user.curator?
+      render :file => "public/401.html", :status => :unauthorized
     end
   end
 end
