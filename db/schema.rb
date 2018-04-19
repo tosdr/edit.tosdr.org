@@ -89,13 +89,10 @@ ActiveRecord::Schema.define(version: 20180414123052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "grade"
-    t.bigint "user_id"
-    t.string "status"
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
     t.string "slug"
-    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -148,5 +145,4 @@ ActiveRecord::Schema.define(version: 20180414123052) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
-  add_foreign_key "services", "users"
 end
