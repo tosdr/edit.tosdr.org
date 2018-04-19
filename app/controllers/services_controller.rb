@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_curator, except: [:index, :show]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -74,4 +75,9 @@ class ServicesController < ApplicationController
     params.require(:service).permit(:name, :url, :query)
   end
 
+  def set_curator
+    unless current_user.curator?
+      render :file => "public/401.html", :status => :unauthorized
+    end
+  end
 end
