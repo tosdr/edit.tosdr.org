@@ -31,10 +31,19 @@
         <% else %>
         <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
         <% end %>
-        <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
-        <% end %>
-        <span onclick="openStep('step-3', event)", class="btn btn-default">No Case Available</span>
       </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <%= f.input :source %>
+        </div>
+        <div class="col-xs-6">
+          <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
+          <% end %>
+          <span onclick="openStep('step-3', event)", class="btn btn-default">No Case Available</span>
+        </div>
+      </div>
+
       </div>
     </div>
 
