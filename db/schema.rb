@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180414123052) do
+ActiveRecord::Schema.define(version: 20180419145657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,9 +34,9 @@ ActiveRecord::Schema.define(version: 20180414123052) do
     t.integer "score"
     t.string "title"
     t.text "description"
-    t.bigint "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "topic_id"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
   end
 
@@ -140,7 +140,6 @@ ActiveRecord::Schema.define(version: 20180414123052) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "cases", "topics"
   add_foreign_key "comments", "points"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "services"

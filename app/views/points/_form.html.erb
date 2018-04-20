@@ -1,33 +1,47 @@
 <div class="form-login">
   <div class="row row-form">
     <div class="step active" style="">
-    <div class="point-form-text">
-      <p>When submitting a contribution, you submit what we call a "point." It's an analysis on one specific aspect of the ToS of the service that you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of all those ratings. See the <a href="/about#classification">about page</a> for more information.</p>
+      <div class="point-form-text">
+        <p>When submitting a contribution, you submit what we call a "point." It's an analysis on one specific aspect of the ToS of the service that you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of all those ratings. See the <a href="/about#classification">about page</a> for more information.</p>
 
-      <p>Each point submitted by a user has to be reviewed by a curator before being displayed on the website. You will recieve a message by email from the curator who reviewed your point.</p>
+        <p>Each point submitted by a user has to be reviewed by a curator before being displayed on the website. You will recieve a message by email from the curator who reviewed your point.</p>
+      </div>
+
+      <%= simple_form_for [@point] do |f| %>
+
+      <div class="col-xs-6" id="grab-service">
+        <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick the service you want to review" %>
+        <span onclick="openStep('step-2', event)", class="btn btn-default">Next</span>
+      </div>
     </div>
-
-    <%= simple_form_for [@point] do |f| %>
-
-    <div class="col-xs-6">
-      <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick a the service you want to review" %>
-      <span onclick="openStep('step-2', event)", class="btn btn-default">Next</span>
-    </div>
-  </div>
 
     <div id="step-2" style="display:none">
-      <div class="p15 col-xs-6">
+      <div class="row">
+      <div class="p15 col-sm-12">
         <p>Cases represent common reviews. We pre-rated them so each time this review pops up in an analysis, it is rated the same way.</p>
       </div>
+      </div>
+      <div class="row">
       <div class="col-xs-6">
         <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
+      </div>
+      <div class="col-xs-6">
+        <% if current_user.curator? %>
+        <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+        <% else %>
+        <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+        <% end %>
         <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
         <% end %>
         <span onclick="openStep('step-3', event)", class="btn btn-default">No Case Available</span>
       </div>
+      </div>
     </div>
 
   <%= render 'topic' %>
+
+</div>
+</div>
 
 <script>
   function openStep(tabName, event) {
@@ -44,4 +58,10 @@
    document.getElementById(tabName).style.display = "block";
    console.log(event);
  }
+
+ var selected_index = document.getElementById('grab-service').childNodes[1].childNodes[1].options.selectedIndex
+
+ var index_to_set = document.getElementById('grab-service').childNodes[1].childNodes[1].options[selected_index].value
+
+ console.log(index_to_set)
 </script>

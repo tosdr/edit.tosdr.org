@@ -1,10 +1,13 @@
 <div id="step-3" style="display:none">
     <%= simple_form_for [@point] do |f| %>
+    <div class="col-xs-6" id="grab-service">
+      <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick the service you want to review" %>
+    </div>
     <div class="col-xs-12">
       <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
     </div>
     <div class="col-xs-12 col-sm-6">
-      <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
+        <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
     </div>
     <div class="col-xs-12">
       <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
@@ -37,13 +40,6 @@
       <% end %>
     </div>
   </div>
-
-  <!-- <script>
-    function openDiv(tabName, event) {
-      document.getElementById("last-step").style.display = 'block';
-     console.log(event);
-    }
-  </script> -->
 
   <script>
     function openStep(tabName, event) {
