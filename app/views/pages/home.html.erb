@@ -7,11 +7,11 @@
   </p>
 </header>
 
-<div class="col-xs-12 text-center search-bar">
+<div class="col-xs-12 text-center search-bar mb15">
   <%= render "shared/search" %>
 </div>
 <div class="col-xs-12 text-center sorting-buttons">
-  <button class="btn btn-lg btn-success" id="orderByRating"> order by rating </button>
+  <button class="btn btn-lg btn-success" id="orderByRating"> Order by Rating </button>
 </div>
 
   <%= javascript_tag do %>
@@ -56,6 +56,7 @@
       document.getElementById('service-container').innerHTML = output;
   });
     <% end %>
+
   <div class="row row-form" id="service-container">
     <% @services.each do |s| %>
       <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_ratings %>" >

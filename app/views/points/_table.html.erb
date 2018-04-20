@@ -1,10 +1,5 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="text-center sorting-buttons">
-
-      <button class="btn btn-success" id="orderByPoint">order by rating</button>
-    </div>
-    <!-- card-inline-header -->
     <div class="card-inline card-inline-header ">
       <div class="card-inline-item card-inline-service">
         Services
@@ -41,35 +36,31 @@
       var array = [];
       for (var i = 0; i < elems.length; i++) {
       array[i] = elems[i];
-    }
-    // perform sort depending on classname
-    if(event.currentTarget.className=="btn btn-success"){
-    array.sort(function(a, b) {
-    return a.dataset.rating - b.dataset.rating;
-  });
-  event.currentTarget.classList.remove("btn-success");
-  event.currentTarget.classList.add("btn-danger");
-}
-else if(event.currentTarget.className== "btn btn-danger"){
-array.sort(function(a, b) {
-return b.dataset.rating -  a.dataset.rating;
-});
-event.currentTarget.classList.remove("btn-danger");
-event.currentTarget.classList.add("btn-success");
-}
-// join the array back into HTML
-var output = "";
-for (var i = 0; i < array.length; i++) {
-output += array[i].outerHTML;
-}
-// append output to div 'points-table-container'
-document.getElementById('points-table-container').innerHTML = output;
-});
-<% end %>
-
-
-
-
+      }
+      // perform sort depending on classname
+      if(event.currentTarget.className=="btn btn-success"){
+      array.sort(function(a, b) {
+      return a.dataset.rating - b.dataset.rating;
+      });
+      event.currentTarget.classList.remove("btn-success");
+      event.currentTarget.classList.add("btn-danger");
+      }
+      else if(event.currentTarget.className== "btn btn-danger"){
+      array.sort(function(a, b) {
+      return b.dataset.rating -  a.dataset.rating;
+      });
+      event.currentTarget.classList.remove("btn-danger");
+      event.currentTarget.classList.add("btn-success");
+      }
+      // join the array back into HTML
+      var output = "";
+      for (var i = 0; i < array.length; i++) {
+      output += array[i].outerHTML;
+      }
+      // append output to div 'points-table-container'
+      document.getElementById('points-table-container').innerHTML = output;
+      });
+    <% end %>
 
 <% points.each do |p| %>
 <div class="card-point" data-rating="<%= p.rating %>">
@@ -106,27 +97,32 @@ document.getElementById('points-table-container').innerHTML = output;
       <% if current_user %>
         <% if current_user.curator? %>
 
-          <%= link_to(point_path(p), :class => 'btn') do %>
+          <%= link_to(point_path(p), class: 'btn') do %>
           <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-          <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <% end %>
+          <%= link_to(edit_point_path(p), class: 'btn') do %>
           <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
+          <% end %>
 
         <% elsif current_user.id == p.user_id %>
 
-        <%= link_to(point_path(p), :class => 'btn') do %>
+          <%= link_to(point_path(p), class: 'btn') do %>
           <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-        <%= link_to(edit_point_path(p), :class => 'btn') do %>
+          <% end %>
+          <%= link_to(edit_point_path(p), class: 'btn') do %>
           <i class="fa fa-pencil" aria-hidden="true"></i>
-        <% end %>
+          <% end %>
+          <% else %>
+
+          <%= link_to(point_path(p), class: 'btn') do %>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <% end %>
 
         <% end %>
 
-        <% else %>
+      <% else %>
 
-        <%= link_to(point_path(p), :class => 'btn') do %>
+        <%= link_to(point_path(p), class: 'btn') do %>
           <i class="fa fa-eye" aria-hidden="true"></i>
         <% end %>
 

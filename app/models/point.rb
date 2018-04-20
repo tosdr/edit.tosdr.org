@@ -15,15 +15,29 @@ class Point < ApplicationRecord
  validates :rating, presence: true
  validates :rating, numericality: true
 
-  def self.search_points_by_multiple(query)
-   Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ?", "%#{query}%", "%#{query}%")
-  end
+def self.search_points_by_multiple(query)
+  Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ?", "%#{query}%", "%#{query}%")
+end
 
-  def self.search_points_by_topic(query)
-    Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
-  end
+def self.search_points_by_topic(query)
+  Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
+end
 
-  def grab_service(id)
-    Service.find(id)
+# VOTE CONTROLLER ! TODO
+  # def has_voted(point)
+  #   Vote.where(point_id: point.id, user_id: current_user.id)
+  # end
+
+def rating_for_table
+  pointbox = if self.rating.between?(7, 10)
+    "point-good"
+  elsif self.rating.between?(4,6)
+    "point-neutral"
+  elsif self.rating.between?(2,3)
+    "point-bad"
+  elsif self.rating.between?(0,2)
+    "point-blocker"
   end
+end
+
 end

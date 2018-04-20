@@ -9,7 +9,7 @@
 
       <%= simple_form_for [@point] do |f| %>
 
-      <div class="col-xs-6" id="grab-service">
+      <div class="form-service-width tc" id="grab-service">
         <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick the service you want to review" %>
         <span onclick="openStep('step-2', event)", class="btn btn-default">Next</span>
       </div>

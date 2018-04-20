@@ -8,16 +8,16 @@ Rails.application.routes.draw do
 
   get 'about', to: 'pages#about'
 
-  resources :points do
-    member do
-      put "/is_featured", to: "points#featured", as: :featured
-    end
-    # collection do # if we dont need the id in the route!
-    #   get 'top-3', to: "points#top_3"
-    # end
+  get 'points/new', to: 'points#new'
+  get 'points/:id/is_featured', to: 'points#featured', as: :featured_point
+  resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
+  resources :points, except: [:index] do
     resources :reasons, only: [:new, :create]
   end
-  resources :services
+
+  resources :services, except: [:show]
+  get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
+
   resources :topics
 
   namespace :api, defaults: { format: :json } do

@@ -1,13 +1,15 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_curator, except: [:index, :show]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
+  before_action :points_get, only: [:index]
 
   def index
-   @points = Point.all
-   if @query = params[:query]
-    @points = Point.search_points_by_multiple(@query)
+    @points = Point.all
+    if @query = params[:query]
+      @points = Point.search_points_by_multiple(@query)
+    end
   end
-end
 
 def new
   @point = Point.new
@@ -53,8 +55,11 @@ end
   end
 
   def show
+    @point
     puts @point.id
     @comments = Comment.where(point_id: @point.id)
+    @versions = @point.versions
+    @reaons = @point.reasons
   end
 
   def update
@@ -72,14 +77,14 @@ end
     if !@point.is_featured? && @point.status == "approved"
       if @point.service.points.reject { |p| !p.is_featured }.count < 5
         @point.update(is_featured: !@point.is_featured)
-        redirect_to points_path
+        redirect_to point_path(@point)
       else
         flash[:alert] = "There are already five featured points for this service!"
         redirect_to point_path(@point)
       end
     elsif @point.is_featured?
       @point.update(is_featured: !@point.is_featured)
-      redirect_to points_path
+      redirect_to point_path(@point)
     end
   end
 
@@ -106,5 +111,19 @@ end
 
   def point_params
     params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :case_id, :is_featured, :query)
+  end
+
+  def points_get
+    if params[:scope].nil? || params[:scope] == "all"
+      @points = Point.all
+    elsif params[:scope] == "pending"
+      @points = Point.all.where(status: "pending")
+    end
+  end
+
+  def set_curator
+    unless current_user.curator?
+      render :file => "public/401.html", :status => :unauthorized
+    end
   end
 end
