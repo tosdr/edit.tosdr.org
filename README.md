@@ -19,6 +19,16 @@ All the details on the database schema can be found on the [wiki](https://github
 
 All the details on the API can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/api)
 
+## Core developpers 
+* [Chris](https://github.com/piks3l/) - push rights on master and access to production
+* [Madeline](https://github.com/madoleary) - push rights on master
+* [Michiel](https://github.com/michielbdejong) - push rights on master and access to production
+
+### Hosting
+* https://phoenix.tosdr.org (deprecated) - Chris' Heroku
+* https://edit.tosdr.org (production) - Michiel's Heroku (Chris has access too)
+
+
 ## License
 
 AGPL-3.0+ (GNU Affero General Public License, version 3 or later)
