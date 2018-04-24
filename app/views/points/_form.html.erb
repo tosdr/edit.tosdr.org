@@ -32,12 +32,21 @@
       <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
       <% end %>
     </div>
+    <% if params[:action] == "edit" %>
+    <div class="col-xs-12">
+      <%= f.input :reason, as: :text , input_html: { rows: 4, class: "text-area" }, hint: "Provide a reason for your changes to this analysis point." %>
+    </div>
+    <% end %>
     <div class="form-actions col-xs-4 col-sm-2 col-md-2">
       <%= link_to "Back", :back, class: "btn btn-default" %>
     </div>
     <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
-      <%= f.submit "Submit Point", name: "only_create", class: 'btn btn-primary' %>
-      <%= f.submit "Submit Point + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+      <% if params[:action] == "new" %>
+        <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
+        <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+      <% else %>
+        <%= f.submit "Update", class: 'btn btn-primary' %>
+      <% end %>
     </div>
   </div>
   <% end %>
