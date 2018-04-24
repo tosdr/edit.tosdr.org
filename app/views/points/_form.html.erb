@@ -9,9 +9,9 @@
 
       <%= simple_form_for [@point] do |f| %>
 
-      <div class="form-service-width tc" id="grab-service">
+      <div class="form-service-width tc" id="get-service-id">
         <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick the service you want to review" %>
-        <span onclick="openStep('step-2', event)", class="btn btn-default">Next</span>
+        <span onclick="openStep('step-2', event)", class="btn btn-default"> Next </span>
       </div>
     </div>
 
@@ -40,7 +40,7 @@
         <div class="col-xs-6">
           <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
           <% end %>
-          <span onclick="openStep('step-3', event)", class="btn btn-default">No Case Available</span>
+          <span onclick="openStep('step-3', event)", class="btn btn-default", id="grab-service">No Case Available</span>
         </div>
       </div>
 
@@ -68,9 +68,9 @@
    console.log(event);
  }
 
- var selected_index = document.getElementById('grab-service').childNodes[1].childNodes[1].options.selectedIndex
+  var selected_index = document.getElementById('grab-service').childNodes[1].childNodes[1].options.selectedIndex
 
- var index_to_set = document.getElementById('grab-service').childNodes[1].childNodes[1].options[selected_index].value
+  var index_to_set = document.getElementById('grab-service').childNodes[1].childNodes[1].options[selected_index].value
 
- console.log(index_to_set)
+  console.log(index_to_set)
 </script>
