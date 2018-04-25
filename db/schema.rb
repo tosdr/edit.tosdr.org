@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20180419145657) do
-=======
-ActiveRecord::Schema.define(version: 20180414123052) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 20180424095751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,7 +65,6 @@ ActiveRecord::Schema.define(version: 20180414123052) do
     t.bigint "case_id"
     t.string "oldId"
     t.text "reason"
-    t.text "change_reason"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
@@ -93,10 +88,13 @@ ActiveRecord::Schema.define(version: 20180414123052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "grade"
+    t.bigint "user_id"
+    t.string "status"
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
     t.string "slug"
+    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -148,4 +146,5 @@ ActiveRecord::Schema.define(version: 20180414123052) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
+  add_foreign_key "services", "users"
 end

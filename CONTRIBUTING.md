@@ -67,13 +67,14 @@ Install Rails and Postgres
 
     apt install rails postgres
 
-In your code directory:
+In your code directory run:
 
     git clone https://github.com/tosdr/phoenix
     cd phoenix
     rbenv install 2.3.5
     rbenv local 2.3.5
     bundle install
+    yarn
     rails db:create db:migrate db:seed
     rails s
 
@@ -81,7 +82,7 @@ And you're ready to code !
 
 ## Committing & Pull Requests
 
-* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh]. 
+* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh], [mod] if it's a modification, [sec] if it's security. 
 * When you create a pull request, please make sure you checked everything in the PR template. 
     
 Have fun!
