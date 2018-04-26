@@ -40,10 +40,20 @@
     transition: width 0.3s ease, margin 0.3s ease;
 }
 
-.form-service-width {
+.form-field-width {
   width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.form-float-center {
-  float: center;
+.margin-bottom-larger {
+  margin-bottom: 25px;
+}
+
+.margin-top-medium {
+  margin-top: 15px;
+}
+
+.margin-top-larger {
+  margin-top: 25px;
 }

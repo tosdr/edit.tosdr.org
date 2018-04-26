@@ -1,0 +1,62 @@
+<div class="form-login" id="further-steps">
+  <div class="row row-form">
+    <div class="margin-top-larger" id="step-3" style="display:none">
+        <%= simple_form_for [@point] do |f| %>
+        <div class="col-xs-12">
+          <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
+        </div>
+        <div class="col-xs-6" id="set-service">
+          <%= f.association :service, collection: Service.order('name ASC') %>
+        </div>
+        <div class="col-xs-12">
+          <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+        </div>
+        <div class="col-xs-6 margin-bottom-larger">
+          <span onclick="openStep('step-4', event)", class="btn btn-default">Next</span>
+        </div>
+    </div>
+
+      <div id="step-4" style="display:none">
+        <div class="col-xs-12 col-sm-7">
+          <%= f.input :source %>
+        </div>
+        <div class="col-xs-6 col-sm-2">
+          <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+          <% if current_user.curator? %>
+          <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+          <% else %>
+          <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+          <% end %>
+        </div>
+        <div class="form-actions col-xs-4 col-sm-2 col-md-2">
+          <%= link_to "Back", :back, class: "btn btn-default" %>
+        </div>
+        <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+          <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
+          <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openStep(tabName, event) {
+      document.querySelectorAll(".step").forEach(
+        function(tab){
+          tab.classList.add('active');
+        });
+      event.currentTarget.classList.remove("active");
+      var i;
+      var x = document.getElementsByClassName("step");
+      for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";
+     }
+     document.getElementById(tabName).style.display = "block";
+   }
+  </script>
