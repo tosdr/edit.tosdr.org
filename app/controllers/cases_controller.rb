@@ -15,6 +15,12 @@ class CasesController < ApplicationController
   end
 
   def create
+    @case = Case.new(case_params)
+    if @case.save
+      redirect_to cases_path
+    else
+      render :new
+    end
   end
 
   def update
@@ -28,7 +34,8 @@ class CasesController < ApplicationController
     @case = Case.find(params[:id])
   end
 
-  def params
+  def case_params
+    params.require(:case).permit(:classification, :score, :title, :description, :topic_id)
   end
 
   def set_curator
