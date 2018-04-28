@@ -1,0 +1,116 @@
+<header class="tc ph4">
+  <h1 class="fw2 mv3">
+    <%= @case.title %>
+  </h1>
+  <p class="fw2 mt0 lh-copy">
+    <%= @case.description %>.
+  </p>
+
+  <p>
+  <% if current_user.curator? %>
+  <%= link_to 'Edit Case', edit_topic_path(@case), class: 'btn btn-primary' %>
+  <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
+  <% end %>
+  </p>
+<div class="search-bar">
+  <div id="custom-search-input">
+    <div class="input-group col-xs-12">
+      <%= form_tag(case_path(@case), method: :get) do %>
+        <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search for case", value: @query %>
+
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
+            <span class="glyphicon glyphicon-search"></span>
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <div class="reset-btn">
+    <%= link_to "Back", case_path(@case), class: "btn btn-default"%>
+  </div>
+</div>
+
+</header>
+
+<div class="row">
+  <div class="col-xs-12 text-center">
+  </div>
+</div>
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-service">
+            Services
+          </div>
+          <div class="card-inline-item card-inline-point">
+            Title
+          </div>
+          <div class="card-inline-item card-inline-rating">
+            Rating
+          </div>
+          <div class="card-inline-item card-inline-status">
+            Status
+          </div>
+          <div class="card-inline-item card-inline-featured">
+            Featured?
+          </div>
+          <div class="card-inline-item card-inline-options">
+            View
+          </div>
+        </div>
+        <!-- actual card-inline -->
+          <% if @points.empty? %>
+            <div class="card-inline">
+              <div class="card-inline-item">
+                No points found
+              </div>
+            </div>
+          <% else %>
+            <% @points.each do |p| %>
+            <% if p.rating.between?(7, 10)%>
+              <% pointbox = "point-good" %>
+            <% elsif p.rating.between?(4,6) %>
+              <% pointbox = "point-neutral" %>
+            <% elsif p.rating.between?(2,3) %>
+              <% pointbox = "point-bad" %>
+            <% elsif p.rating.between?(0,2) %>
+              <% pointbox = "point-blocker" %>
+            <% end %>
+            <div class="card-inline">
+              <div class="card-inline-item card-inline-service">
+                <%= p.service.name %>
+              </div>
+              <div class="card-inline-item card-inline-point">
+                <%= p.title %>
+              </div>
+              <div class="card-inline-item card-inline-rating <%= pointbox %>">
+                <%= p.rating %>
+              </div>
+              <div class="card-inline-item card-inline-status">
+                <%= p.status %>
+              </div>
+              <div class="card-inline-item card-inline-featured">
+                <% if p.is_featured? %>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <% else %>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <% end %>
+              </div>
+              <div class="card-inline-item card-inline-options">
+                <%= link_to(point_path(p), class: 'btn') do %>
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                <% end %>
+              </div>
+            </div>
+            <!-- card-inline-END -->
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

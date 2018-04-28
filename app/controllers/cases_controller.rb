@@ -23,6 +23,14 @@ class CasesController < ApplicationController
     end
   end
 
+  def show
+    @points = @case.points
+    if @query = params[:query]
+      @points = Points.search_points_by_multiple(@query).where(case: @case)
+      puts @case_points
+    end
+  end
+
   def update
   end
 
