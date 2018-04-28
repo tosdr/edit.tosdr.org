@@ -8,7 +8,7 @@
 
   <p>
   <% if current_user.curator? %>
-  <%= link_to 'Edit Case', edit_topic_path(@case), class: 'btn btn-primary' %>
+  <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
   <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
   <% end %>
   </p>

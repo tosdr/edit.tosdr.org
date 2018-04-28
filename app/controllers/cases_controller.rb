@@ -32,9 +32,20 @@ class CasesController < ApplicationController
   end
 
   def update
+    @case.update(case_params)
+    flash[:notice] = "Case has been updated!"
+    redirect_to case_path(@case)
   end
 
   def destroy
+    if @case.points.any?
+      flash[:alert] = "Users have contributed valuable insight to this case!"
+      redirect_to case_path(@case)
+    else
+      @case.destroy
+      flash[:notice] = "Case has been deleted!"
+      redirect_to cases_path
+    end
   end
 
   private
