@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'about', to: 'pages#about'
 
   get 'points/new', to: 'points#new'
-  get 'points/:id/is_featured', to: 'points#featured', as: :featured_point
+  put 'points/:id/is_featured', to: 'points#featured', as: :featured_point
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
   resources :points, except: [:index] do
     resources :reasons, only: [:new, :create]
