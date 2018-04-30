@@ -37,6 +37,7 @@ class PointsController < ApplicationController
   end
 
   def edit
+    @point.reason = Reason.new
   end
 
   def show
