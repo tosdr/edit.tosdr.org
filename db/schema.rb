@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424095751) do
+ActiveRecord::Schema.define(version: 20180430160908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,14 +38,6 @@ ActiveRecord::Schema.define(version: 20180424095751) do
     t.datetime "updated_at", null: false
     t.integer "topic_id"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.bigint "point_id"
-    t.string "summary"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["point_id"], name: "index_comments_on_point_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -88,13 +80,10 @@ ActiveRecord::Schema.define(version: 20180424095751) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "grade"
-    t.bigint "user_id"
-    t.string "status"
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
     t.string "slug"
-    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -120,7 +109,7 @@ ActiveRecord::Schema.define(version: 20180424095751) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username"
+    t.string "username", default: ""
     t.boolean "admin", default: false
     t.boolean "curator", default: false
     t.boolean "deactivated", default: false
@@ -139,12 +128,10 @@ ActiveRecord::Schema.define(version: 20180424095751) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "comments", "points"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "services"
   add_foreign_key "points", "topics"
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
-  add_foreign_key "services", "users"
 end
