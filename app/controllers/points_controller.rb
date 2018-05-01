@@ -48,6 +48,7 @@ class PointsController < ApplicationController
   end
 
   def update
+    # Maybe something is wrong here ? In local updates are not saved
     @point.update(point_params)
     flash[:notice] = "Point successfully updated!"
     redirect_to point_path(@point)
