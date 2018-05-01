@@ -2,7 +2,6 @@ class ReasonsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_curator, except: [:index, :show]
   before_action :set_point, only: [:new, :create]
-  before_action :set_admin
   def new
     @reason = Reason.new
   end
@@ -24,13 +23,6 @@ class ReasonsController < ApplicationController
   end
 
   private
-
-  def set_admin
-    unless current_user.curator?
-      redirect_to root_path
-      flash[:alert] = "You must be a curator"
-    end
-  end
 
   def set_point
     @point = Point.find(params[:point_id])
