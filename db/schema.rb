@@ -69,10 +69,7 @@ ActiveRecord::Schema.define(version: 20180502084404) do
     t.bigint "case_id"
     t.string "oldId"
     t.text "change_reason"
-<<<<<<< HEAD
     t.text "point_change"
-=======
->>>>>>> 245e9f36519e1203d36664a0272b5e563708a2d7
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
