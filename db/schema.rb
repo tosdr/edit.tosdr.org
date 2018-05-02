@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20180502090354) do
-=======
-ActiveRecord::Schema.define(version: 20180502084404) do
->>>>>>> 245e9f36519e1203d36664a0272b5e563708a2d7
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,9 +34,9 @@ ActiveRecord::Schema.define(version: 20180502084404) do
     t.integer "score"
     t.string "title"
     t.text "description"
+    t.bigint "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "topic_id"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
   end
 
@@ -68,7 +64,6 @@ ActiveRecord::Schema.define(version: 20180502084404) do
     t.string "quote"
     t.bigint "case_id"
     t.string "oldId"
-    t.text "change_reason"
     t.text "point_change"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
@@ -93,13 +88,10 @@ ActiveRecord::Schema.define(version: 20180502084404) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "grade"
-    t.bigint "user_id"
-    t.string "status"
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
     t.string "slug"
-    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -144,6 +136,7 @@ ActiveRecord::Schema.define(version: 20180502084404) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "cases", "topics"
   add_foreign_key "comments", "points"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "services"
@@ -151,5 +144,4 @@ ActiveRecord::Schema.define(version: 20180502084404) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
-  add_foreign_key "services", "users"
 end
