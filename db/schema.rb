@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424095751) do
+ActiveRecord::Schema.define(version: 20180502090354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20180424095751) do
     t.bigint "case_id"
     t.string "oldId"
     t.text "change_reason"
+    t.text "point_change"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
