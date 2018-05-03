@@ -20,10 +20,10 @@
       <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
     </div>
     <div class="col-xs-12 col-sm-7">
-      <%= f.input :source %>
+      <%= f.input :source, hint: "Where did you find it?" %>
     </div>
     <div class="col-xs-6 col-sm-2">
-      <%= f.input :rating, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %>
+      <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
     </div>
     <div class="col-xs-6 col-sm-3">
       <% if current_user.curator? %>
