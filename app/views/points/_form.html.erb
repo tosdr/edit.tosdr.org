@@ -23,7 +23,7 @@
       <%= f.input :source, hint: "Where did you find it?" %>
     </div>
     <div class="col-xs-6 col-sm-2">
-      <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
+      <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating", item_wrapper_class: 'inline' %>
     </div>
     <div class="col-xs-6 col-sm-3">
       <% if current_user.curator? %>
