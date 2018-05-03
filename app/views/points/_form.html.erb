@@ -19,10 +19,10 @@
     <div class="col-xs-12">
       <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
     </div>
-    <div class="col-xs-12 col-sm-7">
+    <div class="col-xs-12 col-sm-5">
       <%= f.input :source, hint: "Where did you find it?" %>
     </div>
-    <div class="col-xs-6 col-sm-2">
+    <div class="col-xs-6 col-sm-4">
       <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating", item_wrapper_class: 'inline' %>
     </div>
     <div class="col-xs-6 col-sm-3">
