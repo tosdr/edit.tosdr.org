@@ -16,6 +16,10 @@ All the details on the database schema can be found on the [wiki](https://github
 
 ## Export
 
+Careful! The postgres database dumps produced during this process contain user accounts that should
+be kept secret. Never commit a database dump to git, or share it with someone who does not also have
+access to our Heroku account!
+
 ```sh
 # make sure you have phoenix checked out next to tosdr-build in a folder:
 git clone https://github.com/tosdr/phoenix
