@@ -14,6 +14,43 @@ Please refer to the CONTRIBUTING.md guide for more information. If anything is m
 
 All the details on the database schema can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/database).
 
+## Export
+
+Careful! The postgres database dumps produced during this process contain user accounts that should
+be kept secret. Never commit a database dump to git, or share it with someone who does not also have
+access to our Heroku account!
+
+```sh
+# make sure you have phoenix checked out next to tosdr-build in a folder:
+git clone https://github.com/tosdr/phoenix
+git clone https://github.com/tosdr/tosdr-build
+cd phoenix
+export DATE=`date "+%Y%m%d%H%M%S"`
+heroku pg:backups:capture --app edit-tosdr-org
+heroku pg:backups:download --app edit-tosdr-org
+mv latest.dump $DATE.dump
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -d phoenix_development $DATE.dump
+rails db:migrate
+rails runner db/export_points_to_old_db.rb
+# services export currently broken sorry, see https://github.com/tosdr/phoenix/issues/307
+# topics and cases export not implemented yet
+
+# go look at the export results:
+cd ../tosdr-build
+# these will be created due to an import bug, see https://github.com/tosdr/phoenix/issues/306
+rm src/points/G4iR5KH7WVw-2-amazon.json
+rm src/points/G4iR5KH7WVw-amazon.json
+rm src/points/T98obrJsjJA-2-amazon.json
+rm src/points/T98obrJsjJA-2-gravatar.json
+rm src/points/legal-name-registration-amazon.json
+rm src/points/pseudos-allowed-amazon.json
+# notice some json formatting differences which will be undone again by grunt later:
+git diff
+
+# then build tosdr-build as usual, see https://github.com/tosdr/tosdr-build#build:
+npm install
+./node_modules/.bin/grunt
+```
 
 ## API
 
