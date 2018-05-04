@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].nil? ? "Lost in time" : version.changeset["updated_at"].second.time) %>
+              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].nil? ? @point.updated_at.second.time : version.changeset["updated_at"].second.time) %>
           </h5>
         </div>
         <div class="col-sm-4">
