@@ -10,7 +10,7 @@ Point.all.each do |point|
   puts point.to_json
   puts point.service.to_json
   if (point.oldId.nil?) then 
-    point['oldId'] = 'live-' + point.id.to_s
+    point['oldId'] = point.id.to_s
   end
   puts point.to_json
   filename = point.id.to_s + '.json'
@@ -19,12 +19,12 @@ Point.all.each do |point|
     data = JSON.parse(file)
   rescue
     begin
-      filename = point.oldId + '.json'
+      filename = point.oldId + '-' + point.service.slug + '.json'
       file = File.read(filepath_points + filename)
       data = JSON.parse(file)
     rescue
       begin
-        filename = point.oldId + '-' + point.service.slug + '.json'
+        filename = point.oldId + '.json'
         file = File.read(filepath_points + filename)
         data = JSON.parse(file)
       rescue
