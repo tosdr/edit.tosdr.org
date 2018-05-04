@@ -8,6 +8,7 @@
   <% version.changeset['change_reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["change_reason"].second %>
   <% else %>
   <% reason = "Cannot display the older versions" %>
+  <% end %>
   <% counter += 1 %>
   <div class="panel panel-default" id="panel<%=counter%>">
     <div class="panel-heading" id="panel-style">
