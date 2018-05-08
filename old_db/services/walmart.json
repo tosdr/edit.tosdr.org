@@ -1,0 +1,19 @@
+{
+  "alexa": 163,
+  "freesoftware": false,
+  "fulltos": {},
+  "id": "walmart",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "walmart",
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "urls": [
+    "walmart.com"
+  ]
+}
