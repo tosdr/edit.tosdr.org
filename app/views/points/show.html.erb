@@ -35,17 +35,20 @@
 <br>
 
 <div class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Service:</span> <%= @point.service.name %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Status:</span> <%= @point.status %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Rating:</span> <%= @point.rating %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Changes:</span> <%= @point.versions.size %>
+  </div>
+  <div class="col-sm-2">
+    <span class="bolder">Source:</span> <a href=<%= @point.source %>>link</a>
   </div>
 </div>
 
