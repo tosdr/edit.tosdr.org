@@ -1,7 +1,7 @@
 # in repo root, run:
 # rails runner db/import_services_from_old_db.rb
 
-filepath_services = "../tosdr-build/src/services/"
+filepath_services = "old_db/services/"
 
 def importService(data)
   puts 'old data:'
