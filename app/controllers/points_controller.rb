@@ -55,6 +55,7 @@ class PointsController < ApplicationController
 
   def destroy
     @point.destroy
+    flash[:notice] = "Point successfully deleted!"
     redirect_to points_path
   end
 
