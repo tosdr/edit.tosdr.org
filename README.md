@@ -32,18 +32,11 @@ mv latest.dump $DATE.dump
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -d phoenix_development $DATE.dump
 rails db:migrate
 rails runner db/export_points_to_old_db.rb
-# services export currently broken sorry, see https://github.com/tosdr/phoenix/issues/307
+rails runner db/export_services_to_old_db.rb
 # topics and cases export not implemented yet
 
 # go look at the export results:
 cd ../tosdr-build
-
-# these will be created due to an import bug, see https://github.com/tosdr/phoenix/issues/306
-rm src/points/G4iR5KH7WVw-2.json
-rm src/points/G4iR5KH7WVw.json
-rm src/points/T98obrJsjJA-2.json
-rm src/points/legal-name-registration.json
-rm src/points/pseudos-allowed.json
 
 # notice some json formatting differences which will be undone again by grunt later:
 git diff
