@@ -1,5 +1,5 @@
 class PointsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:edit, :featured, :destroy]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
   before_action :points_get, only: [:index]
