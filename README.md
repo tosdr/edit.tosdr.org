@@ -37,13 +37,14 @@ rails runner db/export_points_to_old_db.rb
 
 # go look at the export results:
 cd ../tosdr-build
+
 # these will be created due to an import bug, see https://github.com/tosdr/phoenix/issues/306
-rm src/points/G4iR5KH7WVw-2-amazon.json
-rm src/points/G4iR5KH7WVw-amazon.json
-rm src/points/T98obrJsjJA-2-amazon.json
-rm src/points/T98obrJsjJA-2-gravatar.json
-rm src/points/legal-name-registration-amazon.json
-rm src/points/pseudos-allowed-amazon.json
+rm src/points/G4iR5KH7WVw-2.json
+rm src/points/G4iR5KH7WVw.json
+rm src/points/T98obrJsjJA-2.json
+rm src/points/legal-name-registration.json
+rm src/points/pseudos-allowed.json
+
 # notice some json formatting differences which will be undone again by grunt later:
 git diff
 
