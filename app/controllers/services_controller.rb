@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index
-    @services = Service.all
+    @services = Service.includes(:points).all
     if @query = params[:query]
       @services = Service.search_by_name(@query)
     end
