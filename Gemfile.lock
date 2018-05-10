@@ -82,6 +82,9 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
+    bullet (5.7.5)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11.0)
     byebug (10.0.2)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
@@ -253,6 +256,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.8)
       execjs (>= 0.3.0, < 3)
+    uniform_notifier (1.11.0)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.5.1)
@@ -271,6 +275,7 @@ DEPENDENCIES
   activeadmin!
   autoprefixer-rails
   bootstrap-sass
+  bullet
   devise
   figaro
   font-awesome-sass

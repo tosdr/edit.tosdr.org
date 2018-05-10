@@ -7,17 +7,23 @@ def importService(data)
   puts 'old data:'
   puts data 
   puts 'new data:'
+  puts data['name'].downcase
+  puts data['urls'][0] || 'url'
+  puts data['id']
+  puts (data['tosdr']['keywords'] ? data['tosdr']['keywords'].join(',') : '')
+  puts (data['tosdr']['related'] ? data['tosdr']['related'].join(',') : '')
+  puts data['tosdr']['rated']
   imported_service = Service.new(
     name: data['name'].downcase,
     url: data['urls'][0] || 'url',
     slug: data['id'],
     keywords: (data['keywords'] ? data['keywords'].join(',') : ''),
-    related: (data['related'] ? data['related'].join(',') : ''),
+    related: (data['tosdr']['related'] ? data['tosdr']['related'].join(',') : ''),
     grade: data['tosdr']['rated']
   )
   puts imported_service
   unless imported_service.valid?
-    puts "### #{imported_service.name} not imported ! ###" #+ panic
+    puts "### #{imported_service.name} not imported ! ###" + panic
   end
   imported_service.save
   puts 'saved.'

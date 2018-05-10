@@ -1,13 +1,13 @@
 class PointsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_curator, except: [:index, :show]
+  before_action :authenticate_user!, except: [:show]
+  before_action :set_curator, only: [:edit, :featured, :destroy]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
   before_action :points_get, only: [:index]
 
   def index
     @points = Point.all
     if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
+      @points = Point.includes(:service).search_points_by_multiple(@query)
     end
   end
 
@@ -67,6 +67,7 @@ class PointsController < ApplicationController
 
   def destroy
     @point.destroy
+    flash[:notice] = "Point successfully deleted!"
     redirect_to points_path
   end
 
@@ -86,9 +87,9 @@ class PointsController < ApplicationController
   end
 
   def user_points
-    @points = current_user.points
+    @points = current_user.points.includes(:service)
     if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
+      @points = Point.includes(:service).search_points_by_multiple(@query)
     end
   end
 
@@ -107,14 +108,14 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :reason, :case_id)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change)
   end
 
   def points_get
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.all
+      @points = Point.includes(:service).all
     elsif params[:scope] == "pending"
-      @points = Point.all.where(status: "pending")
+      @points = Point.includes(:service).all.where(status: "pending")
     end
   end
 
@@ -124,3 +125,4 @@ class PointsController < ApplicationController
     end
   end
 end
+

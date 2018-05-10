@@ -35,17 +35,20 @@
 <br>
 
 <div class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Service:</span> <%= @point.service.name %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Status:</span> <%= @point.status %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Rating:</span> <%= @point.rating %>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <span class="bolder">Changes:</span> <%= @point.versions.size %>
+  </div>
+  <div class="col-sm-2">
+    <span class="bolder">Source:</span> <a href=<%= @point.source %>>link</a>
   </div>
 </div>
 
@@ -61,7 +64,7 @@
 <br>
 <br>
 
-<% if @point.versions.any? %>
+<% if !@point.versions.nil? %>
 
 <div class="row">
   <div class="col-sm-12">
@@ -73,6 +76,15 @@
 <br>
 
 <%= render 'table_reasons' %>
+
+<% else %>
+
+<div class="row">
+  <div class="col-sm-12">
+    <span class="bolder">We track editorial changes to analyses and updates to a point's status and display the previous versions here as part of an effort to promote transparency regarding our curation process. Unfortunately, for this point, due to how it was stored in our database, there are no previous versions available for display.</span>
+  </div>
+
+</div>
 
 <% end %>
 
