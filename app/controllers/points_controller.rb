@@ -6,7 +6,7 @@ class PointsController < ApplicationController
 
   def index
     if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
+      @points = Point.includes(:service).search_points_by_multiple(@query)
     end
   end
 
@@ -77,7 +77,7 @@ class PointsController < ApplicationController
   def user_points
     @points = current_user.points
     if @query = params[:query]
-      @points = Point.search_points_by_multiple(@query)
+      @points = Point.includes(:service).search_points_by_multiple(@query)
     end
   end
 
@@ -97,9 +97,9 @@ class PointsController < ApplicationController
 
   def points_get
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.all
+      @points = Point.includes(:service).all
     elsif params[:scope] == "pending"
-      @points = Point.all.where(status: "pending")
+      @points = Point.includes(:service).all.where(status: "pending")
     end
   end
 
@@ -109,3 +109,4 @@ class PointsController < ApplicationController
     end
   end
 end
+
