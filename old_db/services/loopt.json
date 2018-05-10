@@ -1,0 +1,33 @@
+{
+  "alexa": 1000000,
+  "date": "",
+  "eff_hasyourback": {
+    "in-Congress": 1,
+    "in-court": 0,
+    "tell-you": 0,
+    "transparent": 0
+  },
+  "freesoftware": false,
+  "fulltos": {
+    "terms": {
+      "url": ""
+    }
+  },
+  "id": "loopt",
+  "last-diff": "",
+  "meta": {
+    "spec-version": "1.1"
+  },
+  "name": "Loopt",
+  "related": {},
+  "tosdr": {
+    "keywords": [],
+    "rated": false,
+    "related": []
+  },
+  "type": "service",
+  "url": "loopt.com",
+  "urls": [
+    "loopt.com"
+  ]
+}

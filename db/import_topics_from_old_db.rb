@@ -1,7 +1,7 @@
 # in repo root, run:
 # rails runner db/import_topics_from_old_db.rb
 
-filepath_topics = "old_db/topics/"
+filepath_topics = "../tosdr-build/src/topics/"
 
 def importTopic(data)
   puts 'old data:'

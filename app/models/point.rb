@@ -4,8 +4,8 @@ class Point < ApplicationRecord
  belongs_to :service
  belongs_to :topic
  belongs_to :case, optional: true
-
  has_many :reasons, dependent: :destroy
+ has_many :comments, dependent: :destroy
 
  validates :title, presence: true
  validates :title, length: { in: 5..140 }
@@ -22,11 +22,6 @@ end
 def self.search_points_by_topic(query)
   Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
 end
-
-# VOTE CONTROLLER ! TODO
-  # def has_voted(point)
-  #   Vote.where(point_id: point.id, user_id: current_user.id)
-  # end
 
 def rating_for_table
   pointbox = if self.rating.between?(7, 10)

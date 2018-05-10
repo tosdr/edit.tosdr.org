@@ -14,41 +14,43 @@
         <span onclick="openStep('step-2', event)", class="btn btn-default margin-bottom-larger"> Next </span>
       </div>
     </div>
-    <div id="step-2" style="display:none">
-      <div class="row">
-        <div class="p15 col-sm-12">
-          <div class="point-form-text">
-            <p>Cases represent common aspects of terms of service agreements. For example, "The terms may be changed at any time, without notice to the user." We pre-rate them so that each time these points pop up in the analysis of the terms for any service, they are rated the same way. If you want to provide analysis that's not included among the cases, feel free to click "No Case" to proceed to the standard submission process.</p>
-          </div>
-        </div>
-      </div>
-      <div class="form-field-width margin-bottom-text">
-        <div class="row">
-          <div class="col-sm-12">
-            <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
-          </div>
-        </div>
-        <div class="row">
-        <div class="col-xs-6">
-          <% if current_user.curator? %>
-          <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
-          <% else %>
-          <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
-          <% end %>
-        </div>
-        <div class="col-xs-6">
-            <%= f.input :source %>
-        </div>
-        </div>
-        <div class="row margin-top">
-          <div class="col-xs-6 margin-bottom-larger">
-            <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary' %>
-            <% end %>
-            <span onclick="openStep('step-3', event)", class="btn btn-default", id="trigger-id-grab">No Case</span>
-          </div>
-        </div>
-      </div>
-
+    <div class="col-xs-12 col-sm-6">
+      <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
+    </div>
+    <div class="col-xs-12">
+      <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+    </div>
+    <div class="col-xs-12">
+      <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+    </div>
+    <div class="col-xs-12 col-sm-5">
+      <%= f.input :source, hint: "Where did you find it?" %>
+    </div>
+    <div class="col-xs-6 col-sm-3">
+      <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+      <% if current_user.curator? %>
+      <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+      <% else %>
+      <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+      <% end %>
+    </div>
+    <% if params[:action] == "edit" %>
+    <div class="col-xs-12">
+      <%= f.input :point_change, as: :text, input_html: { rows: 4, class: "text-area" }, hint: "Provide a reason for your changes to this analysis point." %>
+    </div>
+    <% end %>
+    <div class="form-actions col-xs-4 col-sm-2 col-md-2">
+      <%= link_to "Back", :back, class: "btn btn-default" %>
+    </div>
+    <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+      <% if params[:action] == "new" %>
+        <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
+        <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+      <% else %>
+        <%= f.submit "Update", class: 'btn btn-primary' %>
+      <% end %>
     </div>
   </div>
 </div>

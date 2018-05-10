@@ -4,14 +4,14 @@
   <% event = version.event == "create" ? "Analysis created" : "Analysis updated" %>
   <% analysis = version.changeset["analysis"] %>
   <% status = version.changeset["status"] %>
-  <% version.changeset['reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["reason"].second %>
+  <% version.changeset['change_reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["change_reason"].second %>
   <% counter += 1 %>
   <div class="panel panel-default" id="panel<%=counter%>">
     <div class="panel-heading" id="panel-style">
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].second.time) %>
+              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time) %>
           </h5>
         </div>
         <div class="col-sm-4">
@@ -34,7 +34,7 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-sm-12 mb15">
-            <p><b>Reason for changes:</b> <%= reason %></p>
+            <p><b>Reason for changes:</b> <%= @point.point_change %></p>
           </div>
         </div>
         <div class="row">
