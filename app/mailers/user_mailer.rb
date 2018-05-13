@@ -8,16 +8,12 @@ class UserMailer < ApplicationMailer
   def welcome(user)
     @user = user
 
-    # @greeting =
-
-    mail(to: @user.email, subject: 'Welcome')
+    mail(to: @user.email, subject: 'Welcome to ToS;DR!')
   end
 
   def status_update(reason)
     @user = reason.point.user
 
-    @message = "The status of your analysis has been reviewed by a curator. Please log into ToS;DR to review changes to your analyses."
-
-    mail(to: @user.email, subject: 'Status update')
+    mail(to: @user.email, subject: 'Status update from ToS;DR')
   end
 end
