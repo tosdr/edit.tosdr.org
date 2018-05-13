@@ -29,8 +29,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.hard_delete
       @user.hard_delete
       @user.delete
-      flash[:notice] = "Your personal information have been deleted and your contribution have been sent to an anonymous account"
       sign_out_and_redirect(self.resource)
+      flash[:notice] = "Your personal information have been deleted and your contributions have been sent to an anonymous account"
     else
       flash[:alert] = "Something is wrong, please contact the team..."
       redirect(self.resource)
