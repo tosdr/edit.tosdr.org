@@ -27,6 +27,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # DELETE /resource
   def destroy
     if @user.hard_delete
+      @user.hard_delete
+      @user.delete
       flash[:notice] = "Your personal information have been deleted and your contribution have been sent to an anonymous account"
       sign_out_and_redirect(self.resource)
     else
