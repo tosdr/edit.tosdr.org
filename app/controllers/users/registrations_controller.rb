@@ -31,11 +31,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_out_and_redirect(self.resource)
     else
       flash[:alert] = "Something is wrong, please contact the team..."
-<<<<<<< HEAD
       redirect(self.resource)
-=======
-      redirect_to root_path
->>>>>>> 24636db088ee5f5551dc623d2be00edcddd0796a
     end
   end
 
