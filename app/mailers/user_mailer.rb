@@ -8,10 +8,11 @@ class UserMailer < ApplicationMailer
   def welcome(user)
     @user = user
 
-    @greeting = "You're now a confirmed contributor of Terms of Service; Didn't Read crowdreading tool.
- Please bear in mind that this version is a beta version that is still under development. You can follow the development on our github (https://github.com/tosdr/phoenix ).
+    @greeting = "You're now a confirmed contributor of Terms of Service; Didn't Read crowdreading tool on https://edit.tosdr.org . If you haven't subscribed to this website, please contact the team at contact@tosdr.org .
 
- It means that things can change, a lot. Our privacy policy and terms of service are going to change, we will keep you updated.
+ Please bear in mind that this version is a beta version that is still under development. You can follow the development on our github (https://github.com/tosdr/phoenix ) or on our blog (https://blog.tosdr.org ).
+
+ It means that things can change, a lot. We will keep you updated if anything on our privacy policy or on our terms of services change.
 
       Happy contributing!"
 
