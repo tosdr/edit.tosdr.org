@@ -5,15 +5,20 @@ require 'json'
 
 filepath_points = "../tosdr-build/src/points/"
 filepath_points_migrated = "../tosdr-build/src/pointsMigrated/"
+filepath_points_mapping = "../tosdr-build/src/pointsMapping.json"
+
+mapping = {}
+mapping['toId'] = {}
+mapping['toSlug'] = {}
 
 puts "Exporting points..."
 Point.all.each do |point|
-  puts point.to_json
-  puts point.service.to_json
+  # puts point.to_json
+  # puts point.service.to_json
   if (point.oldId.nil?) then 
     point['oldId'] = point.id.to_s
   end
-  puts point.to_json
+  # puts point.to_json
   filename = point.id.to_s + '.json'
   begin
     file = File.read(filepath_points + filename)
@@ -35,7 +40,7 @@ Point.all.each do |point|
       end
     end
   end
-  data['id'] = point.oldId
+  data['id'] = point.id.to_s
   data['title'] = point.title
   data['tosdr']['tldr'] = point.analysis
   # data['tosdr']['tmp_rating'] = point.rating
@@ -45,9 +50,35 @@ Point.all.each do |point|
   # migrate to phoenix id's in filenames:
   migratedFilename = point.id.to_s + '.json'
 
-  puts "Writing " + filepath_points + filename
+  if (mapping['toId'][ point.oldId ])
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts (point.oldId )
+    puts mapping['toId'][ point.oldId ]
+    puts point.id.to_s
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+  end
+  mapping['toId'][point.oldId] = point.id.to_s
+
+  if (mapping['toSlug'][point.id.to_s])
+    puts point.id.to_s
+    puts mapping['toSlug'][point.id.to_s]
+    puts (point.oldId || point.name.split('.').join('-')).downcase
+    panic()
+  end
+  mapping['toSlug'][point.id.to_s] = (point.oldId || point.name.split('.').join('-')).downcase
+
+  # puts "Writing " + filepath_points + filename
   File.write(filepath_points + filename, JSON.pretty_unparse(data))
   File.write(filepath_points_migrated + migratedFilename, JSON.pretty_unparse(data))
 end
+File.write(filepath_points_mapping, JSON.pretty_unparse(mapping))
 puts "Finishing exporting points"
 puts "Done!"
