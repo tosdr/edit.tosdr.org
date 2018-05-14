@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/I4V4EtTKnOg/discussion",
+  "id": "I4V4EtTKnOg",
+  "needModeration": true,
+  "services": [
+    "fitocracy"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "I4V4EtTKnOg",
+  "title": "Fitocracy ToS, paragraph 7, Changes to ToS",
+  "topics": [
+    "changes"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

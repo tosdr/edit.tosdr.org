@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/kkKqcqsIoeI",
+  "id": "kkKqcqsIoeI",
+  "needModeration": true,
+  "services": [
+    "startpage"
+  ],
+  "slug": "kkKqcqsIoeI",
+  "title": "Startpage",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

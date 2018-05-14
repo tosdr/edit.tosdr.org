@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/JupHUHAIwck",
+  "id": "JupHUHAIwck",
+  "needModeration": true,
+  "services": [
+    "yelp"
+  ],
+  "slug": "JupHUHAIwck",
+  "title": "Yelp [bad]:",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

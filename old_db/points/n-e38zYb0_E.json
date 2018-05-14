@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/n-e38zYb0_E/discussion",
+  "id": "n-e38zYb0_E",
+  "needModeration": true,
+  "services": [
+    "fightforthefuture.org"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "n-e38zYb0_E",
+  "title": "fightforthefuture.org/thecente rforrights.org does not explicitly provide gov&#39;t request notice",
+  "topics": [
+    "law-gov"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

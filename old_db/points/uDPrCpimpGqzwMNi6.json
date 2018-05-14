@@ -1,0 +1,26 @@
+{
+  "approved": false,
+  "id": "uDPrCpimpGqzwMNi6",
+  "needModeration": true,
+  "services": [
+    "google",
+    "google",
+    "pinterest",
+    "twitter"
+  ],
+  "slug": "uDPrCpimpGqzwMNi6",
+  "subbmittedTimestamp": 1513089627701,
+  "submittedBy": "HLZT9NWLBC7xEjMHD",
+  "title": "SantsTV",
+  "topics": [
+    "cookies"
+  ],
+  "tosdr": {
+    "binding": true,
+    "point": "good",
+    "sources": [
+      "http://sants.tv"
+    ],
+    "tldr": "It uses 3rd Part Cookies"
+  }
+}

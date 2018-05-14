@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/dkTDLcKvUco",
+  "id": "dkTDLcKvUco",
+  "needModeration": true,
+  "services": [
+    "yelp"
+  ],
+  "slug": "dkTDLcKvUco",
+  "title": "Yelp: Changes to TOS (www.yelp.com)",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

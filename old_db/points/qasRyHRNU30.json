@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/qasRyHRNU30",
+  "id": "qasRyHRNU30",
+  "needModeration": true,
+  "services": [
+    "hulu"
+  ],
+  "slug": "qasRyHRNU30",
+  "title": "Hulu",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

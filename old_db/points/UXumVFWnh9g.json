@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/UXumVFWnh9g",
+  "id": "UXumVFWnh9g",
+  "needModeration": true,
+  "services": [
+    "instagram"
+  ],
+  "slug": "UXumVFWnh9g",
+  "title": "Instagram - governance",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}
