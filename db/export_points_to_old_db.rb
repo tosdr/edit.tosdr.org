@@ -70,10 +70,10 @@ Point.all.each do |point|
   if (mapping['toSlug'][point.id.to_s])
     puts point.id.to_s
     puts mapping['toSlug'][point.id.to_s]
-    puts (point.oldId || point.name.split('.').join('-')).downcase
+    puts point.oldId
     panic()
   end
-  mapping['toSlug'][point.id.to_s] = (point.oldId || point.name.split('.').join('-')).downcase
+  mapping['toSlug'][point.id.to_s] = point.oldId
 
   # puts "Writing " + filepath_points + filename
   File.write(filepath_points + filename, JSON.pretty_unparse(data))
