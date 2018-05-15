@@ -41,9 +41,10 @@ def importPoint(data, service)
     is_featured = false
   end
   puts data['id']
+  puts data['slug']
   
   imported_point = Point.new(
-    oldId: data['id'],
+    oldId: data['slug'],
     title: data['title'],
     user: userObj,
     source: data['discussion'] || 'Imported from ToS;DR before phoenix',
