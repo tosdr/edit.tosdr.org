@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/JZRxUjoNr24",
+  "id": "JZRxUjoNr24",
+  "needModeration": true,
+  "services": [
+    "skype"
+  ],
+  "slug": "JZRxUjoNr24",
+  "title": "Skype",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

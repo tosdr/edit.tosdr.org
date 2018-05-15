@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/Z_pC6XHKb8Y/discussion",
+  "id": "Z_pC6XHKb8Y",
+  "needModeration": true,
+  "services": [
+    "nokia"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "Z_pC6XHKb8Y",
+  "title": "Nokia Account - You can be charged without notice",
+  "topics": [
+    "user-info"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/aDygb2klczk",
+  "id": "aDygb2klczk",
+  "needModeration": true,
+  "services": [
+    "xiaomi"
+  ],
+  "slug": "aDygb2klczk",
+  "title": "Rating of Xiaomi.com",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/hsNKqxgQ6Vc",
+  "id": "hsNKqxgQ6Vc",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "slug": "hsNKqxgQ6Vc",
+  "title": "Tumblr will notify you when their TOS change, which can happen at any time",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

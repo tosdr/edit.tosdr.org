@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/d4k5mDmR-Ug",
+  "id": "d4k5mDmR-Ug",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "slug": "d4k5mDmR-Ug",
+  "title": "[bad] Published content is public by default",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

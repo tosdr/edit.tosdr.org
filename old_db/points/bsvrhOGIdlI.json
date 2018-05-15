@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/bsvrhOGIdlI",
+  "id": "bsvrhOGIdlI",
+  "needModeration": true,
+  "services": [
+    "restream"
+  ],
+  "slug": "bsvrhOGIdlI",
+  "title": "Add site to directory",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

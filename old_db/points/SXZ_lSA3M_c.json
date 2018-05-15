@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/SXZ_lSA3M_c",
+  "id": "SXZ_lSA3M_c",
+  "needModeration": true,
+  "services": [
+    "wikipedia"
+  ],
+  "slug": "SXZ_lSA3M_c",
+  "title": "Wikipedia may use your IP as permanently available public identification",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

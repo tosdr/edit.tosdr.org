@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/YKmFtbrj10s",
+  "id": "YKmFtbrj10s",
+  "needModeration": true,
+  "services": [
+    "google"
+  ],
+  "slug": "YKmFtbrj10s",
+  "title": "Google TOS changes",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

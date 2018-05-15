@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/m7EFecJtBM0",
+  "id": "m7EFecJtBM0",
+  "needModeration": true,
+  "services": [
+    "flattr"
+  ],
+  "slug": "m7EFecJtBM0",
+  "title": "Flattr allows pseudonyms",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

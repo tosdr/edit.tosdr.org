@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/elwNLT-hBOE",
+  "id": "elwNLT-hBOE",
+  "needModeration": true,
+  "services": [
+    "youtube"
+  ],
+  "slug": "elwNLT-hBOE",
+  "title": "another point about governance",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

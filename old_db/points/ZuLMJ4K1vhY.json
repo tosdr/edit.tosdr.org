@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/ZuLMJ4K1vhY",
+  "id": "ZuLMJ4K1vhY",
+  "needModeration": true,
+  "services": [
+    "stackexchange"
+  ],
+  "slug": "ZuLMJ4K1vhY",
+  "title": "Stack Exchange may discontinue services without notice",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}
