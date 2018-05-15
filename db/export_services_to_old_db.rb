@@ -5,8 +5,12 @@ require 'json'
 
 filepath_services = "../tosdr-build/src/services/"
 filepath_services_migrated = "../tosdr-build/src/servicesMigrated/"
+filepath_services_mapping = "../tosdr-build/src/servicesMapping.json"
 
 mapping = {}
+mapping['toId'] = {}
+mapping['toSlug'] = {}
+
 
 puts "Exporting services..."
 Service.all.each do |service|
@@ -39,14 +43,29 @@ Service.all.each do |service|
   data['meta']['spec-version'] = '1.1'
 
   data['slug'] = (service.slug || service.name.split('.').join('-')).downcase
-  mapping [ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s
+
+  if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])
+    puts (service.slug || service.name.split('.').join('-')).downcase
+    puts mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ]
+    puts service.id.to_s
+    panic()
+  end
+  mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s
+
+  if (mapping['toSlug'][service.id.to_s])
+    puts service.id.to_s
+    puts mapping['toSlug'][service.id.to_s]
+    puts (service.slug || service.name.split('.').join('-')).downcase
+    panic()
+  end
+  mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase
 
   # migrate:
   migratedFilename = service.id.to_s + '.json'
   File.write(filepath_services + filename, JSON.pretty_unparse(data))
   File.write(filepath_services_migrated + migratedFilename, JSON.pretty_unparse(data))
 end
-File.write(filepath_services_migrated + 'mapping.json', JSON.pretty_unparse(mapping))
+File.write(filepath_services_mapping, JSON.pretty_unparse(mapping))
 
 puts "Finishing exporting services"
 puts "Done!"
