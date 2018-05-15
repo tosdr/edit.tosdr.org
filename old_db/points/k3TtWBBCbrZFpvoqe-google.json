@@ -1,15 +1,11 @@
 {
   "approved": false,
-  "id": "k3TtWBBCbrZFpvoqe",
+  "id": "2138",
   "needModeration": true,
   "services": [
-    "google",
-    "facebook",
-    "google",
-    "instagram",
-    "twitter"
+    "google"
   ],
-  "slug": "k3TtWBBCbrZFpvoqe",
+  "slug": "k3TtWBBCbrZFpvoqe-google",
   "submittedBy": "JuCGjRQ4sfo6gwF43",
   "title": "This service collects information about you",
   "topics": [

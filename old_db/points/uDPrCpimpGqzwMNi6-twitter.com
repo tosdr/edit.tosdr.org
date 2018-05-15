@@ -1,14 +1,11 @@
 {
   "approved": false,
-  "id": "uDPrCpimpGqzwMNi6",
+  "id": "1321",
   "needModeration": true,
   "services": [
-    "google",
-    "google",
-    "pinterest",
     "twitter"
   ],
-  "slug": "uDPrCpimpGqzwMNi6",
+  "slug": "uDPrCpimpGqzwMNi6-twitter",
   "subbmittedTimestamp": 1513089627701,
   "submittedBy": "HLZT9NWLBC7xEjMHD",
   "title": "SantsTV",
