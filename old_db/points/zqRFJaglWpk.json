@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/zqRFJaglWpk",
+  "id": "zqRFJaglWpk",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "slug": "zqRFJaglWpk",
+  "title": "By using Tumblr, you agree to their terms",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

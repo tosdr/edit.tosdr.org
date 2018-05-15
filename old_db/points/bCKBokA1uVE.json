@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/bCKBokA1uVE",
+  "id": "bCKBokA1uVE",
+  "needModeration": true,
+  "services": [
+    "isis-mobile-wallet"
+  ],
+  "slug": "bCKBokA1uVE",
+  "title": "Isis Mobile Wallet irrevocably owns any content you submit",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/BFpEun_HY1U",
+  "id": "BFpEun_HY1U",
+  "needModeration": true,
+  "services": [
+    "kolabnow"
+  ],
+  "slug": "BFpEun_HY1U",
+  "title": "mykolab not showing in TOSDR browser addon",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

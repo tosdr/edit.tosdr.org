@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/L-MLx43TVZk/discussion",
+  "id": "L-MLx43TVZk",
+  "needModeration": true,
+  "services": [
+    "fivesquid"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "L-MLx43TVZk",
+  "title": "fivesquid.co.uk",
+  "topics": [
+    "multiple"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

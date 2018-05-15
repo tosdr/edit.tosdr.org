@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/EJbZl5yUNSk",
+  "id": "EJbZl5yUNSk",
+  "needModeration": true,
+  "services": [
+    "pinterest"
+  ],
+  "slug": "EJbZl5yUNSk",
+  "title": "[Good] Pinterest supports the Do Not Track browser setting.",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/8hOj94PFWHk",
+  "id": "8hOj94PFWHk",
+  "needModeration": true,
+  "services": [
+    "flattr"
+  ],
+  "slug": "8hOj94PFWHk",
+  "title": "Flattr uses cookies",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/a196N9BVxk0",
+  "id": "a196N9BVxk0",
+  "needModeration": true,
+  "services": [
+    "mega"
+  ],
+  "slug": "a196N9BVxk0",
+  "title": "Anonymous Feedback for You",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

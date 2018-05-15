@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/7lO-wGzPBSA",
+  "id": "7lO-wGzPBSA",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "slug": "7lO-wGzPBSA",
+  "title": "Tumblr uses info from Third Party Services to personalize content",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

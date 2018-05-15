@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/EXMfFaBagWQ/discussion",
+  "id": "EXMfFaBagWQ",
+  "needModeration": true,
+  "services": [
+    "mega"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "EXMfFaBagWQ",
+  "title": "You may not use Mega.co.nz in any United States or New Zealand embargoed countries",
+  "topics": [
+    "multiple"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}
