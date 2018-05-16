@@ -1,0 +1,17 @@
+{
+  "discussion": "https://groups.google.com/d/topic/tosdr/7d_7LvDBugk/discussion",
+  "id": "7d_7LvDBugk",
+  "needModeration": true,
+  "services": [
+    "mint.com"
+  ],
+  "set": "set+service+and+topic",
+  "slug": "7d_7LvDBugk",
+  "title": "you agree not to reverse-engineer mint.com&#39;s software",
+  "topics": [
+    "user-choice"
+  ],
+  "tosdr": {
+    "binding": true
+  }
+}

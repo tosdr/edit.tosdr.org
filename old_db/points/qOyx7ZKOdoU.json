@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/qOyx7ZKOdoU",
+  "id": "qOyx7ZKOdoU",
+  "needModeration": true,
+  "services": [
+    "dropbox"
+  ],
+  "slug": "qOyx7ZKOdoU",
+  "title": "contribution: limitation of liability",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}

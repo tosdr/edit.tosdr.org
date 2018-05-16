@@ -1,0 +1,14 @@
+{
+  "discussion": "https://groups.google.com/forum#!topic/tosdr/NaZbAgmndNk",
+  "id": "NaZbAgmndNk",
+  "needModeration": true,
+  "services": [
+    "tumblr"
+  ],
+  "slug": "NaZbAgmndNk",
+  "title": "Tumblr requires accurate registration info",
+  "topics": [],
+  "tosdr": {
+    "binding": true
+  }
+}
