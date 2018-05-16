@@ -27,8 +27,8 @@ class User < ApplicationRecord
 
   def hard_delete
     self.points.update_all user_id: 1 # change to anonymous account id
-    if Reason.where user_id == current_user.id
-      r = Reason.where user_id == current_user.id
+    if Reason.where user_id: self.id
+      r = Reason.where user_id: self.id
       r.update_all user_id: 1
     end
   end
