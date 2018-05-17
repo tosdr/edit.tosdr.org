@@ -4,29 +4,24 @@
 require 'json'
 
 filepath_services = "../tosdr-build/src/services/"
-filepath_services_migrated = "../tosdr-build/src/servicesMigrated/"
 filepath_services_mapping = "../tosdr-build/src/servicesMapping.json"
 
 mapping = {}
 mapping['toId'] = {}
 mapping['toSlug'] = {}
 
-
 puts "Exporting services..."
 Service.all.each do |service|
   # puts service.to_json
 
   if service.slug != 'none'
-    filename = (service.slug || service.name.split('.').join('-')).downcase + '.json'
+    filename = service.slug + '.json'
     # File.delete(filepath_services + filename)
     # filename = service.id.to_s + '.json'
     begin
-      puts filename
       file = File.read(filepath_services + filename)
-      puts 'YES'
       data = JSON.parse(file)
     rescue
-      puts 'NO'
       data = {}
       # puts 'new file ' + filename
     end
@@ -63,10 +58,7 @@ Service.all.each do |service|
     end
     mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase
 
-    # migrate:
-    migratedFilename = service.id.to_s + '.json'
     File.write(filepath_services + filename, JSON.pretty_unparse(data))
-    File.write(filepath_services_migrated + migratedFilename, JSON.pretty_unparse(data))
   end
 end
 File.write(filepath_services_mapping, JSON.pretty_unparse(mapping))
