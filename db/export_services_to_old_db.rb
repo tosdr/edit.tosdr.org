@@ -42,21 +42,21 @@ Service.all.each do |service|
 
     data['slug'] = (service.slug || service.name.split('.').join('-')).downcase
 
-    if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])	
-      puts (service.slug || service.name.split('.').join('-')).downcase	
-      puts mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ]	
-      puts service.id.to_s	
-      panic()	
-    end	
-    mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s	
-	
-    if (mapping['toSlug'][service.id.to_s])	
-      puts service.id.to_s	
-      puts mapping['toSlug'][service.id.to_s]	
-      puts (service.slug || service.name.split('.').join('-')).downcase	
-      panic()	
-    end	
-    mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase	
+    if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])
+      puts (service.slug || service.name.split('.').join('-')).downcase
+      puts mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ]
+      puts service.id.to_s
+      panic()
+    end
+    mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s
+
+    if (mapping['toSlug'][service.id.to_s])
+      puts service.id.to_s
+      puts mapping['toSlug'][service.id.to_s]
+      puts (service.slug || service.name.split('.').join('-')).downcase
+      panic()
+    end
+    mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase
 
     File.write(filepath_services + filename, JSON.pretty_unparse(data))
   end
