@@ -1,1 +1,45 @@
-<p> <%= @message %></p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+  body {
+    background-color: #FdFdFd;
+    font-family: Lato, Helvetica, sans-serif;
+    width: 65%;
+    margin-left: 40px;
+  }
+
+  body a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #46a546;
+  }
+
+  body .btn {
+    margin: 30px;
+  }
+
+  body .btn a {
+    background-color: #49A347;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+  <h1>Hi <%= @user.username? ? @user.username : "you" %>!</h1>
+
+  <p>The status of your analysis has been reviewed by a curator. Please log into <a href="https://edit.tosdr.org/my_points">ToS;DR</a> to review changes to your analyses.</p>
+
+
+  <div class="btn"><a href="https://edit.tosdr.org/my_points">Check now!</a></div>
+  <p>Happy contributing!</p>
+  <p>The ToS;DR Team</p>
+
+</body>
+</html>
