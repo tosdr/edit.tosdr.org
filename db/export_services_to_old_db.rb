@@ -15,7 +15,7 @@ Service.all.each do |service|
   # puts service.to_json
 
   if service.slug != 'none'
-    filename = service.id.to_s + '.json'
+    filename = service.slug + '.json'
     # File.delete(filepath_services + filename)
     # filename = service.id.to_s + '.json'
     begin
@@ -41,6 +41,22 @@ Service.all.each do |service|
     data['meta']['spec-version'] = '1.1'
 
     data['slug'] = (service.slug || service.name.split('.').join('-')).downcase
+
+    if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])	
+      puts (service.slug || service.name.split('.').join('-')).downcase	
+      puts mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ]	
+      puts service.id.to_s	
+      panic()	
+    end	
+    mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s	
+	
+    if (mapping['toSlug'][service.id.to_s])	
+      puts service.id.to_s	
+      puts mapping['toSlug'][service.id.to_s]	
+      puts (service.slug || service.name.split('.').join('-')).downcase	
+      panic()	
+    end	
+    mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase	
 
     File.write(filepath_services + filename, JSON.pretty_unparse(data))
   end
