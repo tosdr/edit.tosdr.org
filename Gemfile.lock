@@ -100,6 +100,7 @@ GEM
     ffi (1.9.23)
     figaro (1.1.1)
       thor (~> 0.14)
+    flamegraph (0.9.5)
     font-awesome-sass (5.0.9)
       sass (>= 3.2)
     formtastic (3.1.5)
@@ -146,6 +147,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    memory_profiler (0.9.10)
     method_source (0.9.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
@@ -180,6 +182,8 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.4)
+    rack-mini-profiler (1.0.0)
+      rack (>= 1.2.0)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.1.4)
@@ -251,6 +255,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.11)
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
@@ -280,6 +285,7 @@ DEPENDENCIES
   bullet
   devise
   figaro
+  flamegraph
   font-awesome-sass
   formtastic
   heroku-deflater
@@ -288,6 +294,7 @@ DEPENDENCIES
   jquery-rails
   letter_opener
   listen (~> 3.0.5)
+  memory_profiler
   paper_trail
   pg (~> 0.21)
   postmark-rails
@@ -295,12 +302,14 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.10.0)
   pundit
+  rack-mini-profiler
   rails (= 5.1.4)
   redis
   sass-rails
   simple_form
   spring
   spring-watcher-listen (~> 2.0.0)
+  stackprof
   uglifier
   web-console (>= 3.3.0)
 
