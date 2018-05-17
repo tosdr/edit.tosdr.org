@@ -35,3 +35,7 @@ group :development, :test do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'bullet'
 end
+
+group :production do
+  gem 'heroku-deflater'
+end

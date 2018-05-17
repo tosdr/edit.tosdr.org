@@ -4,7 +4,7 @@ require 'json'
 # in repo root, run:
 # rails runner db/import_points_from_old_db.rb
 
-filepath_points = "../tosdr-build/src/points/"
+filepath_points = "./old_db/points/"
 
 $featured_counts = {}
 
@@ -30,30 +30,40 @@ def importPoint(data, service)
 
   puts 'checking featured counts'
   puts serviceObj
-  puts serviceObj.id
-  if !$featured_counts[serviceObj.id]
-    $featured_counts[serviceObj.id] = 0
-  end
-  if $featured_counts[serviceObj.id] < 5
-    is_featured = true
-    $featured_counts[serviceObj.id] += 1
+  if serviceObj
+    puts serviceObj.id
+    if !$featured_counts[serviceObj.id]
+      $featured_counts[serviceObj.id] = 0
+    end
+    if $featured_counts[serviceObj.id] < 5
+      is_featured = true
+      $featured_counts[serviceObj.id] += 1
+    else
+      is_featured = false
+    end
   else
     is_featured = false
   end
-
+  puts data['id']
+  puts data['slug']
+  
   imported_point = Point.new(
-    oldId: data['id'],
+    oldId: data['slug'],
     title: data['title'],
     user: userObj,
-    source: data['discussion'],
+    source: data['discussion'] || 'Imported from ToS;DR before phoenix',
     status: status,
-    analysis: data['tosdr'] ? data['tosdr']['tldr'] : '',
+    analysis: data['tosdr'] && data['tosdr']['tldr'] ? data['tosdr']['tldr'] : data['title'],
     rating: (data['tosdr'] && data['tosdr']['score']) ? data['tosdr']['score'] / 10 : 0,
     topic: topicObj,
     service: serviceObj,
     case_id: caseObj ? caseObj.id : nil,
     is_featured: is_featured
   )
+
+  if (imported_point.analysis == '')
+    imported_point.analysis = '.'
+  end
 
 #  validates :title, presence: true
 #  validates :title, length: { in: 5..140 }
@@ -65,7 +75,9 @@ def importPoint(data, service)
 
   unless imported_point.valid?
     puts "### #{imported_point.title} not imported ! ###"
-    # panic
+    puts imported_point.to_json
+    puts imported_point.errors.messages
+    panic
   end
 #    binding.pry
 #    service_id: service.id,
@@ -87,8 +99,12 @@ Dir.foreach(filepath_points) do |filename|
   next if filename == '.' or filename == '..' or filename == 'README.md'
   file = File.read(filepath_points + filename)
   data = JSON.parse(file)
-  for i in 0 ... data['services'].size
-    importPoint(data, data['services'][i])
+  if data['services'].size == 1
+    importPoint(data, data['services'][0])
+  elsif data['services'].size == 0
+    importPoint(data, 'none')
+  else
+    panic()
   end
 end
 puts "Finishing importing points"

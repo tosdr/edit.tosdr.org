@@ -1,7 +1,48 @@
-<p>Hello <%= @email %>!</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+  body {
+    background-color: #FdFdFd;
+    font-family: Lato, Helvetica, sans-serif;
+    width: 65%;
+    margin-left: 40px;
+  }
 
-<% if @resource.try(:unconfirmed_email?) %>
+  body a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #46a546;
+  }
+
+  body .btn {
+    margin: 30px;
+  }
+
+  body .btn a {
+    background-color: #49A347;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+  <h1>Hello <%= @email %>!</h1>
+
+  <% if @resource.try(:unconfirmed_email?) %>
   <p>We're contacting you to notify you that your email is being changed to <%= @resource.unconfirmed_email %>.</p>
-<% else %>
+  <% else %>
   <p>We're contacting you to notify you that your email has been changed to <%= @resource.email %>.</p>
-<% end %>
+  <% end %>
+
+      <div class="btn"><a href="https://edit.tosdr.org/">Contribute now!</a></div>
+  <p>Happy contributing!</p>
+  <p>The ToS;DR Team</p>
+
+</body>
+</html>

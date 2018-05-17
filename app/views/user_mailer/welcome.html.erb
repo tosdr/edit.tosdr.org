@@ -1,5 +1,48 @@
-<h1>Welcome to ToS;DR!</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+  body {
+    background-color: #FdFdFd;
+    font-family: Lato, Helvetica, sans-serif;
+    width: 65%;
+    margin-left: 40px;
+  }
 
-<p>
-  <%= @greeting %>
-</p>
+  body a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #46a546;
+  }
+
+  body .btn {
+    margin: 30px;
+  }
+
+  body .btn a {
+    background-color: #49A347;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+  <h1>Hi <%= @user.username? ? @user.username : "you" %>! Welcome to ToS;DR!</h1>
+
+  <p>You're now a confirmed contributor of Terms of Service; Didn't Read crowdreading tool on <a herf="https://edit.tosdr.org">Edit</a> (or Phoenix as we like to call it). If you haven't subscribed to this website, please contact as soon as possible the team at <a mailto="team@tosdr.org">team@tosdr.org</a>.</p>
+
+  <p>Please bear in mind that this version is a beta version that is still under development. You can follow the development on <a href="https://github.com/tosdr/phoenix">our github</a> or on our <a href="https://blog.tosdr.org">blog</a>.</p>
+
+  <p>It means that things can change, a lot. We will keep you updated if anything on our privacy policy or on our terms of services changes. If you have any question please contact our team at <a mailto="team@tosdr.org">team at tosdr org</a>.</p>
+
+  <div class="btn"><a href="https://edit.tosdr.org">Start now!</a></div>
+
+  <p>Happy contributing!</p>
+  <p>The ToS;DR Team</p>
+</body>
+</html>
