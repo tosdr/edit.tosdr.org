@@ -64,6 +64,15 @@
 <br>
 <br>
 
+<div class="row">
+  <div class="container card-container">
+    <%= render 'comments', comments: @comments %>
+  </div>
+</div>
+
+<br>
+<br>
+
 <% if !@point.versions.nil? %>
 
 <div class="row">
