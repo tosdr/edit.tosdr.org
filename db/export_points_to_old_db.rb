@@ -4,7 +4,6 @@
 require 'json'
 
 filepath_points = "../tosdr-build/src/points/"
-filepath_points_migrated = "../tosdr-build/src/pointsMigrated/"
 filepath_points_mapping = "../tosdr-build/src/pointsMapping.json"
 
 mapping = {}
@@ -47,8 +46,6 @@ Point.all.each do |point|
   if (data['services'].nil?) then
     data['services'] = [ point.service.slug ]
   end
-  # migrate to phoenix id's in filenames:
-  migratedFilename = point.id.to_s + '.json'
 
   if (mapping['toId'][ point.oldId ])
     puts '------------'
@@ -77,7 +74,6 @@ Point.all.each do |point|
 
   # puts "Writing " + filepath_points + filename
   File.write(filepath_points + filename, JSON.pretty_unparse(data))
-  File.write(filepath_points_migrated + migratedFilename, JSON.pretty_unparse(data))
 end
 File.write(filepath_points_mapping, JSON.pretty_unparse(mapping))
 puts "Finishing exporting points"

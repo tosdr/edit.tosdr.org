@@ -30,13 +30,17 @@ def importPoint(data, service)
 
   puts 'checking featured counts'
   puts serviceObj
-  puts serviceObj.id
-  if !$featured_counts[serviceObj.id]
-    $featured_counts[serviceObj.id] = 0
-  end
-  if $featured_counts[serviceObj.id] < 5
-    is_featured = true
-    $featured_counts[serviceObj.id] += 1
+  if serviceObj
+    puts serviceObj.id
+    if !$featured_counts[serviceObj.id]
+      $featured_counts[serviceObj.id] = 0
+    end
+    if $featured_counts[serviceObj.id] < 5
+      is_featured = true
+      $featured_counts[serviceObj.id] += 1
+    else
+      is_featured = false
+    end
   else
     is_featured = false
   end
@@ -95,8 +99,12 @@ Dir.foreach(filepath_points) do |filename|
   next if filename == '.' or filename == '..' or filename == 'README.md'
   file = File.read(filepath_points + filename)
   data = JSON.parse(file)
-  for i in 0 ... data['services'].size
-    importPoint(data, data['services'][i])
+  if data['services'].size == 1
+    importPoint(data, data['services'][0])
+  elsif data['services'].size == 0
+    importPoint(data, 'none')
+  else
+    panic()
   end
 end
 puts "Finishing importing points"
