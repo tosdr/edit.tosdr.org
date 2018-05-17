@@ -1,0 +1,55 @@
+<div class="form-login">
+    <%= simple_form_for [@point] do |f| %>
+    <div class="row">
+      <div class="col-xs-6">
+        <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+
+      </div>
+      <div class="col-xs-6">
+        <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <%= f.input :source, hint: "Where did you find it?" %>
+      </div>
+      <div class="col-xs-4">
+        <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
+      </div>
+      <div class="col-xs-4">
+        <% if current_user.curator? %>
+        <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+        <% else %>
+        <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+        <% end %>
+      </div>
+    </div>
+    <% if params[:action] == "edit" %>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= f.input :point_change, as: :text, input_html: { rows: 4, class: "text-area" }, hint: "Provide a reason for your changes to this analysis point." %>
+      </div>
+    </div>
+    <% end %>
+    <div class="row">
+      <div class="form-actions col-xs-6 col-sm-2 col-md-2">
+      <%= link_to "Back", :back, class: "btn btn-default" %>
+      </div>
+      <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+        <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
+        <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+</div>

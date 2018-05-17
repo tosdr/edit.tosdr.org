@@ -22,29 +22,32 @@ class PointsController < ApplicationController
     @point = Point.new(point_params)
     @point.user = current_user
     if params[:has_case]
-      @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description, topic_id: @point.case.topic_id)
+      if @point.case.nil? || @point.status.blank? || @point.source.blank?
+        flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
+        render :new
+      elsif
+        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description, topic_id: @point.case.topic_id)
+        if @point.save
+          redirect_to points_path
+          flash[:notice] = "You created a point!"
+        else
+          render :new
+        end
+      end
+    elsif params[:only_create]
       if @point.save
         redirect_to points_path
         flash[:notice] = "You created a point!"
       else
         render :new
       end
-    elsif params[:only_create]
-      if @point.save!
-        redirect_to points_path
-        flash[:notice] = "You created a point!"
-      else
-        render :new
-      end
     elsif params[:create_add_another]
-      if @point.save!
+      if @point.save
         redirect_to new_point_path
         flash[:notice] = "You created a point! Feel free to add another."
       else
         render :new
       end
-    else
-      flash[:error] = @point.errors.full_messages
     end
   end
 
@@ -108,7 +111,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id)
   end
 
   def points_get
