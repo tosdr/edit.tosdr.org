@@ -48,7 +48,6 @@ def importPoint(data, service)
   puts data['slug']
   
   imported_point = Point.new(
-    id: data['id'],
     oldId: data['slug'],
     title: data['title'],
     user: userObj,
