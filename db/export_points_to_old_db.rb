@@ -23,21 +23,9 @@ Point.all.each do |point|
     file = File.read(filepath_points + filename)
     data = JSON.parse(file)
   rescue
-    begin
-      filename = point.oldId + '-' + point.service.slug + '.json'
-      file = File.read(filepath_points + filename)
-      data = JSON.parse(file)
-    rescue
-      begin
-        filename = point.oldId + '.json'
-        file = File.read(filepath_points + filename)
-        data = JSON.parse(file)
-      rescue
-        data = {}
-        data['tosdr'] = {}
-        puts 'new file ' + filename
-      end
-    end
+    data = {}
+    data['tosdr'] = {}
+    puts 'new file ' + filename
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
@@ -49,18 +37,9 @@ Point.all.each do |point|
 
   if (mapping['toId'][ point.oldId ])
     puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
     puts (point.oldId )
     puts mapping['toId'][ point.oldId ]
     puts point.id.to_s
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
   end
   mapping['toId'][point.oldId] = point.id.to_s
 
