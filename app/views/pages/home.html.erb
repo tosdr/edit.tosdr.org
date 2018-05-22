@@ -17,8 +17,8 @@
 <% else %>
 
   <!-- Order button -->
-  <div class="col-xs-12 text-center sorting-buttons">
-    <button class="btn btn-lg btn-success" id="orderByRating"> Order by Rating </button>
+  <div class="col-xs-12 text-right sorting-buttons">
+    <button class="btn btn-lg btn-success" id="orderByRating">High ratings first</button>
   </div>
 
     <%= javascript_tag do %>
@@ -41,6 +41,7 @@
          });
          event.currentTarget.classList.remove("btn-success");
          event.currentTarget.classList.add("btn-danger");
+         event.currentTarget.textContent = 'Low ratings first';
        }
        else if(event.currentTarget.className== "btn btn-lg btn-danger"){
          array.sort(function(a, b) {
@@ -53,6 +54,7 @@
           });
           event.currentTarget.classList.remove("btn-danger");
           event.currentTarget.classList.add("btn-success");
+         event.currentTarget.textContent = 'High ratings first';
         }
         // join the array back into HTML
         var output = "";
