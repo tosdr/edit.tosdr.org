@@ -49,6 +49,7 @@ class PointsController < ApplicationController
         render :new
       end
     end
+    puts @point.errors.full_messages
   end
 
   def edit
