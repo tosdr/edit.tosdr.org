@@ -26,7 +26,7 @@ class PointsController < ApplicationController
         flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
         render :new
       elsif
-        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description, topic_id: @point.case.topic_id)
+        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
         if @point.save
           redirect_to points_path
           flash[:notice] = "You created a point!"
