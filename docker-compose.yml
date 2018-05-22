@@ -1,0 +1,23 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=
+    depends_on:
+      - db
+  # Useful during development: inspect the database at localhost:1337
+  adminer:
+    image: adminer
+    ports:
+      - 1337:8080

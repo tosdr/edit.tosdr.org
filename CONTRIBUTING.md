@@ -1,12 +1,14 @@
 # Contributing
 
-To contribution, you need to set up the dev environment, nothing too hard. 
+To contribute, you can either [set up your development environment yourself](#manual-environment-setup), or [use Docker Compose](#automated-environment-setup).
 
-## Install Ruby with [Rbenv](https://github.com/rbenv/rbenv)
+## Manual environment setup
+
+### Install Ruby with [Rbenv](https://github.com/rbenv/rbenv)
 
 (shamelessly copied from Rbenv doc)
 
-### Basic GitHub Checkout
+#### Basic GitHub Checkout
 
 This will get you going with the latest version of rbenv without needing
 a systemwide install.
@@ -61,7 +63,7 @@ a systemwide install.
    `rbenv install` command that simplifies the process of
    [installing new Ruby versions](#installing-ruby-versions).
 
-## When it's done
+### When it's done
 
 Install Rails and Postgres
 
@@ -79,6 +81,21 @@ In your code directory run:
     rails s
 
 And you're ready to code !
+
+## Automated environment setup
+
+If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
+
+To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
+
+    $ docker-compose build
+    $ docker-compose run web rails db:create db:migrate
+
+From then on, you can start the application by running:
+
+    $ docker-compose up
+
+(Add the `--build` argument if you add or remove dependencies.)
 
 ## Committing & Pull Requests
 
