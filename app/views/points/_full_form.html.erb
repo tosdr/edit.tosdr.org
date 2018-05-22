@@ -11,17 +11,17 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+        <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+        <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, placeholder: "Example: The privacy policy states that '...because this information could be used to link you to your searches, we do not log (store) it at all.'", hint: "Write your analysis and comments" %>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-4">
-        <%= f.input :source, hint: "Where did you find it?" %>
+        <%= f.input :source, placeholder: "Example: https://duckduckgo.com/privacy#s3", hint: "Where did you find it?" %>
       </div>
       <div class="col-xs-4">
         <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>

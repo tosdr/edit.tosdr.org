@@ -6,7 +6,7 @@
     <div class="margin-top-larger" id="step-3" style="display:none">
         <%= simple_form_for [@point] do |f| %>
         <div class="col-xs-12">
-          <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
+          <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
         </div>
         <div class="col-xs-12 col-sm-6">
             <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
@@ -15,7 +15,7 @@
           <%= f.association :service, collection: Service.order('name ASC') %>
         </div>
         <div class="col-xs-12">
-          <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+          <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, placeholder: "Example: The privacy policy states that '...because this information could be used to link you to your searches, we do not log (store) it at all.'", hint: "Write your analysis and comments" %>
         </div>
         <div class="col-xs-6 margin-bottom-larger">
           <span onclick="openStep('step-4', event)", class="btn btn-default">Next</span>
@@ -26,7 +26,7 @@
       <div id="step-4" style="display:none">
         <div class="row">
           <div class="col-xs-4">
-            <%= f.input :source %>
+            <%= f.input :source, placeholder: "Example: https://duckduckgo.com/privacy#s3" %>
           </div>
           <div class="col-xs-4">
             <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
