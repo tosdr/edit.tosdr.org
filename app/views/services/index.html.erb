@@ -39,17 +39,17 @@
           </div>
         <% else %>
           <% @services.each do |s| %>
-            <% if s.service_ratings == "A" %>
+            <% if s.service_rating == "A" %>
               <% badge_rating = "card-badge rating-a" %>
-            <% elsif s.service_ratings == "B" %>
+            <% elsif s.service_rating == "B" %>
               <% badge_rating = "card-badge rating-b" %>
-            <% elsif s.service_ratings == "C" %>
+            <% elsif s.service_rating == "C" %>
               <% badge_rating = "card-badge rating-c" %>
-            <% elsif s.service_ratings == "D" %>
+            <% elsif s.service_rating == "D" %>
               <% badge_rating = "card-badge rating-d" %>
-            <% elsif s.service_ratings == "F" %>
+            <% elsif s.service_rating == "F" %>
               <% badge_rating = "card-badge rating-f" %>
-            <% elsif s.service_ratings == "N/A" %>
+            <% elsif s.service_rating == "N/A" %>
               <% badge_rating = "card-badge rating-na" %>
           <% end %>
           <div class="card-inline">
@@ -61,7 +61,7 @@
             </div>
             <div class="card-inline-item card-inline-grade">
               <div class="service-badge <%= badge_rating %> ">
-                 <%= s.service_ratings %>
+                 <%= s.service_rating %>
               </div>
             </div>
             <div class="card-inline-item card-inline-options">

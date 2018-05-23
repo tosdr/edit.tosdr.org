@@ -37,8 +37,6 @@ class ServicesController < ApplicationController
       @points = @service.points.where(status: 'approved')
     end
 
-    @rating = @service.rating_for_view
-
     @versions = @service.versions
 
     if @query = params[:topic]
