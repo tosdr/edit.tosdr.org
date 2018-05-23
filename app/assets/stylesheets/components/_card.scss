@@ -1,19 +1,12 @@
 .card {
   margin: 10px -5px;
-  height: 300px;
-  min-width: 300px;
   background-color: white;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   transition: 200ms !important;
 
-  &:hover {
-    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
-  }
-
   & .card-service {
-    height: 51.25px;
+    padding: $padding-base-vertical $padding-base-horizontal;
     font-size: 36px;
     font-weight: 500;
     letter-spacing: 1.75px;
@@ -21,7 +14,7 @@
     background-color: rgba(0, 0, 0, 0.05);
     border-bottom: 0.25px solid rgba(0, 0, 0, 0.3) ;
     text-overflow: ellipsis;
-    overflow: auto;
+    overflow: hidden;
     border-radius: 4px 4px 0px 0px;
   }
   & .card-block {
