@@ -38,18 +38,9 @@ Point.all.each do |point|
 
   if (mapping['toId'][ point.oldId ])
     puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
     puts (point.oldId )
     puts mapping['toId'][ point.oldId ]
     puts point.id.to_s
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
-    puts '------------'
   end
   mapping['toId'][point.oldId] = point.id.to_s
 
