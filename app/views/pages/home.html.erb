@@ -67,22 +67,16 @@
       <% end %>
 
 <!-- Services -->
-  <div class="row row-form" id="service-container">
+  <div class="row" id="service-container">
       <% @services.each do |s| %>
         <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_ratings %>">
 
           <!-- CARD -->
           <div class="card">
-            <div class="card-service" title="<%= s.name %>">
+            <h2 class="card-header card-service" title="<%= s.name %>">
               <%= s.name %>
-            </div>
-            <div class="card-block">
-              <div class="card-left">
-                <div class="card-left-item card-badge <%= s.rating_for_view %>">
-                  <%= s.service_ratings %>
-                </div>
-                <%= link_to "More", service_path(s.id), class: "btn btn-primary box-shadow-for-button" %>
-              </div>
+            </h2>
+            <div class="card-body card-block">
               <div class="card-text">
                 <ul>
                   <% s.points.each do |p| %>
@@ -102,8 +96,14 @@
                     <% end %>
                   <% end %>
                 </ul>
+                <div class="card-badge <%= s.rating_for_view %>">
+                  <%= s.service_ratings %>
+                </div>
               </div>
             </div>
+            <footer class="card-footer">
+              <%= link_to "More", service_path(s.id), class: "btn btn-primary box-shadow-for-button" %>
+            </footer>
           </div>
           <!-- CARD-END -->
         </div>
