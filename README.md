@@ -24,6 +24,7 @@ access to our Heroku account!
 # make sure you have phoenix checked out next to tosdr-build in a folder:
 git clone https://github.com/tosdr/phoenix
 git clone https://github.com/tosdr/tosdr-build
+mkdir tosdr-build/src/pointsPhoenix
 cd phoenix
 export DATE=`date "+%Y%m%d%H%M%S"`
 heroku pg:backups:capture --app edit-tosdr-org
@@ -37,6 +38,9 @@ rails runner db/export_services_to_old_db.rb
 
 # go look at the export results:
 cd ../tosdr-build
+mv src/points src/pointsOld
+mv src/pointsPhoenix src/points
+mkdir src/pointsPhoenix
 
 # notice some json formatting differences which will be undone again by grunt later:
 git diff
