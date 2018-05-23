@@ -67,21 +67,7 @@
 <!-- Services -->
   <div class="row row-form" id="service-container">
       <% @services.each do |s| %>
-        <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_ratings %>" >
-
-          <% if s.service_ratings == "A" %>
-            <% grade = "rating-a" %>
-          <% elsif s.service_ratings == "B" %>
-            <% grade = "rating-b" %>
-          <% elsif s.service_ratings == "C" %>
-            <% grade = "rating-c" %>
-          <% elsif s.service_ratings == "D" %>
-            <% grade = "rating-d" %>
-          <% elsif s.service_ratings == "F" %>
-            <% grade = "rating-f" %>
-          <% else %>
-            <% grade = "rating-na" %>
-          <% end %>
+        <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv">
 
           <!-- CARD -->
           <div class="card">
@@ -90,7 +76,7 @@
             </div>
             <div class="card-block">
               <div class="card-left">
-                <div class="card-left-item card-badge <%= grade %>">
+                <div class="card-left-item card-badge <%= s.rating_for_view %>">
                   <%= s.service_ratings %>
                 </div>
                 <%= link_to "More", service_path(s.id), class: "btn btn-primary box-shadow-for-button" %>
