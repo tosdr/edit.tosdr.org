@@ -3,6 +3,9 @@ class Point < ApplicationRecord
  belongs_to :user, optional: true
  belongs_to :service
  belongs_to :topic
+
+ belongs_to :case, optional: true
+
  has_many :reasons, dependent: :destroy
  has_many :comments, dependent: :destroy
 

@@ -1,0 +1,56 @@
+<div class="form-login" id="to-hide">
+  <div class="row row-form">
+    <div class="margin-top-larger" style="">
+        <div class="col-xs-6">
+          <p>When submitting a contribution, you submit what we call a "point." It's an analysis on one specific aspect of the ToS of the service that you want to rate. All points have a rating from 1 to 10 and the class given to the service is the average of all those ratings. See the <a href="/about#classification">about page</a> for more information.</p>
+
+          <p>Each point submitted by a user must be reviewed by a curator before being displayed on the website. You will receive a message by email from the curator who reviewed your point.</p>
+        </div>
+        <div class="col-xs-6">
+          <%= simple_form_for [@point] do |f| %>
+
+          <div class="form-field-width margin-bottom-text" id="get-service-id">
+            <%= f.association :service, collection: Service.order('name ASC'), hint: "Pick the service that you want to review" %>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-login" id="case" style="">
+  <div class="row row-form">
+    <div class="margin-top-larger">
+      <div class="col-xs-6">
+        <p>Cases represent recurring aspects of terms of service agreements for different services. For example, "The terms may be changed at any time, without notice to the user." We pre-rate them so that each time these points pop up in the terms for different services, they are rated the same way. If you want to provide analysis that's not included among the cases, feel free to click "No Case" to proceed to the standard submission process.</p>
+      </div>
+      <div class="col-xs-6">
+        <div class="col-xs-12" id="case-text">
+          <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
+        </div>
+        <div class="col-xs-6" id="case-status">
+          <% if current_user.curator? %>
+          <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
+          <% else %>
+          <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point" %>
+          <% end %>
+        </div>
+        <div class="col-xs-6" id="case-source">
+            <%= f.input :source %>
+        </div>
+        <div class="col-xs-6 margin-bottom-larger">
+         <span id="check-fields"> <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary', id: "check-fields" %> </span>
+
+        <% end %>
+
+        <span onclick="openStep('step-3', event)", class="btn btn-default", id="trigger-id-grab">No Case</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('trigger-id-grab').addEventListener('click', function() {
+    document.getElementById('case').style.display = "none";
+  });
+</script>

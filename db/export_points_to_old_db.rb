@@ -4,7 +4,6 @@
 require 'json'
 
 filepath_points = "../tosdr-build/src/points/"
-filepath_points_phoenix = "../tosdr-build/src/pointsPhoenix/"
 filepath_points_mapping = "../tosdr-build/src/pointsMapping.json"
 
 mapping = {}
@@ -24,9 +23,21 @@ Point.all.each do |point|
     file = File.read(filepath_points + filename)
     data = JSON.parse(file)
   rescue
-    data = {}
-    data['tosdr'] = {}
-    puts 'new file ' + filename
+    begin
+      filename = point.oldId + '-' + point.service.slug + '.json'
+      file = File.read(filepath_points + filename)
+      data = JSON.parse(file)
+    rescue
+      begin
+        filename = point.oldId + '.json'
+        file = File.read(filepath_points + filename)
+        data = JSON.parse(file)
+      rescue
+        data = {}
+        data['tosdr'] = {}
+        puts 'new file ' + filename
+      end
+    end
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
@@ -38,9 +49,18 @@ Point.all.each do |point|
 
   if (mapping['toId'][ point.oldId ])
     puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
     puts (point.oldId )
     puts mapping['toId'][ point.oldId ]
     puts point.id.to_s
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
+    puts '------------'
   end
   mapping['toId'][point.oldId] = point.id.to_s
 
@@ -53,7 +73,7 @@ Point.all.each do |point|
   mapping['toSlug'][point.id.to_s] = point.oldId
 
   # puts "Writing " + filepath_points + filename
-  File.write(filepath_points_phoenix + filename, JSON.pretty_unparse(data))
+  File.write(filepath_points + filename, JSON.pretty_unparse(data))
 end
 File.write(filepath_points_mapping, JSON.pretty_unparse(mapping))
 puts "Finishing exporting points"

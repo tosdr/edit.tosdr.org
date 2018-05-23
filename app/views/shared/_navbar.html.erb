@@ -24,6 +24,7 @@
     <% unless current_user.nil? %>
     <div class="navbar-tosdr-group">
       <%= link_to "Points", points_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
+      <%= link_to "Cases", cases_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
       <%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
       <%= link_to "Services", services_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
     </div>
@@ -67,6 +68,7 @@
       <ul class="dropdown-menu dropdown-menu-right navbar-tosdr-dropdown-menu">
         <% if current_user %>
         <li><%= link_to "Points", points_path  %></li>
+        <li><%= link_to "Cases", cases_path %></li>
         <li><%= link_to "Topics", topics_path %></li>
         <li><%= link_to "Services", services_path  %></li>
         <li><%= link_to "Setting", edit_user_registration_path %></li>
