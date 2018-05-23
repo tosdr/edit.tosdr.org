@@ -89,7 +89,7 @@ If you have installed [Docker compose](https://docs.docker.com/compose/install/)
 To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
 
     $ docker-compose build
-    $ docker-compose run web rails db:create db:migrate
+    $ docker-compose run web bash -c "sleep 1; rails db:create db:migrate"
 
 From then on, you can start the application by running:
 
