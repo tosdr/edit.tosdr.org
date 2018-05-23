@@ -50,9 +50,13 @@ class PointsController < ApplicationController
   def update
     puts point_params
     @point.update(point_params)
-    puts @point.errors.messages
-    flash[:notice] = "Point successfully updated!"
-    redirect_to point_path(@point)
+    if @point.errors.details.any?
+      puts @point.errors.messages
+      render :edit
+    else
+      flash[:notice] = "Point successfully updated!"
+      redirect_to point_path(@point)
+    end
   end
 
   def destroy
