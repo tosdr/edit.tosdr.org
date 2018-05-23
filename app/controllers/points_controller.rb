@@ -5,6 +5,7 @@ class PointsController < ApplicationController
   before_action :points_get, only: [:index]
 
   def index
+    @points = Point.all
     if @query = params[:query]
       @points = Point.includes(:service).search_points_by_multiple(@query)
     end
@@ -14,12 +15,26 @@ class PointsController < ApplicationController
     @point = Point.new
     @services = Service.all
     @topics = Topic.all
+    @cases = Case.all
   end
 
   def create
     @point = Point.new(point_params)
     @point.user = current_user
-    if params[:only_create]
+    if params[:has_case]
+      if @point.case.nil? || @point.status.blank? || @point.source.blank?
+        flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
+        render :new
+      elsif
+        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
+        if @point.save
+          redirect_to points_path
+          flash[:notice] = "You created a point!"
+        else
+          render :new
+        end
+      end
+    elsif params[:only_create]
       if @point.save
         redirect_to points_path
         flash[:notice] = "You created a point!"
@@ -34,6 +49,7 @@ class PointsController < ApplicationController
         render :new
       end
     end
+    puts @point.errors.full_messages
   end
 
   def edit
@@ -97,8 +113,12 @@ class PointsController < ApplicationController
     @service = Service.find(params[:service_id])
   end
 
+  def set_case
+    @case = Case.find(params[:case_id])
+  end
+
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id)
   end
 
   def points_get

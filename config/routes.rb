@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
+  resources :cases
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do

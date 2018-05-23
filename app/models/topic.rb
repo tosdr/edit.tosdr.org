@@ -1,6 +1,7 @@
 class Topic < ApplicationRecord
   has_paper_trail
   has_many :points
+  has_many :cases
 
   validates :title, presence: true, uniqueness: true
   validates :subtitle, presence: true
