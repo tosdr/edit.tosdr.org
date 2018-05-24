@@ -6,7 +6,7 @@
 
       </div>
       <div class="col-xs-6">
-        <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Category of the point" %>
+        <%= f.association :case, collection: Case.order('title ASC'), hint: "What this point is saying about the service" %>
       </div>
     </div>
     <div class="row">
