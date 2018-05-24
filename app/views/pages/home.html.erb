@@ -69,7 +69,7 @@
 <!-- Services -->
   <div class="row row-form" id="service-container">
       <% @services.each do |s| %>
-        <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv">
+        <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_rating %>">
 
           <% grade = if s.service_rating == "A"
                       "rating-a"

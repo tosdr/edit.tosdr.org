@@ -64,8 +64,27 @@ class PointsController < ApplicationController
   end
 
   def update
-    puts point_params
-    @point.update(point_params)
+    copied_params = point_params
+    if (copied_params['case_id'] != @point.case_id.to_s)
+      puts 'case change, setting title, description, rating and topic'
+      @case = Case.find(copied_params['case_id'])
+      copied_params['topic_id'] = @case.topic_id
+      copied_params['title'] = @case.title
+      copied_params['analysis'] = @case.description || @case.title
+      if (@case.classification == 'blocker')
+        copied_params['rating'] = 0
+      end
+      if (@case.classification == 'bad')
+        copied_params['rating'] = 2
+      end
+      if (@case.classification == 'neutral')
+        copied_params['rating'] = 5
+      end
+      if (@case.classification == 'good')
+        copied_params['rating'] = 8
+      end
+    end
+    @point.update(copied_params)
     if @point.errors.details.any?
       puts @point.errors.messages
       render :edit
