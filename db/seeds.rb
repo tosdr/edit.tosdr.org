@@ -7,30 +7,28 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts "Cleaning up the database..."
+Reason.destroy_all
 Comment.destroy_all
-User.destroy_all
 Reason.destroy_all
 Point.destroy_all
 Service.destroy_all
 Case.destroy_all
 Topic.destroy_all
+User.destroy_all
 
 puts "Starts new seeding"
-test_user = User.new(email: "test@email.com", username: "test user", password: "testnonadminuser", password_confirmation: "testnonadminuser")
+test_user = User.new(email: "test@email.com", username: "test user", password: "testNonAdminUser1", password_confirmation: "testNonAdminUser1")
 test_user.save
-curator_test_user = User.new(email: "curatortest@email.com", password: "testcuratoruser", password_confirmation: "testcuratoruser", curator: true)
+puts test_user.errors.full_messages
+# puts "You can log in with test@email.com / testNonAdminUser1"
+curator_test_user = User.new(email: "curatortest@email.com", password: "testCuratorUser1", password_confirmation: "testCuratorUser1", curator: true)
 curator_test_user.save
-admin_test_user = User.new(email: "admintest@email.com", username: "admin test user", password: "testadminuser", password_confirmation: "testadminuser", admin: true)
+puts curator_test_user.errors.full_messages
+# only curators (not admins) can add services:
+puts "You can log in with curatortest@email.com / testCuratorUser1 to add services, topics, cases, and points"
+admin_test_user = User.new(email: "admintest@email.com", username: "admin test user", password: "testAdminUser1", password_confirmation: "testAdminUser1", admin: true)
 admin_test_user.save
+puts admin_test_user.errors.full_messages
+# puts "You can log in with admintest@email.com / testAdminUser1"
 
-puts "Importing topics"
-load File.join(Rails.root,"db","import_topics_from_old_db.rb")
-puts "Importing services"
-load File.join(Rails.root,"db","import_services_from_old_db.rb")
-puts "Importing cases"
-load File.join(Rails.root,"db","import_cases_from_old_db.rb")
-puts "Importing points"
-load File.join(Rails.root,"db","import_points_from_old_db.rb")
-puts "Importing posts"
-load File.join(Rails.root,"db","import_posts_from_old_db.rb")
-puts "Done!"
+puts "Done! Now run 'rails server' and visit http://localhost:3000"
