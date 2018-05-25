@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
   resources :points, except: [:index] do
     resources :reasons, only: [:new, :create]
+    resources :comments, only: [:new, :create]
   end
 
   resources :services, except: [:show]
