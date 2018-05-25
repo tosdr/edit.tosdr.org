@@ -18,7 +18,6 @@ class Service < ApplicationRecord
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
-
   def service_rating
     @service_rating ||= service_rating_get
   end
@@ -32,11 +31,11 @@ class Service < ApplicationRecord
     num_good = 0
     points.each do |p|
       if (p.rating < 2)
-        num_blocker++
+        num_blocker += 1
       elsif (p.rating < 5)
-        num_bad++
+        num_bad += 1
       elsif (p.rating > 5)
-        num_good++
+        num_good += 1
       end
     end
     balance = num_good - num_bad - 3 * num_blocker
