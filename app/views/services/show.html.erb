@@ -19,14 +19,28 @@
 
   </div>
 
+  <% grade = if @service.service_rating == "A"
+      "rating-a"
+    elsif @service.service_rating == "B"
+      "rating-b"
+    elsif @service.service_rating == "C"
+      "rating-c"
+    elsif @service.service_rating == "D"
+      "rating-d"
+    elsif @service.service_rating == "F"
+      "rating-f"
+    else
+      ""
+    end %>
+
 
   <div class="row mb15">
     <div class="col-sm-6">
       <h2 class="service-title fw2 mv fl gray">
         <a href="<%= @service.url %>"><%= @service.name %></a>
-        <% unless @service.service_ratings == "N/A" %>
-        <div class="grade <%= @rating %>">
-          <%= @service.service_ratings %>
+        <% unless @service.service_rating == "N/A" %>
+        <div class="grade <%= grade %>">
+          <%= @service.service_rating %>
         </div>
         <% end %>
       </h2>
