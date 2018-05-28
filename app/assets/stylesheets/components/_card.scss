@@ -18,6 +18,7 @@ $badge-radius: 35px;
     text-align: center;
     background-color: $gray-lighter;
     text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
     border-radius: $border-radius-base $border-radius-base 0 0;
   }
