@@ -10,9 +10,7 @@
     <% end %>
     <% unless current_user.nil? %>
     <%= link_to "Add a point", new_point_path, class: "btn btn-primary btn-sm" %>
-    <% if current_user.curator? %>
     <%= link_to "Add a service", new_service_path, class: "btn btn-primary btn-sm" %>
-    <% end %>
     <% else %>
     <%= link_to "Sign up to contribute", new_user_registration_path, class: "btn btn-primary btn-sm" %>
     <% end %>
