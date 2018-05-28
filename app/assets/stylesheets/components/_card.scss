@@ -1,69 +1,42 @@
+$badge-radius: 35px;
+
 .card {
-  margin: 10px -5px;
-  height: 300px;
-  min-width: 300px;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  transition: 200ms !important;
-
-  &:hover {
-    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
-  }
+  border-radius: $border-radius-base;
+  height: 300px;
 
   & .card-service {
-    height: 51.25px;
-    font-size: 36px;
-    font-weight: 500;
+    margin: 0;
+    padding: $padding-base-vertical $padding-base-horizontal;
+    font-size: $font-size-h2;
+    font-weight: $headings-font-weight;
     letter-spacing: 1.75px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-bottom: 0.25px solid rgba(0, 0, 0, 0.3) ;
+    background-color: $gray-lighter;
     text-overflow: ellipsis;
-    overflow: auto;
-    border-radius: 4px 4px 0px 0px;
+    overflow: hidden;
+    border-radius: $border-radius-base $border-radius-base 0 0;
   }
   & .card-block {
-    display: flex;
-    padding: 10px 10px;
+    flex-grow: 1;
+    padding: $padding-large-vertical $padding-large-horizontal;
 
-    & .card-left {
+    .card-text {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      flex: 0 0 70px;
-      padding: 20px 10px;
-      & .rating-na {
-        font-size: 1em;
-        padding-top: 24px;
+      flex-direction: row;
+      justify-content: space-between;
+
+      ul {
+        max-height: 150px;
+        overflow: hidden;
       }
     }
-    & .card-left-item {
-      margin: 50px 0;
-    }
-    & .card-text {
-      flex: 0 1 auto;
-      font-size: 0.9em;
-      line-height: 1.07em;
-      padding: 5px;
-      height: 228px;
-      text-overflow: ellipsis;
-      overflow: auto;
-    }
-    & .card-text p {
-      margin: 0.5em;
-      text-align: justify;
-      max-height: 100px;
-    }
-    & .card-text ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0 0 0 5px;
-      & li {
-        margin-bottom: 5px;
-      }
-    }
+  }
+  .card-footer {
+    padding: $padding-large-vertical;
   }
 }
 
@@ -97,8 +70,8 @@ $pointPaddingLeft : 35px;
 
 
 .card-badge {
-  height: 70px;
-  width: 70px;
+  height: $badge-radius * 2;
+  min-width: $badge-radius * 2;
   border-radius: 50%;
   color: white;
   text-align: center;
