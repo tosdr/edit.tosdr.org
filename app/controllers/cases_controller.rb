@@ -1,6 +1,6 @@
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_curator, except: [:index, :show]
+  before_action :set_curator, only: [:destroy]
   before_action :set_case, only: [:show, :edit, :update, :destroy]
 
   def index
