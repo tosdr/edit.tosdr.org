@@ -46,7 +46,7 @@
               <i class="fa fa-eye" aria-hidden="true"></i>
               <% end %>
 
-              <% if current_user.curator? %>
+              <% if current_user && current_user.curator? %>
 
               <%= link_to(edit_case_path(t), class: 'btn') do %>
               <i class="fa fa-pencil" aria-hidden="true"></i>
