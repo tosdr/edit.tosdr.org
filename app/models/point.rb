@@ -18,7 +18,7 @@ class Point < ApplicationRecord
  validates :rating, numericality: true
 
 def self.search_points_by_multiple(query)
-  Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ?", "%#{query}%", "%#{query}%")
+  Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
 end
 
 def self.search_points_by_topic(query)
