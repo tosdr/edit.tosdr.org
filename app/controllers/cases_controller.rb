@@ -5,6 +5,9 @@ class CasesController < ApplicationController
 
   def index
     @cases = Case.all
+    if @query = params[:query]
+      @cases = Case.search_by_multiple(@query)
+    end
   end
 
   def new
