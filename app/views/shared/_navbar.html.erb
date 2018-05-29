@@ -11,8 +11,6 @@
     <% unless current_user.nil? %>
     <%= link_to "Add a point", new_point_path, class: "btn btn-primary btn-sm" %>
     <%= link_to "Add a service", new_service_path, class: "btn btn-primary btn-sm" %>
-    <% else %>
-    <%= link_to "Sign up to contribute", new_user_registration_path, class: "btn btn-primary btn-sm" %>
     <% end %>
   </div>
   <!-- Right Navigation -->
@@ -54,6 +52,7 @@
         </ul>
         <% else %>
         <%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %>
+        <%= link_to "Sign up to contribute", new_user_registration_path, class: "btn btn-primary btn-sm" %>
         <% end %>
       </div>
     </div>
@@ -74,6 +73,7 @@
         <% else %>
         <li><%= link_to "About", about_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
         <li><%= link_to t(".sign_in", default: "Login"), new_user_session_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle", id: "navbar-tosdr-menu" %></li>
+        <li><%= link_to "Sign up", new_user_registration_path, class: "navbar-tosdr-item navbar-tosdr-link dropdown-toggle" %></li>
         <% end %>
       </ul>
     </div>
