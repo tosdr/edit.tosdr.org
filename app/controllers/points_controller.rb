@@ -28,7 +28,7 @@ class PointsController < ApplicationController
       elsif
         @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
         if @point.save
-          redirect_to points_path
+          redirect_to point_path(@point)
           flash[:notice] = "You created a point!"
         else
           render :new
