@@ -15,14 +15,14 @@ Service.all.each do |service|
   # puts service.to_json
 
   if service.slug != 'none'
-    filename = service.slug + '.json'
+    filename = (service.slug || service.name.split(' ').join('').split('.').join('-').downcase) + '.json'
     # File.delete(filepath_services + filename)
     # filename = service.id.to_s + '.json'
     begin
       file = File.read(filepath_services + filename)
       data = JSON.parse(file)
     rescue
-      data = {}
+     data = {}
       # puts 'new file ' + filename
     end
     data['tosdr'] = data['tosdr'] || {}
@@ -40,7 +40,7 @@ Service.all.each do |service|
     # data['tosdr']['rated'] = service.grade
     data['meta']['spec-version'] = '1.1'
 
-    data['slug'] = (service.slug || service.name.split('.').join('-')).downcase
+    data['slug'] = (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase
 
     if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])
       puts (service.slug || service.name.split('.').join('-')).downcase
@@ -48,15 +48,15 @@ Service.all.each do |service|
       puts service.id.to_s
       panic()
     end
-    mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ] = service.id.to_s
+    mapping['toId'][ (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase ] = service.id.to_s
 
     if (mapping['toSlug'][service.id.to_s])
       puts service.id.to_s
       puts mapping['toSlug'][service.id.to_s]
-      puts (service.slug || service.name.split('.').join('-')).downcase
+      puts (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase
       panic()
     end
-    mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split('.').join('-')).downcase
+    mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase
 
     File.write(filepath_services + filename, JSON.pretty_unparse(data))
   end
