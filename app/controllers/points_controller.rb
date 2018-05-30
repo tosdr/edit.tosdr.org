@@ -36,7 +36,7 @@ class PointsController < ApplicationController
       end
     elsif params[:only_create]
       if @point.save
-        redirect_to points_path
+        redirect_to point_path(@point)
         flash[:notice] = "You created a point!"
       else
         render :new
