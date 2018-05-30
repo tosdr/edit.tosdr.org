@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   end
 
   resources :services, except: [:show]
+  resources :services, except: [:index] do
+    resources :points, only: [:new, :create]
+  end
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
