@@ -58,6 +58,7 @@ All the details on the API can be found on the [wiki](https://github.com/tosdr/p
 * [Chris](https://github.com/piks3l/) - push rights on master and access to production
 * [Madeline](https://github.com/madoleary) - push rights on master
 * [Michiel](https://github.com/michielbdejong) - push rights on master and access to production
+* [Vincent](https://github.com/Vinnl) - push rights on master
 
 ### Hosting
 * https://phoenix.tosdr.org (deprecated) - Chris' Heroku
