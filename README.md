@@ -54,15 +54,14 @@ npm install
 
 All the details on the API can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/api)
 
-## Core developpers 
-* [Chris](https://github.com/piks3l/) - push rights on master and access to production
-* [Madeline](https://github.com/madoleary) - push rights on master
-* [Michiel](https://github.com/michielbdejong) - push rights on master and access to production
-* [Vincent](https://github.com/Vinnl) - push rights on master
+## Core developers
+* [Chris](https://github.com/piks3l/)
+* [Madeline](https://github.com/madoleary)
+* [Michiel](https://github.com/michielbdejong)
+* [Vincent](https://github.com/vinnl)
 
 ### Hosting
-* https://phoenix.tosdr.org (deprecated) - Chris' Heroku
-* https://edit.tosdr.org (production) - Michiel's Heroku (Chris has access too)
+* https://edit.tosdr.org (production) - Michiel's Heroku (other core developers have access too)
 
 
 ## License
