@@ -1,6 +1,8 @@
   <div class="row">
     <div class="col-sm-6">
+      <% if @service.wikipedia && @service.wikipedia.length > 0 %>
       <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
+      <% end %>
     </div>
     <div class="col-sm-6">
       <h5 class="fw2 fr gray">
