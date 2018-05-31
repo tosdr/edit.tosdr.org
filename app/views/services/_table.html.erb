@@ -24,7 +24,7 @@
   </div>
   <div class="col-sm-4">
     <span class="fr">
-      <button class="btn btn-success" id="orderByPoint">Order by Rating</button>
+      <button class="btn" id="orderByPoint">Order by Rating</button>
     </span>
   </div>
 </div>
@@ -167,6 +167,7 @@
 <% end %>
 <% end %>
 </div>
+  <%= link_to("Add a point", new_service_point_path(@service), class: 'btn btn-primary', style: 'margin-top: 1rem') %>
 </div>
 </div>
 
