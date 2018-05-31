@@ -16,6 +16,9 @@ class PointsController < ApplicationController
     @services = Service.all
     @topics = Topic.all
     @cases = Case.all
+    if @query = params[:service_id]
+      @point['service_id'] = params[:service_id]
+    end
   end
 
   def create
