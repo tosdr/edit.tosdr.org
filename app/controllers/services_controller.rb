@@ -72,7 +72,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :url, :query)
+    params.require(:service).permit(:name, :url, :query, :wikipedia)
   end
 
   def set_curator
