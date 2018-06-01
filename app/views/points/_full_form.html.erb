@@ -44,29 +44,48 @@
               while (point_quoteDoc.firstChild) {
                 point_quoteDoc.removeChild(point_quoteDoc.firstChild)
               }
+              var found = false
+              var selected = '<%= @point.quoteDoc %>'
+              console.log('looking for', selected)
               obj.map(i => {
                 var option = document.createElement( 'option' )
-                option.innerHTML = i.name
-                option.value = encodeURIComponent('<%= @service_url %>') + '/' + i.name
+                option.value = option.innerHTML = i.name
+                if (option.value === selected) {
+                  option.selected = true
+                  found = true
+                }
                 point_quoteDoc.add(option)
               })
-              point_quoteDoc.firstChild.selected = true
+              if (!found) {
+                point_quoteDoc.firstChild.selected = true
+              }
               fetchingDocList = false
               fetchRevList()
             })
           }
           function fetchRevList() {
             fetchingRevList = true
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/' + encodeURIComponent(point_quoteDoc.value), obj => {
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
+                + encodeURIComponent('<%= @service_url %>') + '/'
+                + encodeURIComponent(point_quoteDoc.value), obj => {
               while (point_quoteRev.firstChild) {
                 point_quoteRev.removeChild(point_quoteRev.firstChild)
               }
+              var found = false
+              var selected = '<%= @point.quoteRev %>'
+              console.log('looking for', selected)
               obj.map(i => {
                 var option = document.createElement( 'option' )
                 option.value = option.innerHTML = i.sha
+                if (option.value === selected) {
+                  option.selected = true
+                  found = true
+                }
                 point_quoteRev.add(option)
               })
-              point_quoteRev.firstChild.selected = true
+              if (!found) {
+                point_quoteRev.firstChild.selected = true
+              }
               fetchingRevList = false
               fetchDoc()
             })
@@ -74,9 +93,17 @@
 
           function fetchDoc() {
             var xhr = new XMLHttpRequest()
-            xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/' + point_quoteRev.value + '/crawl/' + point_quoteDoc.value, true)
+            xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
+                + point_quoteRev.value + '/crawl/'
+                + encodeURIComponent('<%= @service_url %>') + '/'
+                + point_quoteDoc.value, true)
             xhr.onload = function() {
               ta.innerHTML = xhr.response
+              ta.selectionStart = parseInt(<%= @point.quoteStart %>)
+              ta.selectionEnd = parseInt(<%= @point.quoteEnd %>)
+              var PX_PER_CHAR = .55 // this is an estimate
+              ta.scrollTop = ta.selectionStart * PX_PER_CHAR
+              ta.focus()
             }
             xhr.send()
           }
