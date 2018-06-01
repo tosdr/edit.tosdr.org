@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20180530131412) do
     t.datetime "updated_at", null: false
     t.bigint "topic_id"
     t.bigint "service_id"
-    t.string "quote"
+    t.string "quoteText"
     t.bigint "case_id"
     t.string "oldId"
     t.text "point_change"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(version: 20180530131412) do
     t.string "quoteRev"
     t.integer "quoteStart"
     t.integer "quoteEnd"
-    t.string "quoteText"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
