@@ -31,7 +31,7 @@ module Phoenix
     # -- all .rb files in that directory are automatically loaded.
 
     # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.generators.system_tests = true 
     config.action_view.embed_authenticity_token_in_remote_forms = true
     config.action_mailer.raise_delivery_errors = false
   end
