@@ -16,6 +16,40 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <%= f.input :quoteDoc, hint: "Document to quote from" %>
+        <%= f.input :quoteRev, hint: "Revision to quote from" %>
+        <%= f.input :quoteStart, hint: "Start position of quote within the document" %>
+        <%= f.input :quoteEnd, hint: "End position of quote within the document" %>
+        <%= f.input :quoteText, placeholder: "...",  hint: "Select from the textarea below" %>
+        <textarea id="ta"></textarea>
+       <script>
+          function fetchDoc() {
+            if (point_quoteRev.value === '') {
+              point_quoteRev.value = "abdca5873975178db399282f07e7134e7c10646b"
+            }
+            if (point_quoteDoc.value === '') {
+              point_quoteDoc.value = "500px.com/Privacy%20Policy.txt"
+            }
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/' + point_quoteRev.value + '/crawl/' + point_quoteDoc.value, true)
+            xhr.onload = function() {
+              ta.innerHTML = xhr.response
+            }
+            xhr.send()
+          }
+          fetchDoc()
+          point_quoteDoc.onchange = fetchDoc
+          point_quoteRev.onchange = fetchDoc
+          setInterval(function() {
+            point_quoteStart.value = ta.selectionStart
+            point_quoteEnd.value = ta.selectionEnd
+            point_quoteText.value = ta.value.substring(ta.selectionStart, ta.selectionEnd)
+          }, 250)
+       </script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, placeholder: "Example: The privacy policy states that '...because this information could be used to link you to your searches, we do not log (store) it at all.'", hint: "Write your analysis and comments" %>
       </div>
     </div>
