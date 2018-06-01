@@ -4,6 +4,6 @@ class AddTosbackToPoint < ActiveRecord::Migration[5.1]
     add_column :points, :quoteRev, :string
     add_column :points, :quoteStart, :int
     add_column :points, :quoteEnd, :int
-    add_column :points, :quoteText, :string
+    rename_column :points, :quote, :quoteText
   end
 end
