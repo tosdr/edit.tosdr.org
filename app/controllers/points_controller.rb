@@ -19,6 +19,7 @@ class PointsController < ApplicationController
     if @query = params[:service_id]
       @point['service_id'] = params[:service_id]
     end
+    @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
@@ -56,11 +57,11 @@ class PointsController < ApplicationController
   end
 
   def edit
+    @service_url = @point.service.url
   end
 
   def show
     @point
-    puts @point.id
     @comments = Comment.where(point_id: @point.id)
     @versions = @point.versions
     @reasons = @point.reasons
@@ -140,7 +141,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id)
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def points_get
