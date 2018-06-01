@@ -19,7 +19,7 @@ class PointsController < ApplicationController
     if @query = params[:service_id]
       @point['service_id'] = params[:service_id]
     end
-    @service_url = @point.service.url
+    @service_url = @point.service ? @point.service.url : ''
   end
 
   def create

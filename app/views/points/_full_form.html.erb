@@ -39,28 +39,40 @@
           var fetchingDocList = false
           var fetchingRevList = false
           function fetchDocList() {
-            fetchingDocList = true
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent('<%= @service_url %>'), obj => {
-              while (point_quoteDoc.firstChild) {
-                point_quoteDoc.removeChild(point_quoteDoc.firstChild)
+            function addDoc(str) {
+              var option = document.createElement( 'option' )
+              option.value = option.innerHTML = str
+              if (option.value === selected) {
+                option.selected = true
+                found = true
               }
-              var found = false
+              point_quoteDoc.add(option)
+            }
+            fetchingDocList = true
+            var serviceUrl = '<%= @service_url %>'
+            while (point_quoteDoc.firstChild) {
+              point_quoteDoc.removeChild(point_quoteDoc.firstChild)
+            }
+            if (serviceUrl == '') {
+              // no service selected yet, have to set quote to empty
+              addDoc('')
+              point_quoteDoc.firstChild.selected = true
+              fetchingDocList = false
+              return
+            }
+            var found = false
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent(serviceUrl), obj => {
               var selected = '<%= @point.quoteDoc %>'
               console.log('looking for', selected)
-              obj.map(i => {
-                var option = document.createElement( 'option' )
-                option.value = option.innerHTML = i.name
-                if (option.value === selected) {
-                  option.selected = true
-                  found = true
-                }
-                point_quoteDoc.add(option)
-              })
+              addDoc('')
+              obj.map(i => addDoc(i.name))
               if (!found) {
                 point_quoteDoc.firstChild.selected = true
               }
               fetchingDocList = false
-              fetchRevList()
+              if (selected !== '') { // even if serviceUrl is not '', quoteDoc can still be '', and then you still don't want to fetch revisions
+                fetchRevList()
+              }
             })
           }
           function fetchRevList() {
