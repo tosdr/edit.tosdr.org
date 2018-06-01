@@ -23,13 +23,45 @@
         <%= f.input :quoteText, placeholder: "...",  hint: "Select from the textarea below" %>
         <textarea id="ta"></textarea>
        <script>
+          function fetchDocList() {
+            return new Promise((resolve, reject) => {
+              var xhr = new XMLHttpRequest()
+              xhr.open('GET', 'https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent('<%= @service_url %>'), true)
+              xhr.onload = function() {
+                try {
+                  var docList = JSON.parse(xhr.response).map(i => i.name)
+                  point_quoteDoc.value =  encodeURIComponent('<%= @service_url %>') + '/' + docList[0]
+                  console.log('setting quoteDoc to first entry in docList', docList)
+                  resolve()
+                } catch (e) {
+                  console.error(e)
+                  reject()
+                }
+              }
+              xhr.send()
+            })
+          }
+          function fetchRevList() {
+            return new Promise((resolve, reject) => {
+              var xhr = new XMLHttpRequest()
+              xhr.open('GET', 'https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
+                  + encodeURIComponent(point_quoteDoc.value), true)
+              xhr.onload = function() {
+                try {
+                  var revList = JSON.parse(xhr.response).map(i => i.sha)
+                  point_quoteRev.value =  revList[0]
+                  console.log('setting quoteRev to first entry in revList', revList)
+                  resolve()
+                } catch (e) {
+                  console.error(e)
+                  reject()
+                }
+              }
+              xhr.send()
+            })
+          }
+
           function fetchDoc() {
-            if (point_quoteRev.value === '') {
-              point_quoteRev.value = "abdca5873975178db399282f07e7134e7c10646b"
-            }
-            if (point_quoteDoc.value === '') {
-              point_quoteDoc.value = "500px.com/Privacy%20Policy.txt"
-            }
             var xhr = new XMLHttpRequest()
             xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/' + point_quoteRev.value + '/crawl/' + point_quoteDoc.value, true)
             xhr.onload = function() {
@@ -37,7 +69,15 @@
             }
             xhr.send()
           }
-          fetchDoc()
+          console.log('fetching doc list')
+          fetchDocList().then(() => {
+            console.log('fetching rev list')
+            return fetchRevList()
+          }).then(() => {
+            console.log('fetching doc contents')
+            return fetchDoc()
+          })
+
           point_quoteDoc.onchange = fetchDoc
           point_quoteRev.onchange = fetchDoc
           setInterval(function() {

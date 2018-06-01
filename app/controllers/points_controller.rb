@@ -19,6 +19,7 @@ class PointsController < ApplicationController
     if @query = params[:service_id]
       @point['service_id'] = params[:service_id]
     end
+    @service_url = @point.service.url
   end
 
   def create
@@ -56,6 +57,7 @@ class PointsController < ApplicationController
   end
 
   def edit
+    @service_url = @point.service.url
   end
 
   def show
