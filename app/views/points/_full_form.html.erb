@@ -16,12 +16,13 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <h5>Quote:</h5>
         <select name="point[quoteDoc]" id="point_quoteDoc" hint="Document to quote from"></select>
         <select name="point[quoteRev]" id="point_quoteRev" hint="Revision to quote from"></select>
-        <%= f.input :quoteStart, hint: "Start position of quote within the document" %>
-        <%= f.input :quoteEnd, hint: "End position of quote within the document" %>
-        <%= f.input :quoteText, placeholder: "...",  hint: "Select from the textarea below" %>
-        <textarea id="ta"></textarea>
+        <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
+        <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
+        <input name="point[quoteText]" id="point_quoteText" type="hidden">
+        <textarea id="ta" readonly="true" rows="20" cols="50" resize="false"></textarea>
        <script>
           function fetchJson(url, cb) {
             var xhr = new XMLHttpRequest()
