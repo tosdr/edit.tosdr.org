@@ -23,7 +23,9 @@
       <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
       <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
       <input name="point[quoteText]" id="point_quoteText" type="hidden">
-      <textarea id="ta" readonly="true" rows="20" cols="50" resize="false"></textarea>
+      <div class="form-control" style="overflow: scroll; height: 400px;">
+      <p id="ta" readonly="true" rows="20" cols="50" resize="false"></p>
+      </div>
       <script>
         function fetchJson(url, cb) {
           var xhr = new XMLHttpRequest()
