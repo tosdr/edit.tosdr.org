@@ -1,61 +1,61 @@
 <div class="form-login">
-    <%= simple_form_for [@point] do |f| %>
-    <div class="row">
-      <div class="col-xs-6">
-        <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+  <%= simple_form_for [@point] do |f| %>
+  <div class="row">
+    <div class="col-xs-6">
+      <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
 
-      </div>
-      <div class="col-xs-6">
-        <%= f.association :case, collection: Case.order('title ASC'), hint: "What this point is saying about the service" %>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
-      </div>
+    <div class="col-xs-6">
+      <%= f.association :case, collection: Case.order('title ASC'), hint: "What this point is saying about the service" %>
     </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <h5>Quote:</h5>
-        <div id="service_changed" style="display:none">Service changed, please submit and edit again to set the quote</div>
-        <select name="point[quoteDoc]" id="point_quoteDoc" hint="Document to quote from"></select>
-        <select name="point[quoteRev]" id="point_quoteRev" hint="Revision to quote from"></select>
-        <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
-        <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
-        <input name="point[quoteText]" id="point_quoteText" type="hidden">
-        <textarea id="ta" readonly="true" rows="20" cols="50" resize="false"></textarea>
-       <script>
-          function fetchJson(url, cb) {
-            var xhr = new XMLHttpRequest()
-            xhr.open('GET', url, true)
-            xhr.onload = function() {
-              try {
-                cb(JSON.parse(xhr.response))
-              } catch (e) {
-                console.error(e)
-              }
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h5>Quote:</h5>
+      <div id="service_changed" style="display:none">Service changed, please submit and edit again to set the quote</div>
+      <select name="point[quoteDoc]" id="point_quoteDoc" hint="Document to quote from"></select>
+      <select name="point[quoteRev]" id="point_quoteRev" hint="Revision to quote from"></select>
+      <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
+      <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
+      <input name="point[quoteText]" id="point_quoteText" type="hidden">
+      <textarea id="ta" readonly="true" rows="20" cols="50" resize="false"></textarea>
+      <script>
+        function fetchJson(url, cb) {
+          var xhr = new XMLHttpRequest()
+          xhr.open('GET', url, true)
+          xhr.onload = function() {
+            try {
+              cb(JSON.parse(xhr.response))
+            } catch (e) {
+              console.error(e)
             }
-            xhr.send()
           }
-          var fetchingDocList = false
-          var fetchingRevList = false
-          function fetchDocList() {
-            function addDoc(str) {
-              var option = document.createElement( 'option' )
-              option.value = option.innerHTML = str
-              if (option.value === selected) {
-                option.selected = true
-                found = true
-              }
-              point_quoteDoc.add(option)
+          xhr.send()
+        }
+        var fetchingDocList = false
+        var fetchingRevList = false
+        function fetchDocList() {
+          function addDoc(str) {
+            var option = document.createElement( 'option' )
+            option.value = option.innerHTML = str
+            if (option.value === selected) {
+              option.selected = true
+              found = true
             }
-            fetchingDocList = true
-            var serviceUrl = '<%= @service_url %>'
-            var selected = '<%= @point.quoteDoc %>'
-            while (point_quoteDoc.firstChild) {
-              point_quoteDoc.removeChild(point_quoteDoc.firstChild)
-            }
-            if (serviceUrl == '') {
+            point_quoteDoc.add(option)
+          }
+          fetchingDocList = true
+          var serviceUrl = '<%= @service_url %>'
+          var selected = '<%= @point.quoteDoc %>'
+          while (point_quoteDoc.firstChild) {
+            point_quoteDoc.removeChild(point_quoteDoc.firstChild)
+          }
+          if (serviceUrl == '') {
               // no service selected yet, have to set quote to empty
               addDoc('')
               point_quoteDoc.firstChild.selected = true
@@ -73,43 +73,43 @@
               fetchingDocList = false
               if (selected !== '') { // even if serviceUrl is not '', quoteDoc can still be '', and then you still don't want to fetch revisions
                 fetchRevList()
-              }
-            })
+            }
+          })
           }
           function fetchRevList() {
             fetchingRevList = true
             fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
-                + encodeURIComponent('<%= @service_url %>') + '/'
-                + encodeURIComponent(point_quoteDoc.value), obj => {
-              while (point_quoteRev.firstChild) {
-                point_quoteRev.removeChild(point_quoteRev.firstChild)
-              }
-              var found = false
-              var selected = '<%= @point.quoteRev %>'
-              console.log('looking for', selected)
-              obj.map(i => {
-                var option = document.createElement( 'option' )
-                option.value = option.innerHTML = i.sha
-                if (option.value === selected) {
-                  option.selected = true
-                  found = true
+              + encodeURIComponent('<%= @service_url %>') + '/'
+              + encodeURIComponent(point_quoteDoc.value), obj => {
+                while (point_quoteRev.firstChild) {
+                  point_quoteRev.removeChild(point_quoteRev.firstChild)
                 }
-                point_quoteRev.add(option)
+                var found = false
+                var selected = '<%= @point.quoteRev %>'
+                console.log('looking for', selected)
+                obj.map(i => {
+                  var option = document.createElement( 'option' )
+                  option.value = option.innerHTML = i.sha
+                  if (option.value === selected) {
+                    option.selected = true
+                    found = true
+                  }
+                  point_quoteRev.add(option)
+                })
+                if (!found) {
+                  point_quoteRev.firstChild.selected = true
+                }
+                fetchingRevList = false
+                fetchDoc()
               })
-              if (!found) {
-                point_quoteRev.firstChild.selected = true
-              }
-              fetchingRevList = false
-              fetchDoc()
-            })
           }
 
           function fetchDoc() {
             var xhr = new XMLHttpRequest()
             xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-                + point_quoteRev.value + '/crawl/'
-                + encodeURIComponent('<%= @service_url %>') + '/'
-                + point_quoteDoc.value, true)
+              + point_quoteRev.value + '/crawl/'
+              + encodeURIComponent('<%= @service_url %>') + '/'
+              + point_quoteDoc.value, true)
             xhr.onload = function() {
               ta.innerHTML = xhr.response
               ta.selectionStart = parseInt(<%= @point.quoteStart %>)
@@ -122,7 +122,7 @@
           }
           point_service_id.onchange = function() {
             console.log('changed')
-            service_changed.style.display="block" 
+            service_changed.style.display="block"
           }
           point_quoteDoc.onchange = function() {
             if (!fetchingDocList) {
@@ -140,7 +140,7 @@
             point_quoteEnd.value = ta.selectionEnd
             point_quoteText.value = ta.value.substring(ta.selectionStart, ta.selectionEnd)
           }, 250)
-       </script>
+        </script>
       </div>
     </div>
     <div class="row">
@@ -172,13 +172,13 @@
     <% end %>
     <div class="row">
       <div class="form-actions col-xs-6 col-sm-2 col-md-2">
-      <%= link_to "Back", :back, class: "btn btn-default" %>
+        <%= link_to "Back", :back, class: "btn btn-default" %>
       </div>
       <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
         <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
         <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
       </div>
     </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
 </div>
