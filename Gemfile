@@ -12,8 +12,8 @@ gem 'pg', '~> 0.21'
 gem 'puma', '~> 3.10.0'
 gem 'rails', '5.1.4'
 gem 'redis'
-gem 'activeadmin', github: 'activeadmin/activeadmin'
-gem 'inherited_resources', github: 'activeadmin/inherited_resources'
+# gem 'activeadmin', github: 'activeadmin/activeadmin'
+# gem 'inherited_resources', github: 'activeadmin/inherited_resources'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
@@ -38,7 +38,6 @@ group :development, :test do
   gem 'stackprof'
   gem 'memory_profiler'
   gem 'rack-mini-profiler'
-  gem 'memory_profiler'
 end
 
 group :production do
