@@ -37,6 +37,7 @@ group :development, :test do
   gem 'stackprof'
   gem 'memory_profiler'
   gem 'rack-mini-profiler'
+  gem 'active_record_query_trace'
 end
 
 group :production do
