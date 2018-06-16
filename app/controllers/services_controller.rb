@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:destroy]
-  before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_service, only: [:show, :edit, :annotate, :update, :destroy]
 
   def index
     @services = Service.includes(:points).all
@@ -21,6 +21,10 @@ class ServicesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def annotate
+    @points = @service.points
   end
 
   def show

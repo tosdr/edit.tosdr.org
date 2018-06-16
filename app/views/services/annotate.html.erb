@@ -1,0 +1,60 @@
+<script>
+  var quotes = {}
+  function fetchDoc(serviceName, doc, rev) {
+    console.log('fetchDoc', serviceName, doc, rev)
+
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
+      + rev + '/crawl/'
+      + encodeURIComponent(serviceName) + '/'
+      + doc, true)
+    xhr.onload = function() {
+      var text = xhr.response
+      var cursor = 0
+      var span
+      quotes[doc][rev].sort((a, b) => a.start - b.start)
+      for (var i=0; i<quotes[doc][rev].length; i++) {
+        var span = document.createElement('span')
+        span.innerText = text.substring(cursor, quotes[doc][rev][i].start)
+        console.log('green', text.length, cursor, quotes[doc][rev][i].start)
+        span.style.color = 'green'
+        ta.appendChild(span)
+        span = document.createElement('span')
+        span.innerText = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
+        console.log('red', text.length, quotes[doc][rev][i].start, quotes[doc][rev][i].end)
+        span.style.color = 'red'
+        ta.appendChild(span)
+        cursor = quotes[doc][rev][i].end
+      }
+      span = document.createElement('span')
+      span.innerText = text.substring(cursor)
+      console.log('green', text.length, cursor)
+      span.style.color = 'green'
+      ta.appendChild(span)
+    }
+    xhr.send()
+  }
+  
+  function registerQuote(doc, rev, start, end, pointId) {
+    if (doc) {
+      console.log(doc, rev, start, end, pointId)
+      if (!quotes[doc]) {
+        quotes[doc] = {}
+      }
+      if (!quotes[doc][rev]) {
+        quotes[doc][rev] = []
+        fetchDoc('<%= @service.url %>', doc, rev) // FIXME: check for code injection
+      }
+      quotes[doc][rev].push({ start, end, pointId})
+    }
+  }
+  <% @points.each do |p| %>
+      registerQuote(
+        '<%= p.quoteDoc %>', // FIXME: check for code injection
+        '<%= p.quoteRev %>', // FIXME: check for code injection
+        parseInt(<%= p.quoteStart %>), // FIXME: check for code injection
+        parseInt(<%= p.quoteEnd %>), // FIXME: check for code injection
+        parseInt(<%= p.id %>)) // FIXME: check for code injection
+  <% end %>
+</script>
+<div id="ta"></div>

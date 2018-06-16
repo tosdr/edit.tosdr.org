@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :services, except: [:index] do
     resources :points, only: [:new, :create]
   end
+  get "services/:id/annotate", to: "services#annotate"
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
