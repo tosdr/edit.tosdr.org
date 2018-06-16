@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     resources :points, only: [:new, :create]
   end
   get "services/:id/annotate", to: "services#annotate"
+  post "services/:id/annotate", to: "services#quote"
+
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics

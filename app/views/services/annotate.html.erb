@@ -1,4 +1,38 @@
+<ul>
+  <% @points.each do |p| %>
+    <% if !(p.quoteDoc) %>
+      <li>
+          <%= p.id %>
+          <%= p.title %>
+          <input type="submit" value="Quote" onclick="makeQuote(<%= p.id %>)" >
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<form method="POST" id="quoteForm">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="quoteDoc" id="quoteDoc">
+  <input type="hidden" name="quoteRev" id="quoteRev">
+  <input type="hidden" name="quoteStart" id="quoteStart">
+  <input type="hidden" name="quoteEnd" id="quoteEnd">
+  <input type="hidden" name="quotePointId" id="quotePointId">
+  <input type="submit" value="Save">
+</form>
+
 <script>
+  function makeQuote(pointId) {
+    var sel = window.getSelection()
+    console.log('makeQuote', pointId,
+      sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset,
+      sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+    )
+    quoteDoc.value =  sel.anchorNode.parentElement.getAttribute('doc')
+    quoteRev.value =  sel.anchorNode.parentElement.getAttribute('rev')
+    quoteStart.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset
+    quoteEnd.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+    quotePointId.value = pointId
+  }
   var quotes = {}
   function fetchDoc(serviceName, doc, rev) {
     console.log('fetchDoc', serviceName, doc, rev)
@@ -18,11 +52,18 @@
         span.innerText = text.substring(cursor, quotes[doc][rev][i].start)
         console.log('green', text.length, cursor, quotes[doc][rev][i].start)
         span.style.color = 'green'
+        span.setAttribute('offset', cursor)
+        span.setAttribute('doc', doc)
+        span.setAttribute('rev', rev)
         ta.appendChild(span)
-        span = document.createElement('span')
+        span = document.createElement('a')
         span.innerText = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         console.log('red', text.length, quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         span.style.color = 'red'
+        span.setAttribute('offset', quotes[doc][rev][i].start)
+        span.setAttribute('doc', doc)
+        span.setAttribute('rev', rev)
+        span.href = '/points/' + quotes[doc][rev][i].pointId + '/edit'
         ta.appendChild(span)
         cursor = quotes[doc][rev][i].end
       }
@@ -30,6 +71,9 @@
       span.innerText = text.substring(cursor)
       console.log('green', text.length, cursor)
       span.style.color = 'green'
+      span.setAttribute('offset', cursor)
+      span.setAttribute('doc', doc)
+      span.setAttribute('rev', rev)
       ta.appendChild(span)
     }
     xhr.send()

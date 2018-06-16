@@ -27,6 +27,20 @@ class ServicesController < ApplicationController
     @points = @service.points
   end
 
+  def quote
+    puts 'quote!'
+    puts params
+    point = Point.find(params[:quotePointId])
+    point.update(
+      quoteDoc: params[:quoteDoc],
+      quoteRev: params[:quoteRev],
+      quoteStart: params[:quoteStart],
+      quoteEnd: params[:quoteEnd]
+    )
+    point.save
+    redirect_to service_path(params[:id]) + '/annotate'
+  end
+
   def show
     if current_user
       case params[:scope]
