@@ -23,7 +23,9 @@
       <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
       <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
       <input name="point[quoteText]" id="point_quoteText" type="hidden">
-      <textarea id="ta" readonly="true" rows="20" cols="50" resize="false"></textarea>
+      <div class="form-control" style="overflow: scroll; height: 400px;">
+      <p id="ta" readonly="true" rows="20" cols="50" resize="false"></p>
+      </div>
       <script>
         function fetchJson(url, cb) {
           var xhr = new XMLHttpRequest()
@@ -111,7 +113,7 @@
               + encodeURIComponent('<%= @service_url %>') + '/'
               + point_quoteDoc.value, true)
             xhr.onload = function() {
-              ta.innerHTML = xhr.response
+              ta.textContent = xhr.response
               ta.selectionStart = parseInt(<%= @point.quoteStart %>)
               ta.selectionEnd = parseInt(<%= @point.quoteEnd %>)
               var PX_PER_CHAR = .55 // this is an estimate
@@ -136,9 +138,17 @@
           }
           fetchDocList()
           setInterval(function() {
-            point_quoteStart.value = ta.selectionStart
-            point_quoteEnd.value = ta.selectionEnd
-            point_quoteText.value = ta.value.substring(ta.selectionStart, ta.selectionEnd)
+            var selection = document.getSelection();
+            if (
+              selection.anchorNode !== null
+              && selection.anchorNode.parentElement
+              && selection.anchorNode.parentElement.id
+              && selection.anchorNode.parentElement.id === 'ta'
+            ) {
+              point_quoteStart.value = Math.min(selection.anchorOffset, selection.focusOffset)
+              point_quoteEnd.value = Math.max(selection.anchorOffset, selection.focusOffset)
+              point_quoteText.value = selection.toString()
+            }
           }, 250)
         </script>
       </div>
