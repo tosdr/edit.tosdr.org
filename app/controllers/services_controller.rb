@@ -28,6 +28,8 @@ class ServicesController < ApplicationController
       case params[:scope]
       when nil
         @points = @service.points
+      when annotate
+        @points = @service.points
       when 'pending'
         @points = @service.points.where(status: 'pending')
       when 'archived-versions'
