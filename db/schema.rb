@@ -34,9 +34,9 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.integer "score"
     t.string "title"
     t.text "description"
-    t.bigint "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "topic_id"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
   end
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.string "quoteText"
     t.bigint "case_id"
     t.string "oldId"
+    t.text "reason"
     t.text "point_change"
     t.string "quoteDoc"
     t.string "quoteRev"
@@ -101,11 +102,14 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.string "status"
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
     t.string "slug"
     t.boolean "is_comprehensively_reviewed", default: false, null: false
+    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -150,7 +154,6 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "cases", "topics"
   add_foreign_key "comments", "points"
   add_foreign_key "comments", "users"
   add_foreign_key "doc_revisions", "services"
@@ -160,4 +163,5 @@ ActiveRecord::Schema.define(version: 20180622124325) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
+  add_foreign_key "services", "users"
 end
