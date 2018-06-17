@@ -1,9 +1,5 @@
 class PagesController < ApplicationController
   def home
-    if params[:query]
-      @services = Service.includes(:points).where('name ILIKE ?', "%#{params[:query]}%")
-    else
-      @services = Service.includes(:points).with_points_featured
-    end
+    @versions = Version.all
   end
 end
