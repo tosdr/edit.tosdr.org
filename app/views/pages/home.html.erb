@@ -10,28 +10,29 @@
 <div class="panel-group" id="accordion">
   <% counter = 1 %>
   <% @versions.each do |version| %>
-  <% event = version.event == "create" ? "Analysis created" : "Analysis updated" %>
   <% counter += 1 %>
   <div class="panel panel-default" id="panel<%=counter%>">
     <div class="panel-heading" id="panel-style">
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.created_at) %>
+              <b><%= version.whodunnit %>:</b> <%= format_time(version.created_at) %>
           </h5>
         </div>
         <div class="col-sm-4">
           <h5>
-            <a data-toggle="collapse" data-target="#collapse<%=counter%>"
-              href="#collapse<%=counter%>" class="collapsed">
-              <%= event %>
+            <%= version.event %>
+            <a 
+              href="/<%= version.item_type.downcase %>s/<%= version.item_id %>" class="collapsed">
+              <%= version.item_type %>
+              <%= version.item_id %>
             </a>
           </h5>
         </div>
         <div class="col-sm-4 text-right">
           <a data-toggle="collapse" data-target="#collapse<%=counter%>"
               href="#collapse<%=counter%>" class="collapsed">
-              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-chevron-down" aria-hidden="true">details</span>
           </a>
         </div>
     </div>
@@ -44,6 +45,7 @@
         </div>
         <div class="row">
           <div class="col-sm-6">
+              <%= version.object_changes %>
           </div>
           <div class="col-sm-6">
           </div>
