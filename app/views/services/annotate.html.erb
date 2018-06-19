@@ -25,14 +25,18 @@
 <script>
   function makeQuote(pointId) {
     var sel = window.getSelection()
+    var spanOffset = parseInt(sel.anchorNode.parentElement.getAttribute('offset'), 10);
+    var selectionStart = Math.min(sel.anchorOffset, sel.focusOffset);
+    var selectionEnd = Math.max(sel.anchorOffset, sel.focusOffset);
     console.log('makeQuote', pointId,
-      sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset,
-      sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+      spanOffset,
+      spanOffset + selectionStart,
+      spanOffset + selectionEnd
     )
     quoteDoc.value =  sel.anchorNode.parentElement.getAttribute('doc')
     quoteRev.value =  sel.anchorNode.parentElement.getAttribute('rev')
-    quoteStart.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset
-    quoteEnd.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+    quoteStart.value = spanOffset + selectionStart
+    quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
   }
   var quotes = {}
