@@ -3,8 +3,8 @@
 
 require 'json'
 
-filepath_points = "../tosdr-build/src/points/"
-filepath_points_mapping = "../tosdr-build/src/pointsMapping.json"
+filepath_points = "./tosdr-build/src/points/"
+filepath_points_mapping = "./tosdr-build/src/pointsMapping.json"
 
 mapping = {}
 mapping['toId'] = {}
