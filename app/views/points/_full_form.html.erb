@@ -65,7 +65,7 @@
               return
             }
             var found = false
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent(serviceUrl), obj => {
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl_reviewed/' + encodeURIComponent(serviceUrl), obj => {
               console.log('looking for', selected)
               addDoc('')
               obj.map(i => addDoc(i.name))
@@ -80,7 +80,7 @@
           }
           function fetchRevList() {
             fetchingRevList = true
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl_reviewed/'
               + encodeURIComponent('<%= @service_url %>') + '/'
               + encodeURIComponent(point_quoteDoc.value), obj => {
                 while (point_quoteRev.firstChild) {
@@ -109,7 +109,7 @@
           function fetchDoc() {
             var xhr = new XMLHttpRequest()
             xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-              + point_quoteRev.value + '/crawl/'
+              + point_quoteRev.value + '/crawl_reviewed/'
               + encodeURIComponent('<%= @service_url %>') + '/'
               + point_quoteDoc.value, true)
             xhr.onload = function() {
