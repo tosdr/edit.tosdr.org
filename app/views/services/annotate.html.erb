@@ -65,7 +65,7 @@
       div.appendChild(h)
       for (var i=0; i<quotes[doc][rev].length; i++) {
         var span = document.createElement('span')
-        span.innerText = text.substring(cursor, quotes[doc][rev][i].start)
+        span.textContent = text.substring(cursor, quotes[doc][rev][i].start)
         console.log('green', text.length, cursor, quotes[doc][rev][i].start)
         span.style.color = 'green'
         span.setAttribute('offset', cursor)
@@ -73,7 +73,7 @@
         span.setAttribute('rev', rev)
         div.appendChild(span)
         span = document.createElement('a')
-        span.innerText = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
+        span.textContent = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         console.log('red', text.length, quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         span.style.color = 'red'
         span.setAttribute('offset', quotes[doc][rev][i].start)
@@ -84,7 +84,7 @@
         cursor = quotes[doc][rev][i].end
       }
       span = document.createElement('span')
-      span.innerText = text.substring(cursor)
+      span.textContent = text.substring(cursor)
       console.log('green', text.length, cursor)
       span.style.color = 'green'
       span.setAttribute('offset', cursor)
