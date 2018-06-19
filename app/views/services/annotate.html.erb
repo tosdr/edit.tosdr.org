@@ -48,6 +48,12 @@
       var text = xhr.response
       var cursor = 0
       var span
+      if (!quotes[doc]) {
+        quotes[doc] = {}
+      }
+      if (!quotes[doc][rev]) {
+        quotes[doc][rev] = []
+      }
       quotes[doc][rev].sort((a, b) => a.start - b.start)
       var div = document.createElement('div')
       var h = document.createElement('h2')
@@ -122,14 +128,12 @@
   }
 
   function fetchRevList(serviceUrl, docName) {
-    console.log('fetchRevList', serviceUrl, docName)
-    return
     fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
         + encodeURIComponent(serviceUrl) + '/'
         + encodeURIComponent(docName), obj => {
-      var topRev = obj[obj.keys[0]]
+      var topRev = obj[0].sha
       console.log('got rev list', docName, obj, topRev)
-      fetchDoc('<%= @service.url %>', doc, topRev) // FIXME: check for code injection
+      fetchDoc('<%= @service.url %>', docName, topRev) // FIXME: check for code injection
       })
   }
 
@@ -142,7 +146,6 @@
         parseInt(<%= p.quoteEnd %>), // FIXME: check for code injection
         parseInt(<%= p.id %>)) // FIXME: check for code injection
   <% end %>
-  // will uncomment when we can fix github api rate limiting:
-  // fetchDocList('<%= @service.url %>')
+  fetchDocList('<%= @service.url %>')
 </script>
 
