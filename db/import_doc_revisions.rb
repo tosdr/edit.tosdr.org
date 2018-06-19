@@ -1,16 +1,30 @@
 # in repo root, run:
 # rails runner db/import_doc_revision.rb
 
-filepath_docs = "../tosback2/crawl_reviewed/"
+tosback2_repo = "https://github.com/tosdr/tosback2"
+filepath_docs = "./tosback2/crawl_reviewed/"
 
 def importDocRevision(service, doc, rev)
   data = {}
-  data['service_id'] = Service.where('"url" like \'' + service + '%\'')[0].id
-  data['name'] = doc
-  data['revision'] = rev
-  puts 'data:'
-  puts data 
+  service = Service.where('"url" like \'' + service + '%\'')[0]
+  if !service
+    return
+  end
+  imported = DocRevision.new(
+    service_id: service.id,
+    name: doc,
+    revision: rev
+  )
+  puts imported
+  unless imported.valid?
+    puts "### not imported ! ###"
+    panic
+  end
+  imported.save
 end
+
+puts "Cloning " + tosback2_repo
+`git clone --depth=1 #{tosback2_repo}`
 
 puts "Importing docs..."
 Dir.foreach(filepath_docs) do |service|
