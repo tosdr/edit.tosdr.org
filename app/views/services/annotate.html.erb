@@ -2,7 +2,7 @@
   <% @points.each do |p| %>
     <% if !(p.quoteDoc) %>
       <li>
-          <%= p.id %>
+          <%= link_to(p.id, point_path(p), title: "View point details: " + p.title) %>
           <%= p.title %>
           <input type="submit" value="Quote" onclick="makeQuote(<%= p.id %>)" >
       </li>
