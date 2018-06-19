@@ -41,7 +41,7 @@
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-      + rev + '/crawl/'
+      + rev + '/crawl_reviewed/'
       + encodeURIComponent(serviceName) + '/'
       + doc, true)
     xhr.onload = function() {
@@ -121,14 +121,14 @@
   }
 
   function fetchDocList(serviceUrl) {
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent(serviceUrl), obj => {
+    fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl_reviewed/' + encodeURIComponent(serviceUrl), obj => {
       console.log('got docs', serviceUrl, obj)
       obj.map(i => fetchRevList(serviceUrl, i.name))
     })
   }
 
   function fetchRevList(serviceUrl, docName) {
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
+    fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl_reviewed/'
         + encodeURIComponent(serviceUrl) + '/'
         + encodeURIComponent(docName), obj => {
       var topRev = obj[0].sha
