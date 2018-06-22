@@ -66,6 +66,12 @@ class PointsController < ApplicationController
   def show
     @point
     @comments = Comment.where(point_id: @point.id)
+    @comments.each do |c|
+      #if (c.user_id)
+      #  c.user_id = User.find_by_id(c.user_id)
+      #  puts c.user_id
+      #end
+    end
     @versions = @point.versions
     @reasons = @point.reasons
   end
