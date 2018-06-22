@@ -73,7 +73,6 @@ class PointsController < ApplicationController
       #end
     end
     @versions = @point.versions
-    @reasons = @point.reasons
   end
 
   def update
