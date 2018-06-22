@@ -76,6 +76,21 @@ class PointsController < ApplicationController
   end
 
   def update
+    comment_params = {
+      summary: point_params['point_change']
+    }
+    puts comment_params
+    comment = Comment.new(comment_params)
+    comment.point = @point
+    comment.user_id = current_user.id
+    comment.save
+    if comment.save
+      flash[:notice] = "Comment added!"
+    else
+      flash[:notice] = "Error adding comment!"
+      puts comment.errors.full_messages
+    end
+
     copied_params = point_params
     if (copied_params['case_id'] != @point.case_id.to_s)
       puts 'case change, setting title, description, rating and topic'
