@@ -110,46 +110,31 @@
     }
   }
 
-  // find docs for which no points have quotes yet:
-  function fetchJson(url, cb) {
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.onload = function() {
-      try {
-        cb(JSON.parse(xhr.response))
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    xhr.send()
-  }
-
-  function fetchDocList(serviceUrl) {
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl_reviewed/' + encodeURIComponent(serviceUrl), obj => {
-      console.log('got docs', serviceUrl, obj)
-      obj.map(i => fetchRevList(serviceUrl, i.name))
-    })
-  }
-
-  function fetchRevList(serviceUrl, docName) {
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl_reviewed/'
-        + encodeURIComponent(serviceUrl) + '/'
-        + encodeURIComponent(docName), obj => {
-      var topRev = obj[0].sha
-      console.log('got rev list', docName, obj, topRev)
-      fetchDoc('<%= @service.url %>', docName, topRev) // FIXME: check for code injection
-      })
-  }
-
   // ...
-  <% @points.each do |p| %>
-      registerQuote(
-        '<%= p.quoteDoc %>', // FIXME: check for code injection
-        '<%= p.quoteRev %>', // FIXME: check for code injection
-        parseInt(<%= p.quoteStart %>), // FIXME: check for code injection
-        parseInt(<%= p.quoteEnd %>), // FIXME: check for code injection
-        parseInt(<%= p.id %>)) // FIXME: check for code injection
+  var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
+
+  // find docs for which no points have quotes yet:
+  <% @docRevisions.each do |d| %>
+  ;(function() {
+    var docName = '<%=escape_javascript d.name %>'
+    var topRev = '<%=escape_javascript d.revision %>'
+    console.log('fetching doc', serviceDomain, docName, topRev)
+    fetchDoc(serviceDomain, docName, topRev)
+  })()
   <% end %>
-  fetchDocList('<%= @service.url %>')
+  <% @points.each do |p| %>
+    console.log('registering quote',
+      '<%=escape_javascript p.quoteDoc %>',
+      '<%=escape_javascript p.quoteRev %>',
+      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
+      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
+      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
+    registerQuote(
+      '<%=escape_javascript p.quoteDoc %>',
+      '<%=escape_javascript p.quoteRev %>',
+      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
+      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
+      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
+  <% end %>
 </script>
 
