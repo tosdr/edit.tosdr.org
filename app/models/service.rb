@@ -33,11 +33,18 @@ class Service < ApplicationRecord
   end
 
   def service_ratings
-    total_ratings = points.map { |p| p.rating }
+    approved_points = points.select do |p|
+      puts 'filtering!'
+      puts p.title
+      puts p.rating
+      puts p.status
+      p.status == 'approved'
+    end
+    total_ratings = approved_points.map { |p| p.rating }
     num_bad = 0
     num_blocker = 0
     num_good = 0
-    points.each do |p|
+    approved_points.each do |p|
       if (p.rating < 2)
         num_blocker += 1
       elsif (p.rating < 5)
