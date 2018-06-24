@@ -2,10 +2,13 @@ class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:edit, :featured, :destroy]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
-  before_action :points_get, only: [:index]
 
   def index
-    @points = Point.all
+    if params[:scope].nil? || params[:scope] == "all"
+      @points = Point.includes(:service).all
+    elsif params[:scope] == "pending"
+      @points = Point.all.where(status: "pending")
+    end
     if @query = params[:query]
       @points = Point.includes(:service).search_points_by_multiple(@query)
     end
@@ -116,14 +119,6 @@ class PointsController < ApplicationController
 
   def point_params
     params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
-  end
-
-  def points_get
-    if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service).all
-    elsif params[:scope] == "pending"
-      @points = Point.includes(:service).all.where(status: "pending")
-    end
   end
 
   def set_curator

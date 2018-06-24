@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <title>Settings (ToS;DR Phoenix)</title>
+<% end %>
 <div class="container mwd">
   <div class="row">
     <h2>Edit <%= resource_name.to_s.humanize %></h2>
@@ -7,6 +10,7 @@
 
     <div class="form-inputs">
       <%= f.input :email, required: true, autofocus: true %>
+      <%= f.input :username, required: true %>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>

@@ -1,4 +1,7 @@
 <% if current_user %>
+<% content_for :title do %>
+  <title>Points (ToS;DR Phoenix)</title>
+<% end %>
 
 <% if params[:scope].nil? || params[:scope] == "all" %>
 

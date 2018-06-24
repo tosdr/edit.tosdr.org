@@ -108,10 +108,12 @@ $pointPaddingLeft : 35px;
 .service-badge {
   height: 25px;
   width: 25px;
+  border-radius: 50%;
   color: white;
-  font-size: 18px;
   text-align: center;
-  margin: 0 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
   &.rating-na {
     font-size: 0.65em;
     padding-top: 0.5rem;

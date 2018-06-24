@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <title>Services (ToS;DR Phoenix)</title>
+<% end %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
     All Services
@@ -40,21 +43,21 @@
         <% else %>
           <% @services.each do |s| %>
             <% if s.service_ratings == "A" %>
-              <% badge_rating = "card-badge rating-a" %>
+              <% badge_rating = "rating-a" %>
             <% elsif s.service_ratings == "B" %>
-              <% badge_rating = "card-badge rating-b" %>
+              <% badge_rating = "rating-b" %>
             <% elsif s.service_ratings == "C" %>
-              <% badge_rating = "card-badge rating-c" %>
+              <% badge_rating = "rating-c" %>
             <% elsif s.service_ratings == "D" %>
-              <% badge_rating = "card-badge rating-d" %>
-            <% elsif s.service_ratings == "F" %>
-              <% badge_rating = "card-badge rating-f" %>
+              <% badge_rating = "rating-d" %>
+            <% elsif s.service_ratings == "E" %>
+              <% badge_rating = "rating-e" %>
             <% elsif s.service_ratings == "N/A" %>
-              <% badge_rating = "card-badge rating-na" %>
+              <% badge_rating = "rating-na" %>
           <% end %>
           <div class="card-inline">
             <div class="card-inline-item card-inline-service text-left">
-              <%= link_to s.name, service_path(s.id) %>
+              <%= s.name %>
             </div>
             <div class="card-inline-item card-inline-url">
               <%= link_to s.url, s.url %>
