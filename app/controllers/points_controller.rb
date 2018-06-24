@@ -19,44 +19,18 @@ class PointsController < ApplicationController
     @services = Service.all
     @topics = Topic.all
     @cases = Case.all
-    if @query = params[:service_id]
-      @point['service_id'] = params[:service_id]
-    end
     @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
     @point = Point.new(point_params)
     @point.user = current_user
-    if params[:has_case]
-      if @point.case.nil? || @point.status.blank? || @point.source.blank?
-        flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
-        render :new
-      elsif
-        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
-        if @point.save
-          redirect_to service_path(@point.service)
-          flash[:notice] = "You created a point!"
-        else
-          render :new
-        end
-      end
-    elsif params[:only_create]
-      if @point.save
-        redirect_to service_path(@point.service)
-        flash[:notice] = "You created a point!"
-      else
-        render :new
-      end
-    elsif params[:create_add_another]
-      if @point.save
-        redirect_to new_point_path
-        flash[:notice] = "You created a point! Feel free to add another."
-      else
-        render :new
-      end
+    @cases = Case.all
+    if @point.save
+      redirect_to points_path
+    else
+      render :new
     end
-    puts @point.errors.full_messages
   end
 
   def edit
