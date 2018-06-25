@@ -3,9 +3,16 @@
     <%= simple_form_for [@point] do |f| %>
     <div class="row">
       <div class="col-xs-6">
+      <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <h5>Case:</h5>
         <%= f.select :case_id, options_for_select(@cases.map{ |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification} ] }), :include_blank => true %>
       </div>
     </div>
+    <br>
     <div class="row">
       <div class="col-xs-12" id="fill-point-title">
         <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
