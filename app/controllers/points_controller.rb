@@ -66,11 +66,31 @@ class PointsController < ApplicationController
   def show
     @point
     @comments = Comment.where(point_id: @point.id)
+    @comments.each do |c|
+      #if (c.user_id)
+      #  c.user_id = User.find_by_id(c.user_id)
+      #  puts c.user_id
+      #end
+    end
     @versions = @point.versions
-    @reasons = @point.reasons
   end
 
   def update
+    comment_params = {
+      summary: point_params['point_change']
+    }
+    puts comment_params
+    comment = Comment.new(comment_params)
+    comment.point = @point
+    comment.user_id = current_user.id
+    comment.save
+    if comment.save
+      flash[:notice] = "Comment added!"
+    else
+      flash[:notice] = "Error adding comment!"
+      puts comment.errors.full_messages
+    end
+
     copied_params = point_params
     if (copied_params['case_id'] != @point.case_id.to_s)
       puts 'case change, setting title, description, rating and topic'

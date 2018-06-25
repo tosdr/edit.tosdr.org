@@ -25,33 +25,45 @@ class Service < ApplicationRecord
       "rating-c"
     elsif self.service_ratings == "D"
       "rating-d"
-    elsif self.service_ratings == "F"
-      "rating-f"
+    elsif self.service_ratings == "E"
+      "rating-e"
     else
       ""
     end
   end
 
   def service_ratings
-    total_ratings = points.map { |p| p.rating }
-    avg = (total_ratings.sum.to_f) / (total_ratings.size.to_f)
-    unless avg.nan?
-      case avg.round
-      when 9..10
-        "A"
-      when 7..8
-        "B"
-      when 5..6
-        "C"
-      when 3..4
-        "D"
-      when 0..2
-        "F"
-      else
-        "N/A"
+    approved_points = points.select do |p|
+      puts 'filtering!'
+      puts p.title
+      puts p.rating
+      puts p.status
+      p.status == 'approved'
+    end
+    total_ratings = approved_points.map { |p| p.rating }
+    num_bad = 0
+    num_blocker = 0
+    num_good = 0
+    approved_points.each do |p|
+      if (p.rating < 2)
+        num_blocker += 1
+      elsif (p.rating < 5)
+        num_bad += 1
+      elsif (p.rating > 5)
+        num_good += 1
       end
+    end
+    balance = num_good - num_bad - 3 * num_blocker
+    if (balance < -10)
+      return "E"
+    elsif (num_blocker > 0)
+      return "D"
+    elsif (balance < -4)
+      return "C"
+    elsif (num_bad > 0)
+      return "B"
     else
-      "N/A"
+      return "A"
     end
   end
 

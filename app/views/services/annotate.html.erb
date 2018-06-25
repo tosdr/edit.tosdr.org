@@ -2,7 +2,7 @@
   <% @points.each do |p| %>
     <% if !(p.quoteDoc) %>
       <li>
-          <%= p.id %>
+          <%= link_to(p.id, point_path(p), title: "View point details: " + p.title) %>
           <%= p.title %>
           <input type="submit" value="Quote" onclick="makeQuote(<%= p.id %>)" >
       </li>
@@ -25,14 +25,18 @@
 <script>
   function makeQuote(pointId) {
     var sel = window.getSelection()
+    var spanOffset = parseInt(sel.anchorNode.parentElement.getAttribute('offset'), 10);
+    var selectionStart = Math.min(sel.anchorOffset, sel.focusOffset);
+    var selectionEnd = Math.max(sel.anchorOffset, sel.focusOffset);
     console.log('makeQuote', pointId,
-      sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset,
-      sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+      spanOffset,
+      spanOffset + selectionStart,
+      spanOffset + selectionEnd
     )
     quoteDoc.value =  sel.anchorNode.parentElement.getAttribute('doc')
     quoteRev.value =  sel.anchorNode.parentElement.getAttribute('rev')
-    quoteStart.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.anchorOffset
-    quoteEnd.value = sel.anchorNode.parentElement.getAttribute('offset') + sel.focusOffset
+    quoteStart.value = spanOffset + selectionStart
+    quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
   }
   var quotes = {}
@@ -41,13 +45,19 @@
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-      + rev + '/crawl/'
+      + rev + '/crawl_reviewed/'
       + encodeURIComponent(serviceName) + '/'
       + doc, true)
     xhr.onload = function() {
       var text = xhr.response
       var cursor = 0
       var span
+      if (!quotes[doc]) {
+        quotes[doc] = {}
+      }
+      if (!quotes[doc][rev]) {
+        quotes[doc][rev] = []
+      }
       quotes[doc][rev].sort((a, b) => a.start - b.start)
       var div = document.createElement('div')
       var h = document.createElement('h2')
@@ -55,7 +65,7 @@
       div.appendChild(h)
       for (var i=0; i<quotes[doc][rev].length; i++) {
         var span = document.createElement('span')
-        span.innerText = text.substring(cursor, quotes[doc][rev][i].start)
+        span.textContent = text.substring(cursor, quotes[doc][rev][i].start)
         console.log('green', text.length, cursor, quotes[doc][rev][i].start)
         span.style.color = 'green'
         span.setAttribute('offset', cursor)
@@ -63,7 +73,7 @@
         span.setAttribute('rev', rev)
         div.appendChild(span)
         span = document.createElement('a')
-        span.innerText = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
+        span.textContent = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         console.log('red', text.length, quotes[doc][rev][i].start, quotes[doc][rev][i].end)
         span.style.color = 'red'
         span.setAttribute('offset', quotes[doc][rev][i].start)
@@ -74,7 +84,7 @@
         cursor = quotes[doc][rev][i].end
       }
       span = document.createElement('span')
-      span.innerText = text.substring(cursor)
+      span.textContent = text.substring(cursor)
       console.log('green', text.length, cursor)
       span.style.color = 'green'
       span.setAttribute('offset', cursor)
@@ -100,49 +110,31 @@
     }
   }
 
-  // find docs for which no points have quotes yet:
-  function fetchJson(url, cb) {
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.onload = function() {
-      try {
-        cb(JSON.parse(xhr.response))
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    xhr.send()
-  }
-
-  function fetchDocList(serviceUrl) {
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent(serviceUrl), obj => {
-      console.log('got docs', serviceUrl, obj)
-      obj.map(i => fetchRevList(serviceUrl, i.name))
-    })
-  }
-
-  function fetchRevList(serviceUrl, docName) {
-    console.log('fetchRevList', serviceUrl, docName)
-    return
-    fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
-        + encodeURIComponent(serviceUrl) + '/'
-        + encodeURIComponent(docName), obj => {
-      var topRev = obj[obj.keys[0]]
-      console.log('got rev list', docName, obj, topRev)
-      fetchDoc('<%= @service.url %>', doc, topRev) // FIXME: check for code injection
-      })
-  }
-
   // ...
-  <% @points.each do |p| %>
-      registerQuote(
-        '<%= p.quoteDoc %>', // FIXME: check for code injection
-        '<%= p.quoteRev %>', // FIXME: check for code injection
-        parseInt(<%= p.quoteStart %>), // FIXME: check for code injection
-        parseInt(<%= p.quoteEnd %>), // FIXME: check for code injection
-        parseInt(<%= p.id %>)) // FIXME: check for code injection
+  var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
+
+  // find docs for which no points have quotes yet:
+  <% @docRevisions.each do |d| %>
+  ;(function() {
+    var docName = '<%=escape_javascript d.name %>'
+    var topRev = '<%=escape_javascript d.revision %>'
+    console.log('fetching doc', serviceDomain, docName, topRev)
+    fetchDoc(serviceDomain, docName, topRev)
+  })()
   <% end %>
-  // will uncomment when we can fix github api rate limiting:
-  // fetchDocList('<%= @service.url %>')
+  <% @points.each do |p| %>
+    console.log('registering quote',
+      '<%=escape_javascript p.quoteDoc %>',
+      '<%=escape_javascript p.quoteRev %>',
+      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
+      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
+      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
+    registerQuote(
+      '<%=escape_javascript p.quoteDoc %>',
+      '<%=escape_javascript p.quoteRev %>',
+      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
+      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
+      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
+  <% end %>
 </script>
 

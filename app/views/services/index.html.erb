@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <title>Services (ToS;DR Phoenix)</title>
+<% end %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
     All Services
@@ -47,8 +50,8 @@
               <% badge_rating = "rating-c" %>
             <% elsif s.service_ratings == "D" %>
               <% badge_rating = "rating-d" %>
-            <% elsif s.service_ratings == "F" %>
-              <% badge_rating = "rating-f" %>
+            <% elsif s.service_ratings == "E" %>
+              <% badge_rating = "rating-e" %>
             <% elsif s.service_ratings == "N/A" %>
               <% badge_rating = "rating-na" %>
           <% end %>

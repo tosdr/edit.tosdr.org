@@ -10,6 +10,16 @@
 <p>Using this online tool, you can help to update the content of the <a href="https://tosdr.org">ToS;DR website</a>. Below are the most recent changes people made. Above, you see the menu bar, where you can for instance navigate to the list of services, or to the points search page.
 </p>
 
+<h2>How it works</h2>
+<p>A <em>service</em> is a website or online application, for instance YouTube.
+A <em>case</em> is an individual remark that can form part of the review of a service, for instance "you need to be 13 years old to use this service".
+A <em>point</em> links a case to a service, for instance "you need to be 13 years old to use YouTube".
+A <em>topic</em> is a search tag for cases.</p>
+<p>To review a service's terms and conditions, first make sure the service is listed, and
+<%= link_to "add it", new_service_path %>
+if not. Then read the actual terms and policies you have to agree to to use this service, and make a note about anything that you find remarkable. Find the existing case for each of these review remarks, or create it if necessary, and create a point to add that case as a remark in the review of the service.
+Use the <a href="https://github.com/tosdr/tosdr.org/wiki/checklist">checklist</a> to see if you forgot to review any aspects.</p>
+
 <% unless user_signed_in? %>
 <div class="tc">
   <div class="btn btn-primary btn-sm"><%= link_to "Sign up to contribute", new_user_registration_path, style:"color: white;" %> </div>

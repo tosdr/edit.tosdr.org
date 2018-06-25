@@ -52,8 +52,8 @@
             point_quoteDoc.add(option)
           }
           fetchingDocList = true
-          var serviceUrl = '<%= @service_url %>'
-          var selected = '<%= @point.quoteDoc %>'
+          var serviceUrl = '<%=escape_javascript @service_url %>'
+          var selected = '<%=escape_javascript @point.quoteDoc %>'
           while (point_quoteDoc.firstChild) {
             point_quoteDoc.removeChild(point_quoteDoc.firstChild)
           }
@@ -65,7 +65,7 @@
               return
             }
             var found = false
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl/' + encodeURIComponent(serviceUrl), obj => {
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl_reviewed/' + encodeURIComponent(serviceUrl), obj => {
               console.log('looking for', selected)
               addDoc('')
               obj.map(i => addDoc(i.name))
@@ -80,14 +80,14 @@
           }
           function fetchRevList() {
             fetchingRevList = true
-            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl/'
-              + encodeURIComponent('<%= @service_url %>') + '/'
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl_reviewed/'
+              + encodeURIComponent('<%=escape_javascript @service_url %>') + '/'
               + encodeURIComponent(point_quoteDoc.value), obj => {
                 while (point_quoteRev.firstChild) {
                   point_quoteRev.removeChild(point_quoteRev.firstChild)
                 }
                 var found = false
-                var selected = '<%= @point.quoteRev %>'
+                var selected = '<%=escape_javascript @point.quoteRev %>'
                 console.log('looking for', selected)
                 obj.map(i => {
                   var option = document.createElement( 'option' )
@@ -109,13 +109,13 @@
           function fetchDoc() {
             var xhr = new XMLHttpRequest()
             xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-              + point_quoteRev.value + '/crawl/'
-              + encodeURIComponent('<%= @service_url %>') + '/'
+              + point_quoteRev.value + '/crawl_reviewed/'
+              + encodeURIComponent('<%=escape_javascript @service_url %>') + '/'
               + point_quoteDoc.value, true)
             xhr.onload = function() {
               ta.textContent = xhr.response
-              ta.selectionStart = parseInt(<%= @point.quoteStart %>)
-              ta.selectionEnd = parseInt(<%= @point.quoteEnd %>)
+              ta.selectionStart = parseInt(<%= @point.quoteStart %>) // quoteStart is an int in Ruby, no need to escape
+              ta.selectionEnd = parseInt(<%= @point.quoteEnd %>) // quoteEnd is an int in Ruby, no need to escape
               var PX_PER_CHAR = .55 // this is an estimate
               ta.scrollTop = ta.selectionStart * PX_PER_CHAR
               ta.focus()

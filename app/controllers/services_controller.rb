@@ -25,6 +25,9 @@ class ServicesController < ApplicationController
 
   def annotate
     @points = @service.points
+    # @docRevisions = @service.doc_revisions
+    @docRevisions = DocRevision.where('service_id = '+@service.id.to_s) #FIXME
+    puts @docRevisions
   end
 
   def quote
