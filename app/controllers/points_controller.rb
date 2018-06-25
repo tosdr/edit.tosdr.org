@@ -16,7 +16,6 @@ class PointsController < ApplicationController
 
   def new
     @point = Point.new
-    @services = Service.all
     @topics = Topic.all
     @cases = Case.all
     @service_url = @point.service ? @point.service.url : ''
@@ -26,11 +25,24 @@ class PointsController < ApplicationController
     @point = Point.new(point_params)
     @point.user = current_user
     @cases = Case.all
-    if @point.save
-      redirect_to points_path
-    else
-      render :new
+
+    if params[:only_create]
+      @point.update(topic_id: @point.case.topic_id)
+      if @point.save
+        redirect_to service_path(@point.service)
+      else
+        render :new
+      end
+    elsif params[:create_add_another]
+      @point.update(topic_id: @point.case.topic_id)
+      if @point.save
+        redirect_to new_point_path
+        flash[:notice] = "You created a point! Feel free to add another."
+      else
+        render :new
+      end
     end
+    # raise
   end
 
   def edit
