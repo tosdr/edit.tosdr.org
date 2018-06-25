@@ -14,11 +14,6 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
       <h5>Quote:</h5>
       <div id="service_changed" style="display:none">Service changed, please submit and edit again to set the quote</div>
       <select name="point[quoteDoc]" id="point_quoteDoc" hint="Document to quote from"></select>
@@ -201,15 +196,12 @@
     document.getElementById('point_case_id').addEventListener('change', function() {
 
     let id = document.getElementById('point_case_id').selectedIndex;
-    // console.log(id);
 
     let title = document.getElementById('point_case_id').options[id].dataset.title;
-    // console.log(title);
-    document.querySelectorAll("input[name='point[rating]']").innerHTML = title;
+    document.querySelectorAll("input[name='point[title]']")[0].setAttribute("value", title);
 
     let desc = document.getElementById('point_case_id').options[id].dataset.descrip;
-    // console.log(desc);
-    document.getElementById('point_analysis').innerHTML = desc;
+    document.querySelectorAll("textarea[name='point[analysis]']")[0].setAttribute("value", desc);
 
     let rating = document.getElementById('point_case_id').options[id].dataset.rating;
 
