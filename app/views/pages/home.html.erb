@@ -18,23 +18,6 @@
 <% end %>
 
 <h2>How it works</h2>
-<p>A <em>service</em> is a website or online application, for instance YouTube.
-A <em>case</em> is an individual remark that can form part of the review of a service, for instance "you need to be 13 years old to use this service".
-A <em>point</em> links a case to a service, for instance "you need to be 13 years old to use YouTube".
-A <em>topic</em> is a search tag for cases.</p>
-<p>To review a service's terms and conditions, first make sure the service is listed, and
-<%= link_to "add it", new_service_path %>
-if not. Then read the actual terms and policies you have to agree to to use this service, and make a note about anything that you find remarkable. Find the existing case for each of these review remarks, or create it if necessary, and create a point to add that case as a remark in the review of the service.
-Use the <a href="https://github.com/tosdr/tosdr.org/wiki/checklist">checklist</a> to see if you forgot to review any aspects.</p>
-
-<% unless user_signed_in? %>
-<div class="tc">
-  <div class="btn btn-primary btn-sm"><%= link_to "Sign up to contribute", new_user_registration_path, style:"color: white;" %> </div>
-  <div class="btn btn-secondary"><%= link_to "Login", new_user_session_path, style:"color: black;" %></div>
-</div>
-<% end %>
-
-<h2>How it works</h2>
 <p>A <em>service</em> is a website or online application, for instance YouTube. A <em>case</em> is an individual remark that can form part of the review of a service, for instance "you need to be 13 years old to use this service". A <em>point</em> links a case to a service, for instance "you need to be 13 years old to use YouTube". A <em>topic</em> is a search tag for cases.</p>
 <p>To review a service's terms and conditions, first make sure the service is listed, and add it if not. Then read the actual terms and policies you have to agree to to use this service, and make a note about anything that you find remarkable. Find the existing case for each of these review remarks, or create it if necessary, and create a point to add that case as a remark in the review of the service. Use the <a href="https://github.com/tosdr/tosdr.org/wiki/checklist">checklist</a> to see if you forgot to review any aspects.</p>
 <p>Then you need to wait for a curator to approve your changes, after which your review will show up on <a href="https://tosdr.org">https://tosdr.org</a>, will be picked up by the ToS;DR browser extensions, and included in DuckDuckGo's Privacy Grade, for which our API is one of several input factors. For services whose terms and policies are tracked by <a href="https://tosback.org">ToSBack</a>, you can try out our experimental <a href="/services/331/annotate">annotate view</a>.</p>
