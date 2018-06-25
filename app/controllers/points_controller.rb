@@ -47,6 +47,7 @@ class PointsController < ApplicationController
 
   def edit
     @service_url = @point.service.url
+    @cases = Case.all
   end
 
   def show
