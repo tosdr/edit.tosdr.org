@@ -34,10 +34,6 @@ class Service < ApplicationRecord
 
   def service_ratings
     approved_points = points.select do |p|
-      puts 'filtering!'
-      puts p.title
-      puts p.rating
-      puts p.status
       p.status == 'approved'
     end
     total_ratings = approved_points.map { |p| p.rating }
