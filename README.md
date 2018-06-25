@@ -30,7 +30,7 @@ export DATE=`date "+%Y%m%d%H%M%S"`
 heroku pg:backups:capture --app edit-tosdr-org
 heroku pg:backups:download --app edit-tosdr-org
 mv latest.dump $DATE.dump
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -d phoenix_development $DATE.dump
+pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development $DATE.dump
 rails db:migrate
 rails runner db/export_points_to_old_db.rb
 rails runner db/export_services_to_old_db.rb
@@ -54,14 +54,14 @@ npm install
 
 All the details on the API can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/api)
 
-## Core developpers 
-* [Chris](https://github.com/piks3l/) - push rights on master and access to production
-* [Madeline](https://github.com/madoleary) - push rights on master
-* [Michiel](https://github.com/michielbdejong) - push rights on master and access to production
+## Core developers
+* [Chris](https://github.com/piks3l/)
+* [Madeline](https://github.com/madoleary)
+* [Michiel](https://github.com/michielbdejong)
+* [Vincent](https://github.com/vinnl)
 
 ### Hosting
-* https://phoenix.tosdr.org (deprecated) - Chris' Heroku
-* https://edit.tosdr.org (production) - Michiel's Heroku (Chris has access too)
+* https://edit.tosdr.org (production) - Michiel's Heroku (other core developers have access too)
 
 
 ## License

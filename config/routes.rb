@@ -20,10 +20,16 @@ Rails.application.routes.draw do
   put 'points/:id/is_featured', to: 'points#featured', as: :featured_point
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
   resources :points, except: [:index] do
-    resources :reasons, only: [:new, :create]
+    resources :comments, only: [:new, :create]
   end
 
   resources :services, except: [:show]
+  resources :services, except: [:index] do
+    resources :points, only: [:new, :create]
+  end
+  get "services/:id/annotate", to: "services#annotate"
+  post "services/:id/annotate", to: "services#quote"
+
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics

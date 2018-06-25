@@ -2,10 +2,13 @@ class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:edit, :featured, :destroy]
   before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
-  before_action :points_get, only: [:index]
 
   def index
-    @points = Point.all
+    if params[:scope].nil? || params[:scope] == "all"
+      @points = Point.includes(:service).all
+    elsif params[:scope] == "pending"
+      @points = Point.all.where(status: "pending")
+    end
     if @query = params[:query]
       @points = Point.includes(:service).search_points_by_multiple(@query)
     end
@@ -16,6 +19,10 @@ class PointsController < ApplicationController
     @services = Service.all
     @topics = Topic.all
     @cases = Case.all
+    if @query = params[:service_id]
+      @point['service_id'] = params[:service_id]
+    end
+    @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
@@ -28,7 +35,7 @@ class PointsController < ApplicationController
       elsif
         @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
         if @point.save
-          redirect_to points_path
+          redirect_to service_path(@point.service)
           flash[:notice] = "You created a point!"
         else
           render :new
@@ -36,7 +43,7 @@ class PointsController < ApplicationController
       end
     elsif params[:only_create]
       if @point.save
-        redirect_to points_path
+        redirect_to service_path(@point.service)
         flash[:notice] = "You created a point!"
       else
         render :new
@@ -53,17 +60,37 @@ class PointsController < ApplicationController
   end
 
   def edit
+    @service_url = @point.service.url
   end
 
   def show
     @point
-    puts @point.id
     @comments = Comment.where(point_id: @point.id)
+    @comments.each do |c|
+      #if (c.user_id)
+      #  c.user_id = User.find_by_id(c.user_id)
+      #  puts c.user_id
+      #end
+    end
     @versions = @point.versions
-    @reasons = @point.reasons
   end
 
   def update
+    comment_params = {
+      summary: point_params['point_change']
+    }
+    puts comment_params
+    comment = Comment.new(comment_params)
+    comment.point = @point
+    comment.user_id = current_user.id
+    comment.save
+    if comment.save
+      flash[:notice] = "Comment added!"
+    else
+      flash[:notice] = "Error adding comment!"
+      puts comment.errors.full_messages
+    end
+
     copied_params = point_params
     if (copied_params['case_id'] != @point.case_id.to_s)
       puts 'case change, setting title, description, rating and topic'
@@ -137,15 +164,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id)
-  end
-
-  def points_get
-    if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service).all
-    elsif params[:scope] == "pending"
-      @points = Point.includes(:service).all.where(status: "pending")
-    end
+    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def set_curator

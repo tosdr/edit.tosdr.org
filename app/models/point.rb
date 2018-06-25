@@ -6,7 +6,6 @@ class Point < ApplicationRecord
 
  belongs_to :case, optional: true
 
- has_many :reasons, dependent: :destroy
  has_many :comments, dependent: :destroy
 
  validates :title, presence: true
@@ -20,7 +19,7 @@ class Point < ApplicationRecord
  # before_save :check_changed_attributes_for_service_rating_update
 
 def self.search_points_by_multiple(query)
-  Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ?", "%#{query}%", "%#{query}%")
+  Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
 end
 
 def self.search_points_by_topic(query)

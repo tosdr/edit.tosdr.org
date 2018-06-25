@@ -3,7 +3,7 @@
     <%= simple_form_for([@case]) do |f| %>
       <div class="form-inputs col-xs-12">
         <%= f.input :title, placeholder: "Case title", label: false %>
-        <%= f.input :classification, placeholder: "Case classification", label: false %>
+        <%= f.input :classification, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
         <%= f.input :score, placeholder: "Score", label: false %>
         <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Pick the topic where the case applies" %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>

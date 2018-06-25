@@ -6,9 +6,8 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
 
-  attr_accessor :service_rating
 
-  scope :with_points, -> { joins(:points).where.not(points: []).distinct }
+  scope :with_points_featured, -> { joins(:points).where("points.is_featured = true").distinct }
 
   def points_by_topic(query)
     points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
@@ -18,18 +17,32 @@ class Service < ApplicationRecord
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
-  def service_rating
-    @service_rating ||= service_rating_get
+
+  def rating_for_view
+    grade = if self.service_ratings == "A"
+      "rating-a"
+    elsif self.service_ratings == "B"
+      "rating-b"
+    elsif self.service_ratings == "C"
+      "rating-c"
+    elsif self.service_ratings == "D"
+      "rating-d"
+    elsif self.service_ratings == "E"
+      "rating-e"
+    else
+      ""
+    end
   end
 
-  private
-
-  def service_rating_get
-    total_ratings = points.map { |p| p.rating }
+  def service_ratings
+    approved_points = points.select do |p|
+      p.status == 'approved'
+    end
+    total_ratings = approved_points.map { |p| p.rating }
     num_bad = 0
     num_blocker = 0
     num_good = 0
-    points.each do |p|
+    approved_points.each do |p|
       if (p.rating < 2)
         num_blocker += 1
       elsif (p.rating < 5)

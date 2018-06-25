@@ -33,11 +33,6 @@
     <div id="collapse<%=counter%>" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="row">
-          <div class="col-sm-12 mb15">
-            <p><b>Reason for changes:</b> <%= @point.point_change %></p>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-sm-6">
             <p><b>Previous Analysis:</b> <%= format_figures(analysis) %></p>
             <p><b>Updated Analysis:</b> <%= format_figures(analysis, first = false) %></p>

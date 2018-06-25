@@ -1,10 +1,13 @@
 class CasesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_curator, except: [:index, :show]
+  before_action :set_curator, only: [:destroy]
   before_action :set_case, only: [:show, :edit, :update, :destroy]
 
   def index
     @cases = Case.all
+    if @query = params[:query]
+      @cases = Case.search_by_multiple(@query)
+    end
   end
 
   def new

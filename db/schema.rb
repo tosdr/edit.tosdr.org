@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180523100609) do
+ActiveRecord::Schema.define(version: 20180622124325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,16 @@ ActiveRecord::Schema.define(version: 20180523100609) do
     t.string "summary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["point_id"], name: "index_comments_on_point_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "doc_revisions", force: :cascade do |t|
+    t.string "name"
+    t.string "revision"
+    t.bigint "service_id"
+    t.index ["service_id"], name: "index_doc_revisions_on_service_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -61,11 +70,15 @@ ActiveRecord::Schema.define(version: 20180523100609) do
     t.datetime "updated_at", null: false
     t.bigint "topic_id"
     t.bigint "service_id"
-    t.string "quote"
+    t.string "quoteText"
     t.bigint "case_id"
     t.string "oldId"
     t.text "reason"
     t.text "point_change"
+    t.string "quoteDoc"
+    t.string "quoteRev"
+    t.integer "quoteStart"
+    t.integer "quoteEnd"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
@@ -140,6 +153,8 @@ ActiveRecord::Schema.define(version: 20180523100609) do
   end
 
   add_foreign_key "comments", "points"
+  add_foreign_key "comments", "users"
+  add_foreign_key "doc_revisions", "services"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "services"
   add_foreign_key "points", "topics"

@@ -14,10 +14,11 @@
         </div>
       </div>
     <% else %>
-      <% comments.each do |p| %>
+      <% comments.each do |c| %>
       <div class="card-inline">
         <div class="card-inline-item card-inline-service">
-          <%= p.summary %>
+          <h6>On <%= c.created_at %>, <%= username c.user_id %> wrote:</h6>
+          <%=simple_format c.summary %>
         </div>
       </div>
       <!-- card-inline-END -->

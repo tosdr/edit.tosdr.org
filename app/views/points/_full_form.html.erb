@@ -1,27 +1,166 @@
 <div class="form-login">
-    <%= simple_form_for [@point] do |f| %>
-    <div class="row">
-      <div class="col-xs-6">
-        <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+  <%= simple_form_for [@point] do |f| %>
+  <div class="row">
+    <div class="col-xs-6">
+      <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
 
+    </div>
+    <div class="col-xs-6">
+      <%= f.association :case, collection: Case.order('title ASC'), hint: "What this point is saying about the service" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.input :title, placeholder: "Example: Does not track its users",  hint: "Give your point a short descriptive title (max 140 chars)" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h5>Quote:</h5>
+      <div id="service_changed" style="display:none">Service changed, please submit and edit again to set the quote</div>
+      <select name="point[quoteDoc]" id="point_quoteDoc" hint="Document to quote from"></select>
+      <select name="point[quoteRev]" id="point_quoteRev" hint="Revision to quote from"></select>
+      <input name="point[quoteStart]" id="point_quoteStart" type="hidden">
+      <input name="point[quoteEnd]" id="point_quoteEnd" type="hidden">
+      <input name="point[quoteText]" id="point_quoteText" type="hidden">
+      <div class="form-control" style="overflow: scroll; height: 400px;">
+      <p id="ta" readonly="true" rows="20" cols="50" resize="false"></p>
       </div>
-      <div class="col-xs-6">
-        <%= f.association :case, collection: Case.order('title ASC'), hint: "What this point is saying about the service" %>
+      <script>
+        function fetchJson(url, cb) {
+          var xhr = new XMLHttpRequest()
+          xhr.open('GET', url, true)
+          xhr.onload = function() {
+            try {
+              cb(JSON.parse(xhr.response))
+            } catch (e) {
+              console.error(e)
+            }
+          }
+          xhr.send()
+        }
+        var fetchingDocList = false
+        var fetchingRevList = false
+        function fetchDocList() {
+          function addDoc(str) {
+            var option = document.createElement( 'option' )
+            option.value = option.innerHTML = str
+            if (option.value === selected) {
+              option.selected = true
+              found = true
+            }
+            point_quoteDoc.add(option)
+          }
+          fetchingDocList = true
+          var serviceUrl = '<%=escape_javascript @service_url %>'
+          var selected = '<%=escape_javascript @point.quoteDoc %>'
+          while (point_quoteDoc.firstChild) {
+            point_quoteDoc.removeChild(point_quoteDoc.firstChild)
+          }
+          if (serviceUrl == '') {
+              // no service selected yet, have to set quote to empty
+              addDoc('')
+              point_quoteDoc.firstChild.selected = true
+              fetchingDocList = false
+              return
+            }
+            var found = false
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/contents/crawl_reviewed/' + encodeURIComponent(serviceUrl), obj => {
+              console.log('looking for', selected)
+              addDoc('')
+              obj.map(i => addDoc(i.name))
+              if (!found) {
+                point_quoteDoc.firstChild.selected = true
+              }
+              fetchingDocList = false
+              if (selected !== '') { // even if serviceUrl is not '', quoteDoc can still be '', and then you still don't want to fetch revisions
+                fetchRevList()
+            }
+          })
+          }
+          function fetchRevList() {
+            fetchingRevList = true
+            fetchJson('https://api.github.com/repos/tosdr/tosback2/commits?path=crawl_reviewed/'
+              + encodeURIComponent('<%=escape_javascript @service_url %>') + '/'
+              + encodeURIComponent(point_quoteDoc.value), obj => {
+                while (point_quoteRev.firstChild) {
+                  point_quoteRev.removeChild(point_quoteRev.firstChild)
+                }
+                var found = false
+                var selected = '<%=escape_javascript @point.quoteRev %>'
+                console.log('looking for', selected)
+                obj.map(i => {
+                  var option = document.createElement( 'option' )
+                  option.value = option.innerHTML = i.sha
+                  if (option.value === selected) {
+                    option.selected = true
+                    found = true
+                  }
+                  point_quoteRev.add(option)
+                })
+                if (!found) {
+                  point_quoteRev.firstChild.selected = true
+                }
+                fetchingRevList = false
+                fetchDoc()
+              })
+          }
+
+          function fetchDoc() {
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
+              + point_quoteRev.value + '/crawl_reviewed/'
+              + encodeURIComponent('<%=escape_javascript @service_url %>') + '/'
+              + point_quoteDoc.value, true)
+            xhr.onload = function() {
+              ta.textContent = xhr.response
+              ta.selectionStart = parseInt(<%= @point.quoteStart %>) // quoteStart is an int in Ruby, no need to escape
+              ta.selectionEnd = parseInt(<%= @point.quoteEnd %>) // quoteEnd is an int in Ruby, no need to escape
+              var PX_PER_CHAR = .55 // this is an estimate
+              ta.scrollTop = ta.selectionStart * PX_PER_CHAR
+              ta.focus()
+            }
+            xhr.send()
+          }
+          point_service_id.onchange = function() {
+            console.log('changed')
+            service_changed.style.display="block"
+          }
+          point_quoteDoc.onchange = function() {
+            if (!fetchingDocList) {
+              fetchRevList()
+            }
+          }
+          point_quoteRev.onchange = function() {
+            if (!fetchingRevList) {
+              fetchDoc()
+            }
+          }
+          fetchDocList()
+          setInterval(function() {
+            var selection = document.getSelection();
+            if (
+              selection.anchorNode !== null
+              && selection.anchorNode.parentElement
+              && selection.anchorNode.parentElement.id
+              && selection.anchorNode.parentElement.id === 'ta'
+            ) {
+              point_quoteStart.value = Math.min(selection.anchorOffset, selection.focusOffset)
+              point_quoteEnd.value = Math.max(selection.anchorOffset, selection.focusOffset)
+              point_quoteText.value = selection.toString()
+            }
+          }, 250)
+        </script>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, hint: "Write your analysis and comments" %>
+        <%= f.input :analysis, as: :text , input_html: { rows: 7, class: "text-area" }, placeholder: "Example: The privacy policy states that '...because this information could be used to link you to your searches, we do not log (store) it at all.'", hint: "Write your analysis and comments" %>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-4">
-        <%= f.input :source, hint: "Where did you find it?" %>
+        <%= f.input :source, placeholder: "Example: https://duckduckgo.com/privacy#s3", hint: "Where did you find it?" %>
       </div>
       <div class="col-xs-4">
         <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
@@ -43,13 +182,13 @@
     <% end %>
     <div class="row">
       <div class="form-actions col-xs-6 col-sm-2 col-md-2">
-      <%= link_to "Back", :back, class: "btn btn-default" %>
+        <%= link_to "Back", :back, class: "btn btn-default" %>
       </div>
       <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
         <%= f.submit "Submit", name: "only_create", class: 'btn btn-primary' %>
         <%= f.submit "Submit + Add Another", name: "create_add_another", class: 'btn btn-primary' %>
       </div>
     </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
 </div>
