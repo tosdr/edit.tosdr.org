@@ -15,7 +15,6 @@
         </a>
         <ul class="dropdown-menu">
             <li><%= link_to 'Edit Content', edit_point_path(@point) %></li>
-            <li><%= link_to 'Update Status', new_point_reason_path(@point) %></li>
             <li>
               <% if @point.status == "approved" %>
               <% if !@point.is_featured? %>
@@ -85,7 +84,7 @@
 
 <br>
 
-<%= render 'table_reasons' %>
+<%= render 'table_versions' %>
 
 <% else %>
 

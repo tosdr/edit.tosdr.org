@@ -6,7 +6,6 @@ class Point < ApplicationRecord
 
  belongs_to :case, optional: true
 
- has_many :reasons, dependent: :destroy
  has_many :comments, dependent: :destroy
 
  validates :title, presence: true

@@ -6,8 +6,10 @@ class CommentsController < ApplicationController
   end
 
   def create
+    puts comment_params
     @comment = Comment.new(comment_params)
     @comment.point = @point
+    @comment.user_id = current_user.id
 
     if @comment.save
       flash[:notice] = "Comment added!"
