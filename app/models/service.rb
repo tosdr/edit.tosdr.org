@@ -6,6 +6,7 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
 
+
   scope :with_points_featured, -> { joins(:points).where("points.is_featured = true").distinct }
 
   def points_by_topic(query)
@@ -15,6 +16,7 @@ class Service < ApplicationRecord
   def self.search_by_name(query)
     Service.where("name ILIKE ?", "%#{query}%")
   end
+
 
   def rating_for_view
     grade = if self.service_ratings == "A"

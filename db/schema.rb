@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.string "quoteRev"
     t.integer "quoteStart"
     t.integer "quoteEnd"
+    t.boolean "service_needs_rating_update", default: false
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
