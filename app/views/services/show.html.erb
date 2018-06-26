@@ -24,15 +24,15 @@
 
   </div>
 
-  <% grade = if @service.service_rating == "A"
+  <% grade = if @service.service_ratings == "A"
       "rating-a"
-    elsif @service.service_rating == "B"
+    elsif @service.service_ratings == "B"
       "rating-b"
-    elsif @service.service_rating == "C"
+    elsif @service.service_ratings == "C"
       "rating-c"
-    elsif @service.service_rating == "D"
+    elsif @service.service_ratings == "D"
       "rating-d"
-    elsif @service.service_rating == "E"
+    elsif @service.service_ratings == "E"
       "rating-e"
     else
       ""
@@ -43,9 +43,9 @@
     <div class="col-sm-6">
       <h2 class="service-title fw2 mv fl gray">
         <a href="<%= @service.url %>"><%= @service.name %></a>
-        <% unless @service.service_rating == "N/A" %>
+        <% unless @service.service_ratings == "N/A" %>
         <div class="grade <%= grade %>">
-          <%= @service.service_rating %>
+          <%= @service.service_ratings %>
         </div>
         <% end %>
       </h2>
