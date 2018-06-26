@@ -23,57 +23,8 @@
 <p>Then you need to wait for a curator to approve your changes, after which your review will show up on <a href="https://tosdr.org">https://tosdr.org</a>, will be picked up by the ToS;DR browser extensions, and included in DuckDuckGo's Privacy Grade, for which our API is one of several input factors. For services whose terms and policies are tracked by <a href="https://tosback.org">ToSBack</a>, you can try out our experimental <a href="/services/331/annotate">annotate view</a>.</p>
 <p>This tool is still very much under construction, and has bugs. Please <a href="https://github.com/tosdr/phoenix/issues/new">open a github issue</a> for anything you think should be improved.</p>
 
-<h2>Recent changes:</h2>
-<div class="panel-group" id="accordion">
-  <% counter = 1 %>
-  <% @versions.each do |version| %>
-  <% counter += 1 %>
-  <div class="panel panel-default" id="panel<%=counter%>">
-    <div class="panel-heading" id="panel-style">
-      <div class="row">
-        <div class="col-sm-4">
-          <h5>
-            <b><%= username version.whodunnit %>:</b> <%= format_time(version.created_at) %>
-          </h5>
-        </div>
-        <div class="col-sm-4">
-          <h5>
-            <%= version.event %>
-            <a
-            href="/<%= version.item_type.downcase %>s/<%= version.item_id %>" class="collapsed">
-            <%= version.item_type %>
-            <%= version.item_id %>
-          </a>
-        </h5>
-      </div>
-      <div class="col-sm-4 text-right">
-        <a data-toggle="collapse" data-target="#collapse<%=counter%>" href="#collapse<%=counter%>" class="collapsed">
-          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true">details</span>
-        </a>
-      </div>
-    </div>
-  </div>
 
-  <div id="collapse<%=counter%>" class="panel-collapse collapse">
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-12 mb15">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <%= version.object_changes %>
-        </div>
-        <div class="col-sm-6">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<% end %>
-</div>
-
-<h2>Examples:</h2>
+<h2>Examples (<%= link_to "see all", services_path %>):</h2>
 <div class="row" id="service-container">
   <% @services.each do |s| %>
   <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_ratings %>">
@@ -111,6 +62,56 @@
      <%= link_to "More", service_path(s.id), class: "btn btn-primary box-shadow-for-button" %>
    </div>
  </div>
+</div>
+<% end %>
+</div>
+
+<h2>Recent changes:</h2>
+<div class="panel-group" id="accordion">
+  <% counter = 1 %>
+  <% @versions.each do |version| %>
+  <% counter += 1 %>
+  <div class="panel panel-default" id="panel<%=counter%>">
+    <div class="panel-heading" id="panel-style">
+      <div class="row">
+        <div class="col-sm-4">
+          <h5>
+            <b><%= username version.whodunnit %>:</b> <%= format_time(version.created_at) %>
+          </h5>
+        </div>
+        <div class="col-sm-4">
+          <h5>
+            <%= version.event %>d <!-- FIXME for i18n: make this literal 'd' a function to_past_tense in app/helpers/ -->
+            <a
+            href="/<%= version.item_type.downcase %>s/<%= version.item_id %>" class="collapsed">
+            <%= version.item_type %>
+            <%= version.item_id %>
+          </a>
+        </h5>
+      </div>
+      <div class="col-sm-4 text-right">
+        <a data-toggle="collapse" data-target="#collapse<%=counter%>" href="#collapse<%=counter%>" class="collapsed">
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true">details</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="collapse<%=counter%>" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12 mb15">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <%= version.object_changes %>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <% end %>
 </div>
