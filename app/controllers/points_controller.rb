@@ -33,7 +33,7 @@ class PointsController < ApplicationController
         flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
         render :new
       elsif
-        @point.update(title: @point.case.title, rating: @point.case.score, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
+        @point.update(title: @point.case.title, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
         if @point.save
           redirect_to service_path(@point.service)
           flash[:notice] = "You created a point!"
@@ -93,23 +93,11 @@ class PointsController < ApplicationController
 
     copied_params = point_params
     if (copied_params['case_id'] != @point.case_id.to_s)
-      puts 'case change, setting title, description, rating and topic'
+      puts 'case change, setting title, description and topic'
       @case = Case.find(copied_params['case_id'])
       copied_params['topic_id'] = @case.topic_id
       copied_params['title'] = @case.title
       copied_params['analysis'] = @case.description || @case.title
-      if (@case.classification == 'blocker')
-        copied_params['rating'] = 0
-      end
-      if (@case.classification == 'bad')
-        copied_params['rating'] = 2
-      end
-      if (@case.classification == 'neutral')
-        copied_params['rating'] = 5
-      end
-      if (@case.classification == 'good')
-        copied_params['rating'] = 8
-      end
     end
     @point.update(copied_params)
     if @point.errors.details.any?
@@ -164,7 +152,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def set_curator

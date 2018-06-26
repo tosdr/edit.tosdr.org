@@ -36,18 +36,18 @@ class Service < ApplicationRecord
 
   def service_ratings
     approved_points = points.select do |p|
-      p.status == 'approved'
+      p.status == 'approved' && !p.case.nil?
     end
-    total_ratings = approved_points.map { |p| p.rating }
+    total_ratings = approved_points.map { |p| p.case.classification }
     num_bad = 0
     num_blocker = 0
     num_good = 0
     approved_points.each do |p|
-      if (p.rating < 2)
+      if (p.case.classification == 'blocker')
         num_blocker += 1
-      elsif (p.rating < 5)
+      elsif (p.case.classification == 'bad')
         num_bad += 1
-      elsif (p.rating > 5)
+      elsif (p.case.classification == 'good')
         num_good += 1
       end
     end
