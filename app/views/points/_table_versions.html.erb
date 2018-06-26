@@ -2,6 +2,7 @@
   <% counter = 1 %>
   <% @versions.each do |version| %>
   <% event = version.event == "create" ? "Analysis created" : "Analysis updated" %>
+  <% title = version.changeset["title"] %>
   <% analysis = version.changeset["analysis"] %>
   <% status = version.changeset["status"] %>
   <% version.changeset['change_reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["change_reason"].second %>
@@ -11,7 +12,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time) %>
+              <b>Version <%= counter - 1 %>:</b> <%= format_time(version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time) %> by <%= username version.whodunnit %>
           </h5>
         </div>
         <div class="col-sm-4">
@@ -33,6 +34,10 @@
     <div id="collapse<%=counter%>" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="row">
+          <div class="col-sm-6">
+            <p><b>Previous Title:</b> <%= format_figures(title) %></p>
+            <p><b>Updated Title:</b> <%= format_figures(title, first = false) %></p>
+          </div>
           <div class="col-sm-6">
             <p><b>Previous Analysis:</b> <%= format_figures(analysis) %></p>
             <p><b>Updated Analysis:</b> <%= format_figures(analysis, first = false) %></p>
