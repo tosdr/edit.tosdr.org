@@ -40,6 +40,10 @@ Service.all.each do |service|
     # data['tosdr']['rated'] = service.grade
     data['meta']['spec-version'] = '1.1'
 
+    if (service.is_comprehensively_reviewed && service.service_ratings)
+      data['tosdr']['rated'] = service.service_ratings
+    end
+
     data['slug'] = (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase
 
     if (mapping['toId'][ (service.slug || service.name.split('.').join('-')).downcase ])
