@@ -32,8 +32,4 @@ class User < ApplicationRecord
       c.update_all user_id: 1
     end
   end
-
-  # def active_for_authentication?
-  #   super && !deactivated
-  # end
 end
