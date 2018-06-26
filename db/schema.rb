@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.string "keywords"
     t.string "related"
     t.string "slug"
+    t.boolean "is_comprehensively_reviewed", default: false, null: false
   end
 
   create_table "topics", force: :cascade do |t|
