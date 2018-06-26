@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 20180622124325) do
     t.string "keywords"
     t.string "related"
     t.string "slug"
+    t.boolean "is_comprehensively_reviewed", default: false, null: false
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 

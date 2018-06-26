@@ -91,7 +91,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:name, :url, :query, :wikipedia)
+    params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
   end
 
   def set_curator
