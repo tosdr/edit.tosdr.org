@@ -36,7 +36,7 @@
 
 <div class="row">
   <div class="col-sm-2">
-    <span class="bolder">Service:</span> <%= @point.service.name %>
+    <span class="bolder">Service:</span> <%= link_to @point.service.name, service_path(@point.service), title: 'View this service' %>
   </div>
   <div class="col-sm-2">
     <span class="bolder">Status:</span> <%= @point.status %>
