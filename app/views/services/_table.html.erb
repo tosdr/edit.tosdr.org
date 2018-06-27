@@ -63,8 +63,8 @@
       <%= javascript_tag do %>
         function compareClassification(elementA, elementB) {
           if (
-            !['good', 'neutral', 'bad', 'blocker'].includes(elementA.data.classification)
-            || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.data.classification)
+            !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
+            || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
           ) {
             return 0;
           }
