@@ -24,7 +24,7 @@ class ServicesController < ApplicationController
   end
 
   def annotate
-    @points = @service.points
+    @points = @service.points.where('"status" in (\'approved\', \'pending\')')
     # @docRevisions = @service.doc_revisions
     @docRevisions = DocRevision.where('service_id = '+@service.id.to_s) #FIXME
     puts @docRevisions
