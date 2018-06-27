@@ -8,8 +8,9 @@
     </div>
     <div class="row">
       <div class="col-xs-6">
-        <h5>Case:</h5>
-        <%= f.select :case_id, options_for_select(@cases.map{ |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification} ] }), :include_blank => true %>
+        <%= f.input :case_id do %>
+          <%= f.select :case_id, @cases.map { |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification}, {'topic' => c.topic.id} ] }, :include_blank => true %>
+        <% end %>
       </div>
     </div>
     <br>
@@ -184,6 +185,7 @@
         <%= f.input :point_change, as: :text, input_html: { rows: 4, class: "text-area" }, hint: "Provide a reason for your changes to this analysis point." %>
       </div>
     </div>
+
     <% end %>
     <div class="row">
       <div class="form-actions col-xs-6 col-sm-2 col-md-2">
