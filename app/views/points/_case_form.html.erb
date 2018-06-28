@@ -25,7 +25,10 @@
       </div>
       <div class="col-xs-6">
         <div class="col-xs-12" id="case-text">
-          <%= f.association :case, collection: Case.order('title ASC'), hint: "Pick the case that applies" %>
+          <%= f.select :case_id, options_for_select(@cases.map{ |c| [c.title, c.id, { 'data-currency_code' => c.description}] }), :include_blank => true %>
+        </div>
+        <div class="col-xs-12" id="case-description">
+        <%= f.input :analysis, as: :text , input_html: { rows: 3, class: "text-area" } %>
         </div>
         <div class="col-xs-6" id="case-status">
           <% if current_user.curator? %>
@@ -39,7 +42,6 @@
         </div>
         <div class="col-xs-6 margin-bottom-larger">
          <span id="check-fields"> <%= f.submit "Submit Point", name: "has_case", class: 'btn btn-primary', id: "check-fields" %> </span>
-
         <% end %>
 
         <span onclick="openStep('step-3', event)", class="btn btn-default", id="trigger-id-grab">No Case</span>
@@ -52,5 +54,13 @@
 <script>
   document.getElementById('trigger-id-grab').addEventListener('click', function() {
     document.getElementById('case').style.display = "none";
+  });
+
+  document.getElementById('case-text').addEventListener('change', function() {
+    var to_parse = document.getElementById('case-text').childNodes[1].value;
+    var id = parseInt(to_parse)
+    var desc = document.getElementById('case-text').firstElementChild[id].attributes[0].nodeValue;
+    // console.log(desc);
+    document.getElementById('point_analysis').innerHTML = desc
   });
 </script>
