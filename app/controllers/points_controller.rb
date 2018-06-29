@@ -17,32 +17,39 @@ class PointsController < ApplicationController
   def new
     @point = Point.new
     @topics = Topic.all
-    @cases = Case.all
+    @cases = Case.includes(:topic).all
+    if @query = params[:service_id]
+      @point['service_id'] = params[:service_id]
+    end
     @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
     @point = Point.new(point_params)
-    @cases = Case.all
+    @cases = Case.includes(:topic).all
 
     @point.user = current_user
-    @point.topic_id = @point.case.topic_id
 
     if params[:only_create]
       if @point.save
+        @point.topic_id = @point.case.topic_id
         redirect_to service_path(@point.service)
+      elsif @point.case.nil?
+        render :new
       else
         render :new
       end
     elsif params[:create_add_another]
       if @point.save
+        @point.topic_id = @point.case.topic_id
         redirect_to new_point_path
         flash[:notice] = "You created a point! Feel free to add another."
+      elsif @point.case.nil?
+        render :new
       else
         render :new
       end
     end
-    # raise
   end
 
   def edit

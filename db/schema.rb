@@ -157,5 +157,7 @@ ActiveRecord::Schema.define(version: 20180622124325) do
   add_foreign_key "points", "cases"
   add_foreign_key "points", "services"
   add_foreign_key "points", "topics"
+  add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
+  add_foreign_key "reasons", "users"
 end

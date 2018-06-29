@@ -8,8 +8,8 @@
     </div>
     <div class="row">
       <div class="col-xs-6">
-        <%= f.input :case_id do %>
-          <%= f.select :case_id, @cases.map { |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification}, {'topic' => c.topic.id} ] }, :include_blank => true %>
+        <%= f.input :case do %>
+          <%= f.select :case, @cases.map { |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification}, {'topic' => c.topic.id} ] }, :include_blank => true %>
         <% end %>
       </div>
     </div>
@@ -19,7 +19,6 @@
         <%= f.input :title, hint: "Give your point a short descriptive title (max 140 chars)" %>
       </div>
     </div>
-  </div>
   <div class="row">
     <div class="col-xs-12">
       <h5>Quote:</h5>
@@ -198,6 +197,7 @@
     </div>
     <% end %>
   </div>
+</div>
 </div>
 
 

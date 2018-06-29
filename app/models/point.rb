@@ -3,7 +3,6 @@ class Point < ApplicationRecord
  belongs_to :user, optional: true
  belongs_to :service
  belongs_to :topic
-
  belongs_to :case
 
  has_many :comments, dependent: :destroy
@@ -15,6 +14,7 @@ class Point < ApplicationRecord
  validates :analysis, presence: true
  validates :rating, presence: true
  validates :rating, numericality: true
+ validates :case, presence: true
 
  # before_save :check_changed_attributes_for_service_rating_update
 
