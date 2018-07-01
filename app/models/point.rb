@@ -3,6 +3,7 @@ class Point < ApplicationRecord
  belongs_to :user, optional: true
  belongs_to :service
  belongs_to :topic
+ belongs_to :case
 
  belongs_to :case, optional: true
 
@@ -13,8 +14,6 @@ class Point < ApplicationRecord
  validates :source, presence: true
  validates :status, inclusion: { in: ["approved", "pending", "declined", "disputed", "draft"], allow_nil: false }
  validates :analysis, presence: true
- validates :rating, presence: true
- validates :rating, numericality: true
 
  # before_save :check_changed_attributes_for_service_rating_update
 
@@ -24,18 +23,6 @@ end
 
 def self.search_points_by_topic(query)
   Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
-end
-
-def rating_for_table
-  pointbox = if self.rating.between?(7, 10)
-    "point-good"
-  elsif self.rating.between?(4,6)
-    "point-neutral"
-  elsif self.rating.between?(2,3)
-    "point-bad"
-  elsif self.rating.between?(0,2)
-    "point-blocker"
-  end
 end
 
 # def check_changed_attributes_for_service_rating_update

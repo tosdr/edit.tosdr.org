@@ -27,7 +27,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @points = @topic.points
+    @points = @topic.points.includes(:case, :service)
     if @query = params[:query]
 
       @points = Point.search_points_by_multiple(@query).where(topic: @topic)

@@ -53,21 +53,33 @@ $pointPaddingLeft : 35px;
   background-image: image-url("point-good.png");
   background-repeat: no-repeat;
   background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
 }
 .point-neutral {
   background-image: image-url("point-neutral.png");
   background-repeat: no-repeat;
   background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
 }
 .point-bad {
   background-image: image-url("point-bad.png");
   background-repeat: no-repeat;
   background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
 }
 .point-blocker {
   background-image: image-url("point-blocker.png");
   background-repeat: no-repeat;
   background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
 }
 
 
