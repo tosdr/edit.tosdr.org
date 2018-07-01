@@ -5,8 +5,6 @@ class Point < ApplicationRecord
  belongs_to :topic
  belongs_to :case
 
- belongs_to :case, optional: true
-
  has_many :comments, dependent: :destroy
 
  validates :title, presence: true
@@ -25,6 +23,9 @@ def self.search_points_by_topic(query)
   Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
 end
 
+def approved_with_case(points)
+  points.select { |p| p.status == 'approved' && !p.case.nil? }
+end
 # def check_changed_attributes_for_service_rating_update
 #   self.service_needs_rating_update = true if (self.changed_attributed.keys & %w[
 #     rating
