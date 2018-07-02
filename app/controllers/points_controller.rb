@@ -54,65 +54,50 @@ class PointsController < ApplicationController
 
   def edit
     @service_url = @point.service.url
-    @cases = Case.all
+    @cases = Case.includes(:topic).all
   end
 
   def show
-    @point
     @comments = Comment.where(point_id: @point.id)
-    @comments.each do |c|
-      #if (c.user_id)
-      #  c.user_id = User.find_by_id(c.user_id)
-      #  puts c.user_id
-      #end
-    end
     @versions = @point.versions
   end
 
   def update
-    comment_params = {
-      summary: point_params['point_change']
-    }
-    puts comment_params
-    comment = Comment.new(comment_params)
-    comment.point = @point
-    comment.user_id = current_user.id
-    comment.save
-    if comment.save
-      flash[:notice] = "Comment added!"
-    else
-      flash[:notice] = "Error adding comment!"
-      puts comment.errors.full_messages
-    end
-
-    copied_params = point_params
-    if (copied_params['case_id'] != @point.case_id.to_s)
-      puts 'case change, setting title, description, rating and topic'
-      @case = Case.find(copied_params['case_id'])
-      copied_params['topic_id'] = @case.topic_id
-      copied_params['title'] = @case.title
-      copied_params['analysis'] = @case.description || @case.title
-      if (@case.classification == 'blocker')
-        copied_params['rating'] = 0
-      end
-      if (@case.classification == 'bad')
-        copied_params['rating'] = 2
-      end
-      if (@case.classification == 'neutral')
-        copied_params['rating'] = 5
-      end
-      if (@case.classification == 'good')
-        copied_params['rating'] = 8
-      end
-    end
-    @point.update(copied_params)
-    if @point.errors.details.any?
-      puts @point.errors.messages
+    @cases = Case.includes(:topic).all
+    if @point.update(point_params)
+      @point.topic_id = @point.case.topic_id
+      comment = create_comment(@point)
+      redirect_to point_path
+    elsif @point.case.nil?
       render :edit
     else
-      flash[:notice] = "Point successfully updated!"
-      redirect_to point_path(@point)
+      render :edit
     end
+    # copied_params = point_params
+    #
+    # if (copied_params['case_id'] != @point.case_id.to_s)
+    #   puts 'case change, setting title, description, rating and topic'
+    #   @case = Case.find(copied_params['case_id'])
+    #   copied_params['topic_id'] = @case.topic_id
+    #   copied_params['title'] = @case.title
+    #   copied_params['analysis'] = @case.description || @case.title
+    #   if (@case.classification == 'blocker')
+    #     copied_params['rating'] = 0
+    #   end
+    #   if (@case.classification == 'bad')
+    #     copied_params['rating'] = 2
+    #   end
+    #   if (@case.classification == 'neutral')
+    #     copied_params['rating'] = 5
+    #   end
+    #   if (@case.classification == 'good')
+    #     copied_params['rating'] = 8
+    #   end
+    # end
+  end
+
+  def create_comment(point)
+    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
   end
 
   def destroy
@@ -167,4 +152,3 @@ class PointsController < ApplicationController
     end
   end
 end
-

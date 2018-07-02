@@ -14,9 +14,10 @@ class Point < ApplicationRecord
  validates :analysis, presence: true
  validates :rating, presence: true
  validates :rating, numericality: true
- validates :case, presence: true
+ validates :case_id, presence: true
 
  # before_save :check_changed_attributes_for_service_rating_update
+ # after_update :create_comment
 
 def self.search_points_by_multiple(query)
   Point.joins(:service).where("services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
