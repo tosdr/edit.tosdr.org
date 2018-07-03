@@ -75,10 +75,10 @@
   <% end %>
   <div class="card-inline" >
     <div class="card-inline-item card-inline-service">
-      <%= p.service.name %>
+      <%= link_to p.service.name, service_path(p.service), title: "View all points for #{p.service.name}" %>
     </div>
     <div class="card-inline-item card-inline-point">
-      <%= p.title %>
+      <%= link_to p.title, point_path(p), title: "View more details about the point: #{p.title}" %>
     </div>
     <div class="card-inline-item card-inline-rating <%= pointbox %>">
       <%= p.rating %>
