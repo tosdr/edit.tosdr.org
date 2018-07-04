@@ -1,14 +1,13 @@
-<ul>
-  <% @points.each do |p| %>
-    <% if !(p.quoteDoc) %>
-      <li>
-          <%= link_to(p.id, point_path(p), title: "View point details: " + p.title) %>
-          <%= p.title %>
-          <input type="submit" value="Quote" onclick="linkQuoteToPoint(<%= p.id %>)" >
-      </li>
+<form id="pointDropdown">
+  <select>
+    <% @points.each do |p| %>
+      <% if !(p.quoteDoc) %>
+        <option data-point-id="<%= p.id %>"><%= p.title %></option>
+      <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </select>
+  <button type="submit" class="btn btn-primary">Annotate</button>
+</form>
 
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -22,7 +21,12 @@
 <div id="files"></div>
 
 <script>
-  function linkQuoteToPoint(pointId) {
+  function linkSelectionToPoint(pointDropdownSubmitEvent) {
+    pointDropdownSubmitEvent.preventDefault();
+
+    const pointDropdown = document.querySelector('#pointDropdown select');
+    const pointId = pointDropdown.options[pointDropdown.selectedIndex].dataset.pointId;
+
     const selection = window.getSelection()
     const spanOffset = parseInt(selection.anchorNode.parentElement.dataset.offset, 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
@@ -169,5 +173,8 @@
       parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
       parseInt(<%= p.id %>)) // int in Ruby, no need to escape
   <% end %>
+
+  const pointDropdown = document.getElementById('pointDropdown');
+  pointDropdown.addEventListener('submit', linkSelectionToPoint);
 </script>
 
