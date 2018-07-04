@@ -10,12 +10,29 @@ def importDocRevision(service, doc, rev)
   if !service
     return
   end
+  # puts 'checking'
+  # puts service.id
+  # puts doc
+  # puts rev
+  existing = DocRevision.where(
+    service_id: service.id,
+    name: doc,
+    revision: rev
+  )
+  # puts existing.length
+  if existing.length > 0
+    # puts 'existing!'
+    return
+  end
+  puts 'importing'
   imported = DocRevision.new(
     service_id: service.id,
     name: doc,
     revision: rev
   )
-  puts imported
+  puts service.id
+  puts doc
+  puts rev
   unless imported.valid?
     puts "### not imported ! ###"
     panic
@@ -30,15 +47,15 @@ puts "Importing docs..."
 Dir.foreach(filepath_docs) do |service|
   next if service == '.' or service == '..'
   filepath_service = filepath_docs + service + '/'
-  puts filepath_service
+  # puts filepath_service
   Dir.foreach(filepath_service) do |doc|
     filepath_doc = filepath_service + doc
-    puts filepath_doc
+    # puts filepath_doc
     next if doc == '.' or doc == '..'
     cmd = 'cd ' + filepath_docs + '; git log "' + service + '/' + doc + '"'
-    puts cmd
+    # puts cmd
     rev = `#{cmd}`.split(' ')[1]
-    puts rev
+    # puts rev
     importDocRevision(service, doc, rev)
   end
 end
