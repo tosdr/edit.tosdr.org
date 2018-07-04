@@ -1,7 +1,7 @@
 <style>
-.pointToast {
+#pointToast {
   position: fixed;
-  bottom: 5rem;
+  top: 10rem;
   left: 50%;
   transform: translateX(-50%);
   padding: 2rem 5rem;
@@ -9,10 +9,16 @@
   border: 1px solid #ffe;
   box-shadow: #ccc 1px 1px 1rem;
   white-space: nowrap;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+#pointToast.withSelection {
+  opacity: 1;
 }
 </style>
 
-<div class="pointToast">
+<div id="pointToast">
   <form id="pointDropdown">
     <select>
       <% @points.each do |p| %>
@@ -192,5 +198,17 @@
 
   const pointDropdown = document.getElementById('pointDropdown');
   pointDropdown.addEventListener('submit', linkSelectionToPoint);
+
+  document.addEventListener('selectionchange', () => {
+    const selection = document.getSelection();
+
+    const pointSelectionToast = document.getElementById('pointToast');
+
+    if (selection.toString().length > 0) {
+      pointSelectionToast.classList.add('withSelection');
+    } else {
+      pointSelectionToast.classList.remove('withSelection');
+    }
+  });
 </script>
 
