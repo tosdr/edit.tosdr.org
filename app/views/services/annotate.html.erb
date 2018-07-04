@@ -1,7 +1,7 @@
 <style>
 #pointToast {
-  position: fixed;
-  top: 10rem;
+  position: absolute;
+  display: none;
   left: 50%;
   transform: translateX(-50%);
   padding: 2rem 5rem;
@@ -14,6 +14,7 @@
 }
 
 #pointToast.withSelection {
+  display: block;
   opacity: 1;
 }
 </style>
@@ -201,8 +202,12 @@
 
   document.addEventListener('selectionchange', () => {
     const selection = document.getSelection();
+    // topOfPage is negative if we're scrolled down:
+    const topOfPage = document.body.getBoundingClientRect().top;
+    const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
     const pointSelectionToast = document.getElementById('pointToast');
+    pointSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
 
     if (selection.toString().length > 0) {
       pointSelectionToast.classList.add('withSelection');
