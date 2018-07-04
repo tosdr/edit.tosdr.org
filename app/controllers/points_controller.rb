@@ -27,28 +27,16 @@ class PointsController < ApplicationController
   def create
     @point = Point.new(point_params)
     @cases = Case.includes(:topic).all
-
     @point.user = current_user
 
+    point_for_options = @point
+
     if params[:only_create]
-      if @point.save
-        @point.topic_id = @point.case.topic_id
-        redirect_to service_path(@point.service)
-      elsif @point.case.nil?
-        render :new
-      else
-        render :new
-      end
+      path = service_path(point_for_options.service)
+      point_create_options(point_for_options, path)
     elsif params[:create_add_another]
-      if @point.save
-        @point.topic_id = @point.case.topic_id
-        redirect_to new_point_path
-        flash[:notice] = "You created a point! Feel free to add another."
-      elsif @point.case.nil?
-        render :new
-      else
-        render :new
-      end
+      path = new_point_path
+      point_create_options(point_for_options, path)
     end
   end
 
@@ -73,31 +61,6 @@ class PointsController < ApplicationController
     else
       render :edit
     end
-    # copied_params = point_params
-    #
-    # if (copied_params['case_id'] != @point.case_id.to_s)
-    #   puts 'case change, setting title, description, rating and topic'
-    #   @case = Case.find(copied_params['case_id'])
-    #   copied_params['topic_id'] = @case.topic_id
-    #   copied_params['title'] = @case.title
-    #   copied_params['analysis'] = @case.description || @case.title
-    #   if (@case.classification == 'blocker')
-    #     copied_params['rating'] = 0
-    #   end
-    #   if (@case.classification == 'bad')
-    #     copied_params['rating'] = 2
-    #   end
-    #   if (@case.classification == 'neutral')
-    #     copied_params['rating'] = 5
-    #   end
-    #   if (@case.classification == 'good')
-    #     copied_params['rating'] = 8
-    #   end
-    # end
-  end
-
-  def create_comment(point)
-    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
   end
 
   def destroy
@@ -130,16 +93,23 @@ class PointsController < ApplicationController
 
   private
 
+  def create_comment(point)
+    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
+  end
+
+  def point_create_options(point, path)
+    if point.save
+      redirect_to path
+      flash[:notice] = "You created a point!"
+    elsif point.case.nil?
+      render :new
+    else
+      render :new
+    end
+  end
+
   def set_point
     @point = Point.find(params[:id])
-  end
-
-  def set_service
-    @service = Service.find(params[:service_id])
-  end
-
-  def set_case
-    @case = Case.find(params[:case_id])
   end
 
   def point_params
