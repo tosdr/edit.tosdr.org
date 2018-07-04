@@ -17,7 +17,6 @@
   <input type="hidden" name="quoteStart" id="quoteStart">
   <input type="hidden" name="quoteEnd" id="quoteEnd">
   <input type="hidden" name="quotePointId" id="quotePointId">
-  <input type="submit" value="Save">
 </form>
 
 <div id="files"></div>
@@ -38,6 +37,9 @@
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
+
+    const quoteForm = document.getElementById('quoteForm');
+    quoteForm.submit();
   }
 
   function createSnippetElement(snippet) {
