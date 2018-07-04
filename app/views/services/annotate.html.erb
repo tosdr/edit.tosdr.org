@@ -1,13 +1,29 @@
-<form id="pointDropdown">
-  <select>
-    <% @points.each do |p| %>
-      <% if !(p.quoteDoc) %>
-        <option data-point-id="<%= p.id %>"><%= p.title %></option>
+<style>
+.pointToast {
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2rem 5rem;
+  background: #fff;
+  border: 1px solid #ffe;
+  box-shadow: #ccc 1px 1px 1rem;
+  white-space: nowrap;
+}
+</style>
+
+<div class="pointToast">
+  <form id="pointDropdown">
+    <select>
+      <% @points.each do |p| %>
+        <% if !(p.quoteDoc) %>
+          <option data-point-id="<%= p.id %>"><%= p.title %></option>
+        <% end %>
       <% end %>
-    <% end %>
-  </select>
-  <button type="submit" class="btn btn-primary">Annotate</button>
-</form>
+    </select>
+    <button type="submit" class="btn btn-primary">Annotate</button>
+  </form>
+</div>
 
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
