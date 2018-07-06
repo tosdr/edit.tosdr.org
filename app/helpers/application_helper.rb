@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def annotate_service_path (service)
+    service_path(service) + '/annotate'
+  end
+
   def username (user_str)
     puts user_str
     if user_str
