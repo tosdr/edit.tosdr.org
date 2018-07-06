@@ -7,7 +7,6 @@ class Service < ApplicationRecord
   validates :url, presence: true
 
   scope :with_points_featured, -> { joins(:points).where("points.is_featured = true").distinct }
-  scope :approved_with_case, -> { joins(:points).where(status: 'approved').where.not(case_id: nil) }
 
   def points_by_topic(query)
     points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
