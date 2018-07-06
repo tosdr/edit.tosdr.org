@@ -29,6 +29,11 @@ Point.all.each do |point|
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
+  data['quoteDoc'] = point.quoteDoc if point.quoteDoc && point.quoteDoc.length
+  data['quoteRev'] = point.quoteRev if point.quoteRev && point.quoteRev.length
+  data['quoteStart'] = point.quoteStart if point.quoteStart
+  data['quoteEnd'] = point.quoteEnd if point.quoteEnd
+  data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length
   data['tosdr']['tldr'] = point.analysis
   # data['tosdr']['tmp_rating'] = point.rating
   if (data['services'].nil?) then
