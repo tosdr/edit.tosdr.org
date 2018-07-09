@@ -168,9 +168,6 @@
         <%= f.input :source, placeholder: "Example: https://duckduckgo.com/privacy#s3", hint: "Where did you find it?" %>
       </div>
       <div class="col-xs-4">
-        <%= f.input :rating, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
-      </div>
-      <div class="col-xs-4">
         <% if current_user.curator? %>
         <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"] %>
         <% else %>

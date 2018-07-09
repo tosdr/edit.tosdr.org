@@ -38,13 +38,13 @@
         <ul>
           <% s.points.each do |p| %>
           <% if p.is_featured? %>
-          <% if p.rating&.between?(7,10) %>
+          <% if p.case&.classification == 'good' %>
           <% point_icon = "point-good" %>
-          <% elsif p.rating&.between?(4,6) %>
+          <% elsif p.case&.classification == 'neutral' %>
           <% point_icon = "point-neutral" %>
-          <% elsif p.rating&.between?(2,3) %>
+          <% elsif p.case&.classification == 'bad' %>
           <% point_icon = "point-bad" %>
-          <% elsif p.rating&.between?(0,2) %>
+          <% elsif p.case&.classification == 'blocker' %>
           <% point_icon = "point-blocker" %>
           <% end %>
           <li class="<%= point_icon %> xs-icon">

@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :annotate, :update, :destroy]
 
   def index
-    @services = Service.includes(:points).all
+    @services = Service.includes(points: [:case]).all
     if @query = params[:query]
       @services = Service.search_by_name(@query)
     end
@@ -87,7 +87,7 @@ class ServicesController < ApplicationController
   private
 
   def set_service
-    @service = Service.find(params[:id] || params[:service_id])
+    @service = Service.includes(points: [:case]).find(params[:id] || params[:service_id])
   end
 
   def service_params

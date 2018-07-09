@@ -23,18 +23,6 @@ def self.search_points_by_topic(query)
   Point.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
 end
 
-def rating_for_table
-  pointbox = if self.rating.between?(7, 10)
-    "point-good"
-  elsif self.rating.between?(4,6)
-    "point-neutral"
-  elsif self.rating.between?(2,3)
-    "point-bad"
-  elsif self.rating.between?(0,2)
-    "point-blocker"
-  end
-end
-
 # def check_changed_attributes_for_service_rating_update
 #   self.service_needs_rating_update = true if (self.changed_attributed.keys & %w[
 #     rating

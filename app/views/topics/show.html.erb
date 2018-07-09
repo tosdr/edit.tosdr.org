@@ -77,13 +77,13 @@
             </div>
           <% else %>
             <% @points.each do |p| %>
-            <% if p.rating&.between?(7, 10)%>
+            <% if p.case&.classification == 'good' %>
               <% pointbox = "point-good" %>
-            <% elsif p.rating&.between?(4,6) %>
+            <% elsif p.case&.classification == 'neutral' %>
               <% pointbox = "point-neutral" %>
-            <% elsif p.rating&.between?(2,3) %>
+            <% elsif p.case&.classification == 'bad' %>
               <% pointbox = "point-bad" %>
-            <% elsif p.rating&.between?(0,2) %>
+            <% elsif p.case&.classification == 'blocker' %>
               <% pointbox = "point-blocker" %>
             <% end %>
             <div class="card-inline">
@@ -94,7 +94,6 @@
                 <%= p.title %>
               </div>
               <div class="card-inline-item card-inline-rating <%= pointbox %>">
-                <%= p.rating %>
               </div>
               <div class="card-inline-item card-inline-status">
                 <%= p.status %>

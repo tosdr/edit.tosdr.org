@@ -6,7 +6,6 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
 
-
   scope :with_points_featured, -> { joins(:points).where("points.is_featured = true").distinct }
 
   def points_by_topic(query)
@@ -17,41 +16,30 @@ class Service < ApplicationRecord
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
-
-  def rating_for_view
-    grade = if self.service_ratings == "A"
-      "rating-a"
-    elsif self.service_ratings == "B"
-      "rating-b"
-    elsif self.service_ratings == "C"
-      "rating-c"
-    elsif self.service_ratings == "D"
-      "rating-d"
-    elsif self.service_ratings == "E"
-      "rating-e"
-    else
-      ""
-    end
+  def service_rating
+    points = self.points
+    classification_counts = service_point_classifications_count(points)
+    balance = calculate_balance(classification_counts)
+    balance
   end
 
-  def service_ratings
-    approved_points = points.select do |p|
-      p.status == 'approved'
-    end
-    total_ratings = approved_points.map { |p| p.rating }
-    num_bad = 0
-    num_blocker = 0
-    num_good = 0
-    approved_points.each do |p|
-      if (p.rating < 2)
-        num_blocker += 1
-      elsif (p.rating < 5)
-        num_bad += 1
-      elsif (p.rating > 5)
-        num_good += 1
-      end
-    end
+  def service_point_classifications_count(points)
+    approved_points = points.select { |p| p.status == 'approved' && !p.case.nil? }
+    total_ratings = approved_points.map { |p| p.case.classification }
+    counts = Hash.new 0
+    total_ratings.each { |rating| counts[rating] += 1 }
+    counts
+    # returns {"neutral"=>1, "good"=>9, "bad"=>5}
+  end
+
+  def calculate_balance(counts)
+    num_bad = counts['bad']
+    num_blocker = counts['blocker']
+    num_good = counts['good']
+
     balance = num_good - num_bad - 3 * num_blocker
+    balance
+
     if (balance < -10)
       return "E"
     elsif (num_blocker > 0)

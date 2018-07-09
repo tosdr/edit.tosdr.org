@@ -5,12 +5,12 @@ class PointsController < ApplicationController
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service).all
+      @points = Point.includes(:service, :case).all
     elsif params[:scope] == "pending"
-      @points = Point.all.where(status: "pending")
+      @points = Point.includes(:service, :case).all.where(status: "pending")
     end
     if @query = params[:query]
-      @points = Point.includes(:service).search_points_by_multiple(@query)
+      @points = Point.includes(:service, :case).search_points_by_multiple(@query)
     end
   end
 
@@ -113,7 +113,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :rating, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def set_curator
