@@ -27,7 +27,7 @@
 <h2>Examples (<%= link_to "see all", services_path %>):</h2>
 <div class="row" id="service-container">
   <% @services.each do |s| %>
-  <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_ratings %>">
+  <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_rating %>">
     <!--CARD -->
     <div class="card">
       <h2 class="card-header card-service" title="<%= s.name %>">
@@ -53,8 +53,8 @@
           <% end %>
           <% end %>
         </ul>
-        <div class="card-badge <%= s.rating_for_view %>">
-          <%= s.service_ratings %>
+        <div class="card-badge rating-<%= s.service_rating %>">
+          <%= s.service_rating %>
         </div>
       </div>
     </div>
