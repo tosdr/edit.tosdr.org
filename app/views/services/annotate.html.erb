@@ -1,14 +1,36 @@
-<ul>
-  <% @points.each do |p| %>
-    <% if !(p.quoteDoc) %>
-      <li>
-          <%= link_to(p.id, point_path(p), title: "View point details: " + p.title) %>
-          <%= p.title %>
-          <input type="submit" value="Quote" onclick="makeQuote(<%= p.id %>)" >
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+<style>
+#pointToast {
+  position: absolute;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2rem 5rem;
+  background: #fff;
+  border: 1px solid #ffe;
+  box-shadow: #ccc 1px 1px 1rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+#pointToast.withSelection {
+  display: block;
+  opacity: 1;
+}
+</style>
+
+<div id="pointToast">
+  <form id="pointDropdown">
+    <select>
+      <% @points.each do |p| %>
+        <% if !(p.quoteDoc) %>
+          <option data-point-id="<%= p.id %>"><%= p.title %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <button type="submit" class="btn btn-primary">Annotate</button>
+  </form>
+</div>
 
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -17,75 +39,113 @@
   <input type="hidden" name="quoteStart" id="quoteStart">
   <input type="hidden" name="quoteEnd" id="quoteEnd">
   <input type="hidden" name="quotePointId" id="quotePointId">
-  <input type="submit" value="Save">
 </form>
 
-<div id="ta"></div>
+<div id="files"></div>
 
 <script>
-  function makeQuote(pointId) {
-    var sel = window.getSelection()
-    var spanOffset = parseInt(sel.anchorNode.parentElement.getAttribute('offset'), 10);
-    var selectionStart = Math.min(sel.anchorOffset, sel.focusOffset);
-    var selectionEnd = Math.max(sel.anchorOffset, sel.focusOffset);
-    console.log('makeQuote', pointId,
+  function linkSelectionToPoint(pointDropdownSubmitEvent) {
+    pointDropdownSubmitEvent.preventDefault();
+
+    const pointDropdown = document.querySelector('#pointDropdown select');
+    const pointId = pointDropdown.options[pointDropdown.selectedIndex].dataset.pointId;
+
+    const selection = window.getSelection()
+    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset.offset, 10);
+    const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
+    const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
+    console.log('linkQuoteToPoint', pointId,
       spanOffset,
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    quoteDoc.value =  sel.anchorNode.parentElement.getAttribute('doc')
-    quoteRev.value =  sel.anchorNode.parentElement.getAttribute('rev')
+    quoteDoc.value =  selection.anchorNode.parentElement.dataset.filename;
+    quoteRev.value =  selection.anchorNode.parentElement.dataset.revision;
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
+
+    const quoteForm = document.getElementById('quoteForm');
+    quoteForm.submit();
   }
-  var quotes = {}
-  function fetchDoc(serviceName, doc, rev) {
-    console.log('fetchDoc', serviceName, doc, rev)
+
+  function createSnippetElement(snippet) {
+    const element = (typeof snippet.pointId !== 'undefined')
+      ? document.createElement('a')
+      : document.createElement('span');
+
+    element.textContent = snippet.content;
+    element.dataset.offset = snippet.offset;
+    element.dataset.filename = snippet.file.name;
+    element.dataset.revision = snippet.file.revision;
+
+    if (typeof snippet.pointId !== 'undefined') {
+      element.style.backgroundColor = '#ffeaa7';
+      element.style.color = 'inherit';
+      element.href = '/points/' + snippet.pointId + '/edit';
+    }
+
+    return element;
+  }
+
+  function getAnnotatedElements(file, annotations) {
+    const container = document.createElement('div');
+    let currentPosition = 0;
+    annotations.forEach(annotation => {
+      const leadText = createSnippetElement({
+        content: file.contents.substring(currentPosition, annotation.start),
+        offset: currentPosition,
+        file: file,
+      });
+
+      const annotatedText = createSnippetElement({
+        content: file.contents.substring(annotation.start, annotation.end),
+        offset: currentPosition,
+        file: file,
+        pointId: annotation.pointId,
+      });
+
+      container.appendChild(leadText);
+      container.appendChild(annotatedText);
+      currentPosition = annotation.end;
+    });
+
+    const unannotatedTail = createSnippetElement({
+      content: file.contents.substring(currentPosition),
+      offset: currentPosition,
+      file: file,
+    });
+    container.appendChild(unannotatedTail);
+
+    return container;
+  }
+
+  var annotations = {}
+  function fetchDoc(serviceName, filename, rev) {
+    console.log('fetchDoc', serviceName, filename, rev)
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
       + rev + '/crawl_reviewed/'
       + encodeURIComponent(serviceName) + '/'
-      + doc, true)
+      + filename, true)
+
     xhr.onload = function() {
-      var text = xhr.response
-      var cursor = 0
-      var span
-      quotes[doc][rev].sort((a, b) => a.start - b.start)
-      var div = document.createElement('div')
+      const file = {
+        contents: xhr.response,
+        name: filename,
+        revision: rev,
+      };
+
+      annotations[filename][rev].sort((a, b) => a.start - b.start)
+
+      const filesElement = document.getElementById('files');
       var h = document.createElement('h2')
-      h.innerHTML = doc
-      div.appendChild(h)
-      for (var i=0; i<quotes[doc][rev].length; i++) {
-        var span = document.createElement('span')
-        span.textContent = text.substring(cursor, quotes[doc][rev][i].start)
-        console.log('green', text.length, cursor, quotes[doc][rev][i].start)
-        span.style.color = 'green'
-        span.setAttribute('offset', cursor)
-        span.setAttribute('doc', doc)
-        span.setAttribute('rev', rev)
-        div.appendChild(span)
-        span = document.createElement('a')
-        span.textContent = text.substring(quotes[doc][rev][i].start, quotes[doc][rev][i].end)
-        console.log('red', text.length, quotes[doc][rev][i].start, quotes[doc][rev][i].end)
-        span.style.color = 'red'
-        span.setAttribute('offset', quotes[doc][rev][i].start)
-        span.setAttribute('doc', doc)
-        span.setAttribute('rev', rev)
-        span.href = '/points/' + quotes[doc][rev][i].pointId + '/edit'
-        div.appendChild(span)
-        cursor = quotes[doc][rev][i].end
-      }
-      span = document.createElement('span')
-      span.textContent = text.substring(cursor)
-      console.log('green', text.length, cursor)
-      span.style.color = 'green'
-      span.setAttribute('offset', cursor)
-      span.setAttribute('doc', doc)
-      span.setAttribute('rev', rev)
-      div.appendChild(span)
-      document.getElementById('ta').appendChild(div)
+      h.textContent = filename
+      filesElement.appendChild(h)
+
+      const annotatedElements = getAnnotatedElements(file, annotations[filename][rev]);
+      filesElement.appendChild(annotatedElements);
     }
     xhr.send()
   }
@@ -93,30 +153,30 @@
   function registerQuote(doc, rev, start, end, pointId) {
     if (doc) {
       console.log(doc, rev, start, end, pointId)
-      if (!quotes[doc]) {
-        quotes[doc] = {}
+      if (!annotations[doc]) {
+        annotations[doc] = {}
       }
-      if (!quotes[doc][rev]) {
-        quotes[doc][rev] = []
+      if (!annotations[doc][rev]) {
+        annotations[doc][rev] = []
         fetchDoc(/* global */ serviceDomain, doc, rev)
       }
-      quotes[doc][rev].push({ start, end, pointId})
+      annotations[doc][rev].push({ start, end, pointId})
     }
   }
 
   // ...
   var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
 
-  // find docs for which no points have quotes yet:
+  // find docs for which no points have annotations yet:
   <% @docRevisions.each do |d| %>
   ;(function() {
     var docName = '<%=escape_javascript d.name %>'
     var topRev = '<%=escape_javascript d.revision %>'
-    if (!quotes[docName]) {
-      quotes[docName] = {}
+    if (!annotations[docName]) {
+      annotations[docName] = {}
     }
-    if (!quotes[docName][topRev]) {
-      quotes[docName][topRev] = []
+    if (!annotations[docName][topRev]) {
+      annotations[docName][topRev] = []
       console.log('fetching doc', serviceDomain, docName, topRev)
       fetchDoc(serviceDomain, docName, topRev)
     }
@@ -136,5 +196,24 @@
       parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
       parseInt(<%= p.id %>)) // int in Ruby, no need to escape
   <% end %>
+
+  const pointDropdown = document.getElementById('pointDropdown');
+  pointDropdown.addEventListener('submit', linkSelectionToPoint);
+
+  document.addEventListener('selectionchange', () => {
+    const selection = document.getSelection();
+    // topOfPage is negative if we're scrolled down:
+    const topOfPage = document.body.getBoundingClientRect().top;
+    const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
+
+    const pointSelectionToast = document.getElementById('pointToast');
+    pointSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
+
+    if (selection.toString().length > 0) {
+      pointSelectionToast.classList.add('withSelection');
+    } else {
+      pointSelectionToast.classList.remove('withSelection');
+    }
+  });
 </script>
 

@@ -29,8 +29,25 @@ Point.all.each do |point|
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
+  data['quoteDoc'] = point.quoteDoc if point.quoteDoc && point.quoteDoc.length
+  data['quoteRev'] = point.quoteRev if point.quoteRev && point.quoteRev.length
+  data['quoteStart'] = point.quoteStart if point.quoteStart
+  data['quoteEnd'] = point.quoteEnd if point.quoteEnd
+  data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length
   data['tosdr']['tldr'] = point.analysis
-  # data['tosdr']['tmp_rating'] = point.rating
+  if (!point.case_id.nil?) # if case is nil then we don't export the point status
+    if (point.status == 'approved')
+      data['needModeration'] = false if data['needModeration']
+      data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']
+    elsif (point.status == 'declined')
+      data['needModeration'] = false if data['needModeration']
+      data['tosdr']['irrelevant'] = true if !data['tosdr']['irrelevant']
+    else # status is 'draft', 'pending', 'disputed', or unknown
+      data['needModeration'] = true if !data['needModeration']
+      data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']
+    end
+  end
+
   if (data['services'].nil?) then
     data['services'] = [ point.service.slug ]
   end

@@ -16,9 +16,8 @@ class PointsController < ApplicationController
 
   def new
     @point = Point.new
-    @services = Service.all
     @topics = Topic.all
-    @cases = Case.all
+    @cases = Case.includes(:topic).all
     if @query = params[:service_id]
       @point['service_id'] = params[:service_id]
     end
@@ -27,85 +26,40 @@ class PointsController < ApplicationController
 
   def create
     @point = Point.new(point_params)
+    @cases = Case.includes(:topic).all
     @point.user = current_user
-    if params[:has_case]
-      if @point.case.nil? || @point.status.blank? || @point.source.blank?
-        flash[:alert] = "Oops! If you use a case, make sure that all the form fields are filled in before submitting!"
-        render :new
-      elsif
-        @point.update(title: @point.case.title, analysis: @point.case.description || @point.case.title, topic_id: @point.case.topic_id)
-        if @point.save
-          redirect_to service_path(@point.service)
-          flash[:notice] = "You created a point!"
-        else
-          render :new
-        end
-      end
-    elsif params[:only_create]
-      if @point.save
-        redirect_to service_path(@point.service)
-        flash[:notice] = "You created a point!"
-      else
-        render :new
-      end
+
+    point_for_options = @point
+
+    if params[:only_create]
+      path = service_path(point_for_options.service)
+      point_create_options(point_for_options, path)
     elsif params[:create_add_another]
-      if @point.save
-        redirect_to new_point_path
-        flash[:notice] = "You created a point! Feel free to add another."
-      else
-        render :new
-      end
+      path = new_point_path
+      point_create_options(point_for_options, path)
     end
-    puts @point.errors.full_messages
   end
 
   def edit
     @service_url = @point.service.url
+    @cases = Case.includes(:topic).all
   end
 
   def show
-    @point
     @comments = Comment.where(point_id: @point.id)
-    @comments.each do |c|
-      #if (c.user_id)
-      #  c.user_id = User.find_by_id(c.user_id)
-      #  puts c.user_id
-      #end
-    end
     @versions = @point.versions
   end
 
   def update
-    comment_params = {
-      summary: point_params['point_change']
-    }
-    puts comment_params
-    comment = Comment.new(comment_params)
-    comment.point = @point
-    comment.user_id = current_user.id
-    comment.save
-    if comment.save
-      flash[:notice] = "Comment added!"
-    else
-      flash[:notice] = "Error adding comment!"
-      puts comment.errors.full_messages
-    end
-
-    copied_params = point_params
-    if (copied_params['case_id'] != @point.case_id.to_s)
-      puts 'case change, setting title, description and topic'
-      @case = Case.find(copied_params['case_id'])
-      copied_params['topic_id'] = @case.topic_id
-      copied_params['title'] = @case.title
-      copied_params['analysis'] = @case.description || @case.title
-    end
-    @point.update(copied_params)
-    if @point.errors.details.any?
-      puts @point.errors.messages
+    @cases = Case.includes(:topic).all
+    if @point.update(point_params)
+      @point.topic_id = @point.case.topic_id
+      comment = create_comment(@point)
+      redirect_to point_path
+    elsif @point.case.nil?
       render :edit
     else
-      flash[:notice] = "Point successfully updated!"
-      redirect_to point_path(@point)
+      render :edit
     end
   end
 
@@ -139,16 +93,23 @@ class PointsController < ApplicationController
 
   private
 
+  def create_comment(point)
+    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
+  end
+
+  def point_create_options(point, path)
+    if point.save
+      redirect_to path
+      flash[:notice] = "You created a point!"
+    elsif point.case.nil?
+      render :new
+    else
+      render :new
+    end
+  end
+
   def set_point
     @point = Point.find(params[:id])
-  end
-
-  def set_service
-    @service = Service.find(params[:service_id])
-  end
-
-  def set_case
-    @case = Case.find(params[:case_id])
   end
 
   def point_params
@@ -161,4 +122,3 @@ class PointsController < ApplicationController
     end
   end
 end
-
