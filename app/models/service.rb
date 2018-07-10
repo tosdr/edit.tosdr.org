@@ -40,7 +40,9 @@ class Service < ApplicationRecord
     balance = num_good - num_bad - 3 * num_blocker
     balance
 
-    if (balance < -10)
+    if (num_blocker + num_bad + num_good + counts['neutral'])
+      return "N/A"
+    elsif (balance < -10)
       return "E"
     elsif (num_blocker > 0)
       return "D"
