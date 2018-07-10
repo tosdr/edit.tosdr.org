@@ -42,7 +42,7 @@
     <span class="bolder">Status:</span> <%= @point.status %>
   </div>
   <div class="col-sm-2">
-    <span class="bolder">Case:</span> <%= @point.case.title %>
+    <span class="bolder">Case:</span> <%= link_to @point.case.title, case_path(@point.case), title: 'View this case' %>
   </div>
   <div class="col-sm-2">
     <span class="bolder">Changes:</span> <%= @point.versions.size %>
