@@ -4,6 +4,7 @@ services:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+      - ./latest.dump:/app/latest.dump
   web:
     build: .
     volumes:

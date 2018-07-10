@@ -106,6 +106,16 @@ From then on, you can start the application by running:
 
 (Add the `--build` argument if you add or remove dependencies.)
 
+To import a database dump from Heroku:
+
+```sh
+rm latest.dump
+heroku pg:backups:capture --app edit-tosdr-org
+heroku pg:backups:download --app edit-tosdr-org
+docker-compose run db pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development -h db -U postgres --no-password /app/latest.dump
+docker-compose run web rails db:migrate
+```
+
 ## Committing & Pull Requests
 
 * If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh], [mod] if it's a modification, [sec] if it's security. 
