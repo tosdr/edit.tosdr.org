@@ -87,12 +87,7 @@ And you're ready to code !
 This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local phoenix repo:
 
 ```sh
-export DATE=`date "+%Y%m%d%H%M%S"`
-heroku pg:backups:capture --app edit-tosdr-org
-heroku pg:backups:download --app edit-tosdr-org
-mv latest.dump $DATE.dump
-pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development $DATE.dump
-rails db:migrate
+sh ./db/download.sh
 rails s
 ```
 
