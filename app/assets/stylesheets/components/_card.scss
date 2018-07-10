@@ -113,6 +113,11 @@ $pointPaddingLeft : 35px;
 .rating-na {
   color: #363636 !important;
   font-weight: lighter;
+  // "N/A" is three characters, so it should be smaller than the other ratings:
+  font-size: 30px;
+  // To place the "N/A" in the middle of the badge, the line-height should be as high as the other badges' font size,
+  // plus half its own font size to shift it down to the middle.
+  line-height: 48px+(30px/2); 
   background-color: transparent;
 }
 
@@ -128,6 +133,7 @@ $pointPaddingLeft : 35px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
   &.rating-na {
     font-size: 0.65em;
+    line-height: 1.3em;
     padding-top: 0.5rem;
   }
 }

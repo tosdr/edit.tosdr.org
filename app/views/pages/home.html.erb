@@ -53,7 +53,12 @@
           <% end %>
           <% end %>
         </ul>
-        <div class="card-badge rating-<%= s.service_rating %>">
+        <% if s.service_rating == "N/A" %>
+          <% badge_rating = "rating-na" %>
+        <% else %>
+          <% badge_rating = "rating-#{s.service_rating}" %>
+        <% end %>
+        <div class="card-badge <%= badge_rating %>">
           <%= s.service_rating %>
         </div>
       </div>
