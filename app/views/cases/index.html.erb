@@ -12,6 +12,8 @@
   <%= render "shared/search" %>
 </div>
 
+<% @topics.each do |t| %>
+<h2><%= t.title %></h2>
 <div class="row">
   <div class="container card-container">
     <div class="row">
@@ -29,29 +31,29 @@
           </div>
         </div>
         <!-- actual card-inline -->
-        <% if @cases.empty? %>
+        <% if t.cases.empty? %>
           <div class="card-inline">
             <div class="card-inline-item">
               No cases found
             </div>
           </div>
         <% else %>
-          <% @cases.each do |t| %>
+          <% t.cases.each do |c| %>
           <div class="card-inline">
             <div class="card-inline-item card-inline-service">
-              <%= t.title %>
+              <%= c.title %>
             </div>
             <div class="card-inline-item card-inline-contribution">
-              <%= t.points.count %>
+              <%= c.points.count %>
             </div>
             <div class="card-inline-item card-inline-options">
-              <%= link_to(case_path(t), class: 'btn') do %>
+              <%= link_to(case_path(c), class: 'btn') do %>
               <i class="fa fa-eye" aria-hidden="true"></i>
               <% end %>
 
               <% if current_user && current_user.curator? %>
 
-              <%= link_to(edit_case_path(t), class: 'btn') do %>
+              <%= link_to(edit_case_path(c), class: 'btn') do %>
               <i class="fa fa-pencil" aria-hidden="true"></i>
               <% end %>
 
@@ -66,3 +68,4 @@
     </div>
   </div>
 </div>
+<% end %>

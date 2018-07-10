@@ -4,10 +4,7 @@ class CasesController < ApplicationController
   before_action :set_case, only: [:show, :edit, :update, :destroy]
 
   def index
-    @cases = Case.all
-    if @query = params[:query]
-      @cases = Case.search_by_multiple(@query)
-    end
+    @topics = Topic.includes(:cases).all
   end
 
   def new
