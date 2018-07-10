@@ -46,12 +46,9 @@
 
   <br>
 
-  <% if params[:scope] == "pending" || params[:scope].nil? %>
 
-    <%= render 'table', points: @points %>
+  <%= render 'table', points: @points %>
 
-  <% elsif params[:scope] == "archived-versions" %>
 
-    <%= render 'versions', versions: @versions %>
+  <%= render 'versions', versions: @versions %>
 
-  <% end %>

@@ -32,20 +32,14 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="card-inline card-inline-header ">
-      <div class="card-inline-item card-inline-service">
-        Services
-      </div>
       <div class="card-inline-item card-inline-point">
-        Title
+        Case
       </div>
       <div class="card-inline-item card-inline-rating">
         Rating
       </div>
       <div class="card-inline-item card-inline-status">
         Status
-      </div>
-      <div class="card-inline-item card-inline-featured">
-        Featured?
       </div>
       <div class="card-inline-item card-inline-options">
         Options
@@ -136,23 +130,13 @@
   <% pointbox = "point-blocker" %>
   <% end %>
   <div class="card-inline" >
-    <div class="card-inline-item card-inline-service">
-      <%= p.service.name %>
-    </div>
     <div class="card-inline-item card-inline-point">
-      <%= p.title %>
+      <%= if p.case.nil? then '(no case) ' + p.title else link_to case_path(p.case), p.case.title end %>
     </div>
     <div class="card-inline-item card-inline-rating <%= pointbox %>">
     </div>
     <div class="card-inline-item card-inline-status">
       <%= p.status %>
-    </div>
-    <div class="card-inline-item card-inline-featured">
-      <% if p.is_featured? %>
-      <i class="fa fa-check" aria-hidden="true"></i>
-      <% else %>
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-      <% end %>
     </div>
     <div class="card-inline-item card-inline-options">
       <% if current_user %>

@@ -2,9 +2,9 @@
   <div class="row row-form">
     <%= simple_form_for([@case]) do |f| %>
       <div class="form-inputs col-xs-12">
-        <%= f.input :title, placeholder: "Case title", label: false %>
-        <%= f.input :classification, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]], hint: "Choose your rating" %>
-        <%= f.input :score, placeholder: "Score", label: false %>
+        <%= f.input :title, placeholder: "Case title", label: 'Title' %>
+        <%= f.input :classification, as: :radio_buttons, collection: [['blocker', 0], ['bad', 2], ['neutral', 5], ['good', 8]] %>
+        <%= f.input :score, placeholder: "50", label: 'Weight', hint: "Range: 0..100. Higher weight make good points extra good, and bad/blocker points extra bad. Higher weight points have more impact on a service's rating, and are also displayed more prominently in the review summaries on https://tosdr.org." %>
         <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Pick the topic where the case applies" %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
       </div>
