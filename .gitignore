@@ -6,6 +6,7 @@ tmp/*
 *.dump
 .DS_Store
 public/assets
+tosback2
 
 # Ignore application configuration
 /config/application.yml
