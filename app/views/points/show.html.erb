@@ -42,6 +42,9 @@
     <span class="bolder">Status:</span> <%= @point.status %>
   </div>
   <div class="col-sm-2">
+    <span class="bolder">Case:</span> <%= @point.case.title %>
+  </div>
+  <div class="col-sm-2">
     <span class="bolder">Changes:</span> <%= @point.versions.size %>
   </div>
   <div class="col-sm-2">
