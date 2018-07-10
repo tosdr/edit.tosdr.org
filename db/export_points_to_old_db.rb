@@ -29,11 +29,11 @@ Point.all.each do |point|
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
-  data['quoteDoc'] = point.quoteDoc if point.quoteDoc && point.quoteDoc.length
-  data['quoteRev'] = point.quoteRev if point.quoteRev && point.quoteRev.length
+  data['quoteDoc'] = point.quoteDoc if point.quoteDoc && point.quoteDoc.length > 0
+  data['quoteRev'] = point.quoteRev if point.quoteRev && point.quoteRev.length > 0
   data['quoteStart'] = point.quoteStart if point.quoteStart
   data['quoteEnd'] = point.quoteEnd if point.quoteEnd
-  data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length
+  data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length > 0
   data['tosdr']['tldr'] = point.analysis
   if (!point.case_id.nil?) # if case is nil then we don't export the point status
     if (point.status == 'approved')
