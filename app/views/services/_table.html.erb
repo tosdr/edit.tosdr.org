@@ -131,7 +131,7 @@
   <% end %>
   <div class="card-inline" >
     <div class="card-inline-item card-inline-point">
-      <%= if p.case.nil? then '(no case) ' + p.title else link_to case_path(p.case), p.case.title end %>
+      <%= if p.case.nil? then '(no case) ' + p.title else link_to p.case.title, case_path(p.case) end %>
     </div>
     <div class="card-inline-item card-inline-rating <%= pointbox %>">
     </div>
