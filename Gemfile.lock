@@ -68,6 +68,14 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
     byebug (10.0.2)
+    capybara (2.15.1)
+      addressable
+      mini_mime (>= 0.1.3)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
+    cliver (0.3.2)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -155,6 +163,10 @@ GEM
       activerecord (>= 4.2, < 5.3)
       request_store (~> 1.1)
     pg (0.21.0)
+    poltergeist (1.16.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     polyamorous (1.3.3)
       activerecord (>= 3.0)
     postmark (1.11.0)
@@ -219,6 +231,8 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
+    sanitize (2.1.0)
+      nokogiri (>= 1.4.4)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -264,6 +278,8 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    xpath (2.1.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
@@ -274,6 +290,7 @@ DEPENDENCIES
   autoprefixer-rails
   bootstrap-sass
   bullet
+  capybara
   devise
   figaro
   flamegraph
@@ -287,6 +304,7 @@ DEPENDENCIES
   memory_profiler
   paper_trail
   pg (~> 0.21)
+  poltergeist
   postmark-rails
   pry-byebug
   pry-rails
@@ -295,6 +313,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 5.1.4)
   redis
+  sanitize (~> 2.1.0)
   sass-rails
   simple_form
   spring

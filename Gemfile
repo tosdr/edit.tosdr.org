@@ -25,6 +25,11 @@ gem 'formtastic'
 gem 'pundit'
 gem 'paper_trail'
 
+# for tosback2:
+gem "capybara"
+gem "poltergeist"
+gem "sanitize", "~> 2.1.0"
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
