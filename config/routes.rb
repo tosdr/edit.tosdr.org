@@ -23,6 +23,8 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create]
   end
 
+  resources :doc_revisions
+
   resources :services, except: [:show]
   resources :services, except: [:index] do
     resources :points, only: [:new, :create]
