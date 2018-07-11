@@ -10,8 +10,8 @@ Case.all.each do |c|
   data = {}
   data['name'] = c.title
   data['point'] = c.classification
+  data['privacyRelated'] = true if c.privacy_related
   data['score'] = c.score
-  data['privacyRelated'] = c.privacy_related ? true : false
   filename = data['name'].downcase().gsub(/[^a-z0-9]/, '_') + '.json'
   File.write(filepath_cases + filename, JSON.pretty_unparse(data))
 end
