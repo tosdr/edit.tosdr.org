@@ -46,11 +46,16 @@ Point.all.each do |point|
       data['needModeration'] = true if !data['needModeration']
       data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']
     end
-    data['tosdr']['case'] = point.case.title
+    if (point.case.title != 'none')
+      data['tosdr']['case'] = point.case.title
+    end
   end
-
-  if (data['services'].nil?) then
-    data['services'] = [ point.service.slug ]
+  serviceSlug = point.service.slug
+  if (!serviceSlug || serviceSlug.length == 0)
+    serviceSlug = point.service.name.gsub(' ', '').gsub('.', '-').downcase()
+  end
+  if (serviceSlug != 'none')
+    data['services'] = [ serviceSlug ]
   end
 
   if (mapping['toId'][ point.oldId ])
