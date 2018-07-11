@@ -46,6 +46,8 @@ Point.all.each do |point|
       data['needModeration'] = true if !data['needModeration']
       data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']
     end
+    data['tosdr']['score'] = point.case.score
+    data['tosdr']['point'] = point.case.classification
   end
 
   if (data['services'].nil?) then
