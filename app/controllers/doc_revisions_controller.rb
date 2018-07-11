@@ -1,4 +1,4 @@
-# require '/lib/tosbackdoc'
+require_relative '../../lib/tosbackdoc.rb'
 
 class DocRevisionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
@@ -26,6 +26,7 @@ class DocRevisionsController < ApplicationController
   end
 
   def show
+    crawl
   end
 
   def update

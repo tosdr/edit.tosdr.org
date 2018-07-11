@@ -92,7 +92,7 @@ class TOSBackDoc
       raise "404 Error" if session.status_code == 404
       @newdata = @xpath.nil? ? session.find(:xpath, "//body")['innerHTML'] : session.find(:xpath, @xpath)['innerHTML']
     rescue => e
-      TOSBackApp.log_stuff("#{url}:\t#{e.message}",$error_log)
+      puts "#{url}:\t#{e.message}"
     ensure
       session.driver.quit
     end
@@ -143,3 +143,5 @@ class TOSBackDoc
   attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed
   private :download_and_filter_with_xpath, :strip_tags, :format_newdata, :skip_notify?, :data_changed?
 end #TOSBackDoc
+
+puts 'TOSBackDoc loaded'
