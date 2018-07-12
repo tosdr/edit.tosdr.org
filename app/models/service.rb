@@ -39,6 +39,7 @@ class Service < ApplicationRecord
 
     balance = num_good - num_bad - 3 * num_blocker
     balance
+
     if (self.points.where(status:"approved").size == 0)
       return "N/A"
     elsif (balance < -10)
