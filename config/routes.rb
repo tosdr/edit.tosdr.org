@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'document/index'
+
+  get 'document/show'
+
+  get 'document/new'
+
+  get 'document/edit'
+
   ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     sessions: 'users/sessions'
