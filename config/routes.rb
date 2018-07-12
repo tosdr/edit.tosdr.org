@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  get 'document/index'
-
-  get 'document/show'
-
-  get 'document/new'
-
-  get 'document/edit'
 
   ActiveAdmin.routes(self)
   devise_for :users, controllers: {
@@ -31,7 +24,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create]
   end
 
-  resources :doc_revisions
+  resources :docuuments
 
   resources :services, except: [:show]
   resources :services, except: [:index] do
