@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180711134901) do
+ActiveRecord::Schema.define(version: 20180713105331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,15 @@ ActiveRecord::Schema.define(version: 20180711134901) do
     t.string "url"
     t.string "xpath"
     t.index ["service_id"], name: "index_doc_revisions_on_service_id"
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "xpath"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "points", force: :cascade do |t|

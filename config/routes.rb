@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create]
   end
 
-  resources :docuuments
+  resources :documents
 
   resources :services, except: [:show]
   resources :services, except: [:index] do

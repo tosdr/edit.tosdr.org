@@ -1,0 +1,20 @@
+<%= form_with scope: :document, local: true do |form| %>
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= form.label :url %><br>
+    <%= form.text_field :url %>
+  </p>
+ 
+  <p>
+    <%= form.label :xpath %><br>
+    <%= form.text_field :xpath %>
+  </p>
+ 
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

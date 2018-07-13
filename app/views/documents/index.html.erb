@@ -1,0 +1,67 @@
+<% content_for :document do %>
+  <document>Documents (ToS;DR Phoenix)</document>
+<% end %>
+<header class="tc ph4">
+  <h1 class="fw2 mv3">
+    All Documents
+  </h1>
+  <%= link_to 'Add Document', new_document_path, class: 'btn btn-primary mb15' %>
+</header>
+
+<div class="text-center search-bar mb15">
+  <%= render "shared/search" %>
+</div>
+
+<div class="row">
+  <div class="container card-container">
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- card-inline-header -->
+        <div class="card-inline card-inline-header">
+          <div class="card-inline-item card-inline-service">
+            Service
+          </div>
+          <div class="card-inline-item card-inline-contribution">
+            Name
+          </div>
+          <div class="card-inline-item card-inline-contribution">
+            URL
+          </div>
+          <div class="card-inline-item card-inline-options">
+            XPath
+          </div>
+          <div class="card-inline-item card-inline-options">
+            Options
+          </div>
+        </div>
+        <!-- actual card-inline -->
+        <% if @documents.empty? %>
+          <div class="card-inline">
+            <div class="card-inline-item">
+              No documents found
+            </div>
+          </div>
+        <% else %>
+          <% @documents.each do |d| %>
+            <div class="card-inline">
+              <div class="card-inline-item card-inline-service">
+                <%= d.service.name %>
+              </div>
+              <div class="card-inline-item card-inline-contribution">
+                <%= d.name %>
+              </div>
+              <div class="card-inline-item card-inline-contribution">
+                <%= d.url %>
+              </div>
+              <div class="card-inline-item card-inline-contribution">
+                <%= d.xpath %>
+              </div>
+              <div class="card-inline-item card-inline-contribution">
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
