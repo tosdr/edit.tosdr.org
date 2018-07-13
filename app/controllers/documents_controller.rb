@@ -4,9 +4,9 @@ class DocumentsController < ApplicationController
 
   def index
     if @query = params[:query]
-      @documents = Document.search_by_document_name(@query)
+      @documents = Document.includes(:service).search_by_document_name(@query)
     else
-      @documents = Document.all
+      @documents = Document.includes(:service).all
     end
   end
 
@@ -15,14 +15,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    # FIXME: find a better way to do this:
-    # @document = Document.new(document_params)
-    @document = Document.new({
-      service: Service.find(document_params[:service]),
-      name: document_params[:name],
-      url: document_params[:url],
-      xpath: document_params[:xpath]
-    })
+    @document = Document.new(document_params)
 
     if @document.save
       redirect_to @document
@@ -48,6 +41,16 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:service, :name, :url, :xpath).to_h
+    # FIXME: find a better way to do this:
+    tmp = params.require(:document).permit(:service, :name, :url, :xpath)
+    puts tmp
+    ret = {
+      service: Service.find(tmp[:service]),
+      name: tmp[:name],
+      url: tmp[:url],
+      xpath: tmp[:xpath]
+    }
+    puts ret
+    ret
   end
 end

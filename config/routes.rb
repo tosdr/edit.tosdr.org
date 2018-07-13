@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   resources :documents
   post "documents/new", to: "documents#create"
+  post "documents/:id/edit", to: "documents#update"
 
   resources :services, except: [:show]
   resources :services, except: [:index] do
