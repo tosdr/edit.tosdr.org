@@ -1,3 +1,5 @@
+require_relative '../../lib/tosbackdoc.rb'
+
 class DocumentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_document, only: [:show, :edit, :update]
@@ -16,6 +18,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document = Document.new(document_params)
+    crawl
 
     if @document.save
       redirect_to @document
@@ -26,6 +29,7 @@ class DocumentsController < ApplicationController
 
   def update
     @document.update(document_params)
+    crawl
 
     if @document.save
       redirect_to @document
@@ -52,5 +56,14 @@ class DocumentsController < ApplicationController
     }
     puts ret
     ret
+  end
+
+  def crawl
+    @tbdoc = TOSBackDoc.new({
+      url: @document.url,
+      xpath: @document.xpath
+    })
+    @tbdoc.scrape
+    @document.update({ text: @tbdoc.newdata })
   end
 end
