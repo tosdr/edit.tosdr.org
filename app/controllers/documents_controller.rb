@@ -10,13 +10,28 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def show
-  end
-
   def new
+    @document = Document.new
   end
 
-  def edit
+  def create
+    @document = Document.new(document_params)
+
+    if @document.save
+      redirect_to @document
+    else
+      render 'new'
+    end
+  end
+
+  def update
+    @document.update(document_params)
+
+    if @document.save
+      redirect_to @document
+    else
+      render 'edit'
+    end
   end
 
   private
