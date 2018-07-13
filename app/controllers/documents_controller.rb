@@ -15,7 +15,14 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(document_params)
+    # FIXME: find a better way to do this:
+    # @document = Document.new(document_params)
+    @document = Document.new({
+      service: Service.find(document_params[:service]),
+      name: document_params[:name],
+      url: document_params[:url],
+      xpath: document_params[:xpath]
+    })
 
     if @document.save
       redirect_to @document
@@ -41,6 +48,6 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:service_id, :name, :url, :xpath)
+    params.require(:document).permit(:service, :name, :url, :xpath).to_h
   end
 end

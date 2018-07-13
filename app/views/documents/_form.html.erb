@@ -1,4 +1,4 @@
-<%= form_with scope: :document, local: true do |form| %>
+<%= form_with scope: :document, url: documents_path, local: true do |form| %>
   <% if @document.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -13,6 +13,11 @@
     </div>
   <% end %>
 
+  <p>
+    <%= form.label :service %><br>
+    <%= form.select :service, Service.order('name ASC').map { |s| [s.name, s.id] } %>
+  </p>
+ 
   <p>
     <%= form.label :name %><br>
     <%= form.text_field :name %>

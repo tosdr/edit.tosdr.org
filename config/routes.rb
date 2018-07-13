@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   end
 
   resources :documents
+  post "documents/new", to: "documents#create"
 
   resources :services, except: [:show]
   resources :services, except: [:index] do
