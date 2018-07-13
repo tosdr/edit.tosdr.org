@@ -1,6 +1,7 @@
 class Service < ApplicationRecord
   has_paper_trail
   has_many :points
+  has_many :documents
 
   validates :name, presence: true
   validates :name, uniqueness: true

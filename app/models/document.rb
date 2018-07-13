@@ -1,6 +1,8 @@
 class Document < ApplicationRecord
   has_paper_trail
 
+  belongs_to :service
+
   validates :name, presence: true
   validates :url, presence: true, uniqueness: true
   validates :service_id, presence: true
