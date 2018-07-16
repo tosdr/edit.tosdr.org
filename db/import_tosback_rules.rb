@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 # in repo root, run:
-# rails runner db/import_doc_revision.rb
+# rails runner db/import_tosback2_rules.rb
 
 $tosback2_repo = "https://github.com/tosdr/tosback2"
 $rules_path = "tosback2/rules/" # Directories should include trailing slash
