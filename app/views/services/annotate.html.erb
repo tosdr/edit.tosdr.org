@@ -44,7 +44,15 @@
 <div id="files">
   <% @documents.each do |doc| %>
     <h2><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
-    <p><%= doc.text %>
+    <div>
+      <% doc.snippets.each do |snippet| %>
+        <% if snippet[:pointId] %>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId])%></p>
+        <% else %>
+          <p> <%= snippet[:text] %> </p>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
