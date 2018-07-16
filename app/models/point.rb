@@ -29,5 +29,4 @@ end
 #     ]).any?
 # end
 
-# def
 end
