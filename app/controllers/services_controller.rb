@@ -24,9 +24,10 @@ class ServicesController < ApplicationController
   end
 
   def annotate
+    puts 'annotate!'
     @points = @service.points.where('"status" in (\'approved\', \'pending\')')
     @documents = @service.documents
-    puts @documents
+    puts @documents.length.to_s + ' docs for service_id ' + @service.id.to_s
   end
 
   def quote

@@ -12,6 +12,7 @@
   </p>
 
   <p>
+  <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-primary' %>
   <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary' %>
   <% if current_user.curator? %>
     <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>

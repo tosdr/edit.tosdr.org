@@ -1,4 +1,7 @@
-require_relative '../../lib/tosbackdoc.rb'
+require "#{Rails.root}/lib/tosbackdoc.rb"
+
+puts 'loaded?'
+puts TOSBackDoc
 
 class DocumentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
@@ -36,6 +39,12 @@ class DocumentsController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def show
+    puts 'crawl?'
+    puts params[:crawl]
+    crawl if (params[:crawl])
   end
 
   private
