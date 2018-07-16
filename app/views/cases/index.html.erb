@@ -23,6 +23,9 @@
           <div class="card-inline-item card-inline-service">
             Title
           </div>
+          <div class="card-line card-inline-rating">
+            Score
+          </div>
           <div class="card-inline-item card-inline-contribution">
             Contributions
           </div>
@@ -42,6 +45,9 @@
           <div class="card-inline">
             <div class="card-inline-item card-inline-service">
               <%= c.title %>
+            </div>
+            <div class="card-line card-inline-rating">
+              <%= c.score %>
             </div>
             <div class="card-inline-item card-inline-contribution">
               <%= c.points.count %>
