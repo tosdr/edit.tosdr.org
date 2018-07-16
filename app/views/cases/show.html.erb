@@ -12,13 +12,13 @@
     Classification: <%= @case.classification %>
   </p>
   <p class="mt0 lh-copy">
-    Weight: <%= @case.score %>.
+    Weight: <%= @case.score %>
   </p>
   <p class="mt0 lh-copy">
-    <%= @case.description %>.
+    <%= @case.description %>
   </p>
 
-  <p>
+  <p class="tc">
     <% if current_user && current_user.curator? %>
     <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
     <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
