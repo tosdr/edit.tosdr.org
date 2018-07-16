@@ -27,7 +27,6 @@ class CasesController < ApplicationController
     @points = @case.points
     if @query = params[:query]
       @points = Point.search_points_by_multiple(@query).where(case: @case)
-      # puts @case_points
     end
   end
 
