@@ -1,53 +1,53 @@
 <% content_for :title do %>
-  <title>Case <%= @case.id %> (ToS;DR Phoenix)</title>
+<title>Case <%= @case.id %> (ToS;DR Phoenix)</title>
 <% end %>
-<header class="tc ph4">
+
+<div class="row">
+
+<header class="ph4">
   <h1 class="fw2 mv3">
     <%= @case.title %>
   </h1>
-  <p class="fw2 mt0 lh-copy">
-    Classification: <%= @case.classification %>.
+  <p class="mt0 lh-copy case-<%= @case.classification %>">
+    Classification: <%= @case.classification %>
   </p>
-  <p class="fw2 mt0 lh-copy">
+  <p class="mt0 lh-copy">
     Weight: <%= @case.score %>.
   </p>
-  <p class="fw2 mt0 lh-copy">
+  <p class="mt0 lh-copy">
     <%= @case.description %>.
   </p>
 
   <p>
-  <% if current_user && current_user.curator? %>
-  <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
-  <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
-  <% end %>
+    <% if current_user && current_user.curator? %>
+    <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
+    <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
+    <% end %>
   </p>
-<div class="search-bar">
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12">
-      <%= form_tag(case_path(@case), method: :get) do %>
+  <div class="search-bar">
+    <div id="custom-search-input">
+      <div class="input-group col-xs-12">
+        <%= form_tag(case_path(@case), method: :get) do %>
         <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search for case", value: @query %>
 
         <span class="input-group-btn">
           <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
-            <span class="glyphicon glyphicon-search"></span>
+          <span class="glyphicon glyphicon-search"></span>
           <% end %>
         </span>
-      <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="reset-btn">
+      <%= link_to "Back", case_path(@case), class: "btn btn-default"%>
     </div>
   </div>
-  <div class="reset-btn">
-    <%= link_to "Back", case_path(@case), class: "btn btn-default"%>
-  </div>
-</div>
 
 </header>
 
-<div class="row">
   <div class="col-xs-12">
-    <h2>Points connected to that case:</h2>
+    <h2 class="fw2">Points connected to this case:</h2>
   </div>
-</div>
-<div class="row">
   <div class="container card-container">
     <div class="row">
       <div class="col-xs-12">
@@ -73,50 +73,50 @@
           </div>
         </div>
         <!-- actual card-inline -->
-          <% if @points.empty? %>
-            <div class="card-inline">
-              <div class="card-inline-item">
-                No points found
-              </div>
-            </div>
-          <% else %>
-            <% @points.each do |p| %>
-            <% if p.case&.classification == "good" %>
-              <% pointbox = "point-good" %>
-            <% elsif p.case&.classification == 'neutral' %>
-              <% pointbox = "point-neutral" %>
-            <% elsif p.case&.classification == 'bad' %>
-              <% pointbox = "point-bad" %>
-            <% elsif p.case&.classification == 'blocker' %>
-              <% pointbox = "point-blocker" %>
+        <% if @points.empty? %>
+        <div class="card-inline">
+          <div class="card-inline-item">
+            No points found
+          </div>
+        </div>
+        <% else %>
+        <% @points.each do |p| %>
+        <% if p.case&.classification == "good" %>
+        <% pointbox = "point-good" %>
+        <% elsif p.case&.classification == 'neutral' %>
+        <% pointbox = "point-neutral" %>
+        <% elsif p.case&.classification == 'bad' %>
+        <% pointbox = "point-bad" %>
+        <% elsif p.case&.classification == 'blocker' %>
+        <% pointbox = "point-blocker" %>
+        <% end %>
+        <div class="card-inline">
+          <div class="card-inline-item card-inline-service">
+            <%= p.service.name %>
+          </div>
+          <div class="card-inline-item card-inline-point">
+            <%= p.title %>
+          </div>
+          <div class="card-inline-item card-inline-rating <%= pointbox %>">
+          </div>
+          <div class="card-inline-item card-inline-status">
+            <%= p.status %>
+          </div>
+          <div class="card-inline-item card-inline-featured">
+            <% if p.is_featured? %>
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <% else %>
+            <i class="fa fa-circle-o" aria-hidden="true"></i>
             <% end %>
-            <div class="card-inline">
-              <div class="card-inline-item card-inline-service">
-                <%= p.service.name %>
-              </div>
-              <div class="card-inline-item card-inline-point">
-                <%= p.title %>
-              </div>
-              <div class="card-inline-item card-inline-rating <%= pointbox %>">
-              </div>
-              <div class="card-inline-item card-inline-status">
-                <%= p.status %>
-              </div>
-              <div class="card-inline-item card-inline-featured">
-                <% if p.is_featured? %>
-                <i class="fa fa-check" aria-hidden="true"></i>
-                <% else %>
-                <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <% end %>
-              </div>
-              <div class="card-inline-item card-inline-options">
-                <%= link_to(point_path(p), class: 'btn') do %>
-                <i class="fa fa-eye" aria-hidden="true"></i>
-                <% end %>
-              </div>
-            </div>
-            <!-- card-inline-END -->
-          <% end %>
+          </div>
+          <div class="card-inline-item card-inline-options">
+            <%= link_to(point_path(p), class: 'btn') do %>
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <% end %>
+          </div>
+        </div>
+        <!-- card-inline-END -->
+        <% end %>
         <% end %>
       </div>
     </div>
