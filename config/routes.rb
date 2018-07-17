@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     sessions: 'users/sessions'
@@ -23,7 +24,9 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create]
   end
 
-  resources :doc_revisions
+  resources :documents
+  post "documents/new", to: "documents#create"
+  post "documents/:id/edit", to: "documents#update"
 
   resources :services, except: [:show]
   resources :services, except: [:index] do

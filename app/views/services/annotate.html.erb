@@ -41,7 +41,22 @@
   <input type="hidden" name="quotePointId" id="quotePointId">
 </form>
 
-<div id="files"></div>
+<div id="files">
+  <% @documents.each do |doc| %>
+    <h2><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
+    <div>
+      <% offset = 0 %>
+      <% doc.snippets.each do |snippet| %>
+        <% if snippet[:pointId] %>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), :data => { :filename => doc.name, :offset => offset }%></p>
+        <% else %>
+          <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
+        <% end %>
+        <% offset += snippet[:text].length %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
 
 <script>
   function linkSelectionToPoint(pointDropdownSubmitEvent) {
@@ -51,7 +66,9 @@
     const pointId = pointDropdown.options[pointDropdown.selectedIndex].dataset.pointId;
 
     const selection = window.getSelection()
-    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset.offset, 10);
+    console.log(JSON.stringify(selection.anchorNode.parentElement.dataset));
+
+    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset['offset'], 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
     const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
     console.log('linkQuoteToPoint', pointId,
@@ -59,8 +76,8 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    quoteDoc.value =  selection.anchorNode.parentElement.dataset.filename;
-    quoteRev.value =  selection.anchorNode.parentElement.dataset.revision;
+    quoteDoc.value =  selection.anchorNode.parentElement.dataset['filename'];
+    quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
@@ -166,36 +183,6 @@
 
   // ...
   var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
-
-  // find docs for which no points have annotations yet:
-  <% @docRevisions.each do |d| %>
-  ;(function() {
-    var docName = '<%=escape_javascript d.name %>'
-    var topRev = '<%=escape_javascript d.revision %>'
-    if (!annotations[docName]) {
-      annotations[docName] = {}
-    }
-    if (!annotations[docName][topRev]) {
-      annotations[docName][topRev] = []
-      console.log('fetching doc', serviceDomain, docName, topRev)
-      fetchDoc(serviceDomain, docName, topRev)
-    }
-  })()
-  <% end %>
-  <% @points.each do |p| %>
-    console.log('registering quote',
-      '<%=escape_javascript p.quoteDoc %>',
-      '<%=escape_javascript p.quoteRev %>',
-      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
-      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
-      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
-    registerQuote(
-      '<%=escape_javascript p.quoteDoc %>',
-      '<%=escape_javascript p.quoteRev %>',
-      parseInt(<%= p.quoteStart %>), // int in Ruby, no need to escape
-      parseInt(<%= p.quoteEnd %>), // int in Ruby, no need to escape
-      parseInt(<%= p.id %>)) // int in Ruby, no need to escape
-  <% end %>
 
   const pointDropdown = document.getElementById('pointDropdown');
   pointDropdown.addEventListener('submit', linkSelectionToPoint);

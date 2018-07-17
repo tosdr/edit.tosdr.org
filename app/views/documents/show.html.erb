@@ -1,0 +1,24 @@
+<% content_for :title do %>
+  <title>Document <%= @document.service.name %> <%= @document.name %> (ToS;DR Phoenix)</title>
+<% end %>
+<header class="tc ph4">
+  <h1 class="fw2 mv3">
+    <%= link_to @document.service.name, service_path(@document.service) %>:
+    <%= @document.name %>
+  </h1>
+  <p class="fw2 mt0 lh-copy">
+    <%= @document.url %>
+    (<%= @document.xpath %>)
+  </p>
+
+  <p>
+  <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-primary' %>
+  <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary' %>
+  <% if current_user.curator? %>
+    <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
+  <% end %>
+  </p>
+</header>
+<p class="doctext" >
+  <%= @document.text %>
+</p>

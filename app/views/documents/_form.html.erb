@@ -1,0 +1,39 @@
+<%= form_with scope: :document, local: true do |form| %>
+  <% if @document.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@document.errors.count, "error") %> prohibited
+        this document from being saved:
+      </h2>
+      <ul>
+        <% @document.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :service %><br>
+    <%= form.select :service, Service.order('name ASC').map { |s| [s.name, s.id] } %>
+  </p>
+ 
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= form.label :url %><br>
+    <%= form.text_field :url %>
+  </p>
+ 
+  <p>
+    <%= form.label :xpath %><br>
+    <%= form.text_field :xpath %>
+  </p>
+ 
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
