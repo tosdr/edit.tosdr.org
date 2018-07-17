@@ -28,8 +28,8 @@ class CasesController < ApplicationController
 
   def show
     @points = @case.points.includes(:service)
-    if query = params[:query]
-      @points = @points.search_points_by_multiple(query).where(case: @case)
+    if params[:query]
+      @points = @points.search_points_by_multiple(params[:query]).where(case: @case)
     end
   end
 
