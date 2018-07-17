@@ -37,6 +37,11 @@ Service.all.each do |service|
       puts service.id.to_s + ' ' + service.url + ' <- ' + goodUrls
     end
     data['urls'] = service.url.split(',')
+
+    # Work around https://github.com/tosdr/tosdr-firefox/issues/53:
+    data['url'] = data['urls'][0]
+    puts 'url set!' + data['url']
+
     # data['tosdr']['rated'] = service.grade
     data['meta']['spec-version'] = '1.1'
 
@@ -63,6 +68,9 @@ Service.all.each do |service|
     mapping['toSlug'][service.id.to_s] = (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase
 
     File.write(filepath_services + filename, JSON.pretty_unparse(data))
+
+    # Work around https://github.com/tosdr/tosdr-firefox/issues/52:
+    File.write(filepath_services + service.id.to_s + '.json', JSON.pretty_unparse(data))
   end
 end
 File.write(filepath_services_mapping, JSON.pretty_unparse(mapping))
