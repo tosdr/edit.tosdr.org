@@ -17,11 +17,7 @@
           <%= link_to "Annotate Docs", annotate_service_path(@service) %>
          |
         <% end %>
-        <% if params[:scope] == 'pending' || params[:scope].nil? %>
-          <%= link_to 'Archived Versions', service_path(scope: 'archived-versions') %> </h5>
-        <% elsif %>
           <%= link_to 'Back', service_path(scope: nil) %></h5>
-        <% end %>
     </div>
 
   </div>
