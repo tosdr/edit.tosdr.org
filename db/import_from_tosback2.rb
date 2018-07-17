@@ -5,6 +5,12 @@ require 'nokogiri'
 
 $tosback2_repo = "https://github.com/tosdr/tosback2"
 $rules_path = "tosback2/rules/" # Directories should include trailing slash
+$crawls_path = {
+  true => "tosback2/crawl_reviewed/",
+  false => "tosback2/crawl/"
+}
+$crawls_separator = "/"
+$crawls_extension = ".txt"
 
 def importRules()
   Dir.foreach($rules_path) do |xml_file| # loop for each xml file/rule
@@ -24,7 +30,8 @@ def importRules()
         name = doc.at_xpath("./@name").to_s
         url = doc.at_xpath("./url/@name").to_s
         xpath = doc.at_xpath("./url/@xpath").to_s
-        reviewed = doc.at_xpath("./url/@reviewed").to_s
+        reviewed = (doc.at_xpath("./url/@reviewed").to_s == "true")
+        text = File.read($crawls_path[reviewed] + site + $crawls_separator + name + $crawls_extension)
         puts url
         doc = Document.find_by_url(url)
         if (!doc)
@@ -37,7 +44,8 @@ def importRules()
           name: name,
           url: url,
           xpath: xpath,
-          reviewed: reviewed
+          reviewed: reviewed,
+          text: text
         })
         puts 'saving'
         if (!doc.save())
