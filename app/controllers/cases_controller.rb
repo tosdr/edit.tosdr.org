@@ -5,6 +5,9 @@ class CasesController < ApplicationController
 
   def index
     @topics = Topic.includes(:cases).all
+    if params[:query]
+      @topics = @topics.search_by_topic_title(params[:query])
+    end
   end
 
   def new
@@ -25,8 +28,8 @@ class CasesController < ApplicationController
 
   def show
     @points = @case.points.includes(:service)
-    if @query = params[:query]
-      @points = @points.search_points_by_multiple(@query).where(case: @case)
+    if query = params[:query]
+      @points = @points.search_points_by_multiple(query).where(case: @case)
     end
   end
 
