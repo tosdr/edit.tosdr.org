@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:destroy]
-  before_action :set_service, only: [:show, :edit, :annotate, :update, :destroy]
+  before_action :set_service, only: [:show, :edit, :annotate, :quote, :update, :destroy]
 
   def index
     @services = Service.includes(points: [:case]).all
@@ -25,7 +25,11 @@ class ServicesController < ApplicationController
 
   def annotate
     puts 'annotate!'
-    @points = @service.points.where('"status" in (\'approved\', \'pending\')')
+    @points = @service.points.where('"status" in (\'approved\', \'pending\')').where('"case_id" is not null')
+    puts @points.length.to_s + ' points:'
+    @points.each do |p|
+      puts p.id.to_s + ': ' + p.title + ' (' + p.quoteDoc.to_s + ')'
+    end
     @documents = @service.documents
     puts @documents.length.to_s + ' docs for service_id ' + @service.id.to_s
   end
@@ -34,14 +38,19 @@ class ServicesController < ApplicationController
     puts 'quote!'
     puts params
     point = Point.find(params[:quotePointId])
+    document = @service.documents.where('"name" = ?', params[:quoteDoc])[0]
     point.update(
       quoteDoc: params[:quoteDoc],
       quoteRev: params[:quoteRev],
       quoteStart: params[:quoteStart],
-      quoteEnd: params[:quoteEnd]
+      quoteEnd: params[:quoteEnd],
+      quoteText: document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
     )
-    point.save
-    redirect_to service_path(params[:id]) + '/annotate'
+    if (point.save)
+      redirect_to service_path(params[:id]) + '/annotate'
+    else
+      puts point.errors.full_messages
+    end
   end
 
   def show

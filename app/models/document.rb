@@ -11,6 +11,9 @@ class Document < ApplicationRecord
     Document.where("name ILIKE ?", "%#{query}%")
   end
   def snippets
+    if (!self.text)
+      self.text = ''
+    end
     quotes = []
     snippets = []
     self.points.each do |p|
@@ -19,7 +22,18 @@ class Document < ApplicationRecord
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
         quotes << p
       else
-        puts 'quote not found! [' + quoteStart.to_s + ']' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
+        puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (p.quoteStart + p.quoteText.length).to_s + ']'
+        puts '-----'
+        puts p.quoteText
+        puts '-----'
+        puts self.text[p.quoteStart, p.quoteEnd]
+        puts '-----'
+        puts self.text.index(self.text[p.quoteStart, p.quoteEnd])
+        puts '-----'
+        puts '-----'
+        puts self.text.index(p.quoteText)
+        puts '-----'
+        puts '-----'
       end
     end
     cursor = 0
@@ -32,12 +46,12 @@ class Document < ApplicationRecord
       if (q.quoteStart > cursor)
         puts 'unquoted ' + cursor.to_s + ' -> ' + q.quoteStart.to_s
         snippets.push({
-          text: self.text[cursor, q.quoteStart]
+          text: self.text[cursor, q.quoteStart - cursor]
         })
         puts 'quoted ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s
         snippets.push({
           pointId: q.id,
-          text: self.text[q.quoteStart, q.quoteEnd]
+          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart]
         })
         puts 'cursor to ' + q.quoteEnd.to_s
         cursor = q.quoteEnd
@@ -47,7 +61,7 @@ class Document < ApplicationRecord
     end
     puts 'final snippet ' + cursor.to_s + ' -> ' + self.text.length.to_s
     snippets.push({
-      text: self.text[cursor, self.text.length]
+      text: self.text[cursor, self.text.length - cursor]
     })
     snippets
   end

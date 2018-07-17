@@ -45,12 +45,14 @@
   <% @documents.each do |doc| %>
     <h2><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
     <div>
+      <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>
         <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId])%></p>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), :data => { :filename => doc.name, :offset => offset }%></p>
         <% else %>
-          <p> <%= snippet[:text] %> </p>
+          <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
         <% end %>
+        <% offset += snippet[:text].length %>
       <% end %>
     </div>
   <% end %>
@@ -64,7 +66,9 @@
     const pointId = pointDropdown.options[pointDropdown.selectedIndex].dataset.pointId;
 
     const selection = window.getSelection()
-    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset.offset, 10);
+    console.log(JSON.stringify(selection.anchorNode.parentElement.dataset));
+
+    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset['offset'], 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
     const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
     console.log('linkQuoteToPoint', pointId,
@@ -72,8 +76,8 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    quoteDoc.value =  selection.anchorNode.parentElement.dataset.filename;
-    quoteRev.value =  selection.anchorNode.parentElement.dataset.revision;
+    quoteDoc.value =  selection.anchorNode.parentElement.dataset['filename'];
+    quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quotePointId.value = pointId
