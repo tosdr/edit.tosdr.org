@@ -3,7 +3,7 @@
 <% end %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
-    <%= link_to @document.service.name, document_path(@document) %>:
+    <%= link_to @document.service.name, service_path(@document.service) %>:
     <%= @document.name %>
   </h1>
   <p class="fw2 mt0 lh-copy">
