@@ -117,7 +117,7 @@ $pointPaddingLeft : 35px;
   font-size: 30px;
   // To place the "N/A" in the middle of the badge, the line-height should be as high as the other badges' font size,
   // plus half its own font size to shift it down to the middle.
-  line-height: 48px+(30px/2); 
+  line-height: 48px+(30px/2);
   background-color: transparent;
 }
 
@@ -152,12 +152,12 @@ $pointPaddingLeft : 35px;
   padding: 10px 20px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
   & .btn {
-  padding: 4px;
-}
+    padding: 4px;
+  }
 
-.box-shadow-for-button {
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
-}
+  .box-shadow-for-button {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+  }
 
 }
 .card-inline-item {
@@ -247,4 +247,30 @@ $pointPaddingLeft : 35px;
   padding: 0 5px;
 }
 
+// Case rating show badge
+.case-good:after {
+  content: image-url("point-good.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+
+.case-neutral:after {
+  content: image-url("point-neutral.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.case-bad:after {
+  content: image-url("point-bad.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.case-blocker:after {
+  content: image-url("point-blocker.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
 
