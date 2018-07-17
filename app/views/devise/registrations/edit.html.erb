@@ -17,7 +17,7 @@
 
       <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
       <%= f.input :password_confirmation, required: false %>
-      <%= f.input :current_password, hint: "we need your current password to confirm your changes", required: true %>
+
     </div>
 
     <div class="form-actions">
@@ -27,7 +27,7 @@
 
     <h3>Cancel my account</h3>
 
-    <p>Unhappy? <%= link_to "Cancel my account", users_destroy_path(@user), data: { confirm: "Are you sure? We will delete your personal information however we keep your contributions and we assign them to another anonymous account." }, method: :delete %></p>
+    <p>Unhappy? <%= link_to "Cancel my account", user_session_path(@user), data: { confirm: "Are you sure? We will delete your personal information however we keep your contributions and we assign them to another anonymous account." }, method: :delete %></p>
 
     <%= link_to "Back", :back %>
   </div>

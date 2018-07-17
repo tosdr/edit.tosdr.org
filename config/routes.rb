@@ -5,11 +5,9 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }, only: [ :destroy ]
 
-  devise_for :users, controllers: {
-   :sessions => "users/sessions",
-   :registrations => "users/registrations" }
+  devise_for :users, controllers: { registrations: 'registrations' }
 
-   root to: 'pages#home'
+  root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get 'my_points', to: 'points#user_points', as: :my_points

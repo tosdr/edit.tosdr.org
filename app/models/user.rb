@@ -3,14 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
   has_many :points
-  validate :password_validation
+  validate :password_complexity, on: [:create, :update]
 
   after_create :send_welcome_mail
 
-  def password_validation
-    unless (password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-      errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit'
-    end
+  def password_complexity
+    # Regexp extracted from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+    return if password.blank? || password =~ /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$/
+
+    errors.add :password, 'Complexity requirement not met. Lenght should be 8-128 character and include: 1 Upper case, 1 lower case, 1 digit and 1 special char'
   end
 
   def admin?
@@ -32,8 +33,4 @@ class User < ApplicationRecord
       c.update_all user_id: 1
     end
   end
-
-  # def active_for_authentication?
-  #   super && !deactivated
-  # end
 end
