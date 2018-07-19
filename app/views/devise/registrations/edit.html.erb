@@ -15,8 +15,15 @@
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
       <% end %>
 
+      <div class="form-actions">
+        <%= f.button :submit, "Update" %>
+      </div>
+
+      <h2>Change your password</h2>
+
       <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
       <%= f.input :password_confirmation, required: false %>
+      <%= f.input :current_password, required: false, hint: "add it only if you want to change your password" %>
 
     </div>
 

@@ -46,11 +46,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
+  end
+
+  def update_resource(resource, params)
+    if params[:current_password].blank?
+     resource.update_without_password(params.except(:current_password))
+    else
+      resource.update_with_password(params)
+    end
   end
 
   # If you have extra params to permit, append them to the sanitizer.
