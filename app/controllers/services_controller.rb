@@ -60,7 +60,7 @@ class ServicesController < ApplicationController
 
     @versions = @service.versions
 
-    if @query = params[:topic]
+    if params[:topic]
       @points = @points.where(topic_id: params[:topic][:id])
     end
   end
