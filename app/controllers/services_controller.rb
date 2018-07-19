@@ -57,7 +57,6 @@ class ServicesController < ApplicationController
     else
       @points = @service.points.where(status: 'approved')
     end
-
     @versions = @service.versions
 
     if params[:topic]
@@ -87,7 +86,7 @@ class ServicesController < ApplicationController
   private
 
   def set_service
-    @service = Service.includes(points: [:case]).find(params[:id] || params[:service_id])
+    @service = Service.find(params[:id] || params[:service_id])
   end
 
   def service_params

@@ -11,9 +11,9 @@
       <tr>
         <th scope="row"><%= v.event %></th>
         <td>
-          <% if v.changeset["analysis"] %>
+          <% if !v.changeset["analysis"].nil? %>
           Analysis change: <%= v.changeset["analysis"] %>
-          <% elsif v.changeset["status"] %>
+          <% elsif !v.changeset["status"].nil? %>
           Status change: <%= v.changeset["status"] %>
           <% else %>
           No changes recorded
