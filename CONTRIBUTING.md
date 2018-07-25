@@ -122,7 +122,3 @@ docker-compose run web rails db:migrate
 * When you create a pull request, please make sure you checked everything in the PR template. 
     
 Have fun!
-
-## What to work on
-
-Although all help is welcome, for maximum impact you can get a sense of the global project priorities by looking at [the high-level roadmap](https://github.com/tosdr/phoenix/wiki/Roadmap).
