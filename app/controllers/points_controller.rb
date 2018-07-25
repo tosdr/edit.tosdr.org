@@ -16,8 +16,7 @@ class PointsController < ApplicationController
 
   def new
     @point = Point.new
-    @topics = Topic.all
-    @cases = Case.includes(:topic).all
+    @topics = Topic.all.includes(:cases).all
     if @query = params[:service_id]
       @point['service_id'] = params[:service_id]
     end
@@ -26,7 +25,7 @@ class PointsController < ApplicationController
 
   def create
     @point = Point.new(point_params)
-    @cases = Case.includes(:topic).all
+    @topics = Topic.all.includes(:cases).all
     @point.user = current_user
 
     point_for_options = @point
@@ -42,7 +41,7 @@ class PointsController < ApplicationController
 
   def edit
     @service_url = @point.service.url
-    @cases = Case.includes(:topic).all
+    @topics = Topic.all.includes(:cases).all
   end
 
   def show
@@ -51,7 +50,7 @@ class PointsController < ApplicationController
   end
 
   def update
-    @cases = Case.includes(:topic).all
+    @topics = Topic.all.includes(:cases).all
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
       comment = create_comment(@point)
