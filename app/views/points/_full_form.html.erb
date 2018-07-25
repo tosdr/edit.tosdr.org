@@ -8,9 +8,34 @@
     </div>
     <div class="row">
       <div class="col-xs-6">
-        <%= f.input :case_id do %>
-          <%= f.select :case_id, @cases.map { |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification}, {'topic' => c.topic.id} ] }, :include_blank => true %>
-        <% end %>
+        <%=
+          f.input :case_id,
+          :as => :grouped_select,
+          # simple_form uses the first element of each item in the collection as the name,
+          # and the second as the ID of the <optgroup> (which is present because it's a grouped_select).
+          # We add a third element that contains another array, representing the <option>s for every
+          # <optgroup>, each <option> itself consiting of an array with the label as the first
+          # attribute, the ID as the second, and additional attributes after that.
+          # This allows us to set data-attributes that Javascript can extract.
+          :group_method => :last,
+          collection: @topics.map { |t|
+            [
+              t.title,
+              t.id,
+              t.cases.map { |c|
+                [
+                  c.title,
+                  c.id,
+                  {'data-title' => c.title},
+                  {'data-descrip' => c.description || "" },
+                  {'data-rating' => c.classification},
+                  {'topic' => c.topic.id}
+                ]
+              }
+            ]
+          },
+          hint: "What this point is saying about the service"
+        %>
       </div>
     </div>
     <br>
