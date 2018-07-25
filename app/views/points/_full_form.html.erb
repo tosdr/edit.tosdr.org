@@ -8,9 +8,20 @@
     </div>
     <div class="row">
       <div class="col-xs-6">
-        <%= f.input :case_id do %>
-          <%= f.select :case_id, @cases.map { |c| [c.title, c.id, {'data-title' => c.title}, {'data-descrip' => c.description || "" }, {'data-rating' => c.classification}, {'topic' => c.topic.id} ] }, :include_blank => true %>
-        <% end %>
+        <%=
+          f.association :case,
+          collection: @cases.map { |c|
+            [
+              c.title,
+              c.id,
+              {'data-title' => c.title},
+              {'data-descrip' => c.description || "" },
+              {'data-rating' => c.classification},
+              {'topic' => c.topic.id}
+            ]
+          },
+          hint: "What this point is saying about the service"
+        %>
       </div>
     </div>
     <br>
