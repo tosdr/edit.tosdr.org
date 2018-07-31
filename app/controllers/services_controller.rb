@@ -24,29 +24,34 @@ class ServicesController < ApplicationController
 
   def annotate
     @service = Service.find(params[:id] || params[:service_id])
-    @points = @service.points.where('"status" in (\'approved\', \'pending\')').where('"case_id" is not null')
-    puts @points.length.to_s + ' points:'
-    @points.each do |p|
-      puts p.id.to_s + ': ' + p.title + ' (' + p.quoteDoc.to_s + ')'
-    end
+    @topics = Topic.all.includes(:cases).all
     @documents = @service.documents
-    puts @documents.length.to_s + ' docs for service_id ' + @service.id.to_s
   end
 
   def quote
     puts 'quote!'
     puts params
     @service = Service.find(params[:id] || params[:service_id])
-    point = Point.find(params[:quotePointId])
+    @case = Case.find(params[:quoteCaseId])
+    point = Point.new(
+      params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
+    )
     document = @service.documents.where('"name" = ?', params[:quoteDoc])[0]
-    point.update(
+    puts 'Found document'
+    point.quoteText = document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
+    point.user = current_user
+    point.case = @case
+    point.title = @case.title
+    point.status = 'pending'
+    point.service = @service
+    point.source = document.url
+    point.analysis = 'Generated through the annotate view'
+    if (point.save(
       quoteDoc: params[:quoteDoc],
       quoteRev: params[:quoteRev],
       quoteStart: params[:quoteStart],
-      quoteEnd: params[:quoteEnd],
-      quoteText: document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
-    )
-    if (point.save)
+      quoteEnd: params[:quoteEnd]
+    ))
       redirect_to service_path(params[:id]) + '/annotate'
     else
       puts point.errors.full_messages
