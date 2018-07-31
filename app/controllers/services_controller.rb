@@ -1,7 +1,6 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:destroy]
-  before_action :set_service, only: [:show, :edit, :annotate, :quote, :update, :destroy]
 
   def index
     @services = Service.includes(points: [:case]).all
@@ -24,7 +23,7 @@ class ServicesController < ApplicationController
   end
 
   def annotate
-    puts 'annotate!'
+    @service = Service.find(params[:id] || params[:service_id])
     @points = @service.points.where('"status" in (\'approved\', \'pending\')').where('"case_id" is not null')
     puts @points.length.to_s + ' points:'
     @points.each do |p|
@@ -37,6 +36,7 @@ class ServicesController < ApplicationController
   def quote
     puts 'quote!'
     puts params
+    @service = Service.find(params[:id] || params[:service_id])
     point = Point.find(params[:quotePointId])
     document = @service.documents.where('"name" = ?', params[:quoteDoc])[0]
     point.update(
@@ -54,6 +54,7 @@ class ServicesController < ApplicationController
   end
 
   def show
+    @service = Service.includes(points: [:case], versions: [:item]).find(params[:id] || params[:service_id])
     if current_user
       case params[:scope]
       when nil
@@ -75,14 +76,17 @@ class ServicesController < ApplicationController
   end
 
   def edit
+    @service = Service.find(params[:id] || params[:service_id])
   end
 
   def update
+    @service = Service.find(params[:id] || params[:service_id])
     @service.update(service_params)
     redirect_to service_path(@service)
   end
 
   def destroy
+    @service = Service.find(params[:id] || params[:service_id])
     if @service.points.any?
       flash[:alert] = "Users have contributed valuable insight to this service!"
       redirect_to service_path(@service)
@@ -94,10 +98,6 @@ class ServicesController < ApplicationController
   end
 
   private
-
-  def set_service
-    @service = Service.includes(points: [:case]).find(params[:id] || params[:service_id])
-  end
 
   def service_params
     params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
