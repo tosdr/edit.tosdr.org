@@ -22,7 +22,7 @@ class Document < ApplicationRecord
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
         quotes << p
       else
-        puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (p.quoteStart + p.quoteText.length).to_s + ']'
+        puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (quoteStart + p.quoteText.length).to_s + ']'
         puts '-----'
         puts p.quoteText
         puts '-----'
@@ -51,7 +51,8 @@ class Document < ApplicationRecord
         puts 'quoted ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s
         snippets.push({
           pointId: q.id,
-          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart]
+          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart],
+          title: q.title
         })
         puts 'cursor to ' + q.quoteEnd.to_s
         cursor = q.quoteEnd

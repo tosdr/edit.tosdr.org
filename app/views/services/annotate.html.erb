@@ -1,5 +1,5 @@
 <style>
-#pointToast {
+#caseToast {
   position: absolute;
   display: none;
   left: 50%;
@@ -13,19 +13,21 @@
   transition: opacity 200ms ease;
 }
 
-#pointToast.withSelection {
+#caseToast.withSelection {
   display: block;
   opacity: 1;
 }
 </style>
 
-<div id="pointToast">
-  <form id="pointDropdown">
+<div id="caseToast">
+  <form id="caseDropdown">
     <select>
-      <% @points.each do |p| %>
-        <% if !(p.quoteDoc) %>
-          <option data-point-id="<%= p.id %>"><%= p.title %></option>
-        <% end %>
+      <% @topics.each do |t| %>
+        <optgroup label="<%= t.title %>">
+          <% t.cases.each do |c| %>
+            <option data-case-id="<%= c.id %>"><%= c.title %></option>
+          <% end %>
+        </optgroup>
       <% end %>
     </select>
     <button type="submit" class="btn btn-primary">Annotate</button>
@@ -38,7 +40,7 @@
   <input type="hidden" name="quoteRev" id="quoteRev">
   <input type="hidden" name="quoteStart" id="quoteStart">
   <input type="hidden" name="quoteEnd" id="quoteEnd">
-  <input type="hidden" name="quotePointId" id="quotePointId">
+  <input type="hidden" name="quoteCaseId" id="quoteCaseId">
 </form>
 
 <div id="files">
@@ -48,7 +50,7 @@
       <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>
         <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), :data => { :filename => doc.name, :offset => offset }%></p>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :filename => doc.name, :offset => offset }%></p>
         <% else %>
           <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
         <% end %>
@@ -59,11 +61,11 @@
 </div>
 
 <script>
-  function linkSelectionToPoint(pointDropdownSubmitEvent) {
-    pointDropdownSubmitEvent.preventDefault();
+  function linkSelectionToCase(caseDropdownSubmitEvent) {
+    caseDropdownSubmitEvent.preventDefault();
 
-    const pointDropdown = document.querySelector('#pointDropdown select');
-    const pointId = pointDropdown.options[pointDropdown.selectedIndex].dataset.pointId;
+    const caseDropdown = document.querySelector('#caseDropdown select');
+    const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
 
     const selection = window.getSelection()
     console.log(JSON.stringify(selection.anchorNode.parentElement.dataset));
@@ -71,7 +73,7 @@
     const spanOffset = parseInt(selection.anchorNode.parentElement.dataset['offset'], 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
     const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
-    console.log('linkQuoteToPoint', pointId,
+    console.log('linkSelectionToCase', caseId,
       spanOffset,
       spanOffset + selectionStart,
       spanOffset + selectionEnd
@@ -80,7 +82,7 @@
     quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
-    quotePointId.value = pointId
+    quoteCaseId.value = caseId
 
     const quoteForm = document.getElementById('quoteForm');
     quoteForm.submit();
@@ -184,8 +186,8 @@
   // ...
   var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
 
-  const pointDropdown = document.getElementById('pointDropdown');
-  pointDropdown.addEventListener('submit', linkSelectionToPoint);
+  const caseDropdown = document.getElementById('caseDropdown');
+  caseDropdown.addEventListener('submit', linkSelectionToCase);
 
   document.addEventListener('selectionchange', () => {
     const selection = document.getSelection();
@@ -193,13 +195,13 @@
     const topOfPage = document.body.getBoundingClientRect().top;
     const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
-    const pointSelectionToast = document.getElementById('pointToast');
-    pointSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
+    const caseSelectionToast = document.getElementById('caseToast');
+    caseSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
 
     if (selection.toString().length > 0) {
-      pointSelectionToast.classList.add('withSelection');
+      caseSelectionToast.classList.add('withSelection');
     } else {
-      pointSelectionToast.classList.remove('withSelection');
+      caseSelectionToast.classList.remove('withSelection');
     }
   });
 </script>
