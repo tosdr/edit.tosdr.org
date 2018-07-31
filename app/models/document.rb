@@ -51,7 +51,8 @@ class Document < ApplicationRecord
         puts 'quoted ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s
         snippets.push({
           pointId: q.id,
-          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart]
+          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart],
+          title: q.title
         })
         puts 'cursor to ' + q.quoteEnd.to_s
         cursor = q.quoteEnd

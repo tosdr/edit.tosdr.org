@@ -50,7 +50,7 @@
       <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>
         <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), :data => { :filename => doc.name, :offset => offset }%></p>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :filename => doc.name, :offset => offset }%></p>
         <% else %>
           <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
         <% end %>
