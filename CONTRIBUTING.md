@@ -67,7 +67,7 @@ a systemwide install.
 
 Install Rails and Postgres
 
-    apt install rails postgres
+    apt install rails postgresql
 
 In your code directory run:
 
