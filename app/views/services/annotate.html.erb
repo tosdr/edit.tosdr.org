@@ -43,9 +43,27 @@
   <input type="hidden" name="quoteCaseId" id="quoteCaseId">
 </form>
 
+<div class="toc">
+  <h2>Documents on this page:</h2>
+  <ul>
+  <% @documents.each do |doc| %>
+    <li>
+      <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+    </li>
+  <% end %>
+  </ul>
+  <p>
+    <%= link_to "Add a document", new_document_path, title: "Add a new document to crawl", class: "btn btn-default" %>
+  </p>
+  <hr/>
+</div>
+
 <div id="files">
   <% @documents.each do |doc| %>
-    <h2><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
+    <h2
+      id="doc_<%= doc.id %>"
+      class="documentTitle"
+    ><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
     <div>
       <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>

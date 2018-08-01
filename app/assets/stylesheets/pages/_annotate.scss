@@ -1,0 +1,11 @@
+.toc ul {
+  list-style-type: disc;
+  margin-left: 30px; // I believe this was the standard indentation browsers used
+}
+
+.documentTitle {
+  // The header navbar is 60px, so if we make this element 60px higher,
+  // anchors can link to this title without it being covered by the header.
+  margin-top: -60px;
+  padding-top: 60px;
+}
