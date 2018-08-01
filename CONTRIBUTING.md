@@ -67,7 +67,7 @@ a systemwide install.
 
 Install Rails and Postgres
 
-    apt install rails postgresql
+    apt install rails postgresql libpq-dev
 
 In your code directory run:
 
