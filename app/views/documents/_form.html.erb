@@ -1,39 +1,7 @@
-<%= form_with scope: :document, local: true do |form| %>
-  <% if @document.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@document.errors.count, "error") %> prohibited
-        this document from being saved:
-      </h2>
-      <ul>
-        <% @document.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <p>
-    <%= form.label :service %><br>
-    <%= form.select :service, Service.order('name ASC').map { |s| [s.name, s.id] } %>
-  </p>
- 
-  <p>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </p>
- 
-  <p>
-    <%= form.label :url %><br>
-    <%= form.text_field :url %>
-  </p>
- 
-  <p>
-    <%= form.label :xpath %><br>
-    <%= form.text_field :xpath %>
-  </p>
- 
-  <p>
-    <%= form.submit %>
-  </p>
+<%= simple_form_for [@document] do |f| %>
+  <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+  <%= f.input :name, hint: "Name of this document", placeholder: "e.g. \"Privacy Policy\"" %>
+  <%= f.input :url, hint: "Where should we fetch this document from", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
+  <%= f.input :xpath, placeholder: "e.g. \"//*[@id='content']//div[@class='_5tkp _3m9']\"", hint: "Roughly where on the page are the terms located? (Using <a href=\"https://en.wikipedia.org/wiki/XPath\" title=\"Wikipedia explanation of XPath\" target=\"_blank\">XPath</a>.)".html_safe %>
+  <%= f.submit "Crawl document", name: "only_create", class: 'btn btn-primary' %>
 <% end %>
