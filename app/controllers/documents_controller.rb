@@ -67,5 +67,27 @@ class DocumentsController < ApplicationController
     })
     @tbdoc.scrape
     @document.update({ text: @tbdoc.newdata })
+
+    # If text has moved without changing, find it new location.
+    # If text _has_ changed and thus can no longer be found, mark it as draft.
+    @document.points.each do |point|
+      newQuoteStart = @tbdoc.newdata.index(point[:quoteText])
+      if (newQuoteStart.nil?)
+        puts "Could not find quote"
+        puts point[:quoteText]
+        point[:status] = 'draft'
+        point.save
+      else
+        if newQuoteStart != point[:quoteStart]
+          puts "Text has moved!"
+          puts point[:quoteText]
+          puts point[:quoteStart]
+          puts newQuoteStart
+          point[:quoteStart] = newQuoteStart
+          point[:quoteEnd] = newQuoteStart + point[:quoteText].length
+          point.save
+        end
+      end
+    end
   end
 end
