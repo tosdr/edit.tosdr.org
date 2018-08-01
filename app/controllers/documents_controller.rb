@@ -17,6 +17,9 @@ class DocumentsController < ApplicationController
 
   def new
     @document = Document.new
+    if service = params[:service]
+      @document.service = Service.find(service)
+    end
   end
 
   def create
@@ -54,17 +57,7 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    # FIXME: find a better way to do this:
-    tmp = params.require(:document).permit(:service, :name, :url, :xpath)
-    puts tmp
-    ret = {
-      service: Service.find(tmp[:service]),
-      name: tmp[:name],
-      url: tmp[:url],
-      xpath: tmp[:xpath]
-    }
-    puts ret
-    ret
+    params.require(:document).permit(:service, :service_id, :name, :url, :xpath)
   end
 
   def crawl
