@@ -13,6 +13,9 @@
       <div class="card-inline-item card-inline-status">
         Status
       </div>
+      <div class="card-inline-item card-inline-status">
+        Author
+      </div>
       <div class="card-inline-item card-inline-featured">
         Featured?
       </div>
@@ -115,6 +118,9 @@
     </div>
     <div class="card-inline-item card-inline-status">
       <%= p.status %>
+    </div>
+    <div class="card-inline-item card-inline-status">
+      <%= username p.user %>
     </div>
     <div class="card-inline-item card-inline-featured">
       <% if p.is_featured? %>

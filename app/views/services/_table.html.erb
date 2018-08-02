@@ -41,6 +41,9 @@
       <div class="card-inline-item card-inline-status">
         Status
       </div>
+      <div class="card-inline-item card-inline-status">
+        Author
+      </div>
       <div class="card-inline-item card-inline-options">
         Options
       </div>
@@ -137,6 +140,9 @@
     </div>
     <div class="card-inline-item card-inline-status">
       <%= p.status %>
+    </div>
+    <div class="card-inline-item card-inline-status">
+      <%= username p.user_id %>
     </div>
     <div class="card-inline-item card-inline-options">
       <% if current_user %>

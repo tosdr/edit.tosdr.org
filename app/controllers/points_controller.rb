@@ -1,16 +1,17 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
-  before_action :set_curator, only: [:edit, :featured, :destroy]
-  before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
+  before_action :must_be_creator, only: [:update]
+  before_action :must_be_peer_curator, only: [:review]
+  before_action :set_point, only: [:show, :edit, :update, :review]
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service, :case).all
+      @points = Point.includes(:service, :case, :user).all
     elsif params[:scope] == "pending"
-      @points = Point.includes(:service, :case).all.where(status: "pending")
+      @points = Point.includes(:service, :case, :user).all.where(status: "pending").where.not(user_id: current_user.id)
     end
     if @query = params[:query]
-      @points = Point.includes(:service, :case).search_points_by_multiple(@query)
+      @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
     end
   end
 
@@ -24,6 +25,7 @@ class PointsController < ApplicationController
   end
 
   def create
+    #TODO: check that the point is created in either draft or pending status
     @point = Point.new(point_params)
     @topics = Topic.all.includes(:cases).all
     @point.user = current_user
@@ -62,25 +64,8 @@ class PointsController < ApplicationController
     end
   end
 
-  def destroy
-    @point.destroy
-    flash[:notice] = "Point successfully deleted!"
-    redirect_to points_path
-  end
-
-  def featured
-    if !@point.is_featured? && @point.status == "approved"
-      if @point.service.points.reject { |p| !p.is_featured }.count < 5
-        @point.update(is_featured: !@point.is_featured)
-        redirect_to point_path(@point)
-      else
-        flash[:alert] = "There are already five featured points for this service!"
-        redirect_to point_path(@point)
-      end
-    elsif @point.is_featured?
-      @point.update(is_featured: !@point.is_featured)
-      redirect_to point_path(@point)
-    end
+  def review
+    #TODO: implement
   end
 
   def user_points
@@ -115,8 +100,17 @@ class PointsController < ApplicationController
     params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
-  def set_curator
+  def must_be_creator
+    unless current_user.id == @point.id
+      render :file => "public/401.html", :status => :unauthorized
+    end
+  end
+
+  def must_be_peer_curator
     unless current_user.curator?
+      render :file => "public/401.html", :status => :unauthorized
+    end
+    if current_user.id == @point.id
       render :file => "public/401.html", :status => :unauthorized
     end
   end
