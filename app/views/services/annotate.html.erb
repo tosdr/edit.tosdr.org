@@ -209,11 +209,24 @@
 
   document.addEventListener('selectionchange', () => {
     const selection = document.getSelection();
+    const caseSelectionToast = document.getElementById('caseToast');
+
+    // Make sure the current selection is part of one of the documents:
+    if (
+      !selection.anchorNode.parentElement ||
+      !selection.anchorNode.parentElement.dataset ||
+      !selection.anchorNode.parentElement.dataset['revision'] ||
+      selection.anchorNode.parentElement !== selection.focusNode.parentElement
+    ) {
+      console.log('Selection is not inside a document');
+      caseSelectionToast.classList.remove('withSelection');
+      return;
+    }
+
     // topOfPage is negative if we're scrolled down:
     const topOfPage = document.body.getBoundingClientRect().top;
     const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
-    const caseSelectionToast = document.getElementById('caseToast');
     caseSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
 
     if (selection.toString().length > 0) {
