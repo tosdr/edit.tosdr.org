@@ -65,7 +65,7 @@
       <blockquote>
         <%= @point.quoteText %>
         <footer>
-          <cite><%= @point.quoteDoc %></cite>
+          <cite><%= link_to  @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
         </footer>
       </blockquote>
     </div>
