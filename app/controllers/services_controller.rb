@@ -34,9 +34,9 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id] || params[:service_id])
     @case = Case.find(params[:quoteCaseId])
     point = Point.new(
-      params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
+      params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
     )
-    document = @service.documents.where('"name" = ?', params[:quoteDoc])[0]
+    document = Document.find(params[:document_id])
     puts 'Found document'
     point.quoteText = document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
     point.user = current_user
@@ -46,8 +46,8 @@ class ServicesController < ApplicationController
     point.service = @service
     point.source = document.url
     point.analysis = 'Generated through the annotate view'
+    point.document = document
     if (point.save(
-      quoteDoc: params[:quoteDoc],
       quoteRev: params[:quoteRev],
       quoteStart: params[:quoteStart],
       quoteEnd: params[:quoteEnd]

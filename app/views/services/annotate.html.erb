@@ -36,7 +36,7 @@
 
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <input type="hidden" name="quoteDoc" id="quoteDoc">
+  <input type="hidden" name="document_id" id="document_id">
   <input type="hidden" name="quoteRev" id="quoteRev">
   <input type="hidden" name="quoteStart" id="quoteStart">
   <input type="hidden" name="quoteEnd" id="quoteEnd">
@@ -68,9 +68,9 @@
       <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>
         <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :filename => doc.name, :offset => offset }%></p>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
         <% else %>
-          <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
+          <p> <%= content_tag(:div, snippet[:text], :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
         <% end %>
         <% offset += snippet[:text].length %>
       <% end %>
@@ -96,7 +96,7 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    quoteDoc.value =  selection.anchorNode.parentElement.dataset['filename'];
+    document_id.value =  selection.anchorNode.parentElement.dataset.documentId;
     quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
