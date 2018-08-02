@@ -2,6 +2,7 @@ class Document < ApplicationRecord
   has_paper_trail
 
   belongs_to :service
+  has_many :points
 
   validates :name, presence: true
   validates :url, presence: true, uniqueness: true
@@ -65,9 +66,5 @@ class Document < ApplicationRecord
       text: self.text[cursor, self.text.length - cursor]
     })
     snippets
-  end
-
-  def points
-    Point.where('"service_id" = ?', self.service_id).where('"quoteDoc" = ?', self.name)
   end
 end

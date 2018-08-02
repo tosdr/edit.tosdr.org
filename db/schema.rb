@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180716100812) do
+ActiveRecord::Schema.define(version: 20180802102507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,12 +79,12 @@ ActiveRecord::Schema.define(version: 20180716100812) do
     t.bigint "case_id"
     t.string "oldId"
     t.text "point_change"
-    t.string "quoteDoc"
-    t.string "quoteRev"
     t.integer "quoteStart"
     t.integer "quoteEnd"
     t.boolean "service_needs_rating_update", default: false
+    t.bigint "document_id"
     t.index ["case_id"], name: "index_points_on_case_id"
+    t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["topic_id"], name: "index_points_on_topic_id"
     t.index ["user_id"], name: "index_points_on_user_id"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20180716100812) do
   add_foreign_key "comments", "users"
   add_foreign_key "documents", "services"
   add_foreign_key "points", "cases"
+  add_foreign_key "points", "documents"
   add_foreign_key "points", "services"
   add_foreign_key "points", "topics"
   add_foreign_key "points", "users"
