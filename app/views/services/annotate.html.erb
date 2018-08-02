@@ -36,7 +36,7 @@
 
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <input type="hidden" name="quoteDoc" id="quoteDoc">
+  <input type="hidden" name="document_id" id="document_id">
   <input type="hidden" name="quoteRev" id="quoteRev">
   <input type="hidden" name="quoteStart" id="quoteStart">
   <input type="hidden" name="quoteEnd" id="quoteEnd">
@@ -68,9 +68,9 @@
       <% offset = 0 %>
       <% doc.snippets.each do |snippet| %>
         <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :filename => doc.name, :offset => offset }%></p>
+          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
         <% else %>
-          <p> <%= content_tag(:div, snippet[:text], :data => { :filename => doc.name, :revision => 'latest', :offset => offset }) %> </p>
+          <p> <%= content_tag(:div, snippet[:text], :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
         <% end %>
         <% offset += snippet[:text].length %>
       <% end %>
@@ -96,7 +96,7 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    quoteDoc.value =  selection.anchorNode.parentElement.dataset['filename'];
+    document_id.value =  selection.anchorNode.parentElement.dataset.documentId;
     quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
@@ -105,104 +105,6 @@
     const quoteForm = document.getElementById('quoteForm');
     quoteForm.submit();
   }
-
-  function createSnippetElement(snippet) {
-    const element = (typeof snippet.pointId !== 'undefined')
-      ? document.createElement('a')
-      : document.createElement('span');
-
-    element.textContent = snippet.content;
-    element.dataset.offset = snippet.offset;
-    element.dataset.filename = snippet.file.name;
-    element.dataset.revision = snippet.file.revision;
-
-    if (typeof snippet.pointId !== 'undefined') {
-      element.style.backgroundColor = '#ffeaa7';
-      element.style.color = 'inherit';
-      element.href = '/points/' + snippet.pointId + '/edit';
-    }
-
-    return element;
-  }
-
-  function getAnnotatedElements(file, annotations) {
-    const container = document.createElement('div');
-    let currentPosition = 0;
-    annotations.forEach(annotation => {
-      const leadText = createSnippetElement({
-        content: file.contents.substring(currentPosition, annotation.start),
-        offset: currentPosition,
-        file: file,
-      });
-
-      const annotatedText = createSnippetElement({
-        content: file.contents.substring(annotation.start, annotation.end),
-        offset: currentPosition,
-        file: file,
-        pointId: annotation.pointId,
-      });
-
-      container.appendChild(leadText);
-      container.appendChild(annotatedText);
-      currentPosition = annotation.end;
-    });
-
-    const unannotatedTail = createSnippetElement({
-      content: file.contents.substring(currentPosition),
-      offset: currentPosition,
-      file: file,
-    });
-    container.appendChild(unannotatedTail);
-
-    return container;
-  }
-
-  var annotations = {}
-  function fetchDoc(serviceName, filename, rev) {
-    console.log('fetchDoc', serviceName, filename, rev)
-
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', 'https://raw.githubusercontent.com/tosdr/tosback2/'
-      + rev + '/crawl_reviewed/'
-      + encodeURIComponent(serviceName) + '/'
-      + filename, true)
-
-    xhr.onload = function() {
-      const file = {
-        contents: xhr.response,
-        name: filename,
-        revision: rev,
-      };
-
-      annotations[filename][rev].sort((a, b) => a.start - b.start)
-
-      const filesElement = document.getElementById('files');
-      var h = document.createElement('h2')
-      h.textContent = filename
-      filesElement.appendChild(h)
-
-      const annotatedElements = getAnnotatedElements(file, annotations[filename][rev]);
-      filesElement.appendChild(annotatedElements);
-    }
-    xhr.send()
-  }
-  
-  function registerQuote(doc, rev, start, end, pointId) {
-    if (doc) {
-      console.log(doc, rev, start, end, pointId)
-      if (!annotations[doc]) {
-        annotations[doc] = {}
-      }
-      if (!annotations[doc][rev]) {
-        annotations[doc][rev] = []
-        fetchDoc(/* global */ serviceDomain, doc, rev)
-      }
-      annotations[doc][rev].push({ start, end, pointId})
-    }
-  }
-
-  // ...
-  var serviceDomain = '<%=escape_javascript @service.url.split(',')[0] %>'
 
   const caseDropdown = document.getElementById('caseDropdown');
   caseDropdown.addEventListener('submit', linkSelectionToCase);

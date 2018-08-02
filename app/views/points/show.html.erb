@@ -59,11 +59,25 @@
 <br>
 <br>
 
-<div class="row">
-  <div class="col-sm-10 col-sm-offset-1 p30 bgw">
-    <%= @point.analysis %>
+<% if @point.quoteText %>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 p30 bgw">
+      <blockquote>
+        <%= @point.quoteText %>
+        <footer>
+          <cite><%= link_to  @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
+        </footer>
+      </blockquote>
+    </div>
   </div>
-</div>
+<% end %>
+<% if @point.analysis && @point.analysis != "Generated through the annotate view" %>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 p30 bgw">
+      <%= @point.analysis %>
+    </div>
+  </div>
+<% end %>
 
 <br>
 <br>

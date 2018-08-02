@@ -112,7 +112,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :quoteDoc, :quoteRev, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def set_curator
