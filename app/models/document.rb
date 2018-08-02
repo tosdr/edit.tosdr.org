@@ -5,7 +5,7 @@ class Document < ApplicationRecord
   has_many :points
 
   validates :name, presence: true
-  validates :url, presence: true, uniqueness: true
+  validates :url, presence: true, uniqueness: { scope: :xpath }
   validates :service_id, presence: true
 
   def self.search_by_document_name(query)
