@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
 
   get 'points/new', to: 'points#new'
-  put 'points/:id/is_featured', to: 'points#featured', as: :featured_point
+  get 'points/:id/review', to: 'points#review', as: "review"
+  patch 'points/:id/review', to: 'points#post_review'
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
   resources :points, except: [:index] do
     resources :comments, only: [:new, :create]

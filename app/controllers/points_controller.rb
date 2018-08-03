@@ -1,8 +1,8 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
+  before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
   before_action :must_be_creator, only: [:update]
-  before_action :must_be_peer_curator, only: [:review]
-  before_action :set_point, only: [:show, :edit, :update, :review]
+  before_action :must_be_peer_curator, only: [:review, :post_review]
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
@@ -25,9 +25,13 @@ class PointsController < ApplicationController
   end
 
   def create
-    #TODO: check that the point is created in either draft or pending status
+    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+      puts 'wrong update status!'
+      puts point_params
+      render :edit
+      return
+    end
     @point = Point.new(point_params)
-    @topics = Topic.all.includes(:cases).all
     @point.user = current_user
 
     point_for_options = @point
@@ -52,10 +56,15 @@ class PointsController < ApplicationController
   end
 
   def update
-    @topics = Topic.all.includes(:cases).all
+    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+      puts 'wrong update status!'
+      puts point_params
+      render :edit
+      return
+    end
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
-      comment = create_comment(@point)
+      comment = create_comment(@point.point_change)
       redirect_to point_path
     elsif @point.case.nil?
       render :edit
@@ -65,7 +74,23 @@ class PointsController < ApplicationController
   end
 
   def review
-    #TODO: implement
+    # show the review form
+  end
+
+  def post_review
+    # process a post of the review form
+    if (point_params['status'] != 'approved' && point_params['status'] != 'declined')
+      puts 'wrong review status!'
+      puts point_params
+      render :edit
+      return
+    end
+    if @point.update(status: point_params['status'])
+      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      redirect_to point_path
+    else
+      render :edit
+    end
   end
 
   def user_points
@@ -77,8 +102,8 @@ class PointsController < ApplicationController
 
   private
 
-  def create_comment(point)
-    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
+  def create_comment(commentText)
+    Comment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
   end
 
   def point_create_options(point, path)

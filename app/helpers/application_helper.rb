@@ -6,10 +6,10 @@ module ApplicationHelper
   def username (user_str)
     # puts user_str
     if user_str
-      if user_str.username
-        return user_str.username
-      end
-      if user_str.id
+      if user_str.instance_of? User
+        if user_str.username
+          return user_str.username
+        end
         return 'user ' + user_str.id.to_s
       end
       user_id = user_str.to_i
