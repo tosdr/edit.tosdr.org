@@ -23,7 +23,7 @@ class ServicesController < ApplicationController
   end
 
   def annotate
-    @service = Service.find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
     @topics = Topic.all.includes(:cases).all
     @documents = @service.documents
   end
