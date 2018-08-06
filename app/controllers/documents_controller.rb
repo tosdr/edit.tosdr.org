@@ -27,7 +27,7 @@ class DocumentsController < ApplicationController
     crawl
 
     if @document.save
-      redirect_to @document
+      redirect_to document_path(@document)
     else
       render 'new'
     end
@@ -38,7 +38,7 @@ class DocumentsController < ApplicationController
     crawl
 
     if @document.save
-      redirect_to @document
+      redirect_to document_path(@document)
     else
       render 'edit'
     end
