@@ -84,6 +84,24 @@
 </div>
 
 <script>
+  function getDocumentElement(selectionNode) {
+    if (
+      !selectionNode.parentElement ||
+      !selectionNode.parentElement.dataset ||
+      !selectionNode.parentElement.dataset.documentId
+    ) {
+      return null;
+    }
+
+    return selectionNode.parentElement;
+  }
+
+  function getDocumentData(selectionNode) {
+    const documentElement = getDocumentElement(selectionNode);
+
+    return documentElement ? documentElement.dataset : null;
+  }
+
   function linkSelectionToCase(caseDropdownSubmitEvent) {
     caseDropdownSubmitEvent.preventDefault();
 
@@ -91,9 +109,10 @@
     const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
 
     const selection = window.getSelection()
-    console.log(JSON.stringify(selection.anchorNode.parentElement.dataset));
+    const documentData = getDocumentData(selection.anchorNode);
+    console.log(documentData);
 
-    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset['offset'], 10);
+    const spanOffset = parseInt(documentData['offset'], 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
     const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
     console.log('linkSelectionToCase', caseId,
@@ -101,8 +120,8 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    document_id.value =  selection.anchorNode.parentElement.dataset.documentId;
-    quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
+    document_id.value =  documentData.documentId;
+    quoteRev.value =  documentData.revision;
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quoteCaseId.value = caseId
@@ -120,12 +139,10 @@
 
     // Make sure the current selection is part of one of the documents:
     if (
-      !selection.anchorNode.parentElement ||
-      !selection.anchorNode.parentElement.dataset ||
-      !selection.anchorNode.parentElement.dataset['revision'] ||
-      selection.anchorNode.parentElement !== selection.focusNode.parentElement
+      selection.toString().length === 0 ||
+      !getDocumentElement(selection.anchorNode) ||
+      getDocumentElement(selection.anchorNode) !== getDocumentElement(selection.focusNode)
     ) {
-      console.log('Selection is not inside a document');
       caseSelectionToast.classList.remove('withSelection');
       return;
     }
@@ -135,12 +152,7 @@
     const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
     caseSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
-
-    if (selection.toString().length > 0) {
-      caseSelectionToast.classList.add('withSelection');
-    } else {
-      caseSelectionToast.classList.remove('withSelection');
-    }
+    caseSelectionToast.classList.add('withSelection');
   });
 </script>
 
