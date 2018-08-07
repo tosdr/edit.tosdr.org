@@ -4,6 +4,7 @@ class ServicesController < ApplicationController
 
   def index
     @services = Service.includes(points: [:case]).all
+    @document_counts = Document.group(:service_id).count
     if @query = params[:query]
       @services = Service.search_by_name(@query)
     end
