@@ -67,13 +67,13 @@
           class="panel-heading"
         ><h3 class="h5"><%= link_to doc.name, document_path(doc) %></h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body documentContent" data-content="<%= doc.text %>">
           <% offset = 0 %>
           <% doc.snippets.each do |snippet| %>
             <% if snippet[:pointId] %>
-              <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
+              <p><%= link_to hide_tags(snippet[:text]), point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
             <% else %>
-              <p> <%= content_tag(:div, snippet[:text], :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
+              <p> <%= content_tag(:div, hide_tags(snippet[:text]), :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
             <% end %>
             <% offset += snippet[:text].length %>
           <% end %>
@@ -84,22 +84,34 @@
 </div>
 
 <script>
-  function getDocumentElement(selectionNode) {
+  function getDataElement(selectionNode) {
     if (
       !selectionNode.parentElement ||
       !selectionNode.parentElement.dataset ||
       !selectionNode.parentElement.dataset.documentId
     ) {
-      return null;
+      // The document element usually is the parent element of nodes in the selection.
+      // However, since there are also "hidden" nodes (containing HTML of the scraped documents),
+      // we might have to look at the parent of the parent.
+      // (Of course this could also be done recursively, but then we'd be traversing the DOM all the way up.)
+      if(
+        !selectionNode.parentElement ||
+        !selectionNode.parentElement.parentElement ||
+        !selectionNode.parentElement.parentElement.dataset ||
+        !selectionNode.parentElement.parentElement.dataset.documentId
+      ) {
+        return null;
+      }
+      return selectionNode.parentElement.parentElement;
     }
 
     return selectionNode.parentElement;
   }
 
   function getDocumentData(selectionNode) {
-    const documentElement = getDocumentElement(selectionNode);
+    const dataElement = getDataElement(selectionNode);
 
-    return documentElement ? documentElement.dataset : null;
+    return dataElement ? dataElement.dataset : null;
   }
 
   function linkSelectionToCase(caseDropdownSubmitEvent) {
@@ -109,24 +121,27 @@
     const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
 
     const selection = window.getSelection()
+    // On the page (and hence in our selection), all whitespace is rendered as spaces.
+    // (Don't ask me how long I spent debugging non-breaking spaces :S)
+    // We convert them to spaces in the document as well, to be able to find the selected text there.
+    // Since the actual quote is stored in the database as a text range, this doesn't matter,
+    // as long as the amount of characters in the selection is accurate.
+    const documentContent = getDataElement(selection.anchorNode).parentElement.dataset.content.replace(/\s/g, ' ');
     const documentData = getDocumentData(selection.anchorNode);
-    console.log(documentData);
 
-    const spanOffset = parseInt(documentData['offset'], 10);
-    const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
-    const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
-    console.log('linkSelectionToCase', caseId,
-      spanOffset,
-      spanOffset + selectionStart,
-      spanOffset + selectionEnd
-    )
+    // Convert all whitespace in the selection to spaces for consistency with the document.
+    const quotedText = selection.toString().replace(/\s/g, ' ');
+
+    const selectionStart = documentContent.indexOf(quotedText);
+
     document_id.value =  documentData.documentId;
     quoteRev.value =  documentData.revision;
-    quoteStart.value = spanOffset + selectionStart
-    quoteEnd.value = spanOffset + selectionEnd
+    quoteStart.value = selectionStart
+    quoteEnd.value = selectionStart + quotedText.length
     quoteCaseId.value = caseId
 
     const quoteForm = document.getElementById('quoteForm');
+
     quoteForm.submit();
   }
 
@@ -140,8 +155,8 @@
     // Make sure the current selection is part of one of the documents:
     if (
       selection.toString().length === 0 ||
-      !getDocumentElement(selection.anchorNode) ||
-      getDocumentElement(selection.anchorNode) !== getDocumentElement(selection.focusNode)
+      !getDataElement(selection.anchorNode) ||
+      getDataElement(selection.anchorNode) !== getDataElement(selection.focusNode)
     ) {
       caseSelectionToast.classList.remove('withSelection');
       return;
