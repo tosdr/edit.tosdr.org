@@ -2,6 +2,17 @@
   padding-top: 1rem;
 }
 
+.hiddenTag {
+  width: 0;
+  overflow: hidden;
+  display: inline-block;
+  line-height: 0;
+}
+
+.documentContent {
+  line-height: 1.8;
+}
+
 .docAnchor {
   // The header navbar is 60px, so if we make this element 60px higher,
   // anchors can link to this title without it being covered by the header.
