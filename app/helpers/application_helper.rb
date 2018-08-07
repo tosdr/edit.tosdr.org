@@ -14,6 +14,9 @@ module ApplicationHelper
       end
       user_id = user_str.to_i
       if user_id
+        if current_user && user_id == current_user.id
+          return 'you'
+        end
         user = User.find_by_id(user_id)
         if user
           return user.username || 'user ' + user.id.to_s

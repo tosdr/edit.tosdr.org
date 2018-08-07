@@ -25,6 +25,7 @@ class PointsController < ApplicationController
   end
 
   def create
+    @topics = Topic.all.includes(:cases).all
     if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
       puts 'wrong update status!'
       puts point_params
@@ -126,7 +127,7 @@ class PointsController < ApplicationController
   end
 
   def must_be_creator
-    unless current_user.id == @point.id
+    unless current_user.id == @point.user_id
       render :file => "public/401.html", :status => :unauthorized
     end
   end
