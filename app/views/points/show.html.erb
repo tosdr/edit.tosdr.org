@@ -16,7 +16,7 @@
             <% if current_user.id == @point.user_id %>
               <li><%= link_to 'Edit Content', edit_point_path(@point) %></li>
             <% elsif current_user.curator %>
-              <li><%= link_to 'Review Point', edit_point_path(@point) %></li>
+              <li><%= link_to 'Review Point', review_path(@point) %></li>
             <% end %>
               <li><%= link_to 'Add Comment', new_point_comment_path(@point) %></li>
           </ul>
