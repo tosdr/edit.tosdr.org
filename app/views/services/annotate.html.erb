@@ -43,42 +43,65 @@
   <input type="hidden" name="quoteCaseId" id="quoteCaseId">
 </form>
 
-<div class="toc">
-  <h2>Documents on this page:</h2>
-  <ul>
-  <% @documents.each do |doc| %>
-    <li>
-      <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+<h2><%= link_to  @service.name, service_path(@service) %></h2>
+
+<div id="toc">
+  <p>Documents:</p>
+  <ul class="list-group">
+    <% @documents.each do |doc| %>
+      <li class="list-group-item">
+        <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+      </li>
+    <% end %>
+    <li style="list-style-type: none; padding-top: 1rem;">
+      <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-default" %>
     </li>
-  <% end %>
   </ul>
-  <p>
-    <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-default" %>
-  </p>
-  <hr/>
 </div>
 
 <div id="files">
   <% @documents.each do |doc| %>
-    <h2
-      id="doc_<%= doc.id %>"
-      class="documentTitle"
-    ><%= link_to doc.name, document_path(doc) %> (<%= doc.xpath %>)</h2>
-    <div>
-      <% offset = 0 %>
-      <% doc.snippets.each do |snippet| %>
-        <% if snippet[:pointId] %>
-          <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
-        <% else %>
-          <p> <%= content_tag(:div, snippet[:text], :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
-        <% end %>
-        <% offset += snippet[:text].length %>
-      <% end %>
+    <div class="docAnchor" id="doc_<%= doc.id %>">
+      <div class="panel panel-default">
+        <div
+          class="panel-heading"
+        ><h3 class="h5"><%= link_to doc.name, document_path(doc) %></h3>
+        </div>
+        <div class="panel-body">
+          <% offset = 0 %>
+          <% doc.snippets.each do |snippet| %>
+            <% if snippet[:pointId] %>
+              <p><%= link_to snippet[:text], point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
+            <% else %>
+              <p> <%= content_tag(:div, snippet[:text], :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
+            <% end %>
+            <% offset += snippet[:text].length %>
+          <% end %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
 
 <script>
+  function getDocumentElement(selectionNode) {
+    if (
+      !selectionNode.parentElement ||
+      !selectionNode.parentElement.dataset ||
+      !selectionNode.parentElement.dataset.documentId
+    ) {
+      return null;
+    }
+
+    return selectionNode.parentElement;
+  }
+
+  function getDocumentData(selectionNode) {
+    const documentElement = getDocumentElement(selectionNode);
+
+    return documentElement ? documentElement.dataset : null;
+  }
+
   function linkSelectionToCase(caseDropdownSubmitEvent) {
     caseDropdownSubmitEvent.preventDefault();
 
@@ -86,9 +109,10 @@
     const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
 
     const selection = window.getSelection()
-    console.log(JSON.stringify(selection.anchorNode.parentElement.dataset));
+    const documentData = getDocumentData(selection.anchorNode);
+    console.log(documentData);
 
-    const spanOffset = parseInt(selection.anchorNode.parentElement.dataset['offset'], 10);
+    const spanOffset = parseInt(documentData['offset'], 10);
     const selectionStart = Math.min(selection.anchorOffset, selection.focusOffset);
     const selectionEnd = Math.max(selection.anchorOffset, selection.focusOffset);
     console.log('linkSelectionToCase', caseId,
@@ -96,8 +120,8 @@
       spanOffset + selectionStart,
       spanOffset + selectionEnd
     )
-    document_id.value =  selection.anchorNode.parentElement.dataset.documentId;
-    quoteRev.value =  selection.anchorNode.parentElement.dataset['revision'];
+    document_id.value =  documentData.documentId;
+    quoteRev.value =  documentData.revision;
     quoteStart.value = spanOffset + selectionStart
     quoteEnd.value = spanOffset + selectionEnd
     quoteCaseId.value = caseId
@@ -115,12 +139,10 @@
 
     // Make sure the current selection is part of one of the documents:
     if (
-      !selection.anchorNode.parentElement ||
-      !selection.anchorNode.parentElement.dataset ||
-      !selection.anchorNode.parentElement.dataset['revision'] ||
-      selection.anchorNode.parentElement !== selection.focusNode.parentElement
+      selection.toString().length === 0 ||
+      !getDocumentElement(selection.anchorNode) ||
+      getDocumentElement(selection.anchorNode) !== getDocumentElement(selection.focusNode)
     ) {
-      console.log('Selection is not inside a document');
       caseSelectionToast.classList.remove('withSelection');
       return;
     }
@@ -130,12 +152,7 @@
     const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
     caseSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
-
-    if (selection.toString().length > 0) {
-      caseSelectionToast.classList.add('withSelection');
-    } else {
-      caseSelectionToast.classList.remove('withSelection');
-    }
+    caseSelectionToast.classList.add('withSelection');
   });
 </script>
 
