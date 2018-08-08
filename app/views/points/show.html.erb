@@ -60,7 +60,7 @@
 <br>
 
 <% if @point.quoteText %>
-  <div class="row">
+  <div class="row" style="margin-bottom: 1rem">
     <div class="col-sm-10 col-sm-offset-1 p30 bgw">
       <blockquote>
         <%= hide_tags(@point.quoteText) %>
@@ -68,6 +68,19 @@
           <cite><%= link_to  @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
         </footer>
       </blockquote>
+      <%= link_to  "Change excerpt", annotate_point_path(@point.service_id, @point.id), { class: "btn btn-default pull-right" } %>
+    </div>
+  </div>
+<%- # We only link to the annotate view if documents are already available, -%>
+<%- # since it currently is a challenge to add new documents (you need to know XPath). -%>
+<%- # We can switch to always showing the link when annotation is the default way of reviewing. -%>
+<% elsif current_user && @point.service.documents.count > 0 %>
+  <div class="row" style="margin-bottom: 1rem">
+    <div class="col-sm-10 col-sm-offset-1 p30 bgw">
+      <p>
+        This point is not yet linked to a passage in this service's documents.
+        <%= link_to  "Link it now?", annotate_point_path(@point.service_id, @point.id) %>
+      </p>
     </div>
   </div>
 <% end %>

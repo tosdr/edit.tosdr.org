@@ -1,25 +1,19 @@
-<style>
-#caseToast {
-  position: absolute;
-  display: none;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 2rem 5rem;
-  background: #fff;
-  border: 1px solid #ffe;
-  box-shadow: #ccc 1px 1px 1rem;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
+<form method="POST" id="quoteForm">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="document_id" id="document_id">
+  <input type="hidden" name="quoteRev" id="quoteRev">
+  <input type="hidden" name="quoteStart" id="quoteStart">
+  <input type="hidden" name="quoteEnd" id="quoteEnd">
+  <input type="hidden" name="quoteCaseId" id="quoteCaseId">
+</form>
 
-#caseToast.withSelection {
-  display: block;
-  opacity: 1;
-}
-</style>
+<h2><%= link_to  @service.name, service_path(@service) %></h2>
 
-<div id="caseToast">
+<% if @topics %>
+<div class="lead">
+  Highlight lines that are of interest to users to link them to a case.
+</div>
+<div id="caseToast" class="toast">
   <form id="caseDropdown">
     <select>
       <% @topics.each do |t| %>
@@ -33,17 +27,19 @@
     <button type="submit" class="btn btn-primary">Annotate</button>
   </form>
 </div>
-
-<form method="POST" id="quoteForm">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <input type="hidden" name="document_id" id="document_id">
-  <input type="hidden" name="quoteRev" id="quoteRev">
-  <input type="hidden" name="quoteStart" id="quoteStart">
-  <input type="hidden" name="quoteEnd" id="quoteEnd">
-  <input type="hidden" name="quoteCaseId" id="quoteCaseId">
-</form>
-
-<h2><%= link_to  @service.name, service_path(@service) %></h2>
+<% else %>
+<div class="lead">
+  Highlight the lines that support the point <i><%= @point.title %></i>.
+</div>
+<div id="pointToast" class="toast">
+  <form id="pointForm">
+    <div class="form-group">
+      <%= @point.title %>
+    </div>
+    <button type="submit" class="btn btn-primary">Link to this excerpt</button>
+  </form>
+</div>
+<% end %>
 
 <div id="toc">
   <p>Documents:</p>
@@ -114,12 +110,7 @@
     return dataElement ? dataElement.dataset : null;
   }
 
-  function linkSelectionToCase(caseDropdownSubmitEvent) {
-    caseDropdownSubmitEvent.preventDefault();
-
-    const caseDropdown = document.querySelector('#caseDropdown select');
-    const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
-
+  function setFormToSelection() {
     const selection = window.getSelection()
     // On the page (and hence in our selection), all whitespace is rendered as spaces.
     // (Don't ask me how long I spent debugging non-breaking spaces :S)
@@ -134,23 +125,45 @@
 
     const selectionStart = documentContent.indexOf(quotedText);
 
-    document_id.value =  documentData.documentId;
-    quoteRev.value =  documentData.revision;
-    quoteStart.value = selectionStart
-    quoteEnd.value = selectionStart + quotedText.length
-    quoteCaseId.value = caseId
+    const quoteForm = document.getElementById('quoteForm');
+    quoteForm.elements.document_id.value =  documentData.documentId;
+    quoteForm.elements.quoteRev.value =  documentData.revision;
+    quoteForm.elements.quoteStart.value = selectionStart
+    quoteForm.elements.quoteEnd.value = selectionStart + quotedText.length
+  }
+
+  function linkSelectionToCase(caseDropdownSubmitEvent) {
+    caseDropdownSubmitEvent.preventDefault();
+
+    const caseDropdown = document.querySelector('#caseDropdown select');
+    const caseId = caseDropdown.options[caseDropdown.selectedIndex].dataset.caseId;
 
     const quoteForm = document.getElementById('quoteForm');
+    quoteForm.elements.quoteCaseId.value = caseId
+    setFormToSelection();
 
     quoteForm.submit();
   }
 
-  const caseDropdown = document.getElementById('caseDropdown');
-  caseDropdown.addEventListener('submit', linkSelectionToCase);
+  function linkSelectionToPoint(pointFormSubmitEvent) {
+    pointFormSubmitEvent.preventDefault();
+
+    setFormToSelection();
+
+    const quoteForm = document.getElementById('quoteForm');
+    quoteForm.submit();
+  }
+
+  const toast = document.getElementById('caseToast') || document.getElementById('pointToast');
+
+  if (toast.id === 'caseToast') {
+    document.getElementById('caseDropdown').addEventListener('submit', linkSelectionToCase);
+  } else {
+    document.getElementById('pointForm').addEventListener('submit', linkSelectionToPoint);
+  }
 
   document.addEventListener('selectionchange', () => {
     const selection = document.getSelection();
-    const caseSelectionToast = document.getElementById('caseToast');
 
     // Make sure the current selection is part of one of the documents:
     if (
@@ -158,7 +171,7 @@
       !getDataElement(selection.anchorNode) ||
       getDataElement(selection.anchorNode) !== getDataElement(selection.focusNode)
     ) {
-      caseSelectionToast.classList.remove('withSelection');
+      toast.classList.remove('withSelection');
       return;
     }
 
@@ -166,8 +179,8 @@
     const topOfPage = document.body.getBoundingClientRect().top;
     const selectionBottom = selection.getRangeAt(0).getBoundingClientRect().bottom - topOfPage;
 
-    caseSelectionToast.style.top = (selectionBottom + 10).toString() + 'px';
-    caseSelectionToast.classList.add('withSelection');
+    toast.style.top = (selectionBottom + 10).toString() + 'px';
+    toast.classList.add('withSelection');
   });
 </script>
 

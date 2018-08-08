@@ -2,6 +2,25 @@
   padding-top: 1rem;
 }
 
+.toast {
+  position: absolute;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2rem 5rem;
+  background: #fff;
+  border: 1px solid #ffe;
+  box-shadow: #ccc 1px 1px 1rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.toast.withSelection {
+  display: block;
+  opacity: 1;
+}
+
 .hiddenTag {
   width: 0;
   overflow: hidden;
