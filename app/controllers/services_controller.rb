@@ -25,35 +25,44 @@ class ServicesController < ApplicationController
 
   def annotate
     @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
-    @topics = Topic.all.includes(:cases).all
     @documents = @service.documents
+    if (params[:point_id])
+      @point = Point.find(params[:point_id])
+    else
+      @topics = Topic.all.includes(:cases).all
+    end
   end
 
   def quote
     puts 'quote!'
     puts params
     @service = Service.find(params[:id] || params[:service_id])
-    @case = Case.find(params[:quoteCaseId])
-    point = Point.new(
-      params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
-    )
+    if (params[:point_id])
+      point = Point.find(params[:point_id])
+    else
+      @case = Case.find(params[:quoteCaseId])
+      point = Point.new(
+        params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+      )
+      point.user = current_user
+      point.case = @case
+      point.title = @case.title
+      point.service = @service
+      point.analysis = 'Generated through the annotate view'
+      point.status = 'pending'
+    end
     document = Document.find(params[:document_id])
-    puts 'Found document'
-    point.quoteText = document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
-    point.user = current_user
-    point.case = @case
-    point.title = @case.title
-    point.status = 'pending'
-    point.service = @service
-    point.source = document.url
-    point.analysis = 'Generated through the annotate view'
     point.document = document
-    if (point.save(
-      quoteRev: params[:quoteRev],
-      quoteStart: params[:quoteStart],
-      quoteEnd: params[:quoteEnd]
-    ))
-      redirect_to service_path(params[:id]) + '/annotate'
+    point.quoteText = document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
+    point.source = document.url
+    point.quoteStart = params[:quoteStart]
+    point.quoteEnd = params[:quoteEnd]
+    if (point.save)
+      if (params[:point_id])
+        redirect_to point_path(params[:point_id])
+      else
+        redirect_to service_path(params[:id]) + '/annotate'
+      end
     else
       puts point.errors.full_messages
     end
