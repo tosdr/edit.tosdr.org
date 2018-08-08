@@ -5,7 +5,10 @@
         <%= f.input :name, placeholder: "Service name" %>
         <%= f.input :url, placeholder: "bbc.com,bbc.co.uk", label: "Domains, comma-separated (e.g. 'bbc.com,bbc.co.uk')"%>
         <%= f.input :wikipedia, placeholder: "Wikipedia link", hint: "This will be used to referrenced the Wikipedia link of the service. Used mostly for the API." %>
-        <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <a href=\"https://github.com/tosdr/tosdr.org/wiki/checklist\" target=\"_blank\" title=\"Checklist for service reviews\">comprehensive</a> and ready for publication.".html_safe, checked_value: true, unchecked_value: false %>
+        <%- # Only allow marking services as completely reviewed if they are not new, because new services have no reviews yet: %>
+        <% if @service.id %>
+          <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <a href=\"https://github.com/tosdr/tosdr.org/wiki/checklist\" target=\"_blank\" title=\"Checklist for service reviews\">comprehensive</a> and ready for publication.".html_safe, checked_value: true, unchecked_value: false %>
+        <% end %>
       </div>
       <div class="form-actions col-xs-4 col-sm-2 col-md-2">
           <%= link_to "Back", :back, class: "btn btn-default" %>
