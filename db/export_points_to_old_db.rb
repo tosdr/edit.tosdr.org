@@ -29,8 +29,8 @@ Point.all.each do |point|
   end
   data['id'] = point.id.to_s
   data['title'] = point.title
-  data['quoteDoc'] = point.quoteDoc if point.quoteDoc && point.quoteDoc.length > 0
-  data['quoteRev'] = point.quoteRev if point.quoteRev && point.quoteRev.length > 0
+  data['quoteDoc'] = point.document.name if point.document
+  data['quoteRev'] = "latest"
   data['quoteStart'] = point.quoteStart if point.quoteStart
   data['quoteEnd'] = point.quoteEnd if point.quoteEnd
   data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length > 0
