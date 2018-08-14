@@ -75,7 +75,7 @@ class ServicesController < ApplicationController
       when nil
         @points = @service.points
       when 'pending'
-        @points = @service.points.where(status: 'pending')
+        @points = @service.points.where(status: 'pending').where.not(user_id: current_user.id)
       when 'archived-versions'
         @versions = @service.versions
       end

@@ -1,16 +1,17 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
-  before_action :set_curator, only: [:edit, :featured, :destroy]
-  before_action :set_point, only: [:show, :edit, :featured, :update, :destroy]
+  before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
+  before_action :must_be_creator, only: [:update]
+  before_action :must_be_peer_curator, only: [:review, :post_review]
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service, :case).all
+      @points = Point.includes(:service, :case, :user).all
     elsif params[:scope] == "pending"
-      @points = Point.includes(:service, :case).all.where(status: "pending")
+      @points = Point.includes(:service, :case, :user).all.where(status: "pending").where.not(user_id: current_user.id)
     end
     if @query = params[:query]
-      @points = Point.includes(:service, :case).search_points_by_multiple(@query)
+      @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
     end
   end
 
@@ -24,8 +25,14 @@ class PointsController < ApplicationController
   end
 
   def create
-    @point = Point.new(point_params)
     @topics = Topic.all.includes(:cases).all
+    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+      puts 'wrong update status!'
+      puts point_params
+      render :edit
+      return
+    end
+    @point = Point.new(point_params)
     @point.user = current_user
 
     point_for_options = @point
@@ -50,10 +57,15 @@ class PointsController < ApplicationController
   end
 
   def update
-    @topics = Topic.all.includes(:cases).all
+    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+      puts 'wrong update status!'
+      puts point_params
+      render :edit
+      return
+    end
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
-      comment = create_comment(@point)
+      comment = create_comment(@point.point_change)
       redirect_to point_path
     elsif @point.case.nil?
       render :edit
@@ -62,24 +74,24 @@ class PointsController < ApplicationController
     end
   end
 
-  def destroy
-    @point.destroy
-    flash[:notice] = "Point successfully deleted!"
-    redirect_to points_path
+  def review
+    # show the review form
   end
 
-  def featured
-    if !@point.is_featured? && @point.status == "approved"
-      if @point.service.points.reject { |p| !p.is_featured }.count < 5
-        @point.update(is_featured: !@point.is_featured)
-        redirect_to point_path(@point)
-      else
-        flash[:alert] = "There are already five featured points for this service!"
-        redirect_to point_path(@point)
-      end
-    elsif @point.is_featured?
-      @point.update(is_featured: !@point.is_featured)
-      redirect_to point_path(@point)
+  def post_review
+    @topics = Topic.all.includes(:cases).all
+    # process a post of the review form
+    if (point_params['status'] != 'approved' && point_params['status'] != 'declined')
+      puts 'wrong review status!'
+      puts point_params
+      render :edit
+      return
+    end
+    if @point.update(status: point_params['status'])
+      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      redirect_to point_path
+    else
+      render :edit
     end
   end
 
@@ -92,8 +104,8 @@ class PointsController < ApplicationController
 
   private
 
-  def create_comment(point)
-    Comment.create(point_id: point.id, summary: point.point_change, user_id: current_user.id)
+  def create_comment(commentText)
+    Comment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
   end
 
   def point_create_options(point, path)
@@ -115,8 +127,17 @@ class PointsController < ApplicationController
     params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
-  def set_curator
+  def must_be_creator
+    unless current_user.id == @point.user_id
+      render :file => "public/401.html", :status => :unauthorized
+    end
+  end
+
+  def must_be_peer_curator
     unless current_user.curator?
+      render :file => "public/401.html", :status => :unauthorized
+    end
+    if current_user.id == @point.id
       render :file => "public/401.html", :status => :unauthorized
     end
   end

@@ -4,10 +4,19 @@ module ApplicationHelper
   end
 
   def username (user_str)
-    puts user_str
+    # puts user_str
     if user_str
+      if user_str.instance_of? User
+        if user_str.username
+          return user_str.username
+        end
+        return 'user ' + user_str.id.to_s
+      end
       user_id = user_str.to_i
       if user_id
+        if current_user && user_id == current_user.id
+          return 'you'
+        end
         user = User.find_by_id(user_id)
         if user
           return user.username || 'user ' + user.id.to_s
