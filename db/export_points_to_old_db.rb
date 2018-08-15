@@ -35,7 +35,7 @@ Point.all.each do |point|
   data['quoteEnd'] = point.quoteEnd if point.quoteEnd
   data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length > 0
   data['tosdr']['tldr'] = point.analysis
-  if (!point.case_id.nil? && point.case.title.length > 0) # if case is nil then we don't export the point status
+  if (!point.case_id.nil? && point.case.title != 'none' && point.case.title.length > 0) # if case is nil then we don't export the point status
     if (point.status == 'approved')
       data['needModeration'] = false if data['needModeration']
       data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']

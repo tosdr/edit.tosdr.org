@@ -5,8 +5,10 @@
   <h1 class="fw2 mv3">
     All Services
   </h1>
-  <% if current_user.curator? %>
+  <% if current_user.curator? && @services.length==0 %>
   <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary mb15' %>
+  <% else %>
+    Please use the search function to see if the service you're interested in already exists.
   <% end %>
 </header>
 
