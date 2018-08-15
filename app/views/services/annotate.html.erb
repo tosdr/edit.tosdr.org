@@ -122,9 +122,11 @@
 
     // Convert all whitespace in the selection to spaces for consistency with the document.
     const quotedText = selection.toString().replace(/\s/g, ' ');
-
     const selectionStart = documentContent.indexOf(quotedText);
-
+    console.log({ selectionStart, quotedText, documentContent });
+    if (selectionStart == -1) {
+      panic();
+    }
     const quoteForm = document.getElementById('quoteForm');
     quoteForm.elements.document_id.value =  documentData.documentId;
     quoteForm.elements.quoteRev.value =  documentData.revision;
