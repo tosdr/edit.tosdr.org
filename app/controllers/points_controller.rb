@@ -6,9 +6,9 @@ class PointsController < ApplicationController
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service, :case, :user).all
+      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
     elsif params[:scope] == "pending"
-      @points = Point.includes(:service, :case, :user).all.where(status: "pending").where.not(user_id: current_user.id)
+      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100).where(status: "pending").where.not(user_id: current_user.id)
     end
     if @query = params[:query]
       @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
