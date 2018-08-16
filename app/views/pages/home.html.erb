@@ -38,20 +38,20 @@
         <ul>
           <% s.points.each do |p| %>
           <% if p.is_featured? %>
+          <li>
           <% if p.case&.classification == 'good' %>
-          <% point_icon = "point-good" %>
+          <i class="point-good xs-icon"></i>
           <% elsif p.case&.classification == 'neutral' %>
-          <% point_icon = "point-neutral" %>
+          <i class="point-neutral xs-icon"></i>
           <% elsif p.case&.classification == 'bad' %>
-          <% point_icon = "point-bad" %>
+          <i class ="point-bad xs-icon"></i>
           <% elsif p.case&.classification == 'blocker' %>
-          <% point_icon = "point-blocker" %>
+          <i class="point-blocker xs-icon"></i>
           <% end %>
-          <li class="<%= point_icon %> xs-icon">
-            <%= p.title  %>
-          </li>
-          <% end %>
-          <% end %>
+          &nbsp;<%= p.title  %>
+        </li>
+        <% end %>
+        <% end %>
         </ul>
         <% if s.service_rating == "N/A" %>
           <% badge_rating = "rating-na" %>
