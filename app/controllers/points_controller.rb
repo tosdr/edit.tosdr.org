@@ -89,6 +89,9 @@ class PointsController < ApplicationController
     end
     if @point.update(status: point_params['status'])
       comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      if (@point.user_id != current_user.id)
+        UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
+      end
       redirect_to point_path
     else
       render :edit

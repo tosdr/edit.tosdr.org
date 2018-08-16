@@ -13,6 +13,9 @@ class CommentsController < ApplicationController
 
     if @comment.save
       flash[:notice] = "Comment added!"
+      if (@point.user_id != current_user.id)
+        UserMailer.commented(@point.user, @point, current_user, @comment.summary).deliver_now
+      end
     else
       flash[:notice] = "Error adding comment!"
       puts @comment.errors.full_messages

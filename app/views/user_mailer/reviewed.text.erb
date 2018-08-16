@@ -1,0 +1,21 @@
+Hi <%= @authorName %>!
+
+<%= @title %>. This is what they wrote:
+
+<%= @commentText %>
+
+<% if @verdict == 'approved' %>
+  <p>This means <%= @pointUrl %> should appear on https://tosdr.org soon!
+<% else %>
+  <p>You can leave it declined, or edit and resubmit <%= @pointUrl %>; please write descriptive comments when you do so.
+<% end %>
+
+Please let us know at phoenix-core@tosdr.org if you don't want to receive these emails anymore, or have any other comments. You can also creport issues at https://github.com/tosdr/phoenix/issues/new.
+
+Please bear in mind that this version is a beta version that is still under development. You can follow the development on https://github.com/tosdr/phoenix or on our https://blog.tosdr.org.
+
+It means that things can change, a lot. We will keep you updated if anything on our privacy policy or on our terms of services changes. If you have any question please contact our team at team at tosdr org.
+
+
+Thank you for contributing!
+The ToS;DR Team

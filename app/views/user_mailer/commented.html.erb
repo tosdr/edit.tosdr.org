@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+  body {
+    background-color: #FdFdFd;
+    font-family: Lato, Helvetica, sans-serif;
+    width: 65%;
+    margin-left: 40px;
+  }
+
+  body a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #46a546;
+  }
+
+  body .btn {
+    margin: 30px;
+  }
+
+  body .btn a {
+    background-color: #49A347;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+  <h1>Hi <%= @authorName %>!</h1>
+
+  <p><%= @title %>. This is what they wrote:</p>
+
+  <p><%= @commentText %></p>
+
+  <p>See <a href="<%= @pointUrl %>"><%= @pointUrl %></a> to respond!</p>
+
+  <p>Please let us know at phoenix-core@tosdr.org if you don't want to receive these emails anymore, or have any other comments. You can also creport issues at <a href="https://github.com/tosdr/phoenix/issues/new">https://github.com/tosdr/phoenix/issues/new</a>.</p>
+
+  <p>Please bear in mind that this version is a beta version that is still under development. You can follow the development on <a href="https://github.com/tosdr/phoenix">our github</a> or on our <a href="https://blog.tosdr.org">blog</a>.</p>
+
+  <p>It means that things can change, a lot. We will keep you updated if anything on our privacy policy or on our terms of services changes. If you have any question please contact our team at <a mailto="team@tosdr.org">team at tosdr org</a>.</p>
+
+
+  <p>Thank you for contributing!</p>
+  <p>The ToS;DR Team</p>
+</body>
+</html>
