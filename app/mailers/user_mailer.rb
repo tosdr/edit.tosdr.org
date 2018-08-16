@@ -16,4 +16,23 @@ class UserMailer < ApplicationMailer
 
     mail(to: @user.email, subject: 'Status update from ToS;DR')
   end
+
+  def commented(author, point, commenter, commentText)
+    @authorName = author.username || 'user ' + author.id.to_s
+    @commenterName = commenter.username || commenter.id.to_s
+    @title = 'User ' + @commenterName + ' commented on your point ' + point.id.to_s
+    @pointUrl = 'https://edit.tosdr.org/points/' + point.id.to_s
+    @commentText = commentText
+    mail(to: author.email, subject: @title)
+  end
+
+  def reviewed(author, point, reviewer, verdict, commentText)
+    @authorName = author.username || 'user ' + author.id.to_s
+    @reviewerName = reviewer.username || reviewer.id.to_s
+    @title = 'User ' + @reviewerName + ' ' + verdict + ' your point ' + point.id.to_s
+    @pointUrl = 'https://edit.tosdr.org/points/' + point.id.to_s
+    @verdict = verdict
+    @commentText = commentText
+    mail(to: author.email, subject: @title)
+  end
 end
