@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   patch 'points/:id/review', to: 'points#post_review'
   resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
   resources :points, except: [:index] do
-    resources :comments, only: [:new, :create]
+    resources :point_comments, only: [:new, :create]
   end
 
   resources :documents
@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :services, except: [:show]
   resources :services, except: [:index] do
     resources :points, only: [:new, :create]
+    resources :service_comments, only: [:new, :create]
   end
   get "services/:id/annotate", to: "services#annotate", as: "annotate"
   get "services/:id/annotate?point_id=:point_id", to: "services#annotate", as: "annotate_point"
@@ -40,7 +41,9 @@ Rails.application.routes.draw do
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics
-  resources :cases
+  resources :cases do
+    resources :case_comments, only: [:new, :create]
+  end
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do

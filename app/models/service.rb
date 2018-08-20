@@ -3,6 +3,8 @@ class Service < ApplicationRecord
   has_many :points
   has_many :documents
 
+  has_many :service_comments, dependent: :destroy
+
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :url, presence: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180802102507) do
+ActiveRecord::Schema.define(version: 20180820114833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,14 @@ ActiveRecord::Schema.define(version: 20180802102507) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "case_comments", force: :cascade do |t|
+    t.string "summary"
+    t.bigint "service_id"
+    t.bigint "user_id"
+    t.index ["service_id"], name: "index_case_comments_on_service_id"
+    t.index ["user_id"], name: "index_case_comments_on_user_id"
   end
 
   create_table "cases", force: :cascade do |t|
@@ -101,6 +109,14 @@ ActiveRecord::Schema.define(version: 20180802102507) do
     t.index ["user_id"], name: "index_reasons_on_user_id"
   end
 
+  create_table "service_comments", force: :cascade do |t|
+    t.string "summary"
+    t.bigint "service_id"
+    t.bigint "user_id"
+    t.index ["service_id"], name: "index_service_comments_on_service_id"
+    t.index ["user_id"], name: "index_service_comments_on_user_id"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -155,6 +171,8 @@ ActiveRecord::Schema.define(version: 20180802102507) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "case_comments", "services"
+  add_foreign_key "case_comments", "users"
   add_foreign_key "cases", "topics"
   add_foreign_key "comments", "points"
   add_foreign_key "comments", "users"
@@ -166,4 +184,6 @@ ActiveRecord::Schema.define(version: 20180802102507) do
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
+  add_foreign_key "service_comments", "services"
+  add_foreign_key "service_comments", "users"
 end

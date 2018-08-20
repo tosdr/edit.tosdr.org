@@ -3,6 +3,14 @@ module ApplicationHelper
     service_path(service) + '/annotate'
   end
 
+  def service_comments_path (service)
+    service_service_comments_path(service)
+  end
+
+  def case_comments_path (case_)
+    case_case_comments_path(case_)
+  end
+
   def username (user_str)
     # puts user_str
     if user_str
