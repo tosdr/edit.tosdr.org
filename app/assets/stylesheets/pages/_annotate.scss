@@ -22,10 +22,16 @@
 }
 
 .hiddenTag {
-  // width: 0;
-  // overflow: hidden;
-  // display: inline-block;
-  // line-height: 0;
+  // This is, admittedly, brittle: this originally had a width of zero and a line-height of zero,
+  // but Chrome would then not include the contents in `document.getSelection().toString()` - which
+  // we *do* want, because that allows us to find the selected text in the originally scraped
+  // document. At the time of writing, it appears it does include the contents of elements with a
+  // width of 0.1px, but unfortunately, I could not find documentation on that behaviour, or a
+  // guarantee that it will stay that way. Sorry!
+  width: 0.1px;
+  line-height: 0.1;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .documentContent {
