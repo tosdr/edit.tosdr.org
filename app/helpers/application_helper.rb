@@ -29,9 +29,10 @@ module ApplicationHelper
   end
 
   def hide_tags(snippet)
-    sanitize(snippet)
-      .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
-      .html_safe
+    snippet
+    # sanitize(snippet)
+    #   .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
+    #   .html_safe
   end
 
   def format_time(time)
