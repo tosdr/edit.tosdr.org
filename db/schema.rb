@@ -49,16 +49,6 @@ ActiveRecord::Schema.define(version: 20180820114833) do
     t.index ["topic_id"], name: "index_cases_on_topic_id"
   end
 
-  create_table "comments", force: :cascade do |t|
-    t.bigint "point_id"
-    t.string "summary"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.index ["point_id"], name: "index_comments_on_point_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
   create_table "documents", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -174,8 +164,6 @@ ActiveRecord::Schema.define(version: 20180820114833) do
   add_foreign_key "case_comments", "services"
   add_foreign_key "case_comments", "users"
   add_foreign_key "cases", "topics"
-  add_foreign_key "comments", "points"
-  add_foreign_key "comments", "users"
   add_foreign_key "documents", "services"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "documents"
