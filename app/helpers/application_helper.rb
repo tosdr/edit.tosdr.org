@@ -11,6 +11,14 @@ module ApplicationHelper
     case_case_comments_path(case_)
   end
 
+  def document_comments_path (document)
+    document_document_comments_path(document)
+  end
+
+  def topic_comments_path (topic)
+    topic_topic_comments_path(topic)
+  end
+
   def username (user_str)
     # puts user_str
     if user_str
