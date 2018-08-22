@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180820114833) do
+ActiveRecord::Schema.define(version: 20180822140320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,9 +31,9 @@ ActiveRecord::Schema.define(version: 20180820114833) do
 
   create_table "case_comments", force: :cascade do |t|
     t.string "summary"
-    t.bigint "service_id"
+    t.bigint "case_id"
     t.bigint "user_id"
-    t.index ["service_id"], name: "index_case_comments_on_service_id"
+    t.index ["case_id"], name: "index_case_comments_on_case_id"
     t.index ["user_id"], name: "index_case_comments_on_user_id"
   end
 
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(version: 20180820114833) do
     t.index ["topic_id"], name: "index_cases_on_topic_id"
   end
 
+  create_table "document_comments", force: :cascade do |t|
+    t.string "summary"
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.index ["document_id"], name: "index_document_comments_on_document_id"
+    t.index ["user_id"], name: "index_document_comments_on_user_id"
+  end
+
   create_table "documents", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -59,6 +67,16 @@ ActiveRecord::Schema.define(version: 20180820114833) do
     t.bigint "service_id"
     t.boolean "reviewed"
     t.index ["service_id"], name: "index_documents_on_service_id"
+  end
+
+  create_table "point_comments", force: :cascade do |t|
+    t.bigint "point_id"
+    t.string "summary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["point_id"], name: "index_point_comments_on_point_id"
+    t.index ["user_id"], name: "index_point_comments_on_user_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -119,6 +137,14 @@ ActiveRecord::Schema.define(version: 20180820114833) do
     t.boolean "is_comprehensively_reviewed", default: false, null: false
   end
 
+  create_table "topic_comments", force: :cascade do |t|
+    t.string "summary"
+    t.bigint "topic_id"
+    t.bigint "user_id"
+    t.index ["topic_id"], name: "index_topic_comments_on_topic_id"
+    t.index ["user_id"], name: "index_topic_comments_on_user_id"
+  end
+
   create_table "topics", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
@@ -161,10 +187,14 @@ ActiveRecord::Schema.define(version: 20180820114833) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "case_comments", "services"
+  add_foreign_key "case_comments", "cases"
   add_foreign_key "case_comments", "users"
   add_foreign_key "cases", "topics"
+  add_foreign_key "document_comments", "documents"
+  add_foreign_key "document_comments", "users"
   add_foreign_key "documents", "services"
+  add_foreign_key "point_comments", "points"
+  add_foreign_key "point_comments", "users"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "documents"
   add_foreign_key "points", "services"
@@ -174,4 +204,6 @@ ActiveRecord::Schema.define(version: 20180820114833) do
   add_foreign_key "reasons", "users"
   add_foreign_key "service_comments", "services"
   add_foreign_key "service_comments", "users"
+  add_foreign_key "topic_comments", "topics"
+  add_foreign_key "topic_comments", "users"
 end

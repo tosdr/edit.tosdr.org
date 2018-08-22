@@ -10,7 +10,7 @@ class ServiceCommentsController < ApplicationController
     puts @service.id
     @service_comment = ServiceComment.new(service_comment_params)
     @service_comment.user_id = current_user.id
-    @service_comment.service_id = 528
+    @service_comment.service_id = @service.id
 
     if @service_comment.save
       flash[:notice] = "Comment added!"

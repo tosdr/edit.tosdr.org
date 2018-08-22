@@ -10,7 +10,7 @@ class PointCommentsController < ApplicationController
     puts @point.id
     @point_comment = PointComment.new(point_comment_params)
     @point_comment.user_id = current_user.id
-    @point_comment.point_id = 528
+    @point_comment.point_id = @point.id
 
     if @point_comment.save
       flash[:notice] = "Comment added!"

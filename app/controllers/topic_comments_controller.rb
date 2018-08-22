@@ -10,7 +10,7 @@ class TopicCommentsController < ApplicationController
     puts @topic.id
     @topic_comment = TopicComment.new(topic_comment_params)
     @topic_comment.user_id = current_user.id
-    @topic_comment.topic_id = 528
+    @topic_comment.topic_id = @topic.id
 
     if @topic_comment.save
       flash[:notice] = "Comment added!"

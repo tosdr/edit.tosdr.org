@@ -10,7 +10,7 @@ class DocumentCommentsController < ApplicationController
     puts @document.id
     @document_comment = DocumentComment.new(document_comment_params)
     @document_comment.user_id = current_user.id
-    @document_comment.document_id = 528
+    @document_comment.document_id = @document.id
 
     if @document_comment.save
       flash[:notice] = "Comment added!"

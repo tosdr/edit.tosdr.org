@@ -3,6 +3,10 @@ module ApplicationHelper
     service_path(service) + '/annotate'
   end
 
+  def new_point_comment_path (topic)
+    new_point_point_comment_path(topic)
+  end
+
   def service_comments_path (service)
     service_service_comments_path(service)
   end

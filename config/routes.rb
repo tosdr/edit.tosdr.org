@@ -25,7 +25,9 @@ Rails.application.routes.draw do
     resources :point_comments, only: [:new, :create]
   end
 
-  resources :documents
+  resources :documents do
+    resources :document_comments, only: [:new, :create]
+  end
   post "documents/new", to: "documents#create"
   post "documents/:id/edit", to: "documents#update"
 
@@ -40,7 +42,10 @@ Rails.application.routes.draw do
 
   get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
-  resources :topics
+  resources :topics do
+    resources :topic_comments, only: [:new, :create]
+  end
+
   resources :cases do
     resources :case_comments, only: [:new, :create]
   end

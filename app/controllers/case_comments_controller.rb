@@ -10,7 +10,7 @@ class CaseCommentsController < ApplicationController
     puts @case.id
     @case_comment = CaseComment.new(case_comment_params)
     @case_comment.user_id = current_user.id
-    @case_comment.case_id = 528
+    @case_comment.case_id = @case.id
 
     if @case_comment.save
       flash[:notice] = "Comment added!"
