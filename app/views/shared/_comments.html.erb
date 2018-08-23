@@ -2,8 +2,8 @@
   <div class="col-xs-12">
     <!-- card-inline-header -->
     <div class="card-inline card-inline-header">
-      <div class="card-inline-item card-inline-service">
-        Text
+      <div class="card-inline-item card-inline-comment">
+        <b>Comments:</b>
       </div>
     </div>
     <!-- actual card-inline -->
@@ -14,7 +14,7 @@
         </div>
       </div>
     <% else %>
-      <% comments.each do |c| %>
+      <% comments.sort_by { |obj| obj.created_at }.each do |c| %>
       <div class="card-inline">
         <div class="card-inline-item card-inline-service">
           <h6>On <%= c.created_at %>, <%= username c.user_id %> wrote:</h6>

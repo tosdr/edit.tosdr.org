@@ -52,7 +52,6 @@ class PointsController < ApplicationController
   end
 
   def show
-    @comments = Comment.where(point_id: @point.id)
     @versions = @point.versions
   end
 
@@ -108,7 +107,7 @@ class PointsController < ApplicationController
   private
 
   def create_comment(commentText)
-    Comment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
+    PointComment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
   end
 
   def point_create_options(point, path)

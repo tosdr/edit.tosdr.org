@@ -7,7 +7,7 @@ class Point < ApplicationRecord
  belongs_to :service
  belongs_to :case
 
- has_many :comments, dependent: :destroy
+ has_many :point_comments, dependent: :destroy
 
  validates :title, presence: true
  validates :title, length: { in: 5..140 }

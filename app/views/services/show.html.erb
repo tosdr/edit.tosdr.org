@@ -10,11 +10,13 @@
     <div class="col-sm-6">
       <h5 class="fw2 fr gray">
         <% if current_user %>
-        <% if current_user.curator? %>
-          <%= link_to "Edit Service", edit_service_path(@service) %>
-         |
-        <% end %>
+          <% if current_user.curator? %>
+            <%= link_to "Edit Service", edit_service_path(@service) %>
+            |
+          <% end %>
           <%= link_to "Annotate Docs", annotate_service_path(@service) %>
+          |
+          <%= link_to 'Add Comment', new_service_service_comment_path(@service) %>
         <% end %>
       </h5>
     </div>
@@ -44,6 +46,13 @@
 
   <%= render 'table', points: @points %>
 
+<br>
+<br>
+
+   <%= render 'shared/comments', comments: @service.service_comments %>
+
+<br>
+<br>
 
   <%= render 'versions', versions: @versions %>
 
