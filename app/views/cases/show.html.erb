@@ -19,9 +19,12 @@
   </p>
 
   <p class="tc">
-    <% if current_user && current_user.curator? %>
-    <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
-    <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
+    <% if current_user %>
+      <% if current_user.curator? %>
+        <%= link_to 'Edit Case', edit_case_path(@case), class: 'btn btn-primary' %>
+        <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger' %>
+      <% end %>
+      <%= link_to 'Add Comment', new_case_comment_path(@case) %>
     <% end %>
   </p>
   <div class="search-bar">
@@ -122,3 +125,12 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="container card-container">
+    <%= render 'case_comments', comments: @case_comments %>
+  </div>
+</div>
+
+<br>
+<br>

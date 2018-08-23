@@ -2,21 +2,21 @@
   <div class="col-xs-12">
     <!-- card-inline-header -->
     <div class="card-inline card-inline-header">
-      <div class="card-inline-item card-inline-service">
+      <div class="card-inline-item card-inline-document">
         Text
       </div>
     </div>
     <!-- actual card-inline -->
-    <% if comments.empty? %>
+    <% if @document.document_comments.empty? %>
       <div class="card-inline">
         <div class="card-inline-item">
           No comments found
         </div>
       </div>
     <% else %>
-      <% comments.each do |c| %>
+      <% @document.document_comments.each do |c| %>
       <div class="card-inline">
-        <div class="card-inline-item card-inline-service">
+        <div class="card-inline-item card-inline-document">
           <h6>On <%= c.created_at %>, <%= username c.user_id %> wrote:</h6>
           <%=simple_format c.summary %>
         </div>

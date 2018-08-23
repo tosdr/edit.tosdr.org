@@ -16,6 +16,7 @@
         <% end %>
           <%= link_to "Annotate Docs", annotate_service_path(@service) %>
         <% end %>
+        <%= link_to 'Add Comment', service_comments_path(@service) %>
       </h5>
     </div>
 
@@ -44,6 +45,14 @@
 
   <%= render 'table', points: @points %>
 
+<div class="row">
+  <div class="container card-container">
+    <%= render 'service_comments', comments: @service_comments %>
+  </div>
+</div>
+
+<br>
+<br>
 
   <%= render 'versions', versions: @versions %>
 
