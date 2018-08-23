@@ -14,14 +14,14 @@
   <p>
   <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-primary' %>
   <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary' %>
-  <%= link_to 'Add Comment', new_document_comment_path(@document), class: 'btn btn-primary' %>
+  <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-primary' %>
   <% if current_user.curator? %>
     <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
   <% end %>
   </p>
 <div class="row">
   <div class="container card-container">
-    <%= render 'document_comments', comments: @document_comments %>
+    <%= render 'document_comments' %>
   </div>
 </div>
 

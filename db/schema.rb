@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(version: 20180822140320) do
     t.string "summary"
     t.bigint "case_id"
     t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["case_id"], name: "index_case_comments_on_case_id"
     t.index ["user_id"], name: "index_case_comments_on_user_id"
   end
@@ -53,6 +55,8 @@ ActiveRecord::Schema.define(version: 20180822140320) do
     t.string "summary"
     t.bigint "document_id"
     t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["document_id"], name: "index_document_comments_on_document_id"
     t.index ["user_id"], name: "index_document_comments_on_user_id"
   end
@@ -121,6 +125,8 @@ ActiveRecord::Schema.define(version: 20180822140320) do
     t.string "summary"
     t.bigint "service_id"
     t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["service_id"], name: "index_service_comments_on_service_id"
     t.index ["user_id"], name: "index_service_comments_on_user_id"
   end
@@ -141,6 +147,8 @@ ActiveRecord::Schema.define(version: 20180822140320) do
     t.string "summary"
     t.bigint "topic_id"
     t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_topic_comments_on_topic_id"
     t.index ["user_id"], name: "index_topic_comments_on_user_id"
   end

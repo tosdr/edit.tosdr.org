@@ -4,7 +4,7 @@ class Document < ApplicationRecord
   belongs_to :service
   has_many :points
 
-  # has_many :document_comments, dependent: destroy
+  has_many :document_comments, dependent: :destroy
 
   validates :name, presence: true
   validates :url, presence: true, uniqueness: { scope: :xpath }

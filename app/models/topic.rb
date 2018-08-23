@@ -3,7 +3,7 @@ class Topic < ApplicationRecord
   has_many :points
   has_many :cases
 
-  # has_many :topic_comments, dependent: destroy
+  has_many :topic_comments, dependent: :destroy
 
   validates :title, presence: true, uniqueness: true
   validates :subtitle, presence: true
