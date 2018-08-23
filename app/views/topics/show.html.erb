@@ -122,11 +122,10 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="container card-container">
-    <%= render 'topic_comments' %>
-  </div>
-</div>
+<br>
+<br>
+ 
+  <%= render 'shared/comments', comments: @topic.topic_comments %>
 
 <br>
 <br>

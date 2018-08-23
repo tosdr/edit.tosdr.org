@@ -90,12 +90,8 @@
 
 <br>
 <br>
-
-<div class="row">
-  <div class="container card-container">
-    <%= render 'point_comments', comments: @point_comments %>
-  </div>
-</div>
+ 
+  <%= render 'shared/comments', comments: @point.point_comments %>
 
 <br>
 <br>

@@ -52,7 +52,6 @@ class PointsController < ApplicationController
   end
 
   def show
-    @comments = PointComment.where(point_id: @point.id)
     @versions = @point.versions
   end
 

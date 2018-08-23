@@ -19,11 +19,10 @@
     <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
   <% end %>
   </p>
-<div class="row">
-  <div class="container card-container">
-    <%= render 'document_comments' %>
-  </div>
-</div>
+<br>
+<br>
+ 
+  <%= render 'shared/comments', comments: @document.document_comments %>
 
 <br>
 <br>

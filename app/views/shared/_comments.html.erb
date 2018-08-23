@@ -2,21 +2,21 @@
   <div class="col-xs-12">
     <!-- card-inline-header -->
     <div class="card-inline card-inline-header">
-      <div class="card-inline-item card-inline-document">
-        Text
+      <div class="card-inline-item card-inline-comment">
+        <b>Comments:</b>
       </div>
     </div>
     <!-- actual card-inline -->
-    <% if @document.document_comments.empty? %>
+    <% if comments.empty? %>
       <div class="card-inline">
         <div class="card-inline-item">
           No comments found
         </div>
       </div>
     <% else %>
-      <% @document.document_comments.each do |c| %>
+      <% comments.sort_by { |obj| obj.created_at }.each do |c| %>
       <div class="card-inline">
-        <div class="card-inline-item card-inline-document">
+        <div class="card-inline-item card-inline-service">
           <h6>On <%= c.created_at %>, <%= username c.user_id %> wrote:</h6>
           <%=simple_format c.summary %>
         </div>

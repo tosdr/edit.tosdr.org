@@ -45,11 +45,10 @@
 
   <%= render 'table', points: @points %>
 
-<div class="row">
-  <div class="container card-container">
-    <%= render 'service_comments', comments: @service_comments %>
-  </div>
-</div>
+<br>
+<br>
+
+   <%= render 'shared/comments', comments: @service.service_comments %>
 
 <br>
 <br>
