@@ -59,6 +59,7 @@ class PointsController < ApplicationController
     if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
       puts 'wrong update status!'
       puts point_params
+      @topics = Topic.all.includes(:cases).all
       render :edit
       return
     end
@@ -67,8 +68,10 @@ class PointsController < ApplicationController
       comment = create_comment(@point.point_change)
       redirect_to point_path
     elsif @point.case.nil?
+      @topics = Topic.all.includes(:cases).all
       render :edit
     else
+      @topics = Topic.all.includes(:cases).all
       render :edit
     end
   end
