@@ -59,6 +59,7 @@ class PointsController < ApplicationController
     if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
       puts 'wrong update status!'
       puts point_params
+      @topics = Topic.all.includes(:cases).all
       render :edit
       return
     end
@@ -67,8 +68,10 @@ class PointsController < ApplicationController
       comment = create_comment(@point.point_change)
       redirect_to point_path
     elsif @point.case.nil?
+      @topics = Topic.all.includes(:cases).all
       render :edit
     else
+      @topics = Topic.all.includes(:cases).all
       render :edit
     end
   end
@@ -126,7 +129,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def must_be_creator
