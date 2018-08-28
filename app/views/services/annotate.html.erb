@@ -1,3 +1,7 @@
+<% content_for :title do %>
+  <title>Review <%= @service.name %> (ToS;DR Phoenix)</title>
+<% end %>
+
 <form method="POST" id="quoteForm">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
   <input type="hidden" name="document_id" id="document_id">
