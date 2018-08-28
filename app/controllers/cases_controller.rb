@@ -20,7 +20,7 @@ class CasesController < ApplicationController
   def create
     @case = Case.new(case_params)
     if @case.save
-      redirect_to cases_path
+      redirect_to case_path(@case)
     else
       render :new
     end
