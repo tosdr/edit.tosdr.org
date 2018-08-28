@@ -13,7 +13,6 @@ class Point < ApplicationRecord
  validates :title, length: { in: 5..140 }
  validates :source, presence: true
  validates :status, inclusion: { in: ["approved", "pending", "declined", "disputed", "draft"], allow_nil: false }
- validates :analysis, presence: true
  validates :case_id, presence: true
 
 def self.search_points_by_multiple(query)
