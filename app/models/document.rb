@@ -25,18 +25,22 @@ class Document < ApplicationRecord
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
         quotes << p
       else
-        puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (quoteStart + p.quoteText.length).to_s + ']'
-        puts '-----'
-        puts p.quoteText
-        puts '-----'
-        puts self.text[p.quoteStart, p.quoteEnd]
-        puts '-----'
-        puts self.text.index(self.text[p.quoteStart, p.quoteEnd])
-        puts '-----'
-        puts '-----'
-        puts self.text.index(p.quoteText)
-        puts '-----'
-        puts '-----'
+        if quoteStart
+          puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (quoteStart + p.quoteText.length).to_s + ']'
+          puts '-----'
+          puts p.quoteText
+          puts '-----'
+          puts self.text[p.quoteStart, p.quoteEnd]
+          puts '-----'
+          puts self.text.index(self.text[p.quoteStart, p.quoteEnd])
+          puts '-----'
+          puts '-----'
+          puts self.text.index(p.quoteText)
+          puts '-----'
+          puts '-----'
+        else
+          puts 'no quoteStart found!'
+        end
       end
     end
     cursor = 0
