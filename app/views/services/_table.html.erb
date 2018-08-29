@@ -13,11 +13,11 @@
     <% if current_user %>
     <span class="fr">
       <% if params[:scope].nil? %>
-        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-primary active' %>
-        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-primary' %>
+        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-default active' %>
+        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-default' %>
       <% elsif params[:scope] == 'pending' %>
-        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-primary' %>
-        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-primary active' %>
+        <%= link_to 'All', service_path(scope: nil), class: 'btn btn-default' %>
+        <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-default active' %>
       <% end %>
     <% end %>
     </span>
@@ -187,7 +187,6 @@
 <% end %>
 <% end %>
 </div>
-  <%= link_to("Add a point", new_service_point_path(@service), class: 'btn btn-primary', style: 'margin-top: 1rem') %>
 </div>
 </div>
 
