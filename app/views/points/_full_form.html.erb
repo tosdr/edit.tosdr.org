@@ -55,7 +55,7 @@
       </div>
       <div class="col-xs-4">
         <% if current_user.curator? %>
-        <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "disputed"], selected: @point.status || "pending" %>
+        <%= f.input :status, collection: ["pending", "draft", "approved", "declined", "changes-requested"], selected: @point.status || "pending" %>
         <% else %>
         <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point", selected: @point.status || "pending" %>
         <% end %>

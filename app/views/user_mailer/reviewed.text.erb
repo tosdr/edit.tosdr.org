@@ -2,12 +2,16 @@ Hi <%= @authorName %>!
 
 <%= @title %>. This is what they wrote:
 
+---
 <%= @commentText %>
+---
 
 <% if @verdict == 'approved' %>
-  <p>This means <%= @pointUrl %> should appear on https://tosdr.org soon!
+  This means <%= @pointUrl %> should appear on https://tosdr.org soon!
+<% elsif @verdict == 'declined' %>
+  You can leave it declined, or edit and resubmit <%= @pointUrl %>; please write descriptive comments when you do so.
 <% else %>
-  <p>You can leave it declined, or edit and resubmit <%= @pointUrl %>; please write descriptive comments when you do so.
+  Please edit and resubmit <%= @pointUrl %>, adding descriptive comments in response to what the reviewer wrote.
 <% end %>
 
 Please let us know at phoenix-core@tosdr.org if you don't want to receive these emails anymore, or have any other comments. You can also report issues at https://github.com/tosdr/phoenix/issues/new.

@@ -29,7 +29,8 @@ class UserMailer < ApplicationMailer
   def reviewed(author, point, reviewer, verdict, commentText)
     @authorName = author.username || 'user ' + author.id.to_s
     @reviewerName = reviewer.username || reviewer.id.to_s
-    @title = 'User ' + @reviewerName + ' ' + verdict + ' your point ' + point.id.to_s
+    verdictVerb = (verdict == 'changes-requested' ? 'requested you change' : verdict)
+    @title = 'User ' + @reviewerName + ' ' + verdictVerb + ' your point ' + point.id.to_s
     @pointUrl = 'https://edit.tosdr.org/points/' + point.id.to_s
     @verdict = verdict
     @commentText = commentText

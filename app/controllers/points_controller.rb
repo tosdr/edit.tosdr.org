@@ -83,7 +83,7 @@ class PointsController < ApplicationController
   def post_review
     @topics = Topic.all.includes(:cases).all
     # process a post of the review form
-    if (point_params['status'] != 'approved' && point_params['status'] != 'declined')
+    if (point_params['status'] != 'approved' && point_params['status'] != 'declined' && point_params['status'] != 'changes-requested')
       puts 'wrong review status!'
       puts point_params
       render :edit

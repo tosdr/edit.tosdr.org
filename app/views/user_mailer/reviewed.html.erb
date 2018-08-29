@@ -35,13 +35,16 @@
   <h1>Hi <%= @authorName %>!</h1>
 
   <p><%= @title %>. This is what they wrote:</p>
-
+  <p>---</p>
   <p><%= @commentText %></p>
+  <p>---</p>
 
   <% if @verdict == 'approved' %>
     <p>This means <a href="<%= @pointUrl %>"><%= @pointUrl %></a> should appear on <a href="https://tosdr.org">https://tosdr.org</a> soon!</p>
-  <% else %>
+  <% elsif @verdict == 'declined' %>
     <p>You can leave it declined, or edit and resubmit <a href="<%= @pointUrl %>"><%= @pointUrl %></a>; please write descriptive comments when you do so.</p>
+  <% else %>
+    <p>Please edit and resubmit <a href="<%= @pointUrl %>"><%= @pointUrl %></a>, adding descriptive comments in response to what the reviewer wrote.</p>
   <% end %>
 
   <p>Please let us know at phoenix-core@tosdr.org if you don't want to receive these emails anymore, or have any other comments. You can also report issues at <a href="https://github.com/tosdr/phoenix/issues/new">https://github.com/tosdr/phoenix/issues/new</a>.</p>

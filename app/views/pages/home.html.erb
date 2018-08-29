@@ -1,3 +1,7 @@
+<% if current_user&.curator %>
+  <h2>Points for you to review:</h2>
+  <%= render 'points/table', points: @points %>
+<% else %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
     <strong>Terms of Service;</strong> Didn't Read
@@ -70,6 +74,7 @@
 </div>
 <% end %>
 </div>
+<% end %>
 
 <h2>Recent changes:</h2>
 <div class="panel-group" id="accordion">
