@@ -1,7 +1,19 @@
-<% if current_user&.curator %>
+<% if @change_request_points && @change_request_points.count > 0 then %>
+  <h2>Points that need your attention:</h2>
+  <%= render 'points/table', points: @change_request_points %>
+<% end %>
+
+<% if @draft_points && @draft_points.count > 0 then %>
+  <h2>Your drafts:</h2>
+  <%= render 'points/table', points: @draft_points %>
+<% end %>
+
+<% if @pending_points then %>
   <h2>Points for you to review:</h2>
-  <%= render 'points/table', points: @points %>
-<% else %>
+  <%= render 'points/table', points: @pending_points %>
+<% end %>
+
+<% if @services then %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
     <strong>Terms of Service;</strong> Didn't Read
