@@ -12,18 +12,14 @@
         <% if current_user %>
           <% if current_user.curator? %>
             <%= link_to "Edit Service", edit_service_path(@service) %>
-            <br> <br>
+            |
           <% end %>
-          <%= link_to "Annotate Docs", annotate_service_path(@service), class: 'btn btn-primary active' %>
-          <br> <br>
           <%= link_to 'Add Comment', new_service_service_comment_path(@service) %>
         <% end %>
       </h5>
     </div>
 
   </div>
-
-<p>Above, you can click 'Annotate Docs' to select a quote from one of <%= @service.name %>'s legal documents, and assign a case to that quote. When necessary, you can also still click 'Add a point' below, to add a point that's not related to any specific quote.</p>
 
   <% grade = "rating-#{@service.service_rating}" %>
 
@@ -48,6 +44,17 @@
 
   <%= render 'table', points: @points %>
 
+  <% if @service.documents.count == 0 %>
+    <div class="container" style="margin-top: 1rem">
+        <%= link_to "Add a document for review", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-primary" %>
+    </div>
+  <% else %>
+    <div class="row" style="margin-top: 1rem">
+      <div class="col-xs-12">
+        <%= link_to "Review documents", annotate_service_path(@service), class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
 <br>
 <br>
 
