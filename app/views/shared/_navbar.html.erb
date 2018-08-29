@@ -9,8 +9,7 @@
       </div>
     <% end %>
     <% unless current_user.nil? %>
-      <%= link_to "Add a point", new_point_path, class: "btn btn-primary btn-sm" %>
-      <%= link_to "Find a service", services_path, class: "btn btn-primary btn-sm" %>
+      <%= link_to "Find a service to annotate", services_path, class: "btn btn-primary btn-sm" %>
     <% end %>
   </div>
 
