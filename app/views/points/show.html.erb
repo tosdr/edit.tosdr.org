@@ -64,7 +64,9 @@
           <cite><%= link_to  @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
         </footer>
       </blockquote>
-      <%= link_to  "Change excerpt", annotate_point_path(@point.service_id, @point.id), { class: "btn btn-default pull-right" } %>
+      <% if current_user && current_user.id == @point.user_id %>
+        <%= link_to  "Change excerpt", annotate_point_path(@point.service_id, @point.id), { class: "btn btn-default pull-right" } %>
+      <% end %>
     </div>
   </div>
 <%- # We only link to the annotate view if documents are already available, -%>

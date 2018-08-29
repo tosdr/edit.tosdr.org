@@ -26,8 +26,8 @@ class ServicesController < ApplicationController
   def annotate
     @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
     @documents = @service.documents
-    if (params[:point_id])
-      @point = Point.find(params[:point_id])
+    if (params[:point_id] && current_user)
+      @point = Point.find_by id: params[:point_id], user_id: current_user.id
     else
       @topics = Topic.all.includes(:cases).all
     end
@@ -37,8 +37,8 @@ class ServicesController < ApplicationController
     puts 'quote!'
     puts params
     @service = Service.find(params[:id] || params[:service_id])
-    if (params[:point_id])
-      point = Point.find(params[:point_id])
+    if (params[:point_id] && current_user)
+      point = Point.find_by id: params[:point_id], user_id: current_user.id
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
