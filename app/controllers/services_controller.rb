@@ -49,7 +49,6 @@ class ServicesController < ApplicationController
       point.title = @case.title
       point.service = @service
       point.analysis = 'Generated through the annotate view'
-      point.status = 'pending'
     end
     document = Document.find(params[:document_id])
     point.document = document
@@ -57,6 +56,7 @@ class ServicesController < ApplicationController
     point.source = document.url
     point.quoteStart = params[:quoteStart]
     point.quoteEnd = params[:quoteEnd]
+    point.status = 'pending'
     if (point.save)
       if (params[:point_id])
         redirect_to point_path(params[:point_id])
