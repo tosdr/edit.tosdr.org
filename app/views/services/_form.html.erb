@@ -6,7 +6,7 @@
         <%= f.input :url, placeholder: "bbc.com,bbc.co.uk", label: "Domains, comma-separated (e.g. 'bbc.com,bbc.co.uk')"%>
         <%= f.input :wikipedia, placeholder: "Wikipedia link", hint: "This will be used to referrenced the Wikipedia link of the service. Used mostly for the API." %>
         <%- # Only allow marking services as completely reviewed if they are not new, because new services have no reviews yet: %>
-        <% if @service.id %>
+        <% if @service.id && current_user.curator? %>
           <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <a href=\"https://github.com/tosdr/tosdr.org/wiki/checklist\" target=\"_blank\" title=\"Checklist for service reviews\">comprehensive</a> and ready for publication.".html_safe, checked_value: true, unchecked_value: false %>
         <% end %>
       </div>

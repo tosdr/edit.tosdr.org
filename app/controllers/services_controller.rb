@@ -115,7 +115,11 @@ class ServicesController < ApplicationController
   private
 
   def service_params
-    params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
+    if current_user.curator? then
+      params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
+    else
+      params.require(:service).permit(:name, :url, :query, :wikipedia)
+    end
   end
 
   def set_curator
