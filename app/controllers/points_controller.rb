@@ -26,7 +26,7 @@ class PointsController < ApplicationController
 
   def create
     @topics = Topic.all.includes(:cases).all
-    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+    if (!['draft', 'pending', 'declined'].include? point_params['status'])
       puts 'wrong update status!'
       puts point_params
       render :edit
@@ -56,7 +56,7 @@ class PointsController < ApplicationController
   end
 
   def update
-    if (point_params['status'] != 'draft' && point_params['status'] != 'pending')
+    if (!['draft', 'pending', 'declined'].include? point_params['status'])
       puts 'wrong update status!'
       puts point_params
       @topics = Topic.all.includes(:cases).all
