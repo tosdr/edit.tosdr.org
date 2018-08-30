@@ -52,6 +52,9 @@ module ApplicationHelper
     sanitize(
       snippet
       .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
+      # HTML entities should not be rendered to the referenced character, because then those
+      # characters will be included in an annotator's selection, instead of the entity, and thus it
+      # won't be found in the original document:
       .gsub(/&(.*?);/, '&amp;\1;')
     ).html_safe
   end
