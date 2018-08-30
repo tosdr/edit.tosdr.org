@@ -25,7 +25,7 @@
   <div id="custom-search-input">
     <div class="input-group col-xs-12">
       <%= form_tag(topic_path(@topic), method: :get) do %>
-        <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search for topic", value: @query %>
+        <%= text_field_tag :query, "", class: "search-query form-control", placeholder: "Search for a case", value: @query %>
 
         <span class="input-group-btn">
           <%= button_tag(type: 'submit', class: "btn btn-danger button") do %>
@@ -52,64 +52,42 @@
       <div class="col-xs-12">
         <!-- card-inline-header -->
         <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-service">
-            Services
-          </div>
           <div class="card-inline-item card-inline-point">
             Title
           </div>
           <div class="card-inline-item card-inline-rating">
             Rating
           </div>
-          <div class="card-inline-item card-inline-status">
-            Status
-          </div>
-          <div class="card-inline-item card-inline-featured">
-            Featured?
-          </div>
           <div class="card-inline-item card-inline-options">
             View
           </div>
         </div>
         <!-- actual card-inline -->
-          <% if @points.empty? %>
+          <% if @cases.empty? %>
             <div class="card-inline">
               <div class="card-inline-item">
-                No points found
+                No cases found
               </div>
             </div>
           <% else %>
-            <% @points.each do |p| %>
-            <% if p.case&.classification == 'good' %>
+            <% @cases.each do |c| %>
+            <% if c.classification == 'good' %>
               <% pointbox = "point-good" %>
-            <% elsif p.case&.classification == 'neutral' %>
+            <% elsif c.classification == 'neutral' %>
               <% pointbox = "point-neutral" %>
-            <% elsif p.case&.classification == 'bad' %>
+            <% elsif c.classification == 'bad' %>
               <% pointbox = "point-bad" %>
-            <% elsif p.case&.classification == 'blocker' %>
+            <% elsif c.classification == 'blocker' %>
               <% pointbox = "point-blocker" %>
             <% end %>
             <div class="card-inline">
-              <div class="card-inline-item card-inline-service">
-                <%= p.service.name %>
-              </div>
               <div class="card-inline-item card-inline-point">
-                <%= p.title %>
+                <%= c.title %>
               </div>
               <div class="card-inline-item card-inline-rating <%= pointbox %>">
               </div>
-              <div class="card-inline-item card-inline-status">
-                <%= p.status %>
-              </div>
-              <div class="card-inline-item card-inline-featured">
-                <% if p.is_featured? %>
-                <i class="fa fa-check" aria-hidden="true"></i>
-                <% else %>
-                <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <% end %>
-              </div>
               <div class="card-inline-item card-inline-options">
-                <%= link_to(point_path(p), class: 'btn') do %>
+                <%= link_to(case_path(c), class: 'btn') do %>
                 <i class="fa fa-eye" aria-hidden="true"></i>
                 <% end %>
               </div>
