@@ -51,8 +51,8 @@ module ApplicationHelper
   def hide_tags(snippet)
     sanitize(
       snippet
-      .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
       .gsub(/&(.*?);/, '&amp;\1;')
+      .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
     ).html_safe
   end
 
