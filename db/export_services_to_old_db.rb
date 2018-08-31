@@ -36,7 +36,7 @@ Service.all.each do |service|
     if service.url != goodUrls then
       puts service.id.to_s + ' ' + service.url + ' <- ' + goodUrls
     end
-    data['urls'] = service.url.split(',')
+    data['urls'] = service.url.split(',').collect(&:strip)
 
     # Work around https://github.com/tosdr/tosdr-firefox/issues/53:
     data['url'] = data['urls'][0]
