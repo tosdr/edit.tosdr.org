@@ -17,7 +17,7 @@ class ServicesController < ApplicationController
   def create
     @service = Service.new(service_params)
     if @service.save
-      redirect_to services_path
+      redirect_to service_path(@service)
     else
       render :new
     end
