@@ -8,6 +8,7 @@ class PagesController < ApplicationController
                   .includes(:service)
                   .includes(:case)
                   .includes(:user)
+                  .order(updated_at: :desc)
                   .limit(10)
     end
 
