@@ -44,6 +44,21 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def destroy
+    @document = Document.find(params[:id] || params[:document_id])
+    service = @document.service
+    if @document.points.any?
+      flash[:alert] = "Users have highlighted points in this document; update or delete those points before deleting this document."
+      redirect_to document_path(@document)
+    else
+      @document.destroy
+      flash[:notice] = "Document has been removed!"
+      # We should probably generate this from the routes,
+      # but I'm not sure if I should use the view helper for that? (Since we're not in the view.)
+      redirect_to service_path(service) + '/annotate'
+    end
+  end
+
   def show
     puts 'crawl?'
     puts params[:crawl]
