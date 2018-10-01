@@ -42,7 +42,7 @@ class ServicesController < ApplicationController
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
-        params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :is_featured, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+        params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
       )
       point.user = current_user
       point.case = @case
