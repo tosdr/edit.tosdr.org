@@ -33,7 +33,7 @@ class PagesController < ApplicationController
     # Only load example services for users who are not curators and don't have existing points to deal with.
     if (!@pending_points && (!@draft_points || @draft_points.count == 0) && (!@change_request_points || @change_request_points.count == 0))
       @services = Service.includes(points: [:case])
-                    .with_points_featured.sample(3)
+                    .sample(3)
     end
   end
 end

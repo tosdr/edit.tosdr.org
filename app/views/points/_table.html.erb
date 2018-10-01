@@ -16,9 +16,6 @@
       <div class="card-inline-item card-inline-status">
         Author
       </div>
-      <div class="card-inline-item card-inline-featured">
-        Featured?
-      </div>
       <div class="card-inline-item card-inline-options">
         Options
       </div>
@@ -121,13 +118,6 @@
     </div>
     <div class="card-inline-item card-inline-status">
       <%= username p.user %>
-    </div>
-    <div class="card-inline-item card-inline-featured">
-      <% if p.is_featured? %>
-      <i class="fa fa-check" aria-hidden="true"></i>
-      <% else %>
-      <i class="fa fa-circle-o" aria-hidden="true"></i>
-      <% end %>
     </div>
     <div class="card-inline-item card-inline-options">
       <% if current_user %>
