@@ -1,0 +1,20 @@
+<% if current_user&.curator %>
+  <%= link_to "Change Requests", points_change_requests_path %> |
+  <%= link_to "Pending Points", points_pending_review_path %>
+<% elsif current_user && !current_user.curator %>
+  <%= link_to "Change Requests", points_change_requests_path %>
+<% end %>
+
+
+<% unless @points.any? %>
+  You haven't drafted any points yet! Go here to annotate a service.
+<% end %>
+
+<h2>Your drafts:</h2>
+<div class="tabs-container tab">
+  <div class="row">
+    <div class="container card-container">
+     <%= render 'table', points: @points %>
+   </div>
+ </div>
+</div>

@@ -1,0 +1,17 @@
+<% if current_user&.curator %>
+  <%= link_to "Change Requests", points_change_requests_path %> |
+  <%= link_to "Drafts", points_drafts_path %>
+<% end %>
+
+<% unless @points.any? %>
+  At this time, there are no points awaiting your review.
+<% end %>
+
+<h2>Points pending your review:</h2>
+<div class="tabs-container tab">
+  <div class="row">
+    <div class="container card-container">
+     <%= render 'table', points: @points %>
+   </div>
+ </div>
+</div>

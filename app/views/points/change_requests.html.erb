@@ -1,0 +1,19 @@
+<% if current_user&.curator %>
+  <%= link_to "Pending Points", points_pending_review_path %> |
+  <%= link_to "Drafts", points_drafts_path %>
+<% elsif current_user && !current_user.curator %>
+  <%= link_to "Drafts", points_drafts_path %>
+<% end %>
+
+<% unless @points.any? %>
+  None of your points have any requested changes!
+<% end %>
+
+<h2>Requested changes:</h2>
+<div class="tabs-container tab">
+  <div class="row">
+    <div class="container card-container">
+     <%= render 'table', points: @points %>
+   </div>
+ </div>
+</div>
