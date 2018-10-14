@@ -2,7 +2,7 @@ class PointsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
   before_action :must_be_creator, only: [:update]
-  before_action :must_be_peer_curator, only: [:review, :post_review]
+  before_action :must_be_peer_curator, only: [:review, :post_review, :pending_review]
 
   def index
     if params[:scope].nil? || params[:scope] == "all"
@@ -10,9 +10,41 @@ class PointsController < ApplicationController
     elsif params[:scope] == "pending"
       @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100).where(status: "pending").where.not(user_id: current_user.id)
     end
+
     if @query = params[:query]
       @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
     end
+  end
+
+  def drafts
+    @points = Point
+              .where(status: 'draft')
+              .where(user_id: current_user.id)
+              .includes(:service)
+              .includes(:case)
+              .includes(:user)
+              .limit(10)
+  end
+
+  def change_requests
+    @points = Point
+              .where(status: 'changes-requested')
+              .where(user_id: current_user.id)
+              .includes(:service)
+              .includes(:case)
+              .includes(:user)
+              .limit(10)
+  end
+
+  def pending_review
+    @points = Point
+              .where(status: 'pending')
+              .where.not(user_id: current_user.id)
+              .includes(:service)
+              .includes(:case)
+              .includes(:user)
+              .order(updated_at: :desc)
+              .limit(10)
   end
 
   def new
@@ -139,11 +171,14 @@ class PointsController < ApplicationController
   end
 
   def must_be_peer_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
-    end
-    if current_user.id == @point.id
-      render :file => "public/401.html", :status => :unauthorized
+    if @point.nil?
+      unless current_user.curator?
+        render :file => "public/401.html", :status => :unauthorized
+      end
+    else
+      if (current_user.id == @point.id) && !current_user.curator?
+        render :file => "public/401.html", :status => :unauthorized
+      end
     end
   end
 end
