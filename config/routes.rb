@@ -16,7 +16,9 @@ Rails.application.routes.draw do
 
   get 'about', to: 'pages#about'
 
-
+  get 'points/drafts', to: 'points#drafts'
+  get 'points/change-requests', to: 'points#change_requests'
+  get 'points/pending-review', to: 'points#pending_review'
   get 'points/new', to: 'points#new'
   get 'points/:id/review', to: 'points#review', as: "review"
   patch 'points/:id/review', to: 'points#post_review'
