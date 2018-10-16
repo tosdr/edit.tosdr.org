@@ -1,165 +1,95 @@
-<div class="row">
-  <div class="col-xs-12">
-    <div class="card-inline card-inline-header ">
-      <div class="card-inline-item card-inline-service">
-        Services
-      </div>
-      <div class="card-inline-item card-inline-point">
-        Title
-      </div>
-      <div class="card-inline-item card-inline-rating">
-        Rating
-      </div>
-      <div class="card-inline-item card-inline-status">
-        Status
-      </div>
-      <div class="card-inline-item card-inline-status">
-        Author
-      </div>
-      <div class="card-inline-item card-inline-options">
-        Options
-      </div>
-    </div>
-    <!-- actual card-inline -->
-    <% if points.empty? %>
-    <div class="card-inline">
-      <div class="card-inline-item">
-        No points found
-      </div>
-    </div>
-    <% else %>
-    <div id="points-table-container">
-      <%= javascript_tag do %>
-        function compareClassification(elementA, elementB) {
-          if (
-            !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
-            || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
-          ) {
-            return 0;
-          }
+<table id="myTable" class="table table-striped">
+  <%= javascript_tag do %>
+  function compareClassification(elementA, elementB) {
+    if (
+      !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
+      || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
+    ) {
+      return 0;
+    }
 
-          if (elementA.dataset.classification === elementB.dataset.classification) {
-            return 0;
-          }
-          // Both do not have the same classification, so if one is good, that one is better:
-          if (elementA.dataset.classification === 'good') {
-            return -1;
-          }
-          if (elementB.dataset.classification === 'good') {
-            return 1;
-          }
-          // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-          if (elementA.dataset.classification === 'neutral') {
-            return -1;
-          }
-          if (elementB.dataset.classification === 'neutral') {
-            return 1;
-          }
-          // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-          if (elementA.dataset.classification === 'bad') {
-            return -1;
-          }
-          if (elementB.dataset.classification === 'bad') {
-            return 1;
-          }
-        }
+    if (elementA.dataset.classification === elementB.dataset.classification) {
+      return 0;
+    }
+    // Both do not have the same classification, so if one is good, that one is better:
+    if (elementA.dataset.classification === 'good') {
+      return -1;
+    }
+    if (elementB.dataset.classification === 'good') {
+      return 1;
+    }
+    // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
+    if (elementA.dataset.classification === 'neutral') {
+      return -1;
+    }
+    if (elementB.dataset.classification === 'neutral') {
+      return 1;
+    }
+    // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
+    if (elementA.dataset.classification === 'bad') {
+      return -1;
+    }
+    if (elementB.dataset.classification === 'bad') {
+      return 1;
+    }
+  }
 
-        document.getElementById('orderByPoint').addEventListener("click", (event) => {
-          let elems =  document.querySelectorAll(".card-point");
-          // convert nodelist to array
-          var array = [];
-          for (var i = 0; i < elems.length; i++) {
-            array[i] = elems[i];
-          }
+  document.getElementById('orderByPoint').addEventListener("click", (event) => {
+    let elems =  document.querySelectorAll("#toSort");
+    // convert nodelist to array
+    var array = [];
+    for (var i = 0; i < elems.length; i++) {
+      array[i] = elems[i];
+    }
 
-          // perform sort depending on classname
-          if(event.currentTarget.className=="btn btn-success"){
-            array.sort((a, b) => compareClassification(b, a));
-            event.currentTarget.classList.remove("btn-success");
-            event.currentTarget.classList.add("btn-danger");
-          }
-          else if(event.currentTarget.className== "btn btn-danger"){
-            array.sort(compareClassification);
-            event.currentTarget.classList.remove("btn-danger");
-            event.currentTarget.classList.add("btn-success");
-          }
-          // join the array back into HTML
-          var output = "";
-          for (var i = 0; i < array.length; i++) {
-            output += array[i].outerHTML;
-          }
-          // append output to div 'points-table-container'
-          document.getElementById('points-table-container').innerHTML = output;
-        });
-    <% end %>
-
-<% points.each do |p| %>
-<div class="card-point" data-classification="<%= p.case&.classification %>">
-  <% if p.case&.classification == 'good' %>
-  <% pointbox = "point-good" %>
-  <% elsif p.case&.classification == 'neutral' %>
-  <% pointbox = "point-neutral" %>
-  <% elsif p.case&.classification == 'bad' %>
-  <% pointbox = "point-bad" %>
-  <% elsif p.case&.classification == 'blocker' %>
-  <% pointbox = "point-blocker" %>
+    // perform sort depending on classname
+    if(event.currentTarget.className=="btn btn-success"){
+      array.sort((a, b) => compareClassification(b, a));
+      event.currentTarget.classList.remove("btn-success");
+      event.currentTarget.classList.add("btn-danger");
+    }
+    else if(event.currentTarget.className== "btn btn-danger"){
+      array.sort(compareClassification);
+      event.currentTarget.classList.remove("btn-danger");
+      event.currentTarget.classList.add("btn-success");
+    }
+    // join the array back into HTML
+    var output = "";
+    for (var i = 0; i < array.length; i++) {
+      output += array[i].outerHTML;
+    }
+    // append output to div 'points-table-container'
+    document.getElementById('myTable').innerHTML = output;
+  });
   <% end %>
-  <div class="card-inline" >
-    <div class="card-inline-item card-inline-service">
-      <%= link_to p.service.name, service_path(p.service), title: "View all points for #{p.service.name}" %>
-    </div>
-    <div class="card-inline-item card-inline-point">
-      <%= link_to p.title, point_path(p), title: "View more details about the point: #{p.title}" %>
-    </div>
-    <div class="card-inline-item card-inline-rating <%= pointbox %>">
-    </div>
-    <div class="card-inline-item card-inline-status">
-      <%= p.status %>
-    </div>
-    <div class="card-inline-item card-inline-status">
-      <%= username p.user %>
-    </div>
-    <div class="card-inline-item card-inline-options">
-      <% if current_user %>
-        <% if current_user.curator? %>
 
-          <%= link_to(point_path(p), class: 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-          <% end %>
-          <%= link_to(edit_point_path(p), class: 'btn') do %>
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-          <% end %>
-
-        <% elsif current_user.id == p.user_id %>
-
-          <%= link_to(point_path(p), class: 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-          <% end %>
-          <%= link_to(edit_point_path(p), class: 'btn') do %>
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-          <% end %>
-          <% else %>
-
-          <%= link_to(point_path(p), class: 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-          <% end %>
-
-        <% end %>
-
-      <% else %>
-
-        <%= link_to(point_path(p), class: 'btn') do %>
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        <% end %>
-
-      <% end %>
-
-    </div>
-  </div>
-</div>
-<!-- card-inline-END -->
-<% end %>
-<% end %>
-</div>
-</div>
-</div>
+  <thead>
+    <tr>
+      <th scope="col">Service</th>
+      <th scope="col">Title</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Status</th>
+      <th scope="col">Author</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% points.each do |point| %>
+    <% if point.case&.classification == 'good' %>
+      <% pointbox = "point-good" %>
+    <% elsif point.case&.classification == 'neutral' %>
+      <% pointbox = "point-neutral" %>
+    <% elsif point.case&.classification == 'bad' %>
+      <% pointbox = "point-bad" %>
+    <% elsif point.case&.classification == 'blocker' %>
+      <% pointbox = "point-blocker" %>
+    <% end %>
+    <tr id="toSort" data-classification="<%= point.case&.classification %>">
+      <th scope="row"><%= point.service.name %></th>
+      <td><%= link_to point.title, point_path(point), title: "View more details" %></td>
+      <td class="<%= pointbox %>"></td>
+      <td> <%= point.status %> </td>
+      <td><%= username point.user %> </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
