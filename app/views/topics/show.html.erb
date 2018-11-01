@@ -8,9 +8,6 @@
   <p class="fw2 mt0 lh-copy">
     <%= @topic.subtitle %>.
   </p>
-  <p class="fw2 mt0 lh-copy">
-    Privacy related: <%= @topic.privacy_related? ? "yes" : "no" %>
-  </p>
 
   <p>
   <% if current_user %>
@@ -102,7 +99,7 @@
 
 <br>
 <br>
- 
+
   <%= render 'shared/comments', comments: @topic.topic_comments %>
 
 <br>
