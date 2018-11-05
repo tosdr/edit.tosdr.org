@@ -1,0 +1,57 @@
+#/bin/bash
+
+echo '[*] Welcome to the installer of edit.tosdr.org!'
+sleep 1;
+echo '[*] Installing Rbenv'
+
+if [ -d ~/.rbenv ]; then
+  echo 'Rbenv exists installing Ruby 2.3.5, it might take a while...'
+  rbenv install 2.3.5
+else
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv/;
+  echo 'Rbenv exists now installing Ruby 2.3.5, it might take a while...'
+  rbenv install 2.3.5;
+  if [ -f ~/.bashrc ]; then
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc;
+  elif [ -f ~/.bash_history ]; then
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_history;
+  elif [ -f ~/.zshrc ]; then
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc;
+  fi
+fi
+
+echo '[*] Installing yarn'
+
+if hash yarn 2>/dev/null; then
+  echo 'You have yarn!'
+else
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+ sudo apt-get update && sudo apt-get install yarn
+fi
+
+echo '[*] Installing postgres'
+
+if hash psql 2>/dev/null; then
+  echo 'You have postgres!'
+else
+  echo '[*] Installing postgres'
+  sudo apt-get install -y postgresql postgresql-contrib libpq-dev build-essential
+  # TODO: find a way to setup postgres for the user
+  #echo `whoami` > /tmp/caller
+  #sudo su - postgres
+  #psql --command "CREATE ROLE `cat /tmp/caller` LOGIN createdb;"
+  #exit
+  #rm -f /tmp/caller
+fi
+
+echo '[*] Setting local ruby version to 2.3.5'
+rbenv local 2.3.5
+echo '[*] Installing gems'
+bundle install
+echo '[*] Compiling JS'
+yarn install
+echo '[*] Setting up the database'
+rails db:create db:migrate
+
+echo '[*] You are ready to go!'
