@@ -1,7 +1,17 @@
 #/bin/bash
 
-echo '[*] Welcome to the installer of edit.tosdr.org!'
+echo ''
+echo '[*] Welcome to the installer for edit.tosdr.org!'
+echo ''
+echo '  ###############'
+echo '  ###############'
+echo '  ###########          I have read and agreed to the terms'
+echo '  ###########          is the biggest lie on the web.'
+echo '  #######'
+echo '  #######              We aim to fix that.'
+
 sleep 1;
+echo ''
 echo '[*] Installing Rbenv'
 
 if [ -d ~/.rbenv ]; then
