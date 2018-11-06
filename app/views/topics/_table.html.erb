@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th scope="col">Title</th>
+      <th scope="col" class="text-right">Cases</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% topics.each do |topic| %>
+    <tr>
+      <td></td>
+      <td><%= link_to topic.title, topic_path(topic), title: "View more details" %></td>
+      <td class="text-right"><%= topic.cases.count %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
