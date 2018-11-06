@@ -9,6 +9,8 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
 
+  attr_accessor :service_rating
+
   def points_by_topic(query)
     points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
   end
@@ -18,6 +20,10 @@ class Service < ApplicationRecord
   end
 
   def service_rating
+    service_rating_get
+  end
+
+  def service_rating_get
     points = self.points
     classification_counts = service_point_classifications_count(points)
     balance = calculate_balance(classification_counts)
@@ -30,7 +36,6 @@ class Service < ApplicationRecord
     counts = Hash.new 0
     total_ratings.each { |rating| counts[rating] += 1 }
     counts
-    # returns {"neutral"=>1, "good"=>9, "bad"=>5}
   end
 
   def calculate_balance(counts)

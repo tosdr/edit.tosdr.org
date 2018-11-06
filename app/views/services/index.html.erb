@@ -1,84 +1,34 @@
 <% content_for :title do %>
   <title>Services (ToS;DR Phoenix)</title>
 <% end %>
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    All Services
-  </h1>
 
-<p>To contribute to a service review, first select the service you want to review, using the Search option. Then click the 'eye' icon for the service in question.</p>
+<br>
 
-  <% if current_user && @services.length==0 %>
-  <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary mb15' %>
-  <% else %>
-    Please use the search function to see if the service you're interested in already exists.
-  <% end %>
-</header>
-
-<div class="text-center search-bar mb15">
-  <%= render "shared/search" %>
-</div>
-
-<div class="row">
-  <div class="container card-container">
+<div class="card-inline">
+  <div class="card-inline-item card-inline-service">
     <div class="row">
-      <div class="col-xs-12">
-        <!-- card-inline-header -->
-        <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-service">
-            Name
-          </div>
-          <div class="card-inline-item card-inline-url">
-            Domains
-          </div>
-          <div class="card-inline-item card-inline-grade">
-            Rating
-          </div>
-          <div class="card-inline-item card-inline-options">
-            Options
-          </div>
-        </div>
-        <!-- actual card-inline -->
-        <% if @services.empty? %>
-          <div class="card-inline">
-            <div class="card-inline-item">
-              No services found
-            </div>
-          </div>
-        <% else %>
-          <% @services.each do |s| %>
-            <% if s.service_rating == "N/A" %>
-              <% badge_rating = "rating-na" %>
-            <% else %>
-              <% badge_rating = "rating-#{s.service_rating}" %>
-          <% end %>
-          <div class="card-inline">
-            <div class="card-inline-item card-inline-service text-left">
-              <%= s.name %>
-            </div>
-            <div class="card-inline-item card-inline-url">
-              <%= s.url %>
-            </div>
-            <div class="card-inline-item card-inline-grade">
-              <div class="service-badge <%= badge_rating %> ">
-                 <%= s.service_rating %>
-              </div>
-            </div>
-            <div class="card-inline-item card-inline-options">
-              <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
-              <%= link_to(annotate_service_path(s), class: 'btn') do %>
-                <i class="fa fa-bookmark" aria-hidden="true"></i>
-                <% end %>
-              <% end %>
-              <%= link_to(service_path(s), class: 'btn') do %>
-                <i class="fa fa-eye" aria-hidden="true"></i>
-                <% end %>
-            </div>
-          </div>
-          <!-- card-inline-END -->
-          <% end %>
+      <div class="col-lg-6">
+        <h1>Services</h1>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-lg-6">
+        <%= render "shared/search" %>
+      </div>
+
+      <div class="col-lg-6 text-right justify-content-end">
+        <button class="btn btn-success" id="orderByPoint">Order Services by Rating</button>
+        <% if current_user && @services.length==0 %>
+          <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary mb15' %>
         <% end %>
       </div>
     </div>
+    <br>
+    <% if @services.empty? %>
+      <p>There are no services to display at this time!</p>
+    <% else %>
+      <%= render "shared/table_services", services: @services %>
+    <% end %>
   </div>
 </div>
