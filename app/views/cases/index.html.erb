@@ -1,77 +1,35 @@
 <% content_for :title do %>
   <title>Cases (ToS;DR Phoenix)</title>
 <% end %>
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    All Cases
-  </h1>
-  <%= link_to 'Add Case', new_case_path, class: 'btn btn-primary mb15' %>
-</header>
 
-<div class="text-center search-bar mb15">
-  <%= render "shared/search" %>
-</div>
-
-<% @topics.each do |t| %>
-<h2><%= t.title %></h2>
-<div class="row">
-  <div class="container card-container">
+<div class="card-inline">
+  <div class="card-inline-item card-inline-service">
     <div class="row">
-      <div class="col-xs-12">
-        <!-- card-inline-header -->
-        <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-service">
-            Title
-          </div>
-          <div class="card-line card-inline-rating">
-            Score
-          </div>
-          <div class="card-inline-item card-inline-contribution">
-            Contributions
-          </div>
-          <div class="card-inline-item card-inline-options">
-            Options
-          </div>
-        </div>
-        <!-- actual card-inline -->
-        <% if t.cases.empty? %>
-          <div class="card-inline">
-            <div class="card-inline-item">
-              No cases found
-            </div>
-          </div>
-        <% else %>
-          <% t.cases.each do |c| %>
-          <div class="card-inline">
-            <div class="card-inline-item card-inline-service">
-              <%= c.title %>
-            </div>
-            <div class="card-line card-inline-rating">
-              <%= c.score %>
-            </div>
-            <div class="card-inline-item card-inline-contribution">
-              <%= c.points.count %>
-            </div>
-            <div class="card-inline-item card-inline-options">
-              <%= link_to(case_path(c), class: 'btn') do %>
-              <i class="fa fa-eye" aria-hidden="true"></i>
-              <% end %>
+      <div class="col-lg-6">
+        <h1>Cases</h1>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-lg-6">
+        <%= render "shared/search" %>
+      </div>
 
-              <% if current_user && current_user.curator? %>
-
-              <%= link_to(edit_case_path(c), class: 'btn') do %>
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-              <% end %>
-
-              <% end %>
-
-            </div>
-          </div>
-          <!-- card-inline-END -->
-          <% end %>
+      <div class="col-lg-6 text-right justify-content-end">
+        <% if current_user.curator? %>
+          <%= link_to 'Add Case', new_case_path, class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
       </div>
     </div>
+    <br>
+    <% @topics.each do |t| %>
+      <h3><%= t.title %></h3>
+      <% if t.cases.empty? %>
+          No cases found
+      <% else %>
+        <%= render "shared/table_cases", cases: t.cases %>
+      <% end %>
+    <% end %>
   </div>
 </div>
-<% end %>
