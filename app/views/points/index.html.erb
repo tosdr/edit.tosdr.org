@@ -1,72 +1,46 @@
 <% if current_user %>
-<% content_for :title do %>
-  <title>Points (ToS;DR Phoenix)</title>
-<% end %>
+  <% content_for :title do %>
+    <title>Points (ToS;DR Phoenix)</title>
+  <% end %>
 
-<% if params[:scope].nil? || params[:scope] == "all" %>
+  <div class="card-inline">
+    <div class="card-inline-item card-inline-service">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Points</h1>
+          <% if @points.length == 100 %>
+            (showing only 100 items)
+          <% else %>
+            (showing all <%= @points.length %> items)
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <%= render "shared/search" %>
+        </div>
 
-<div class="row mb15">
-  <div class="col-sm-3">
-    <div class="fl">
-      <%= link_to 'All', points_path(scope: 'all'), class: 'btn btn-primary active' %>
-      <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-primary' %>
+        <div class="col-lg-6 text-right justify-content-end">
+          <% if params[:scope].nil? || params[:scope] == "all" %>
+            <%= link_to 'All', points_path(scope: nil), class: 'btn btn-default active smaller-btn-text' %>
+            <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-link smaller-btn-text' %>
+          <% elsif params[:scope] == "pending" %>
+            <%= link_to 'All', points_path(scope: nil), class: 'btn btn-link smaller-btn-text' %>
+            <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-default active smaller-btn-text'  %>
+          <% end %>
+
+          <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
+
+        </div>
+      </div>
+      <br>
+      <% if @points.empty? %>
+        <p>There are no points to display at this time!</p>
+      <% else %>
+        <%= render "shared/table_points", points: @points %>
+      <% end %>
     </div>
   </div>
-  <div class="col-sm-3">
-    <%= render "shared/search" %>
-  </div>
-  <div class="col-sm-3">
-  <% if @points.length == 100 %>
-    (showing only 100 items)
-  <% else %>
-    (showing all <%= @points.length %> items)
-  <% end %>
-  </div>
-  <div class="col-sm-3">
-    <span class="fr"><button class="btn btn-success" id="orderByPoint">Order these by Rating</button></span>
-  </div>
-</div>
-
-<div class="tabs-container tab">
-  <div class="row">
-    <div class="container card-container">
-     <%= render 'table', points: @points %>
-   </div>
- </div>
-</div>
-
-<% elsif params[:scope] == "pending" %>
-
-<div class="row mb15">
-  <div class="col-sm-3">
-    <div class="fl">
-      <%= link_to 'All', points_path(scope: 'all'), class: 'btn btn-primary' %>
-      <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-primary active' %>
-    </div>
-  </div>
-  <div class="col-sm-3">
-    <%= render "shared/search" %>
-  </div>
-  <div class="col-sm-3">
-  <% if @points.length == 100 %>
-    (showing only 100 items)
-  <% else %>
-    (showing all <%= @points.length %> items)
-  <% end %>
-  </div>
-  <div class="col-sm-3">
-    <span class="fr"><button class="btn btn-success" id="orderByPoint">Order these by Rating</button></span>
-  </div>
-</div>
-
-<div class="tabs-container tab">
-  <div class="row">
-    <div class="container card-container">
-     <%= render 'table', points: @points %>
-   </div>
- </div>
-</div>
-
-<% end %>
-
 <% end %>
