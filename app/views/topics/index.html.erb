@@ -15,7 +15,6 @@
       <div class="col-lg-6">
         <%= render "shared/search" %>
       </div>
-
       <div class="col-lg-6 text-right justify-content-end">
         <% if current_user.curator? %>
           <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary smaller-btn-text' %>
