@@ -69,7 +69,7 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service = Service.includes(points: [:case], versions: [:item]).find(params[:id] || params[:service_id])
+    @service = Service.includes(points: [:case, :user], versions: [:item]).find(params[:id] || params[:service_id])
     if current_user
       case params[:scope]
       when nil

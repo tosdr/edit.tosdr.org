@@ -1,12 +1,12 @@
 <% if current_page?(points_path) %>
   <% current_path = points_path %>
-  <% placeholder = "Search a service" %>
+  <% placeholder = "Search by service" %>
 <% elsif current_page?(topics_path)%>
   <% current_path = topics_path %>
   <% placeholder = "Search a topic" %>
 <% elsif current_page?(services_path) %>
   <% current_path = services_path %>
-  <% placeholder = "Search a service" %>
+  <% placeholder = "Search by name" %>
 <% elsif current_page?(root_path)%>
   <% current_path = root_path %>
   <% placeholder = "Search a service" %>
@@ -16,22 +16,8 @@
 <% else %>
   <% placeholder = "Search" %>
 <% end %>
-<div class="search-bar">
-  <div id="custom-search-input">
-    <div class="input-group col-xs-12">
-      <%= form_tag(current_path, method: :get) do %>
-        <%= text_field_tag :query, "", class: "search-query form-control", placeholder: placeholder, value: @query %>
-        <span class="input-group-btn">
-          <%= button_tag(type: 'search', class: "btn btn-danger button") do %>
-            <span class="glyphicon glyphicon-search"></span>
-          <% end %>
-        </span>
-      <% end %>
-    </div>
-  </div>
-  <div class="reset-btn">
-    <%= link_to "Back", current_path, class: "btn btn-default"%>
-  </div>
-</div>
 
-
+<%= form_tag(current_path, method: :get, class: "form-inline") do %>
+  <%= text_field_tag :query, "", class: "form-control mr-sm-2", placeholder: placeholder, value: @query %>
+  <%= submit_tag "Search", class: 'btn btn-sm btn-outline-secondary' %>
+<% end %>

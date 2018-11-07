@@ -1,0 +1,33 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Contributions</th>
+      <th></th>
+      <th></th>
+      <th scope="col" class="text-left">Rating</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% cases.each do |c| %>
+    <% if c.classification == 'good' %>
+      <% pointbox = "point-good" %>
+    <% elsif c.classification == 'neutral' %>
+      <% pointbox = "point-neutral" %>
+    <% elsif c.classification == 'bad' %>
+      <% pointbox = "point-bad" %>
+    <% elsif c.classification == 'blocker' %>
+      <% pointbox = "point-blocker" %>
+    <% end %>
+    <tr>
+      <td><%= link_to c.title, case_path(c), title: "View points connected to this case" %></td>
+      <td class="text-center"> <%= c.points.count %></td>
+      <td></td>
+      <td></td>
+      <td class="<%= pointbox %> text-center"></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

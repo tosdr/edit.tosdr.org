@@ -1,70 +1,31 @@
 <% content_for :title do %>
   <title>Topics (ToS;DR Phoenix)</title>
 <% end %>
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    All Topics
-  </h1>
-  <% if current_user.curator? %>
-  <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary mb15' %>
-  <% end %>
-</header>
 
-<div class="text-center search-bar mb15">
-  <%= render "shared/search" %>
-</div>
-
-<div class="row">
-  <div class="container card-container">
+<div class="card-inline">
+  <div class="card-inline-item card-inline-service">
     <div class="row">
-      <div class="col-xs-12">
-        <!-- card-inline-header -->
-        <div class="card-inline card-inline-header">
-          <div class="card-inline-item card-inline-service">
-            Title
-          </div>
-          <div class="card-inline-item card-inline-contribution">
-            Contributions
-          </div>
-          <div class="card-inline-item card-inline-options">
-            Options
-          </div>
-        </div>
-        <!-- actual card-inline -->
-        <% if @topics.empty? %>
-          <div class="card-inline">
-            <div class="card-inline-item">
-              No topics found
-            </div>
-          </div>
-        <% else %>
-          <% @topics.each do |t| %>
-          <div class="card-inline">
-            <div class="card-inline-item card-inline-service">
-              <%= t.title %>
-            </div>
-            <div class="card-inline-item card-inline-contribution">
-              <%= t.cases.count %>
-            </div>
-            <div class="card-inline-item card-inline-options">
-              <%= link_to(topic_path(t), class: 'btn') do %>
-              <i class="fa fa-eye" aria-hidden="true"></i>
-              <% end %>
-
-              <% if current_user.curator? %>
-
-              <%= link_to(edit_topic_path(t), class: 'btn') do %>
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-              <% end %>
-
-              <% end %>
-
-            </div>
-          </div>
-          <!-- card-inline-END -->
-          <% end %>
+      <div class="col-lg-6">
+        <h1>Topics</h1>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-lg-6">
+        <%= render "shared/search" %>
+      </div>
+      <div class="col-lg-6 text-right justify-content-end">
+        <% if current_user.curator? %>
+          <%= link_to 'Add Topic', new_topic_path, class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
       </div>
     </div>
+    <br>
+    <% if @topics.empty? %>
+      <p>There are no topics to display at this time!</p>
+    <% else %>
+      <%= render "table", topics: @topics %>
+    <% end %>
   </div>
 </div>

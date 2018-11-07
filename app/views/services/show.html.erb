@@ -1,67 +1,68 @@
 <% content_for :title do %>
   <title>Service <%= @service.name %> (ToS;DR Phoenix)</title>
 <% end %>
-  <div class="row">
-    <div class="col-sm-6">
-      <% if @service.wikipedia && @service.wikipedia.length > 0 %>
-      <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
-      <% end %>
-    </div>
-    <div class="col-sm-6" style="text-align:right" >
-      <h5 class="fw2 fr gray">
-        <% if current_user %>
-          <% if current_user.curator? %>
-            <%= link_to "Edit Service", edit_service_path(@service) %>
-            |
-          <% end %>
-          <%= link_to 'Add Comment', new_service_service_comment_path(@service) %>
+
+<div class="card-inline">
+  <div class="card-inline-item card-inline-service">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
+        <h5> Rating: <%= @service.service_rating %></h5>
+      </div>
+
+      <div class="col-lg-6 text-right justify-content-end">
+        <% if @service.wikipedia && @service.wikipedia.length > 0 %>
+          <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
         <% end %>
-      </h5>
-    </div>
-
-  </div>
-
-  <% grade = "rating-#{@service.service_rating}" %>
-
-
-  <div class="row mb15">
-    <div class="col-sm-6">
-      <h2 class="service-title fw2 mv fl gray">
-        <a href="<%= @service.url %>"><%= @service.name %></a>
-        <% unless @service.service_rating == "N/A" %>
-        <div class="grade <%= grade %>">
-          <%= @service.service_rating %>
-        </div>
-        <% end %>
-      </h2>
-    </div>
-    <div class="col-sm-6">
-    </div>
-  </div>
-
-  <br>
-
-
-  <%= render 'table', points: @points %>
-
-  <% if @service.documents.count == 0 %>
-    <div class="container" style="margin-top: 1rem">
-        <%= link_to "Add a document for review", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-primary" %>
-    </div>
-  <% else %>
-    <div class="row" style="margin-top: 1rem">
-      <div class="col-xs-12">
-        <%= link_to "Review documents", annotate_service_path(@service), class: 'btn btn-primary' %>
       </div>
     </div>
-  <% end %>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <% if current_user %>
+          <% if current_user.curator? %>
+            <%= link_to 'Edit Service', edit_service_path(@service), class: 'btn btn-primary smaller-btn-text' %>
+          <% end %>
+            <%= link_to 'Add Comment', new_service_service_comment_path(@service), class: 'btn btn-link smaller-btn-text' %>
+        <% end %>
+
+        <% if @service.documents.count == 0 %>
+          <%= link_to "Add Document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-link smaller-btn-text" %>
+        <% else %>
+          <%= link_to "View Documents", annotate_service_path(@service), title: "Create points by browsing this service's documents", class: 'btn btn-link smaller-btn-text' %>
+        <% end %>
+      </div>
+
+      <div class="col-lg-6 form-inline text-right justify-content-end">
+        <% if current_user %>
+          <% if params[:scope].nil? %>
+            <%= link_to 'All', service_path(scope: nil), class: 'btn btn-default active smaller-btn-text' %>
+            <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-link smaller-btn-text' %>
+          <% elsif params[:scope] == 'pending' %>
+            <%= link_to 'All', service_path(scope: nil), class: 'btn btn-link smaller-btn-text' %>
+            <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-default active smaller-btn-text' %>
+          <% end %>
+        <% end %>
+        <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
+      </div>
+    </div> <!--/.float-right -->
+    <br>
+    <% if @points.empty? %>
+      <p>There are no points to display at this time!</p>
+    <% else %>
+      <%= render "shared/table_points", points: @points %>
+    <% end %>
+  </div>
+</div>
+
 <br>
 <br>
 
-   <%= render 'shared/comments', comments: @service.service_comments %>
+  <%= render 'shared/comments', comments: @service.service_comments %>
 
 <br>
 <br>
 
   <%= render 'versions', versions: @versions %>
-
