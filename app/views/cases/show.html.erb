@@ -29,7 +29,9 @@
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
-        <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger smaller-btn-text' %>
+        <% if current_user&.curator? %>
+          <%= link_to 'Delete Case', @case, method: :delete, class: 'btn btn-danger smaller-btn-text' %>
+        <% end %>
       </div>
     </div> <!--/.float-right -->
     <br>
