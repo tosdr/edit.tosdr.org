@@ -17,7 +17,7 @@
       </div>
 
       <div class="col-lg-6 text-right justify-content-end">
-        <% if current_user.curator? %>
+        <% if current_user&.curator? %>
           <%= link_to 'Add Case', new_case_path, class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
       </div>
