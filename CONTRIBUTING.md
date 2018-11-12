@@ -2,6 +2,18 @@
 
 To contribute, you can either [set up your development environment yourself](#manual-environment-setup), or [use Docker Compose](#automated-environment-setup).
 
+## Quickstart
+
+1. Clone the repository with: `git clone
+git@github.com:tosdr/edit.tosdr.org.git` in your working folder.
+
+2. Go to the folder: `cd edit.tosdr.org`.
+
+3. If you are on linux run `sh INSTALL_linux.sh` in your terminal. If you are on
+macOS run `sh INSTALL_mac.sh`.
+
+4. Fix the Internet's biggest lie.
+
 ## Manual environment setup
 
 ### Install Ruby with [Rbenv](https://github.com/rbenv/rbenv)
@@ -118,7 +130,7 @@ docker-compose run web rails db:migrate
 
 ## Committing & Pull Requests
 
-* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh], [mod] if it's a modification, [sec] if it's security. 
-* When you create a pull request, please make sure you checked everything in the PR template. 
-    
+* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh], [mod] if it's a modification, [sec] if it's security.
+* When you create a pull request, please make sure you checked everything in the PR template.
+
 Have fun!
