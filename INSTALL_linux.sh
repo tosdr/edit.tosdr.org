@@ -64,4 +64,4 @@ yarn install
 echo '[*] Setting up the database'
 rails db:create db:migrate
 
-echo '[*] You are ready to go!'
+echo '[*] You are ready to go! Run "rails server" to start the server'
