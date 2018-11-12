@@ -20,7 +20,7 @@ if [ -d ~/.rbenv ]; then
 else
   brew install rbenv
   echo 'Rbenv exists now installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5;
+  rbenv install 2.3.5
 fi
 
 if hash yarn 2>/dev/null; then

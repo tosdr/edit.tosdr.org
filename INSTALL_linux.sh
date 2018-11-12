@@ -20,7 +20,7 @@ if [ -d ~/.rbenv ]; then
 else
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv/;
   echo 'Rbenv exists now installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5;
+  rbenv install 2.3.5
   if [ -f ~/.bashrc ]; then
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc;
   elif [ -f ~/.bash_history ]; then
