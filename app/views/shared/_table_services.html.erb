@@ -93,7 +93,11 @@
   <tbody>
   <% services.each do |s| %>
     <tr id="toSort" data-classification="<%= s.service_rating %>">
-      <td><%= link_to s.name, service_path(s) %></td>
+      <td>
+        <%= link_to service_path(s) do %>
+          <%= truncate(s.name, length: 30) %>
+        <% end %>
+      </td>
       <td><%= s.service_rating %> </td>
       <td class="text-right">
         <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
