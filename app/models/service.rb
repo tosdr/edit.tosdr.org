@@ -1,5 +1,6 @@
 class Service < ApplicationRecord
   has_paper_trail
+
   has_many :points
   has_many :documents
 
@@ -11,6 +12,8 @@ class Service < ApplicationRecord
 
   attr_accessor :service_rating
 
+  before_validation :strip_input_fields
+
   def points_by_topic(query)
     points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
   end
@@ -21,6 +24,14 @@ class Service < ApplicationRecord
 
   def service_rating
     service_rating_get
+  end
+
+  private
+
+  def strip_input_fields
+    self.attributes.each do |key, value|
+      self[key] = value.strip if value.respond_to?("strip")
+    end
   end
 
   def service_rating_get
