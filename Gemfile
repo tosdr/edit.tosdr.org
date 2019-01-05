@@ -25,6 +25,8 @@ gem 'formtastic'
 gem 'pundit'
 gem 'paper_trail'
 
+gem 'recaptcha'
+
 # for tosback2:
 gem "capybara"
 gem "poltergeist"

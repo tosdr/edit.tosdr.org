@@ -229,6 +229,8 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    recaptcha (4.13.1)
+      json
     redis (4.0.1)
     request_store (1.4.1)
       rack (>= 1.4)
@@ -321,6 +323,7 @@ DEPENDENCIES
   pundit
   rack-mini-profiler
   rails (= 5.1.4)
+  recaptcha
   redis
   sanitize
   sass-rails
