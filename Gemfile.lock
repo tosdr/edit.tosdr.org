@@ -192,6 +192,8 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.5)
+    rack-attack (5.4.2)
+      rack (>= 1.0, < 3)
     rack-mini-profiler (1.0.0)
       rack (>= 1.2.0)
     rack-test (1.0.0)
@@ -319,6 +321,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.10.0)
   pundit
+  rack-attack
   rack-mini-profiler
   rails (= 5.1.4)
   redis
@@ -335,4 +338,4 @@ RUBY VERSION
    ruby 2.3.5p376
 
 BUNDLED WITH
-   1.16.2
+   2.0.1
