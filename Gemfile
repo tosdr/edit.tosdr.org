@@ -30,6 +30,8 @@ gem "capybara"
 gem "poltergeist"
 gem "sanitize"
 
+gem 'rack-attack'
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
