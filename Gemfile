@@ -33,8 +33,6 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
-gem 'rack-attack'
-
 group :development, :test do
   gem 'active_record_query_trace'
   gem 'bullet'
