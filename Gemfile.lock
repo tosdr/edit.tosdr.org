@@ -316,6 +316,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.10.0)
   pundit
+  rack-attack
   rack-mini-profiler
   rails (= 5.1.4)
   redis
