@@ -96,8 +96,11 @@ class ServicesController < ApplicationController
 
   def update
     @service = Service.find(params[:id] || params[:service_id])
-    @service.update(service_params)
-    redirect_to service_path(@service)
+    if @service.update(service_params)
+      redirect_to service_path(@service)
+    else
+      render :edit
+    end
   end
 
   def destroy
