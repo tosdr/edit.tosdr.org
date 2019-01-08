@@ -9,6 +9,7 @@ class Service < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :url, presence: true
+  validates :url, uniqueness: true
 
   attr_accessor :service_rating
 
