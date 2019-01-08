@@ -225,9 +225,11 @@ GEM
       activesupport (>= 5.0)
       i18n
     rb-fsevent (0.10.3)
-    rb-inotify (0.10.0)
-      ffi (~> 1.0)
-    redis (4.1.0)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    recaptcha (4.13.1)
+      json
+    redis (4.0.1)
     regexp_parser (1.3.0)
     request_store (1.4.1)
       rack (>= 1.4)
@@ -321,6 +323,7 @@ DEPENDENCIES
   rack-attack
   rack-mini-profiler
   rails (= 5.1.4)
+  recaptcha
   redis
   sanitize
   sass-rails
@@ -335,4 +338,4 @@ RUBY VERSION
    ruby 2.3.5p376
 
 BUNDLED WITH
-   1.15.2
+   1.17.1

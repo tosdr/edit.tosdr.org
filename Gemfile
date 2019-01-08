@@ -28,6 +28,8 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 
+gem 'recaptcha'
+
 # for tosback2:
 gem 'capybara'
 gem 'poltergeist'

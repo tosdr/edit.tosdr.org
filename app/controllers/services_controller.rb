@@ -16,7 +16,7 @@ class ServicesController < ApplicationController
 
   def create
     @service = Service.new(service_params)
-    if @service.save
+    if verify_recaptcha(model: @service) && @service.save
       redirect_to service_path(@service)
     else
       render :new
@@ -96,8 +96,11 @@ class ServicesController < ApplicationController
 
   def update
     @service = Service.find(params[:id] || params[:service_id])
-    @service.update(service_params)
-    redirect_to service_path(@service)
+    if verify_recaptcha(model: @service) && @service.update(service_params)
+      redirect_to service_path(@service)
+    else
+      render :edit
+    end
   end
 
   def destroy
