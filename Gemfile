@@ -3,8 +3,6 @@
 source 'https://rubygems.org'
 ruby '2.3.5'
 
-gem 'letter_opener', group: :development
-
 gem 'postmark-rails'
 
 gem 'activeadmin'
@@ -33,6 +31,11 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
+group :development do
+  gem 'letter_opener'
+  gem 'web-console', '>= 3.3.0'
+end
+
 group :development, :test do
   gem 'active_record_query_trace'
   gem 'bullet'
@@ -45,7 +48,6 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
-  gem 'web-console', '>= 3.3.0'
 end
 
 group :production do
