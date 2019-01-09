@@ -1,6 +1,6 @@
 <div class="form-login">
   <div class="row row-form">
-    <%= simple_form_for([@service]) do |f| %>
+    <%= simple_form_for [@service] do |f| %>
       <div class="form-inputs col-xs-12">
         <%= f.input :name, placeholder: "Service name" %>
         <%= f.input :url, placeholder: "bbc.com,bbc.co.uk", label: "Domains, comma-separated (e.g. 'bbc.com,bbc.co.uk')"%>
@@ -9,6 +9,7 @@
         <% if @service.id && current_user.curator? %>
           <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <a href=\"https://github.com/tosdr/tosdr.org/wiki/checklist\" target=\"_blank\" title=\"Checklist for service reviews\">comprehensive</a> and ready for publication.".html_safe, checked_value: true, unchecked_value: false %>
         <% end %>
+        <%= recaptcha_tags %>
       </div>
       <div class="form-actions col-xs-4 col-sm-2 col-md-2">
           <%= link_to "Back", :back, class: "btn btn-default" %>
