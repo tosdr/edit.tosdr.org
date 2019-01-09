@@ -1,24 +1,26 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable
   has_many :points
   validate :password_validation
 
   after_create :send_welcome_mail
 
   def password_validation
-    unless (password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    unless password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
       errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit'
     end
   end
 
   def admin?
-    self.admin
+    admin
   end
 
   def curator?
-    self.curator
+    curator
   end
 
   def send_welcome_mail
@@ -26,9 +28,9 @@ class User < ApplicationRecord
   end
 
   def hard_delete
-    self.points.update_all user_id: 1 # change to anonymous account id
-    if PointComment.where user_id: self.id
-      c = PointComment.where user_id: self.id
+    points.update_all user_id: 1 # change to anonymous account id
+    if PointComment.where user_id: id
+      c = PointComment.where user_id: id
       c.update_all user_id: 1
     end
   end

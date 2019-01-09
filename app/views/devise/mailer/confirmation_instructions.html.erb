@@ -32,13 +32,16 @@
 </style>
 </head>
 <body>
-  <h1>Welcome <%= @email %> to ToS;DR!</h1>
+  <h1>Hi <%= @user.username? ? @user.username : "you" %>!</h1>
 
-  <p>You can confirm your account email through the link below:</p>
+  <p>You've signed up to contribute to Terms of Service; Didn't Read crowdreading tool on <a herf="https://edit.tosdr.org">Edit</a> (or Phoenix as we like to call it). If you haven't subscribed to this website, please contact as soon as possible the team at <a mailto="team@tosdr.org">team@tosdr.org</a>.</p>
 
-  <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <p>Please bear in mind that this version is a beta version that is still under development. You can follow the development on <a href="https://github.com/tosdr/phoenix">our github</a> or on our <a href="https://blog.tosdr.org">blog</a>.</p>
 
-    <div class="btn"><a href="https://edit.tosdr.org/">Contribute now!</a></div>
+  <p>It means that things can change, a lot. We will keep you updated if anything on our privacy policy or on our terms of services changes. If you have any question please contact our team at <a mailto="team@tosdr.org">team at tosdr org</a>.</p>
+
+  <div class="btn"><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></div>
+
   <p>Happy contributing!</p>
   <p>The ToS;DR Team</p>
 </body>
