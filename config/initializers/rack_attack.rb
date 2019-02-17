@@ -32,7 +32,7 @@ class Rack::Attack
   # Throttle POST requests to */services by IP address
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:signups/ip:#{req.ip}"
-  throttle('services/ip', limit: 1, period: 10.minutes) do |req|
+  throttle('services/ip', limit: 2, period: 10.minutes) do |req|
     if req.path.end_with?('/services') && req.post?
       req.ip
     end
@@ -79,9 +79,9 @@ class Rack::Attack
   # If you want to return 503 so that the attacker might be fooled into
   # believing that they've successfully broken your app (or you just want to
   # customize the response), then uncomment these lines.
-  # self.throttled_response = lambda do |env|
-  #  [ 503,  # status
-  #    {},   # headers
-  #    ['']] # body
-  # end
+  self.throttled_response = lambda do |env|
+   [ 503,  # status
+     {},   # headers
+     ["Oops! It looks like you're creating more than one service in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]] # body
+  end
 end
