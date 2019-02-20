@@ -14,7 +14,8 @@
 @import "components/index";
 @import "pages/index";
 
-.doctext {
-  border-style: solid;
-  padding: 10px;
+.overflow {
+  width: 1000px;
+  height: 300px;
+  overflow: auto;
 }
