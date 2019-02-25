@@ -2,17 +2,28 @@ class Document < ApplicationRecord
   has_paper_trail
 
   belongs_to :service
-  has_many :points
 
+  has_many :points
   has_many :document_comments, dependent: :destroy
 
   validates :name, presence: true
-  validates :url, presence: true, uniqueness: { scope: :xpath }
+  validates :url, presence: true
   validates :service_id, presence: true
 
-  def self.search_by_document_name(query)
-    Document.where("name ILIKE ?", "%#{query}%")
+  validate :custom_uniqueness_check
+
+  def custom_uniqueness_check
+    doc = Document.where(url: self.url, xpath: self.xpath)
+    if doc.any? && (doc.first.id != self.id)
+      go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
+      self.errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
+    end
   end
+
+  def self.search_by_document_name(query)
+    Document.joins(:service).where("services.name ILIKE ? or documents.name ILIKE ? or documents.url ILIKE?", "%#{query}%", "%#{query}%", "%#{query}%")
+  end
+
   def snippets
     if (!self.text)
       self.text = ''

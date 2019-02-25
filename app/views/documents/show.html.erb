@@ -1,32 +1,52 @@
 <% content_for :title do %>
   <title>Document <%= @document.service.name %> <%= @document.name %> (ToS;DR Phoenix)</title>
 <% end %>
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    <%= link_to @document.service.name, annotate_service_path(@document.service) %>:
-    <%= @document.name %>
-  </h1>
-  <p class="fw2 mt0 lh-copy">
-    <%= @document.url %>
-    (<%= @document.xpath %>)
-  </p>
 
-  <p>
-  <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-primary' %>
-  <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary' %>
-  <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-primary' %>
-  <% if current_user.curator? %>
-    <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
-  <% end %>
-  </p>
+<div class="card-inline">
+  <div class="card-inline-item card-inline-service">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1><%= link_to @document.service.name, annotate_service_path(@document.service) %></h1>
+        <h5><%= @document.name %></h5>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <% if current_user %>
+          <% if current_user.curator? %>
+            <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary smaller-btn-text' %>
+          <% end %>
+            <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-link smaller-btn-text' %>
+            <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
+        <% end %>
+      </div>
+
+      <div class="col-lg-6 form-inline text-right justify-content-end">
+        <% if current_user && current_user.curator? %>
+          <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
+        <% end %>
+      </div>
+    </div> <!--/.float-right -->
+    <br>
+    <br>
+    <span>
+      <div class="overflow">
+        <%= @document.text %>
+      </div>
+    </span>
+    <br>
+    <br>
+  </div>
+</div>
+
 <br>
 <br>
- 
+
   <%= render 'shared/comments', comments: @document.document_comments %>
 
 <br>
 <br>
-</header>
-<p class="doctext" >
-  <%= @document.text %>
-</p>

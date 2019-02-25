@@ -24,9 +24,9 @@ class DocumentsController < ApplicationController
 
   def create
     @document = Document.new(document_params)
-    crawl
 
     if @document.save
+      crawl
       redirect_to document_path(@document)
     else
       render 'new'
@@ -35,9 +35,9 @@ class DocumentsController < ApplicationController
 
   def update
     @document.update(document_params)
-    crawl
 
     if @document.save
+      crawl
       redirect_to document_path(@document)
     else
       render 'edit'
@@ -81,7 +81,8 @@ class DocumentsController < ApplicationController
       xpath: @document.xpath
     })
     @tbdoc.scrape
-    @document.update({ text: @tbdoc.newdata })
+
+    @document.update(text: @tbdoc.newdata)
 
     # If text has moved without changing, find it new location.
     # If text _has_ changed and thus can no longer be found, mark it as draft.
