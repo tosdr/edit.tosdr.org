@@ -25,9 +25,11 @@ class Point < ApplicationRecord
     Point.joins(:topic).where('topics.title ILIKE ?', "%#{query}%")
   end
 
-  # def check_changed_attributes_for_service_rating_update
-  #   self.service_needs_rating_update = true if (self.changed_attributed.keys & %w[
-  #     rating
-  #     ]).any?
-  # end
+  def self.case_use_frequency
+    Point.where.not(case_id: 235).group('case').order('count_id DESC').count(:id)
+  end
+
+  def self.topic_use_frequency
+    Point.where.not(case_id: 235).group('case').order('count_id DESC').count(:id)
+  end
 end
