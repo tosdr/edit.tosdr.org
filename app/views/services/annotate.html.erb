@@ -20,9 +20,9 @@
 <div id="caseToast" class="toast">
   <form id="caseDropdown">
     <select>
-      <% @topics.each do |t| %>
-        <optgroup label="<%= t.title %>">
-          <% t.cases.each do |c| %>
+      <% @topics.each do |topic| %>
+        <optgroup label="<%= topic.title %>">
+          <% topic.cases.each do |c| %>
             <option data-case-id="<%= c.id %>"><%= c.title %></option>
           <% end %>
         </optgroup>
@@ -201,4 +201,3 @@
     toast.classList.add('withSelection');
   });
 </script>
-

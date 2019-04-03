@@ -24,12 +24,4 @@ class Point < ApplicationRecord
   def self.search_points_by_topic(query)
     Point.joins(:topic).where('topics.title ILIKE ?', "%#{query}%")
   end
-
-  def self.case_use_frequency
-    Point.where.not(case_id: 235).group('case').order('count_id DESC').count(:id)
-  end
-
-  def self.topic_use_frequency
-    Point.where.not(case_id: 235).group('case').order('count_id DESC').count(:id)
-  end
 end

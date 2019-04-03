@@ -29,7 +29,7 @@ class ServicesController < ApplicationController
     if (params[:point_id] && current_user)
       @point = Point.find_by id: params[:point_id], user_id: current_user.id
     else
-      @topics = Topic.all.includes(:cases).all
+      @topics = Topic.topic_use_frequency
     end
   end
 
