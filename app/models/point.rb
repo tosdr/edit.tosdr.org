@@ -24,10 +24,4 @@ class Point < ApplicationRecord
   def self.search_points_by_topic(query)
     Point.joins(:topic).where('topics.title ILIKE ?', "%#{query}%")
   end
-
-  # def check_changed_attributes_for_service_rating_update
-  #   self.service_needs_rating_update = true if (self.changed_attributed.keys & %w[
-  #     rating
-  #     ]).any?
-  # end
 end

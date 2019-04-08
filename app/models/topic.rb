@@ -16,4 +16,12 @@ class Topic < ApplicationRecord
   def self.search_by_topic_service(query)
     Topic.joins(:point).where("points.name ILIKE ?", "%#{query}%")
   end
+
+  def self.topic_use_frequency
+    Topic.includes(:cases).left_joins(:points).group(:id).order('COUNT(points.id) DESC')
+  end
+
+  def case_use_frequency
+    self.cases.left_joins(:points).group(:id).order('COUNT(points.id) DESC')
+  end
 end
