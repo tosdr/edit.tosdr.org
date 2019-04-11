@@ -18,18 +18,23 @@
   Highlight lines that are of interest to users to link them to a case.
 </div>
 <div id="caseToast" class="toast">
-  <form id="caseDropdown">
-    <select>
-      <% @topics.each do |topic| %>
-        <optgroup label="<%= topic.title %>">
-          <% topic.cases.each do |c| %>
-            <option data-case-id="<%= c.id %>"><%= c.title %></option>
-          <% end %>
-        </optgroup>
-      <% end %>
-    </select>
-    <button type="submit" class="btn btn-primary">Annotate</button>
-  </form>
+  <div>
+    <div class="toast-header">
+      <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
+    </div>
+    <form id="caseDropdown">
+      <select id="forSelect">
+        <% @topics.each do |topic| %>
+          <optgroup label="<%= topic.title %>">
+            <% topic.cases.each do |c| %>
+              <option id="individualCase" data-case-id="<%= c.id %>"><%= c.title %></option>
+            <% end %>
+          </optgroup>
+        <% end %>
+      </select>
+      <button type="submit" class="btn btn-primary">Annotate</button>
+    </form>
+  </div>
 </div>
 <% else %>
 <div class="lead">
@@ -171,6 +176,26 @@
     const quoteForm = document.getElementById('quoteForm');
     quoteForm.submit();
   }
+
+  const searchInput = document.getElementById('myInput');
+  const filter = searchInput.value.toUpperCase;
+  const individualCases = document.getElementById('individualCase');
+
+  function filterFunction() {
+    for (i = 0; i < individualCases.length; i++) {
+      txtValue = individualCases[i].textContent || individualCases[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        individualCases[i].style.display = "";
+      } else {
+        individualCases[i].style.display = "none";
+      }
+    }
+  }
+
+  searchInput.addEventListener('click', () => {
+    console.log('hi');
+    searchInput.addEventListener('keyup', filterFunction);
+  });
 
   const toast = document.getElementById('caseToast') || document.getElementById('pointToast');
 

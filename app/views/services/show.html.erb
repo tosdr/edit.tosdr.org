@@ -6,7 +6,7 @@
   <div class="card-inline-item card-inline-service">
     <div class="row">
       <div class="col-lg-6">
-        <h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
+        <h1><%= link_to @service.name, annotate_service_path(@service) %></h1>
         <h5> Rating: <%= @service.service_rating %></h5>
       </div>
 
