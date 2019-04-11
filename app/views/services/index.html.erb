@@ -28,7 +28,7 @@
     <% if @services.empty? %>
       <p>There are no services to display at this time!</p>
     <% else %>
-      <%= render "shared/table_services", services: @services %>
+      <%= render "table", services: @services %>
     <% end %>
   </div>
 </div>
