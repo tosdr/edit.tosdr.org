@@ -14,16 +14,29 @@ gem 'puma', '~> 3.10.0'
 gem 'rails', '5.1.4'
 gem 'redis'
 
-gem 'autoprefixer-rails'
+# FRONT
+# Font Awesome gem
+gem 'font-awesome-rails'
+# To create micro-components for the frontend
+gem 'vuejs-rails', '~> 2.3.2'
+# To have more interactive select dropdown menus
+gem "select2-rails"
+# Needed to use bootstrap tooltips
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.3.3'
+  gem 'rails-assets-popper.js', '>= 1.14.1'
+  gem 'rails-assets-js-cookie'
+end
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 gem 'formtastic'
-gem 'jquery-rails'
+gem 'sass-rails'
+gem 'simple_form'
+
+gem 'autoprefixer-rails'
 gem 'paper_trail'
 gem 'pundit'
 gem 'rack-attack'
-gem 'sass-rails'
-gem 'simple_form'
 gem 'uglifier'
 
 gem 'recaptcha'

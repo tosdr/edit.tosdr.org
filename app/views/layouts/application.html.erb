@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <!-- Facebook Open Graph data -->
-  <meta property="og:title" content="<%= meta_title %>" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="<%= request.original_url %>" />
-  <meta property="og:image" content="<%= meta_image %>" />
-  <meta property="og:description" content="<%= meta_description %>" />
-  <meta property="og:site_name" content="<%= meta_title %>" />
+    <!-- Facebook Open Graph data -->
+    <meta property="og:title" content="<%= meta_title %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+    <meta property="og:image" content="<%= meta_image %>" />
+    <meta property="og:description" content="<%= meta_description %>" />
+    <meta property="og:site_name" content="<%= meta_title %>" />
 
-  <!-- Twitter Card data -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
-  <meta name="twitter:title" content="<%= meta_title %>">
-  <meta name="twitter:description" content="<%= meta_description %>">
-  <meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
-  <meta name="twitter:image:src" content="<%= meta_image %>">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="<%= DEFAULT_META["twitter_account"] %>">
+    <meta name="twitter:title" content="<%= meta_title %>">
+    <meta name="twitter:description" content="<%= meta_description %>">
+    <meta name="twitter:creator" content="<%= DEFAULT_META["twitter_account"] %>">
+    <meta name="twitter:image:src" content="<%= meta_image %>">
 
-  <%= favicon_link_tag %>
+    <%= favicon_link_tag %>
 
-<% if content_for?(:title) %>
-  <%= content_for(:title) %>
-<% else %>
-  <title>Terms Of Service; Didn't Read - Phoenix</title>
-<% end %>
+  <% if content_for?(:title) %>
+    <%= content_for(:title) %>
+  <% else %>
+    <title>Terms Of Service; Didn't Read - Phoenix</title>
+  <% end %>
 
-  <%= csrf_meta_tags %>
-  <%= action_cable_meta_tag %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-</head>
-<body>
-  <%= render "shared/beta" %>
-  <%= render "shared/navbar" %>
-  <%= render "shared/flashes" %>
-  <div class="container">
-    <%= yield %>
-  </div>
-  <%= render "shared/footer" %>
-  <%= javascript_include_tag 'application' %>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
+  <body>
+    <%= render "shared/beta" %>
+    <%= render "shared/navbar" %>
+    <%= render "shared/flashes" %>
+    <div class="container">
+      <%= yield %>
+    </div>
+    <%= render "shared/footer" %>
+    <%= javascript_include_tag 'application' %>
   </body>
-</body>
 </html>
