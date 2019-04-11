@@ -52,7 +52,7 @@ class PointsController < ApplicationController
   end
 
   def show
-    @versions = @point.versions
+    @versions = @point.versions.includes(:item)
   end
 
   def update
@@ -101,9 +101,10 @@ class PointsController < ApplicationController
   end
 
   def user_points
-    @points = current_user.points.includes(:service)
+    @points = current_user.points.includes([:service, :case, :user])
+
     if @query = params[:query]
-      @points = Point.includes(:service).search_points_by_multiple(@query)
+      @points = current_user.points.includes([:service, :case, :user]).search_points_by_multiple(@query)
     end
   end
 
