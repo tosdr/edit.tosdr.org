@@ -101,7 +101,7 @@ class PointsController < ApplicationController
   end
 
   def user_points
-    @points = current_user.points.includes([:service, :case, :user])
+    @points = current_user.points.includes([:service, :case])
 
     if @query = params[:query]
       @points = current_user.points.includes([:service, :case, :user]).search_points_by_multiple(@query)
