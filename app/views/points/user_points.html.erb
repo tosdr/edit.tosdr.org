@@ -1,16 +1,33 @@
-<% content_for :title do %>
-  <title>My contributions (ToS;DR Phoenix)</title>
-<% end %>
-<header class="tc ph4">
-  <h1 class="fw2 mv3">
-    My Contributions
-  </h1>
-</header>
+<% if current_user %>
+  <% content_for :title do %>
+    <title>My Contributions (ToS;DR Phoenix)</title>
+  <% end %>
 
-<%= render "shared/search" %>
-
-<div class="row">
-  <div class="container card-container">
-   <%= render 'table', points: @points %>
+  <div class="card-inline">
+    <div class="card-inline-item card-inline-service">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>My Contributions</h1>
+          <% if @points.length == 100 %>
+            (showing only 100 items)
+          <% else %>
+            (showing all <%= @points.length %> items)
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <%= render "shared/search" %>
+        </div>
+      </div>
+      <br>
+      <% if @points.empty? %>
+        <p>There are no points to display at this time!</p>
+      <% else %>
+        <%= render "shared/table_points", points: @points %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
