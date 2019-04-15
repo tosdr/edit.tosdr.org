@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190107104259) do
+ActiveRecord::Schema.define(version: 20190414103207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,7 +70,9 @@ ActiveRecord::Schema.define(version: 20190107104259) do
     t.datetime "updated_at", null: false
     t.bigint "service_id"
     t.boolean "reviewed"
+    t.bigint "user_id"
     t.index ["service_id"], name: "index_documents_on_service_id"
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
   create_table "point_comments", force: :cascade do |t|
@@ -203,6 +205,7 @@ ActiveRecord::Schema.define(version: 20190107104259) do
   add_foreign_key "document_comments", "documents"
   add_foreign_key "document_comments", "users"
   add_foreign_key "documents", "services"
+  add_foreign_key "documents", "users"
   add_foreign_key "point_comments", "points"
   add_foreign_key "point_comments", "users"
   add_foreign_key "points", "cases"
