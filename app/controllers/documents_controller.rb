@@ -7,7 +7,7 @@ class DocumentsController < ApplicationController
   include Pundit
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_document, only: [:show, :edit, :update]
+  before_action :set_document, only: [:show, :edit, :update, :crawl]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -37,8 +37,13 @@ class DocumentsController < ApplicationController
     @document.user = current_user
 
     if @document.save
-      crawl
-      redirect_to document_path(@document)
+      perform_crawl
+      if @document.text.blank?
+        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+        redirect_to document_path(@document)
+      else
+        redirect_to document_path(@document)
+      end
     else
       render 'new'
     end
@@ -49,9 +54,20 @@ class DocumentsController < ApplicationController
 
     @document.update(document_params)
 
+    # we should probably only be running the crawler if the URL or XPath have changed
+    if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
+      perform_crawl
+    end
+
     if @document.save
-      crawl
-      redirect_to document_path(@document)
+      # only want to do this if XPath or URL have changed - the theory is that text is returned blank when there's a defunct URL or XPath to avoid server error upon 404 error in the crawler
+      # need to alert people if the crawler wasn't able to retrieve any text...
+      if @document.text.blank?
+        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+        redirect_to document_path(@document)
+      else
+        redirect_to document_path(@document)
+      end
     else
       render 'edit'
     end
@@ -74,10 +90,19 @@ class DocumentsController < ApplicationController
 
   def show
     authorize @document
+  end
 
-    puts 'crawl?'
-    puts params[:crawl]
-    crawl if (params[:crawl])
+  def crawl
+    authorize @document
+
+    perform_crawl
+
+    if @document.text.blank?
+      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+      redirect_to document_path(@document)
+    else
+      redirect_to document_path(@document)
+    end
   end
 
   private
@@ -95,13 +120,14 @@ class DocumentsController < ApplicationController
     params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath)
   end
 
-  def crawl
+  def perform_crawl
     authorize @document
 
     @tbdoc = TOSBackDoc.new({
       url: @document.url,
       xpath: @document.xpath
     })
+
     @tbdoc.scrape
 
     @document.update(text: @tbdoc.newdata)

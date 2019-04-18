@@ -2,7 +2,7 @@ class Document < ApplicationRecord
   has_paper_trail
 
   belongs_to :service
-  belongs_to :user
+  belongs_to :user, optional: true
 
   has_many :points
   has_many :document_comments, dependent: :destroy

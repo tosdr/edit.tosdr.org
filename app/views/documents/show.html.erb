@@ -21,7 +21,7 @@
         <% end %>
 
         <% if policy(@document).crawl? %>
-          <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-link smaller-btn-text' %>
+          <%= link_to 'Crawl Document', document_crawl_path(@document), method: :post, class: 'btn btn-link smaller-btn-text' %>
           <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
         <% end %>
       </div>
