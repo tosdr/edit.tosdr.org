@@ -20,7 +20,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def crawl?
-    !user.nil?
+    (!user.nil? && is_owner?) || (!user.nil? && user.curator?)
   end
 
   private
