@@ -16,17 +16,18 @@
 
     <div class="row">
       <div class="col-lg-6">
-        <% if current_user %>
-          <% if current_user.curator? %>
-            <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary smaller-btn-text' %>
-          <% end %>
-            <%= link_to 'Crawl Document', document_path(@document) + '?crawl=true', class: 'btn btn-link smaller-btn-text' %>
-            <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
+        <% if policy(@document).update? %>
+          <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
+
+        <% if policy(@document).crawl? %>
+          <%= link_to 'Crawl Document', document_crawl_path(@document), method: :post, class: 'btn btn-link smaller-btn-text' %>
+        <% end %>
+          <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
-        <% if current_user && current_user.curator? %>
+        <% if policy(@document).destroy? %>
           <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
         <% end %>
       </div>

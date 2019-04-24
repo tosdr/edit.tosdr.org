@@ -4,10 +4,16 @@ puts 'loaded?'
 puts TOSBackDoc
 
 class DocumentsController < ApplicationController
+  include Pundit
+
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_document, only: [:show, :edit, :update]
+  before_action :set_document, only: [:show, :edit, :update, :crawl]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
+    authorize Document
+
     if @query = params[:query]
       @documents = Document.includes(:service).search_by_document_name(@query)
     else
@@ -16,6 +22,8 @@ class DocumentsController < ApplicationController
   end
 
   def new
+    authorize Document
+
     @document = Document.new
     if service = params[:service]
       @document.service = Service.find(service)
@@ -23,22 +31,43 @@ class DocumentsController < ApplicationController
   end
 
   def create
+    authorize Document
+
     @document = Document.new(document_params)
+    @document.user = current_user
 
     if @document.save
-      crawl
-      redirect_to document_path(@document)
+      perform_crawl
+      if @document.text.blank?
+        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+        redirect_to document_path(@document)
+      else
+        redirect_to document_path(@document)
+      end
     else
       render 'new'
     end
   end
 
   def update
+    authorize @document
+
     @document.update(document_params)
 
+    # we should probably only be running the crawler if the URL or XPath have changed
+    if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
+      perform_crawl
+    end
+
     if @document.save
-      crawl
-      redirect_to document_path(@document)
+      # only want to do this if XPath or URL have changed - the theory is that text is returned blank when there's a defunct URL or XPath to avoid server error upon 404 error in the crawler
+      # need to alert people if the crawler wasn't able to retrieve any text...
+      if @document.text.blank?
+        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+        redirect_to document_path(@document)
+      else
+        redirect_to document_path(@document)
+      end
     else
       render 'edit'
     end
@@ -46,6 +75,8 @@ class DocumentsController < ApplicationController
 
   def destroy
     @document = Document.find(params[:id] || params[:document_id])
+    authorize @document
+
     service = @document.service
     if @document.points.any?
       flash[:alert] = "Users have highlighted points in this document; update or delete those points before deleting this document."
@@ -53,33 +84,50 @@ class DocumentsController < ApplicationController
     else
       @document.destroy
       flash[:notice] = "Document has been removed!"
-      # We should probably generate this from the routes,
-      # but I'm not sure if I should use the view helper for that? (Since we're not in the view.)
-      redirect_to service_path(service) + '/annotate'
+      redirect_to annotate_path(service)
     end
   end
 
   def show
-    puts 'crawl?'
-    puts params[:crawl]
-    crawl if (params[:crawl])
+    authorize @document
+  end
+
+  def crawl
+    authorize @document
+
+    perform_crawl
+
+    if @document.text.blank?
+      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+      redirect_to document_path(@document)
+    else
+      redirect_to document_path(@document)
+    end
   end
 
   private
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
 
   def set_document
     @document = Document.find(params[:id])
   end
 
   def document_params
-    params.require(:document).permit(:service, :service_id, :name, :url, :xpath)
+    params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath)
   end
 
-  def crawl
+  def perform_crawl
+    authorize @document
+
     @tbdoc = TOSBackDoc.new({
       url: @document.url,
       xpath: @document.xpath
     })
+
     @tbdoc.scrape
 
     @document.update(text: @tbdoc.newdata)

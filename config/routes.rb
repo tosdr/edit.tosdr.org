@@ -9,11 +9,10 @@ Rails.application.routes.draw do
    :sessions => "users/sessions",
    :registrations => "users/registrations" }
 
-   root to: 'pages#home'
+  root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get 'my_points', to: 'points#user_points', as: :my_points
-
   get 'about', to: 'pages#about'
 
 
@@ -30,6 +29,7 @@ Rails.application.routes.draw do
   end
   post "documents/new", to: "documents#create"
   post "documents/:id/edit", to: "documents#update"
+  post "documents/:id/crawl", to: "documents#crawl", as: :document_crawl
 
   resources :services, except: [:show]
   resources :services, except: [:index] do
