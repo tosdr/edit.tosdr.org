@@ -1,10 +1,15 @@
 class ServicesController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :set_curator, only: [:update,:destroy]
+  include Pundit
+
+  before_action :authenticate_user!, except: [:index, :show]
 
   invisible_captcha only: [:create, :update], honeypot: :description
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def index
+    authorize Service
+
     @services = Service.includes(points: [:case]).all
     @document_counts = Document.group(:service_id).count
     if @query = params[:query]
@@ -13,10 +18,14 @@ class ServicesController < ApplicationController
   end
 
   def new
+    authorize Service
+
     @service = Service.new
   end
 
   def create
+    authorize Service
+
     @service = Service.new(service_params)
     if @service.save
       redirect_to service_path(@service)
@@ -26,6 +35,8 @@ class ServicesController < ApplicationController
   end
 
   def annotate
+    authorize Service
+
     @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     if (params[:point_id] && current_user)
@@ -36,6 +47,8 @@ class ServicesController < ApplicationController
   end
 
   def quote
+    authorize Service
+
     puts 'quote!'
     puts params
     @service = Service.find(params[:id] || params[:service_id])
@@ -72,6 +85,8 @@ class ServicesController < ApplicationController
 
   def show
     @service = Service.includes(points: [:case, :user], versions: [:item]).find(params[:id] || params[:service_id])
+    authorize @service
+
     if current_user
       case params[:scope]
       when nil
@@ -93,10 +108,14 @@ class ServicesController < ApplicationController
   end
 
   def edit
+    authorize @service
+
     @service = Service.find(params[:id] || params[:service_id])
   end
 
   def update
+    authorize @service
+
     @service = Service.find(params[:id] || params[:service_id])
     if @service.update(service_params)
       redirect_to service_path(@service)
@@ -107,6 +126,9 @@ class ServicesController < ApplicationController
 
   def destroy
     @service = Service.find(params[:id] || params[:service_id])
+
+    authorize @service
+
     if @service.points.any?
       flash[:alert] = "Users have contributed valuable insight to this service!"
       redirect_to service_path(@service)
@@ -119,17 +141,16 @@ class ServicesController < ApplicationController
 
   private
 
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
+
   def service_params
-    if current_user.curator? then
+    if current_user.curator?
       params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
     else
       params.require(:service).permit(:name, :url, :query, :wikipedia)
-    end
-  end
-
-  def set_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
     end
   end
 end
