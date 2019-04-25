@@ -2,6 +2,8 @@ class ServicesController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_curator, only: [:update,:destroy]
 
+  invisible_captcha only: [:create, :update], honeypot: :description
+
   def index
     @services = Service.includes(points: [:case]).all
     @document_counts = Document.group(:service_id).count
@@ -16,7 +18,7 @@ class ServicesController < ApplicationController
 
   def create
     @service = Service.new(service_params)
-    if verify_recaptcha(model: @service) && @service.save
+    if @service.save
       redirect_to service_path(@service)
     else
       render :new
@@ -96,7 +98,7 @@ class ServicesController < ApplicationController
 
   def update
     @service = Service.find(params[:id] || params[:service_id])
-    if verify_recaptcha(model: @service) && @service.update(service_params)
+    if @service.update(service_params)
       redirect_to service_path(@service)
     else
       render :edit
