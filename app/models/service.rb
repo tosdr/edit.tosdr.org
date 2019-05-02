@@ -1,6 +1,8 @@
 class Service < ApplicationRecord
   has_paper_trail
 
+  belongs_to :user, optional: true
+
   has_many :points
   has_many :documents
 
