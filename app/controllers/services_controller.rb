@@ -27,6 +27,8 @@ class ServicesController < ApplicationController
     authorize Service
 
     @service = Service.new(service_params)
+    @service.user = current_user
+    
     if @service.save
       redirect_to service_path(@service)
     else
@@ -108,15 +110,15 @@ class ServicesController < ApplicationController
   end
 
   def edit
-    authorize @service
-
     @service = Service.find(params[:id] || params[:service_id])
+
+    authorize @service
   end
 
   def update
-    authorize @service
-
     @service = Service.find(params[:id] || params[:service_id])
+
+    authorize @service
     if @service.update(service_params)
       redirect_to service_path(@service)
     else
