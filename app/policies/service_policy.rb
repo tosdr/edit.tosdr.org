@@ -1,7 +1,35 @@
 class ServicePolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
+  def index?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def annotate?
+    true
+  end
+
+  def quote?
+    true
+  end
+
+  def create?
+    !user.nil?
+  end
+
+  def update?
+    (!user.nil? && is_owner?) || (!user.nil? && user.curator?)
+  end
+
+  def destroy?
+    (!user.nil? && user.curator?)
+  end
+
+  private
+
+  def is_owner?
+    record.user.nil? ? (user.curator?) : (user == record.user)
   end
 end
