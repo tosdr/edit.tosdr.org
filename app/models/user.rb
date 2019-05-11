@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :documents
   has_many :services
 
-  validate :password_validation
+  validate :password_validation, if: :password
 
   after_create :send_welcome_mail
 
