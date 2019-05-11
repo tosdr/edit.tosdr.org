@@ -26,7 +26,6 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'rb-readline'
-
 gem 'invisible_captcha'
 
 # for tosback2:
