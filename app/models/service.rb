@@ -61,9 +61,9 @@ class Service < ApplicationRecord
     balance
 
     if (num_blocker + num_bad + num_good == 0)
-      return "N/A"
+      return "?"
     elsif (balance < -10)
-      return "E"
+      return "F"
     elsif (num_blocker > 0)
       return "D"
     elsif (balance < -4)

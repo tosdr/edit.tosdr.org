@@ -40,15 +40,27 @@
 <p>This tool is still very much under construction, and has bugs. Please <a href="https://github.com/tosdr/phoenix/issues/new">open a github issue</a> for anything you think should be improved.</p>
 
 
-<h2>Examples (<%= link_to "see all", services_path %>):</h2>
+<h2>List of services that need help (<%= link_to "see all", services_path %>):</h2>
 <div class="row" id="service-container">
   <% @services.each do |s| %>
   <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_rating %>">
     <!--CARD -->
     <div class="card">
-      <h2 class="card-header card-service" title="<%= s.name %>">
+      <h3 class="card-service" title="<%= s.name %>">
+       <div id="card-service-title">
        <%= s.name %>
-     </h2>
+       </div>
+       <div>
+        <% if s.service_rating == "?" %>
+          <% badge_rating = "rating-na" %>
+        <% else %>
+          <% badge_rating = "rating-#{s.service_rating}" %>
+        <% end %>
+        <div class="card-badge <%= badge_rating %>">
+          <%= s.service_rating %>
+        </div>
+        </div>
+     </h3>
      <div class="card-body card-block">
       <div class="card-text">
         <ul>
@@ -67,18 +79,10 @@
         </li>
         <% end %>
         </ul>
-        <% if s.service_rating == "N/A" %>
-          <% badge_rating = "rating-na" %>
-        <% else %>
-          <% badge_rating = "rating-#{s.service_rating}" %>
-        <% end %>
-        <div class="card-badge <%= badge_rating %>">
-          <%= s.service_rating %>
-        </div>
       </div>
     </div>
     <div class="card-footer">
-     <%= link_to "More", service_path(s.id), class: "btn btn-primary box-shadow-for-button" %>
+     <%= link_to "More", service_path(s.id), class: "btn btn-secondary box-shadow-for-button" %>
    </div>
  </div>
 </div>
