@@ -115,6 +115,8 @@ GEM
       has_scope (~> 0.6)
       railties (>= 5.0, < 6.0)
       responders (~> 2.0)
+    invisible_captcha (0.12.0)
+      rails (>= 3.2.0)
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -306,7 +308,9 @@ DEPENDENCIES
   flamegraph
   font-awesome-sass
   formtastic
+  get_process_mem
   heroku-deflater
+  invisible_captcha
   jbuilder (~> 2.0)
   jquery-rails
   letter_opener
@@ -338,4 +342,4 @@ RUBY VERSION
    ruby 2.3.5p376
 
 BUNDLED WITH
-   2.0.1
+   1.17.1

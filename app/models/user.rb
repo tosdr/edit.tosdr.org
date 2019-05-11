@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_many :points
   has_many :documents
+  has_many :services
 
   validate :password_validation
 
