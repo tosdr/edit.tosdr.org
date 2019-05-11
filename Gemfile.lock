@@ -101,6 +101,7 @@ GEM
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.6.0)
+    get_process_mem (0.2.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     has_scope (0.7.2)
@@ -225,8 +226,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    recaptcha (4.14.0)
-      json
+    rb-readline (0.5.5)
     redis (4.1.1)
     regexp_parser (1.4.0)
     request_store (1.4.1)
@@ -327,7 +327,7 @@ DEPENDENCIES
   rack-attack
   rack-mini-profiler
   rails (= 5.1.7)
-  recaptcha
+  rb-readline
   redis
   sanitize
   sass-rails
@@ -342,4 +342,4 @@ RUBY VERSION
    ruby 2.3.5p376
 
 BUNDLED WITH
-   1.17.1
+   1.15.2
