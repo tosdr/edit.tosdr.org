@@ -27,6 +27,7 @@ gem 'simple_form'
 gem 'uglifier'
 gem 'rb-readline'
 gem 'invisible_captcha'
+gem 'coffee-rails'
 
 # for tosback2:
 gem 'capybara'
