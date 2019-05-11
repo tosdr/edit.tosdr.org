@@ -11,7 +11,7 @@ gem 'figaro'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
 gem 'puma', '~> 3.10.0'
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.7'
 gem 'redis'
 
 gem 'autoprefixer-rails'
@@ -26,16 +26,22 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 
-gem 'recaptcha'
+gem 'invisible_captcha'
 
 # for tosback2:
 gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
+
 group :development do
   gem 'letter_opener'
   gem 'web-console', '>= 3.3.0'
+  gem 'rb-readline'
+
+  # for performance
+  gem 'get_process_mem'
+  gem 'memory_profiler'
 end
 
 group :development, :test do
@@ -43,7 +49,6 @@ group :development, :test do
   gem 'bullet'
   gem 'flamegraph'
   gem 'listen', '~> 3.0.5'
-  gem 'memory_profiler'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rack-mini-profiler'
