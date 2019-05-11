@@ -116,8 +116,6 @@ GEM
       has_scope (~> 0.6)
       railties (>= 5.0, < 6.0)
       responders (~> 2.0)
-    invisible_captcha (0.12.0)
-      rails (>= 3.2.0)
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
