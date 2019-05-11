@@ -227,6 +227,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rb-readline (0.5.5)
     recaptcha (4.13.1)
       json
     redis (4.1.0)
@@ -323,6 +324,7 @@ DEPENDENCIES
   rack-attack
   rack-mini-profiler
   rails (= 5.1.4)
+  rb-readline
   recaptcha
   redis
   sanitize
@@ -338,4 +340,4 @@ RUBY VERSION
    ruby 2.3.5p376
 
 BUNDLED WITH
-   1.15.2
+   1.17.1
