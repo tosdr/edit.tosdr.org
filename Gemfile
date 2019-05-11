@@ -25,6 +25,7 @@ gem 'rack-attack'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
+gem 'rb-readline'
 
 gem 'invisible_captcha'
 
@@ -37,7 +38,6 @@ gem 'sanitize'
 group :development do
   gem 'letter_opener'
   gem 'web-console', '>= 3.3.0'
-  gem 'rb-readline'
 
   # for performance
   gem 'get_process_mem'
@@ -55,7 +55,6 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
-  gem 'rb-readline'
 end
 
 group :production do
