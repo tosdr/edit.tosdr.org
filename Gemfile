@@ -37,7 +37,6 @@ gem 'sanitize'
 group :development do
   gem 'letter_opener'
   gem 'web-console', '>= 3.3.0'
-  gem 'rb-readline'
 
   # for performance
   gem 'get_process_mem'
