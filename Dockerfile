@@ -1,42 +1,39 @@
-FROM ruby:2.3.5-jessie
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
-RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get update -qq && apt-get install -y yarn nodejs
-RUN mkdir -p /app
+FROM ruby:2.3.5
+
+ENV RAILS_ENV=production \
+    RUBY_GLOBAL_METHOD_CACHE_SIZE=131072 \
+    RUBY_GC_HEAP_GROWTH_MAX_SLOTS=40000 \
+    RUBY_GC_HEAP_INIT_SLOTS=400000 \
+    RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR=1.5 \
+    RUBY_GC_MALLOC_LIMIT=90000000
+
+# Temp fix, remove it when you use a newer version of supported Docker ruby image 
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+
+# Install yarn
+RUN apt-get update \
+&&  apt-get install -y curl apt-transport-https \
+&&  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+&&  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+&&  curl --silent --location https://deb.nodesource.com/setup_8.x | bash - \
+&&  apt-get update && apt-get install -y \
+      nodejs\
+      yarn \
+&&  apt-get autoremove -y \
+&&  rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
-RUN node --version
+RUN addgroup --gid 1000 app \
+&&  adduser --system --uid 1000 --ingroup app --shell /bin/bash app \
+&& chown -R app:app /app
+USER app
 
-# Unfortunately Debian's packaged version of PhantomJS doesn't work in Docker:
-# https://github.com/ariya/phantomjs/issues/14376#issuecomment-239687524
-# Hence, we build it ourselves:
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        ca-certificates \
-        bzip2 \
-        libfontconfig \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        curl \
-    && mkdir /tmp/phantomjs \
-    && curl -L https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-           | tar -xj --strip-components=1 -C /tmp/phantomjs \
-    && cd /tmp/phantomjs \
-    && mv bin/phantomjs /usr/local/bin \
-    && cd \
-    && apt-get purge --auto-remove -y \
-        curl \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
-
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
 RUN ["bundle", "install"]
-COPY package.json /app/package.json
+
+COPY package.json package.json
 RUN ["yarn"]
-COPY . /app/
-CMD ["rails", "s"]
+
+COPY . .
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

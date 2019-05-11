@@ -1,24 +1,25 @@
-version: '2'
+version: '3'
 services:
   db:
     image: postgres
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-      - ./latest.dump:/app/latest.dump
+    - ./tmp/db:/var/lib/postgresql/data
+    - ./latest.dump:/app/latest.dump
   web:
     build: .
     volumes:
-      - .:/app
+    - .:/app
     ports:
-      - "3000:3000"
+    - "3000:3000"
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=
+    - RAILS_ENV=development
+    - DATABASE_HOST=db
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=
     depends_on:
-      - db
+    - db
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer
     ports:
-      - 1337:8080
+    - 1337:8080
