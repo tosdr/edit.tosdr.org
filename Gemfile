@@ -26,16 +26,21 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 
-gem 'recaptcha'
+gem 'invisible_captcha'
 
 # for tosback2:
 gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
+
 group :development do
   gem 'letter_opener'
   gem 'web-console', '>= 3.3.0'
+
+  # for performance
+  gem 'get_process_mem'
+  gem 'memory_profiler'
 end
 
 group :development, :test do
@@ -43,13 +48,13 @@ group :development, :test do
   gem 'bullet'
   gem 'flamegraph'
   gem 'listen', '~> 3.0.5'
-  gem 'memory_profiler'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rack-mini-profiler'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
+  gem 'rb-readline'
 end
 
 group :production do

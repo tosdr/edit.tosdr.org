@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190414103207) do
+ActiveRecord::Schema.define(version: 20190430102205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 20190414103207) do
     t.string "related"
     t.string "slug"
     t.boolean "is_comprehensively_reviewed", default: false, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_services_on_user_id"
   end
 
   create_table "topic_comments", force: :cascade do |t|
@@ -217,6 +219,7 @@ ActiveRecord::Schema.define(version: 20190414103207) do
   add_foreign_key "reasons", "users"
   add_foreign_key "service_comments", "services"
   add_foreign_key "service_comments", "users"
+  add_foreign_key "services", "users"
   add_foreign_key "topic_comments", "topics"
   add_foreign_key "topic_comments", "users"
 end
