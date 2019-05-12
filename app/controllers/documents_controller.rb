@@ -83,7 +83,6 @@ class DocumentsController < ApplicationController
       redirect_to document_path(@document)
     else
       @document.destroy
-      flash[:notice] = "Document has been removed!"
       redirect_to annotate_path(service)
     end
   end
