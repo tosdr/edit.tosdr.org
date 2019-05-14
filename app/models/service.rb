@@ -29,6 +29,10 @@ class Service < ApplicationRecord
     service_rating_get
   end
 
+  def ordered_points
+    service_points = points.group_by { |point| point.status }).sort_by { |key| key }.reverse.to_h
+  end
+
   private
 
   def strip_input_fields
