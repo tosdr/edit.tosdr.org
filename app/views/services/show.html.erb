@@ -39,15 +39,6 @@
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
-        <% if current_user %>
-          <% if params[:scope].nil? %>
-            <%= link_to 'All', service_path(scope: nil), class: 'btn btn-default active smaller-btn-text' %>
-            <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-link smaller-btn-text' %>
-          <% elsif params[:scope] == 'pending' %>
-            <%= link_to 'All', service_path(scope: nil), class: 'btn btn-link smaller-btn-text' %>
-            <%= link_to 'Pending', service_path(scope: 'pending'), class: 'btn btn-default active smaller-btn-text' %>
-          <% end %>
-        <% end %>
         <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
       </div>
     </div> <!--/.float-right -->
@@ -55,7 +46,7 @@
     <% if @points.empty? %>
       <p>There are no points to display at this time!</p>
     <% else %>
-      <%= render "shared/table_points", points: @points %>
+      <%= render "shared/table_points", points: @points, service: true %>
     <% end %>
   </div>
 </div>
