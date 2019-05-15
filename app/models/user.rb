@@ -32,14 +32,12 @@ class User < ApplicationRecord
   end
 
   def hard_delete
-    points.update_all user_id: 1 # change to anonymous account id
-    if PointComment.where user_id: id
-      c = PointComment.where user_id: id
-      c.update_all user_id: 1
-    end
+    self.update username: username + "[USER LEFT]"
+    self.deactivated = true
+  end
+  
+  def active_for_authentication?
+    super && !self.deactivated?
   end
 
-  # def active_for_authentication?
-  #   super && !deactivated
-  # end
 end

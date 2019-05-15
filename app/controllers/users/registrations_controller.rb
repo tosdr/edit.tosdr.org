@@ -28,9 +28,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def destroy
     if @user.hard_delete
       @user.hard_delete
-      @user.delete
       sign_out_and_redirect(self.resource)
-      flash[:notice] = "Your personal information have been deleted and your contributions have been sent to an anonymous account"
+      flash[:notice] = "Your account has been deactivated."
     else
       flash[:alert] = "Something is wrong, please contact the team..."
       redirect(self.resource)
