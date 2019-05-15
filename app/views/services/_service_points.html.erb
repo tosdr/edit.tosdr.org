@@ -1,0 +1,36 @@
+<table id="myTable" class="table table-striped">
+  <% service = false unless service %>
+  <thead>
+    <tr>
+      <% unless service %>
+      <th scope="col">Service</th>
+      <% end %>
+      <th scope="col">Title</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Status</th>
+      <th scope="col">Author</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% points.each do |point| %>
+    <% if point.case&.classification == 'good' %>
+      <% pointbox = "point-good" %>
+    <% elsif point.case&.classification == 'neutral' %>
+      <% pointbox = "point-neutral" %>
+    <% elsif point.case&.classification == 'bad' %>
+      <% pointbox = "point-bad" %>
+    <% elsif point.case&.classification == 'blocker' %>
+      <% pointbox = "point-blocker" %>
+    <% end %>
+    <tr id="toSort" data-classification="<%= point.case&.classification %>">
+      <% unless service %>
+        <th scope="row"><%= point.service.name %></th>
+      <% end %>
+      <td><%= link_to point.title, point_path(point), title: "View more details" %></td>
+      <td class="<%= pointbox %>"></td>
+      <td> <%= point.status %> </td>
+      <td><%= username point.user %> </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

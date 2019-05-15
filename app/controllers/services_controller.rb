@@ -90,7 +90,7 @@ class ServicesController < ApplicationController
     authorize @service
 
     if current_user
-      @points = @service.points
+      @points = @service.points_ordered_status_class.values.flatten
     else
       @points = @service.points.where(status: 'approved')
     end

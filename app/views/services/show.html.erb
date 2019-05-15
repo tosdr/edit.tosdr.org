@@ -38,15 +38,12 @@
         <% end %>
       </div>
 
-      <div class="col-lg-6 form-inline text-right justify-content-end">
-        <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
-      </div>
     </div> <!--/.float-right -->
     <br>
     <% if @points.empty? %>
       <p>There are no points to display at this time!</p>
     <% else %>
-      <%= render "shared/table_points", points: @points, service: true %>
+      <%= render "service_points", points: @points, service: true %>
     <% end %>
   </div>
 </div>
