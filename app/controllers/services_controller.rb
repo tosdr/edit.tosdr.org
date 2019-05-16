@@ -28,7 +28,7 @@ class ServicesController < ApplicationController
 
     @service = Service.new(service_params)
     @service.user = current_user
-    
+
     if @service.save
       redirect_to service_path(@service)
     else
@@ -90,14 +90,7 @@ class ServicesController < ApplicationController
     authorize @service
 
     if current_user
-      case params[:scope]
-      when nil
-        @points = @service.points
-      when 'pending'
-        @points = @service.points.where(status: 'pending').where.not(user_id: current_user.id)
-      when 'archived-versions'
-        @versions = @service.versions
-      end
+      @points = @service.points_ordered_status_class.values.flatten
     else
       @points = @service.points.where(status: 'approved')
     end

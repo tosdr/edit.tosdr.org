@@ -40,8 +40,6 @@ Rails.application.routes.draw do
   get "services/:id/annotate?point_id=:point_id", to: "services#annotate", as: "annotate_point"
   post "services/:id/annotate", to: "services#quote"
 
-  get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
-
   resources :topics do
     resources :topic_comments, only: [:new, :create]
   end
