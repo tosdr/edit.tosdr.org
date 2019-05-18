@@ -25,8 +25,9 @@ gem 'rack-attack'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
-
+gem 'rb-readline'
 gem 'invisible_captcha'
+gem 'coffee-rails'
 
 # for tosback2:
 gem 'capybara'
@@ -37,7 +38,6 @@ gem 'sanitize'
 group :development do
   gem 'letter_opener'
   gem 'web-console', '>= 3.3.0'
-  gem 'rb-readline'
 
   # for performance
   gem 'get_process_mem'
