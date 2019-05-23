@@ -26,12 +26,6 @@ class PointsController < ApplicationController
 
   def create
     @topics = Topic.all.includes(:cases).all
-    if (!['draft', 'pending', 'declined'].include? point_params['status'])
-      puts 'wrong update status!'
-      puts point_params
-      render :edit
-      return
-    end
     @point = Point.new(point_params)
     @point.user = current_user
 
@@ -56,16 +50,9 @@ class PointsController < ApplicationController
   end
 
   def update
-    if (!['draft', 'pending', 'declined'].include? point_params['status'])
-      puts 'wrong update status!'
-      puts point_params
-      @topics = Topic.all.includes(:cases).all
-      render :edit
-      return
-    end
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
-      comment = create_comment(@point.point_change)
+      create_comment(@point.point_change)
       redirect_to point_path
     elsif @point.case.nil?
       @topics = Topic.all.includes(:cases).all
@@ -77,20 +64,13 @@ class PointsController < ApplicationController
   end
 
   def review
-    # show the review form
   end
 
   def post_review
     @topics = Topic.all.includes(:cases).all
     # process a post of the review form
-    if (point_params['status'] != 'approved' && point_params['status'] != 'declined' && point_params['status'] != 'changes-requested')
-      puts 'wrong review status!'
-      puts point_params
-      render :edit
-      return
-    end
     if @point.update(status: point_params['status'])
-      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      create_comment(point_params['status'] + ': ' + point_params['point_change'])
       if (@point.user_id != current_user.id)
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
       end
