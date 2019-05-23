@@ -1,10 +1,14 @@
 class PointsController < ApplicationController
+  include Pundit
+
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
-  before_action :must_be_creator, only: [:update]
-  before_action :must_be_peer_curator, only: [:review, :post_review]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
+    authorize Point
+
     if params[:scope].nil? || params[:scope] == "all"
       @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
     elsif params[:scope] == "pending"
@@ -16,6 +20,8 @@ class PointsController < ApplicationController
   end
 
   def new
+    authorize Point
+
     @point = Point.new
     @topics = Topic.all.includes(:cases).all
     if @query = params[:service_id]
@@ -25,6 +31,8 @@ class PointsController < ApplicationController
   end
 
   def create
+    authorize Point
+
     @topics = Topic.all.includes(:cases).all
     @point = Point.new(point_params)
     @point.user = current_user
@@ -41,15 +49,21 @@ class PointsController < ApplicationController
   end
 
   def edit
+    authorize Point
+
     @service_url = @point.service.url
     @topics = Topic.all.includes(:cases).all
   end
 
   def show
+    authorize @point
+
     @versions = @point.versions.includes(:item)
   end
 
   def update
+    authorize @point
+
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
       create_comment(@point.point_change)
@@ -64,9 +78,12 @@ class PointsController < ApplicationController
   end
 
   def review
+    authorize @point
   end
 
   def post_review
+    authorize @point
+
     @topics = Topic.all.includes(:cases).all
     # process a post of the review form
     if @point.update(status: point_params['status'])
@@ -90,6 +107,11 @@ class PointsController < ApplicationController
 
   private
 
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
+
   def create_comment(commentText)
     PointComment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
   end
@@ -111,20 +133,5 @@ class PointsController < ApplicationController
 
   def point_params
     params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
-  end
-
-  def must_be_creator
-    unless current_user.id == @point.user_id
-      render :file => "public/401.html", :status => :unauthorized
-    end
-  end
-
-  def must_be_peer_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
-    end
-    if current_user.id == @point.id
-      render :file => "public/401.html", :status => :unauthorized
-    end
   end
 end
