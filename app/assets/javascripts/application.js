@@ -38,7 +38,8 @@ function compareClassification(elementA, elementB) {
 }
 
 document.getElementById('orderByPoint').addEventListener("click", (event) => {
-  let elems =  document.querySelectorAll("#toSort");
+  event.preventDefault();
+  let elems =  document.getElementsByClassName("toSort");
   // convert nodelist to array
   var array = [];
   for (var i = 0; i < elems.length; i++) {

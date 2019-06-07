@@ -22,7 +22,7 @@
     <% elsif point.case&.classification == 'blocker' %>
       <% pointbox = "point-blocker" %>
     <% end %>
-    <tr id="toSort" data-classification="<%= point.case&.classification %>">
+    <tr class="toSort" data-classification="<%= point.case&.classification %>">
       <% unless service %>
         <th scope="row"><%= point.service.name %></th>
       <% end %>
