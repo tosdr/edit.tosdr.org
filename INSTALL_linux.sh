@@ -21,8 +21,8 @@ else
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv/;
   if [ -f ~/.bashrc ]; then
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc;
-  elif [ -f ~/.bash_history ]; then
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_history;
+  elif [ -f ~/.bash_profile ]; then
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile;
   elif [ -f ~/.zshrc ]; then
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc;
   fi
