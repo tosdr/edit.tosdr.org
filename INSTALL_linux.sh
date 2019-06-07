@@ -24,9 +24,14 @@ else
   echo "Setting up rbenv in your shell..."
 fi
 eval "$(rbenv init -)"
-echo 'Installing Ruby 2.3.5, it might take a while...'
-rbenv install 2.3.5
 
+echo '[*] Installing Ruby'
+if rbenv versions --bare | grep -q 2.3.5 ; then
+    echo "Ruby 2.3.5 already installed."
+else
+    echo 'Installing Ruby 2.3.5, it might take a while...'
+    rbenv install 2.3.5
+fi
 
 echo '[*] Installing yarn'
 
@@ -56,6 +61,11 @@ fi
 echo '[*] Setting local ruby version to 2.3.5'
 rbenv local 2.3.5
 echo '[*] Installing gems'
+if rbenv which bundle 2&>1 > /dev/null ; then
+    echo 'Bundle installed already.'
+else
+    gem install bundler
+fi
 bundle install
 echo '[*] Compiling JS'
 yarn install
