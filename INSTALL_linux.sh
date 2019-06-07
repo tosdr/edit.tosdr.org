@@ -15,12 +15,10 @@ echo ''
 echo '[*] Installing Rbenv'
 
 if [ -d ~/.rbenv ]; then
-  echo 'Rbenv exists installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5
+  echo 'Rbenv already exists.'
 else
+  echo 'Rbenv missing; cloning and adding it to PATH...'  
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv/;
-  echo 'Rbenv exists now installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5
   if [ -f ~/.bashrc ]; then
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc;
   elif [ -f ~/.bash_history ]; then
@@ -29,6 +27,9 @@ else
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc;
   fi
 fi
+echo 'Installing Ruby 2.3.5, it might take a while...'
+rbenv install 2.3.5
+
 
 echo '[*] Installing yarn'
 
