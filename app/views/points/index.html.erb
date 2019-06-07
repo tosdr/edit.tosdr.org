@@ -23,16 +23,7 @@
         </div>
 
         <div class="col-lg-6 text-right justify-content-end">
-          <% if params[:scope].nil? || params[:scope] == "all" %>
-            <%= link_to 'All', points_path(scope: nil), class: 'btn btn-default active smaller-btn-text' %>
-            <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-link smaller-btn-text' %>
-          <% elsif params[:scope] == "pending" %>
-            <%= link_to 'All', points_path(scope: nil), class: 'btn btn-link smaller-btn-text' %>
-            <%= link_to 'Pending', points_path(scope: 'pending'), class: 'btn btn-default active smaller-btn-text'  %>
-          <% end %>
-
           <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
-
         </div>
       </div>
       <br>

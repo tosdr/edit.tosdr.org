@@ -24,11 +24,11 @@ class PointPolicy < ApplicationPolicy
   end
 
   def review?
-    user.curator? && (user != record.user)
+    is_peer_curator?
   end
 
   def post_review?
-    user.curator? && (user != record.user)
+    is_peer_curator?
   end
 
   def user_points?
@@ -41,4 +41,7 @@ class PointPolicy < ApplicationPolicy
     record.user.nil? ? (user.curator?) : (user == record.user)
   end
 
+  def is_peer_curator?
+    user.curator? && (user != record.user)
+  end
 end

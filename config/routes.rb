@@ -12,17 +12,15 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get 'my_points', to: 'points#user_points', as: :my_points
   get 'about', to: 'pages#about'
 
-
-  get 'points/new', to: 'points#new'
+  get 'my_points', to: 'points#user_points', as: "my_points"
   get 'points/:id/review', to: 'points#review', as: "review"
   patch 'points/:id/review', to: 'points#post_review'
-  resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
-  resources :points, except: [:index] do
-    resources :point_comments, only: [:new, :create]
-  end
+  get "points/:id/point_comments/new", to: "point_comments#new", as: "new_point_commment"
+  post "points/:id/point_comments", to: "point_comments#create", as: "point_comments"
+  resources :points, only: [:index]
+  resources :points, except: [:index]
 
   resources :documents do
     resources :document_comments, only: [:new, :create]

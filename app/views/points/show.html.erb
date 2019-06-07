@@ -18,7 +18,7 @@
             <% elsif current_user.curator %>
               <li><%= link_to 'Review Point', review_path(@point) %></li>
             <% end %>
-              <li><%= link_to 'Add Comment', new_point_point_comment_path(@point) %></li>
+              <li><%= link_to 'Add Comment', new_point_commment_path(@point) %></li>
           </ul>
       </div>
     <% end %>
@@ -92,7 +92,7 @@
 
 <br>
 <br>
- 
+
   <%= render 'shared/comments', comments: @point.point_comments %>
 
 <br>
@@ -121,4 +121,3 @@
 </div>
 
 <% end %>
-

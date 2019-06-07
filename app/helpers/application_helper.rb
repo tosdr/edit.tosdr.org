@@ -2,11 +2,7 @@ module ApplicationHelper
   def annotate_service_path (service)
     service_path(service) + '/annotate'
   end
-
-  def point_comments_path (topic)
-    point_point_comments_path(topic)
-  end
-
+  
   def service_comments_path (service)
     service_service_comments_path(service)
   end

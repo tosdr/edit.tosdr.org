@@ -1,19 +1,17 @@
 class PointsController < ApplicationController
   include Pundit
 
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
+  before_action :set_topics, only: [:new, :create, :edit, :update, :post_review]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     authorize Point
 
-    if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
-    elsif params[:scope] == "pending"
-      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100).where(status: "pending").where.not(user_id: current_user.id)
-    end
+    @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
+
     if @query = params[:query]
       @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
     end
@@ -23,17 +21,14 @@ class PointsController < ApplicationController
     authorize Point
 
     @point = Point.new
-    @topics = Topic.all.includes(:cases).all
-    if @query = params[:service_id]
-      @point['service_id'] = params[:service_id]
+    if params[:service_id]
+      @point.service_id = params[:service_id]
     end
-    @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
     authorize Point
 
-    @topics = Topic.all.includes(:cases).all
     @point = Point.new(point_params)
     @point.user = current_user
 
@@ -43,16 +38,13 @@ class PointsController < ApplicationController
       path = service_path(point_for_options.service)
       point_create_options(point_for_options, path)
     elsif params[:create_add_another]
-      path = new_point_path
+      path = new_service_point_path(point_for_options.service)
       point_create_options(point_for_options, path)
     end
   end
 
   def edit
-    authorize Point
-
-    @service_url = @point.service.url
-    @topics = Topic.all.includes(:cases).all
+    authorize @point
   end
 
   def show
@@ -67,12 +59,10 @@ class PointsController < ApplicationController
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
       create_comment(@point.point_change)
-      redirect_to point_path
+      redirect_to point_path(@point)
     elsif @point.case.nil?
-      @topics = Topic.all.includes(:cases).all
       render :edit
     else
-      @topics = Topic.all.includes(:cases).all
       render :edit
     end
   end
@@ -88,10 +78,12 @@ class PointsController < ApplicationController
     # process a post of the review form
     if @point.update(status: point_params['status'])
       create_comment(point_params['status'] + ': ' + point_params['point_change'])
+
       if (@point.user_id != current_user.id)
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
       end
-      redirect_to point_path
+
+      redirect_to point_path(@point)
     else
       render :edit
     end
@@ -112,8 +104,8 @@ class PointsController < ApplicationController
     redirect_to(request.referrer || root_path)
   end
 
-  def create_comment(commentText)
-    PointComment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
+  def create_comment(comment_text)
+    PointComment.create(point_id: @point.id, summary: comment_text, user_id: current_user.id)
   end
 
   def point_create_options(point, path)
@@ -129,6 +121,10 @@ class PointsController < ApplicationController
 
   def set_point
     @point = Point.find(params[:id])
+  end
+
+  def set_topics
+    @topics = Topic.all.includes(:cases).all
   end
 
   def point_params
