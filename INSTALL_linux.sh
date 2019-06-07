@@ -14,20 +14,15 @@ sleep 1;
 echo ''
 echo '[*] Installing Rbenv'
 
-if [ -d ~/.rbenv ]; then
+if [ -d ~/.rbenv/plugins/ruby-build ]; then
   echo 'Rbenv already exists.'
 else
-  echo 'Rbenv missing; cloning and adding it to PATH...'  
-  git clone https://github.com/rbenv/rbenv.git ~/.rbenv/;
-  if [ -f ~/.bashrc ]; then
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc;
-  elif [ -f ~/.bash_profile ]; then
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile;
-  elif [ -f ~/.zshrc ]; then
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc;
-  fi
+  echo 'Rbenv missing; installing...'  
+  export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+  curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
 fi
 echo 'Installing Ruby 2.3.5, it might take a while...'
+read -n 1
 rbenv install 2.3.5
 
 
