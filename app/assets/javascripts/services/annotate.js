@@ -87,10 +87,12 @@ function linkSelectionToPoint(pointFormSubmitEvent) {
 
 const toast = document.getElementById('caseToast') || document.getElementById('pointToast');
 
-if (toast.id === 'caseToast') {
-  document.getElementById('caseDropdown').addEventListener('submit', linkSelectionToCase);
+if (toast && toast.id === 'caseToast') {
+  const caseDropdown = document.getElementById('caseDropdown');
+  if (caseDropdown) { caseDropdown.addEventListener('submit', linkSelectionToCase); }
 } else {
-  document.getElementById('pointForm').addEventListener('submit', linkSelectionToPoint);
+  const pointForm = document.getElementById('pointForm')
+  if (pointForm) { pointForm.addEventListener('submit', linkSelectionToPoint); }
 }
 
 document.addEventListener('selectionchange', () => {
