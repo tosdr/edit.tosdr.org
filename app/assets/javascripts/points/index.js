@@ -1,63 +1,39 @@
-$(".services.index").ready(function() {
-  function compareServiceClassification(elementA, elementB) {
+$(".points.index").ready(function() {
+  function compareClassification(elementA, elementB) {
     if (
-      !['A', 'B', 'C', 'D', 'E', 'F', 'N/A'].includes(elementA.dataset.classification)
-      || !['A', 'B', 'C', 'D', 'E', 'F', 'N/A'].includes(elementB.dataset.classification)
+      !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
+      || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
     ) {
       return 0;
     }
+
     if (elementA.dataset.classification === elementB.dataset.classification) {
       return 0;
     }
-
     // Both do not have the same classification, so if one is good, that one is better:
-    if (elementA.dataset.classification === 'A') {
+    if (elementA.dataset.classification === 'good') {
       return -1;
     }
-    if (elementB.dataset.classification === 'A') {
+    if (elementB.dataset.classification === 'good') {
       return 1;
     }
     // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-    if (elementA.dataset.classification === 'B') {
+    if (elementA.dataset.classification === 'neutral') {
       return -1;
     }
-    if (elementB.dataset.classification === 'B') {
+    if (elementB.dataset.classification === 'neutral') {
       return 1;
     }
     // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-    if (elementA.dataset.classification === 'C') {
+    if (elementA.dataset.classification === 'bad') {
       return -1;
     }
-    if (elementB.dataset.classification === 'C') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'D') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'D') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'E') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'E') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'F') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'F') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'N/A') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'N/A') {
+    if (elementB.dataset.classification === 'bad') {
       return 1;
     }
   }
 
-  document.getElementById('orderByService').addEventListener("click", (event) => {
+  document.getElementById('orderByPoint').addEventListener("click", (event) => {
     event.preventDefault();
     let elems =  document.getElementsByClassName("toSort");
     // convert nodelist to array
@@ -68,12 +44,12 @@ $(".services.index").ready(function() {
 
     // perform sort depending on classname
     if(event.currentTarget.className=="btn btn-success"){
-      array.sort((a, b) => compareServiceClassification(b, a));
+      array.sort((a, b) => compareClassification(b, a));
       event.currentTarget.classList.remove("btn-success");
       event.currentTarget.classList.add("btn-danger");
     }
     else if(event.currentTarget.className== "btn btn-danger"){
-      array.sort(compareServiceClassification);
+      array.sort(compareClassification);
       event.currentTarget.classList.remove("btn-danger");
       event.currentTarget.classList.add("btn-success");
     }
@@ -85,4 +61,4 @@ $(".services.index").ready(function() {
     // append output to div 'points-table-container'
     document.getElementById('myTableBody').innerHTML = output;
   });
-})
+});
