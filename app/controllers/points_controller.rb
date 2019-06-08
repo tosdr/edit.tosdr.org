@@ -1,37 +1,35 @@
 class PointsController < ApplicationController
+  include Pundit
+
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
-  before_action :must_be_creator, only: [:update]
-  before_action :must_be_peer_curator, only: [:review, :post_review]
+  before_action :set_topics, only: [:new, :create, :edit, :update, :post_review]
+  before_action :check_status, only: [:create, :update]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    if params[:scope].nil? || params[:scope] == "all"
-      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
-    elsif params[:scope] == "pending"
-      @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100).where(status: "pending").where.not(user_id: current_user.id)
-    end
+    authorize Point
+
+    @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
+
     if @query = params[:query]
       @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
     end
   end
 
   def new
+    authorize Point
+
     @point = Point.new
-    @topics = Topic.all.includes(:cases).all
-    if @query = params[:service_id]
-      @point['service_id'] = params[:service_id]
+    if params[:service_id]
+      @point.service_id = params[:service_id]
     end
-    @service_url = @point.service ? @point.service.url : ''
   end
 
   def create
-    @topics = Topic.all.includes(:cases).all
-    if (!['draft', 'pending', 'declined'].include? point_params['status'])
-      puts 'wrong update status!'
-      puts point_params
-      render :edit
-      return
-    end
+    authorize Point
+
     @point = Point.new(point_params)
     @point.user = current_user
 
@@ -41,60 +39,52 @@ class PointsController < ApplicationController
       path = service_path(point_for_options.service)
       point_create_options(point_for_options, path)
     elsif params[:create_add_another]
-      path = new_point_path
+      path = new_service_point_path(point_for_options.service)
       point_create_options(point_for_options, path)
     end
   end
 
   def edit
-    @service_url = @point.service.url
-    @topics = Topic.all.includes(:cases).all
+    authorize @point
   end
 
   def show
+    authorize @point
+
     @versions = @point.versions.includes(:item)
   end
 
   def update
-    if (!['draft', 'pending', 'declined'].include? point_params['status'])
-      puts 'wrong update status!'
-      puts point_params
-      @topics = Topic.all.includes(:cases).all
-      render :edit
-      return
-    end
+    authorize @point
+
     if @point.update(point_params)
       @point.topic_id = @point.case.topic_id
-      comment = create_comment(@point.point_change)
-      redirect_to point_path
+      create_comment(@point.point_change)
+      redirect_to point_path(@point)
     elsif @point.case.nil?
-      @topics = Topic.all.includes(:cases).all
       render :edit
     else
-      @topics = Topic.all.includes(:cases).all
       render :edit
     end
   end
 
   def review
-    # show the review form
+    authorize @point
   end
 
   def post_review
+    authorize @point
+
     @topics = Topic.all.includes(:cases).all
     # process a post of the review form
-    if (point_params['status'] != 'approved' && point_params['status'] != 'declined' && point_params['status'] != 'changes-requested')
-      puts 'wrong review status!'
-      puts point_params
-      render :edit
-      return
-    end
     if @point.update(status: point_params['status'])
-      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      create_comment(point_params['status'] + ': ' + point_params['point_change'])
+
       if (@point.user_id != current_user.id)
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
       end
-      redirect_to point_path
+
+      redirect_to point_path(@point)
     else
       render :edit
     end
@@ -110,8 +100,13 @@ class PointsController < ApplicationController
 
   private
 
-  def create_comment(commentText)
-    PointComment.create(point_id: @point.id, summary: commentText, user_id: current_user.id)
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
+
+  def create_comment(comment_text)
+    PointComment.create(point_id: @point.id, summary: comment_text, user_id: current_user.id)
   end
 
   def point_create_options(point, path)
@@ -129,22 +124,17 @@ class PointsController < ApplicationController
     @point = Point.find(params[:id])
   end
 
+  def set_topics
+    @topics = Topic.all.includes(:cases).all
+  end
+
   def point_params
     params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
-  def must_be_creator
-    unless current_user.id == @point.user_id
-      render :file => "public/401.html", :status => :unauthorized
-    end
-  end
-
-  def must_be_peer_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
-    end
-    if current_user.id == @point.id
-      render :file => "public/401.html", :status => :unauthorized
+  def check_status
+    if (!['draft', 'pending', 'declined'].include? point_params['status'])
+      render :edit
     end
   end
 end
