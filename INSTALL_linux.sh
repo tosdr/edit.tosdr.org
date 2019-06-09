@@ -12,38 +12,32 @@ echo '  #######              We aim to fix that.'
 
 sleep 1;
 echo ''
-echo '[*] Installing Rbenv'
-
 export PATH="$HOME/.rbenv/bin:$PATH"
 if [ -d ~/.rbenv/plugins/ruby-build ]; then
-  echo 'Rbenv already exists.'
+  echo 'You have Rbenv!'
 else
-  echo 'Rbenv missing; installing...'  
+  echo '[*] Installing Rbenv'
   export PATH="$HOME/.rbenv/shims:$PATH"
   curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
   echo "Setting up rbenv in your shell..."
 fi
 eval "$(rbenv init -)"
 
-echo '[*] Installing Ruby'
 if rbenv versions --bare | grep -q 2.3.5 ; then
-    echo "Ruby 2.3.5 already installed."
+  echo "You have Ruby 2.3.5!"
 else
-    echo 'Installing Ruby 2.3.5, it might take a while...'
-    rbenv install 2.3.5
+  echo '[*] Installing Ruby 2.3.5, it might take a while...'
+  rbenv install 2.3.5
 fi
-
-echo '[*] Installing yarn'
 
 if hash yarn 2>/dev/null; then
   echo 'You have yarn!'
 else
+  echo '[*] Installing yarn'
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
- sudo apt-get update && sudo apt-get install yarn
+  sudo apt-get update && sudo apt-get install yarn
 fi
-
-echo '[*] Installing postgres'
 
 if hash psql 2>/dev/null; then
   echo 'You have postgres!'
@@ -57,15 +51,21 @@ else
   #exit
   #rm -f /tmp/caller
 fi
-
+if command -v phantomjs > /dev/null ; then
+  echo 'You have phantomjs!'
+else
+  echo '[*] Installing phantomjs'
+  sudo apt-get install phantomjs
+fi
 echo '[*] Setting local ruby version to 2.3.5'
 rbenv local 2.3.5
-echo '[*] Installing gems'
 if rbenv which bundle 2&>1 > /dev/null ; then
-    echo 'Bundle installed already.'
+  echo 'You have bundler!'
 else
-    gem install bundler
+  echo '[*] Installing budler'
+  gem install bundler
 fi
+echo '[*] Installing gems'
 bundle install
 echo '[*] Compiling JS'
 yarn install
