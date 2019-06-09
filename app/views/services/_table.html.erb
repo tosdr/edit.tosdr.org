@@ -4,7 +4,7 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Rating</th>
-        <th scope="col" class="text-right">Annotate</th>
+        <th scope="col" class="text-right">Documents</th>
         <th></th>
       </tr>
     </thead>
@@ -19,11 +19,9 @@
         <td><%= s.service_rating %> </td>
         <td class="text-right">
           <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
-            <%= link_to(annotate_service_path(s), class: 'btn') do %>
-              <i class="fa fa-bookmark"></i>
-            <% end %>
+            <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
           <% else %>
-            Documents<br>unavailable
+            <%= link_to "Add one!", new_document_path(service: s), title: "Add a new document to crawl", class: "btn btn-default" %>
           <% end %>
         </td>
         <td></td>
