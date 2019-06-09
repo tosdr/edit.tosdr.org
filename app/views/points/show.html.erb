@@ -2,25 +2,20 @@
   <title>Point <%= @point.id %> (ToS;DR Phoenix)</title>
 <% end %>
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col">
     <h4 class="lighter fl"><%= @point.title %></h4>
   </div>
-  <div class="col-sm-6">
+  <div class="col text-right">
     <% if current_user %>
-      <div class="dropdown btn-group fr">
-          <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-              Update Point
-              <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <% if current_user.id == @point.user_id %>
-              <li><%= link_to 'Edit Content', edit_point_path(@point) %></li>
-            <% elsif current_user.curator %>
-              <li><%= link_to 'Review Point', review_path(@point) %></li>
-            <% end %>
-              <li><%= link_to 'Add Comment', new_point_point_comment_path(@point) %></li>
-          </ul>
-      </div>
+      <%= link_to 'Add Comment', new_point_point_comment_path(@point), class: "btn btn-primary btn-sm" %>
+      <% if current_user.id == @point.user_id %>
+        <%= link_to 'Edit Content', edit_point_path(@point), class: "btn btn-default btn-sm" %>
+      <% elsif current_user.curator %>
+        <%= link_to 'Review Point', review_path(@point), class: "btn btn-default btn-sm" %>
+        <% if @point.status != 'approved' %>
+          <%= link_to 'Approve Point', approve_path(@point), class: "btn btn-warning btn-sm" %>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

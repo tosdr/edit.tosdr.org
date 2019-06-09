@@ -2,8 +2,8 @@ class PointsController < ApplicationController
   include Pundit
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: [:show, :edit, :update, :review, :post_review]
-  before_action :set_topics, only: [:new, :create, :edit, :update, :post_review]
+  before_action :set_point, only: [:show, :edit, :update, :review, :post_review, :approve]
+  before_action :set_topics, only: [:new, :create, :edit, :update, :post_review, :approve]
   before_action :check_status, only: [:create, :update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -70,6 +70,20 @@ class PointsController < ApplicationController
 
   def review
     authorize @point
+  end
+
+  def approve
+    authorize @point
+
+    @topics = Topic.all.includes(:cases).all
+    if @point.update(status: 'approved')
+      create_comment('approved: without comment')
+      UserMailer.reviewed(@point.user, @point, current_user, 'approved', '').deliver_now
+
+      redirect_to point_path(@point)
+    else
+      render :edit
+    end
   end
 
   def post_review
