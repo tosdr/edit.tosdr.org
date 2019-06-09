@@ -8,7 +8,7 @@
   <div class="col-sm-6">
     <% if current_user %>
             <% if current_user.id == @point.user_id %>
-              <%= link_to 'Edit Content', edit_point_path(@point), class: "btn btn-primary btn-sm" %>
+              <%= link_to 'Edit Content', edit_point_path(@point), class: "btn btn-default btn-sm" %>
             <% elsif current_user.curator %>
               <% if @point.status != 'approved' %>
                 <%= link_to 'Approve Point', approve_path(@point), class: "btn btn-warning btn-sm" %>
