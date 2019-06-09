@@ -74,7 +74,6 @@ class PointsController < ApplicationController
   def approve
     authorize @point
 
-    @topics = Topic.all.includes(:cases).all
     if @point.update(status: 'approved')
       create_comment('approved: without comment')
       UserMailer.reviewed(@point.user, @point, current_user, 'approved', '').deliver_now
@@ -88,7 +87,6 @@ class PointsController < ApplicationController
   def post_review
     authorize @point
 
-    @topics = Topic.all.includes(:cases).all
     # process a post of the review form
     if @point.update(status: point_params['status'])
       create_comment(point_params['status'] + ': ' + point_params['point_change'])
