@@ -51,7 +51,7 @@ class PointsController < ApplicationController
   def show
     authorize @point
 
-    @versions = @point.versions.includes(:item)
+    @versions = @point.versions.includes(:item).reverse()
   end
 
   def update
