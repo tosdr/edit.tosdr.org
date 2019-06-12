@@ -15,7 +15,7 @@ Service.all.each do |service|
   # puts service.to_json
 
   if service.slug != 'none'
-    filename = (service.slug || service.name.split(' ').join('').split('.').join('-').downcase) + '.json'
+    filename = (service.slug || service.name.split(' ').join('').split('.').join('-').split('/').join('_').downcase) + '.json'
     # File.delete(filepath_services + filename)
     # filename = service.id.to_s + '.json'
     begin
