@@ -3,8 +3,8 @@
 
 require 'json'
 
-filepath_services = "../tosdr-build/src/services/"
-filepath_services_mapping = "../tosdr-build/src/servicesMapping.json"
+filepath_services = "../tosdr.org/src/services/"
+filepath_services_mapping = "../tosdr.org/src/servicesMapping.json"
 
 mapping = {}
 mapping['toId'] = {}

@@ -3,7 +3,7 @@
 
 require 'json'
 
-filepath_cases = "../tosdr-build/src/cases/"
+filepath_cases = "../tosdr.org/src/cases/"
 
 puts "Exporting cases..."
 Case.all.each do |c|
