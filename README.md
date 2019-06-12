@@ -12,7 +12,7 @@ Please refer to the CONTRIBUTING.md guide for more information. If anything is m
 
 ## Database
 
-All the details on the database schema can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/database).
+All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit-tosdr-org/wiki/database).
 
 ## Export
 
@@ -21,16 +21,16 @@ be kept secret. Never commit a database dump to git, or share it with someone wh
 access to our Heroku account!
 
 ```sh
-# make sure you have phoenix checked out next to tosdr-build in a folder:
-git clone https://github.com/tosdr/phoenix
-git clone https://github.com/tosdr/tosdr-build
-mkdir tosdr-build/src/pointsPhoenix
-cd phoenix
+# make sure you have edit-tosdr-org checked out next to tosdr.org in a folder:
+git clone https://github.com/tosdr/edit-tosdr-org
+git clone https://github.com/tosdr/tosdr.org
+mkdir tosdr.org/src/pointsPhoenix
+cd edit-tosdr-org
 sh ./db/download.sh
 sh ./db/export.sh
 
 # go look at the export results:
-cd ../tosdr-build
+cd ../tosdr.org
 mv src/points src/pointsOld
 mv src/pointsPhoenix src/points
 mkdir src/pointsPhoenix
@@ -38,14 +38,14 @@ mkdir src/pointsPhoenix
 # notice some json formatting differences which will be undone again by grunt later:
 git diff
 
-# then build tosdr-build as usual, see https://github.com/tosdr/tosdr-build#build:
+# then build tosdr.org as usual, see https://github.com/tosdr/tosdr.org#build:
 npm install
 ./node_modules/.bin/grunt
 ```
 
 ## API
 
-All the details on the API can be found on the [wiki](https://github.com/tosdr/phoenix/wiki/api)
+All the details on the API can be found on the [wiki](https://github.com/tosdr/edit-tosdr-org/wiki/api)
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)
