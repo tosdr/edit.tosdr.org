@@ -3,7 +3,7 @@
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Contributions</th>
-      <th></th>
+      <th># Pending</th>
       <th></th>
       <th scope="col" class="text-left">Rating</th>
       <th></th>
@@ -23,7 +23,7 @@
     <tr>
       <td><%= link_to c.title, case_path(c), title: "View points connected to this case" %></td>
       <td class="text-center"> <%= c.points.count %></td>
-      <td></td>
+      <td><%= c.points.where(status: 'pending').count %></td>
       <td></td>
       <td class="<%= pointbox %> text-center"></td>
       <td></td>

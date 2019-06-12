@@ -12,14 +12,13 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get 'my_points', to: 'points#user_points', as: :my_points
   get 'about', to: 'pages#about'
 
-
-  get 'points/new', to: 'points#new'
+  get 'my_points', to: 'points#user_points', as: :my_points
   get 'points/:id/review', to: 'points#review', as: "review"
+  get 'points/:id/approve', to: 'points#approve', as: "approve"
   patch 'points/:id/review', to: 'points#post_review'
-  resources :points, only: :index, path: "points/(:scope)", scope: /[a-z\-_]*/, as: :points
+  resources :points, only: :index
   resources :points, except: [:index] do
     resources :point_comments, only: [:new, :create]
   end
@@ -39,8 +38,6 @@ Rails.application.routes.draw do
   get "services/:id/annotate", to: "services#annotate", as: "annotate"
   get "services/:id/annotate?point_id=:point_id", to: "services#annotate", as: "annotate_point"
   post "services/:id/annotate", to: "services#quote"
-
-  get "services/:id/(:scope)", to: "services#show", scope: /[a-z\-_]*/
 
   resources :topics do
     resources :topic_comments, only: [:new, :create]
