@@ -1,6 +1,6 @@
 # Phoenix
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=edit-tosdr-org)
+![Heroku](https://heroku-badge.herokuapp.com/?app=edit.tosdr.org)
 
 Phoenix is a web app to submit points to the Terms of Service; Didn't Read project. The template used is located [here](https://github.com/lewagon/rails-templates)
 
@@ -12,7 +12,7 @@ Please refer to the CONTRIBUTING.md guide for more information. If anything is m
 
 ## Database
 
-All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit-tosdr-org/wiki/database).
+All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/database).
 
 ## Export
 
@@ -21,11 +21,11 @@ be kept secret. Never commit a database dump to git, or share it with someone wh
 access to our Heroku account!
 
 ```sh
-# make sure you have edit-tosdr-org checked out next to tosdr.org in a folder:
-git clone https://github.com/tosdr/edit-tosdr-org
+# make sure you have edit.tosdr.org checked out next to tosdr.org in a folder:
+git clone https://github.com/tosdr/edit.tosdr.org
 git clone https://github.com/tosdr/tosdr.org
 mkdir tosdr.org/src/pointsPhoenix
-cd edit-tosdr-org
+cd edit.tosdr.org
 sh ./db/download.sh
 sh ./db/export.sh
 
@@ -45,7 +45,7 @@ npm install
 
 ## API
 
-All the details on the API can be found on the [wiki](https://github.com/tosdr/edit-tosdr-org/wiki/api)
+All the details on the API can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/api)
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)
