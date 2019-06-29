@@ -58,7 +58,6 @@ class PointsController < ApplicationController
     authorize @point
 
     if @point.update(point_params)
-      @point.topic_id = @point.case.topic_id
       create_comment(@point.point_change)
       redirect_to point_path(@point)
     elsif @point.case.nil?
@@ -143,7 +142,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :topic_id, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
   end
 
   def check_status
