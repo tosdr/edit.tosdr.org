@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190430102205) do
+ActiveRecord::Schema.define(version: 20190629203821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,20 +94,18 @@ ActiveRecord::Schema.define(version: 20190430102205) do
     t.text "analysis"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "topic_id"
     t.bigint "service_id"
     t.string "quoteText"
     t.bigint "case_id"
     t.string "oldId"
     t.text "point_change"
+    t.boolean "service_needs_rating_update", default: false
     t.integer "quoteStart"
     t.integer "quoteEnd"
-    t.boolean "service_needs_rating_update", default: false
     t.bigint "document_id"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
-    t.index ["topic_id"], name: "index_points_on_topic_id"
     t.index ["user_id"], name: "index_points_on_user_id"
   end
 
@@ -213,7 +211,6 @@ ActiveRecord::Schema.define(version: 20190430102205) do
   add_foreign_key "points", "cases"
   add_foreign_key "points", "documents"
   add_foreign_key "points", "services"
-  add_foreign_key "points", "topics"
   add_foreign_key "points", "users"
   add_foreign_key "reasons", "points"
   add_foreign_key "reasons", "users"
