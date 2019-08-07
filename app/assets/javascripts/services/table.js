@@ -1,59 +1,21 @@
 $(".services.index").ready(function() {
+  const grades = ['A', 'B', 'C', 'D', 'E', 'F', 'N/A'];
   function compareServiceClassification(elementA, elementB) {
-    if (
-      !['A', 'B', 'C', 'D', 'E', 'F', 'N/A'].includes(elementA.dataset.classification)
-      || !['A', 'B', 'C', 'D', 'E', 'F', 'N/A'].includes(elementB.dataset.classification)
-    ) {
+    const classA = elementA.dataset.classification;
+    const classB = elementB.dataset.classification;
+    if (!grades.includes(classA) || !grades.includes(classB)) {
       return 0;
     }
-    if (elementA.dataset.classification === elementB.dataset.classification) {
+    if (classA === classB) {
       return 0;
     }
-
-    // Both do not have the same classification, so if one is good, that one is better:
-    if (elementA.dataset.classification === 'A') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'A') {
-      return 1;
-    }
-    // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-    if (elementA.dataset.classification === 'B') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'B') {
-      return 1;
-    }
-    // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-    if (elementA.dataset.classification === 'C') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'C') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'D') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'D') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'E') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'E') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'F') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'F') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'N/A') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'N/A') {
-      return 1;
+    for (grade in grades) {
+      if (classA === grade) {
+        return -1;
+      }
+      if (classB === grade) {
+        return 1;
+      }
     }
   }
 

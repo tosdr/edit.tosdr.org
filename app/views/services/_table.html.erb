@@ -4,6 +4,7 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Rating</th>
+        <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
         <th scope="col" class="text-right">Documents</th>
         <th></th>
       </tr>
@@ -17,6 +18,7 @@
           <% end %>
         </td>
         <td><%= s.service_rating %> </td>
+        <% if current_user && current_user.curator %><td><%= s.points.where(status: 'pending').count %></td><% end %>
         <td class="text-right">
           <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
             <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
