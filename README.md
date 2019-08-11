@@ -49,6 +49,7 @@ All the details on the API can be found on the [wiki](https://github.com/tosdr/e
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)
+* [Jesse](https://github.com/JesseWeinstein)
 * [Madeline](https://github.com/madoleary)
 * [Michiel](https://github.com/michielbdejong)
 * [Vincent](https://github.com/vinnl)
