@@ -2,7 +2,7 @@
   <% content_for :title do %>
     <title>New point about <%= @point.service.name %> (ToS;DR Phoenix)</title>
   <% end %>
-  <%= render 'full_form' %>
+  <%= render 'full_form', edit: false %>
 <% else %>
   <% content_for :title do %>
     <title>Deprecated (ToS;DR Phoenix)</title>

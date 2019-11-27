@@ -10,10 +10,10 @@ class ServicesController < ApplicationController
   def index
     authorize Service
 
-    @services = Service.includes(points: [:case]).all
+    @services = Service.includes(points: []).all
     @document_counts = Document.group(:service_id).count
     if @query = params[:query]
-      @services = Service.includes(points: [:case]).search_by_name(@query)
+      @services = Service.includes(points: []).search_by_name(@query)
     end
   end
 
@@ -59,7 +59,7 @@ class ServicesController < ApplicationController
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
-        params.permit(:title, :source, :status, :analysis, :topic_id, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+        params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
       )
       point.user = current_user
       point.case = @case
@@ -96,10 +96,6 @@ class ServicesController < ApplicationController
     end
 
     @versions = @service.versions
-
-    if @query = params[:topic]
-      @points = @points.where(topic_id: params[:topic][:id])
-    end
   end
 
   def edit

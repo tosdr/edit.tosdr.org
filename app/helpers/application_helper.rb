@@ -56,10 +56,6 @@ module ApplicationHelper
     ).html_safe
   end
 
-  def format_time(time)
-    time.strftime("%d/%m/%y - %H:%M")
-  end
-
   def format_figures(figure, first = true)
     if first
       figure.nil? ? "No changes recorded" : figure.first

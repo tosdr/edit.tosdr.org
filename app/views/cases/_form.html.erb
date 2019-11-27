@@ -4,7 +4,7 @@
       <div class="form-inputs col-xs-12">
         <%= f.input :title, placeholder: "Case title", label: 'Title' %>
         <%= f.input :classification, as: :radio_buttons, collection: [['blocker', 'blocker'], ['bad', 'bad'], ['neutral', 'neutral'], ['good', 'good']] %>
-        <%= f.input :score, placeholder: 50, input_html: { min: 0, max: 100, value: @case.score || 50 }, label: 'Weight', hint: "Range: 0..100. Higher weight make good points extra good, and bad/blocker points extra bad. Higher weight points have more impact on a service's rating, and are also displayed more prominently in the review summaries on https://tosdr.org." %>
+        <%= f.input :score, placeholder: 50, input_html: { min: 0, max: 100, value: @case.score || 50 }, label: 'Weight', hint: "Range: 0..100. Higher weights make good points extra good, and bad/blocker points extra bad. Higher weight points have more impact on a service's rating, and are also displayed more prominently in the review summaries on <a href=\"https://tosdr.org\">ToS;DR</a>.".html_safe %>
         <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Pick the topic where the case applies" %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
         <%= f.input :privacy_related, label: "This case is related to privacy, meaning it will affect <a href=\"https://spreadprivacy.com/privacy-simplified/\">DuckDuckGo's Privacy Grade</a>.".html_safe, checked_value: true, unchecked_value: false %>

@@ -1,115 +1,34 @@
-<table id="myTable" class="table table-striped">
-
-  <%= javascript_tag do %>
-  function compareClassification(elementA, elementB) {
-    if (
-      !['A', 'B', 'C', 'D', 'F', 'N/A'].includes(elementA.dataset.classification)
-      || !['A', 'B', 'C', 'D', 'F', 'N/A'].includes(elementB.dataset.classification)
-    ) {
-      return 0;
-    }
-    if (elementA.dataset.classification === elementB.dataset.classification) {
-      return 0;
-    }
-
-    // Both do not have the same classification, so if one is good, that one is better:
-    if (elementA.dataset.classification === 'A') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'A') {
-      return 1;
-    }
-    // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-    if (elementA.dataset.classification === 'B') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'B') {
-      return 1;
-    }
-    // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-    if (elementA.dataset.classification === 'C') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'C') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'D') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'D') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'F') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'F') {
-      return 1;
-    }
-    if (elementA.dataset.classification === 'N/A') {
-      return -1;
-    }
-    if (elementB.dataset.classification === 'N/A') {
-      return 1;
-    }
-  }
-
-  document.getElementById('orderByPoint').addEventListener("click", (event) => {
-    let elems =  document.querySelectorAll("#toSort");
-    // convert nodelist to array
-    var array = [];
-    for (var i = 0; i < elems.length; i++) {
-      array[i] = elems[i];
-    }
-
-    // perform sort depending on classname
-    if(event.currentTarget.className=="btn btn-success"){
-      array.sort((a, b) => compareClassification(b, a));
-      event.currentTarget.classList.remove("btn-success");
-      event.currentTarget.classList.add("btn-danger");
-    }
-    else if(event.currentTarget.className== "btn btn-danger"){
-      array.sort(compareClassification);
-      event.currentTarget.classList.remove("btn-danger");
-      event.currentTarget.classList.add("btn-success");
-    }
-    // join the array back into HTML
-    var output = "";
-    for (var i = 0; i < array.length; i++) {
-      output += array[i].outerHTML;
-    }
-    // append output to div 'points-table-container'
-    document.getElementById('myTable').innerHTML = output;
-  });
-  <% end %>
-
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Rating</th>
-      <th scope="col" class="text-right">Annotate</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  <% services.each do |s| %>
-    <tr id="toSort" data-classification="<%= s.service_rating %>">
-      <td>
-        <%= link_to service_path(s) do %>
-          <%= truncate(s.name, length: 30) %>
-        <% end %>
-      </td>
-      <td><%= s.service_rating %> </td>
-      <td class="text-right">
-        <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
-          <%= link_to(annotate_service_path(s), class: 'btn') do %>
-            <i class="fa fa-bookmark"></i>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Rating</th>
+        <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
+        <th scope="col" class="text-right">Documents</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="myTableBody">
+    <% services.each do |s| %>
+      <tr class="toSort" data-classification="<%= s.service_rating %>">
+        <td>
+          <%= link_to service_path(s) do %>
+            <%= truncate(s.name, length: 30) %>
           <% end %>
-        <% else %>
-          Documents<br>unavailable
-        <% end %>
-      </td>
-      <td></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+        </td>
+        <td><%= s.service_rating %> </td>
+        <% if current_user && current_user.curator %><td><%= s.points.where(status: 'pending').count %></td><% end %>
+        <td class="text-right">
+          <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
+            <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
+          <% else %>
+            <%= link_to "Add one!", new_document_path(service: s), title: "Add a new document to crawl", class: "btn btn-default" %>
+          <% end %>
+        </td>
+        <td></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

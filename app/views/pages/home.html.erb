@@ -23,7 +23,7 @@
   </p>
 </header>
 <h2>Welcome to our edit tool</h2>
-<p>Using this online tool, you can help to update the content of the <a href="https://tosdr.org">ToS;DR website</a>. Below are the most recent changes people made. Above, you see the menu bar, where you can for instance navigate to the list of services, or to the points search page.
+<p>Using this online tool, you can help to update the content of the <a href="https://tosdr.org">ToS;DR website</a>. Below are the most recent changes people have made. Above, you can see the menu bar, where you can navigate to the list of Services, or the Points search page.
 </p>
 
 <% unless user_signed_in? %>
@@ -34,10 +34,10 @@
 <% end %>
 
 <h2>How it works</h2>
-<p>A <em>service</em> is a website or online application, for instance YouTube. A <em>case</em> is an individual remark that can form part of the review of a service, for instance "you need to be 13 years old to use this service". A <em>point</em> links a case to a service, for instance "you need to be 13 years old to use YouTube". A <em>topic</em> is a search tag for cases.</p>
-<p>To review a service's terms and conditions, first make sure the service is listed, and add it if not. Then read the actual terms and policies you have to agree to to use this service, and make a note about anything that you find remarkable. Find the existing case for each of these review remarks, or create it if necessary, and create a point to add that case as a remark in the review of the service. Use the <a href="https://github.com/tosdr/tosdr.org/wiki/checklist">checklist</a> to see if you forgot to review any aspects.</p>
+<p>A <em>service</em> is a website or online application, for instance YouTube. A <em>case</em> is an individual remark that can form part of the review of a service, for instance "you need to be 13 years old to use this service"; each is assigned a <em>topic</em> to provide grouping. A <em>point</em> links a case to a service, for instance "you need to be 13 years old to use YouTube".</p>
+<p>To review a service's terms and conditions, first make sure the service is listed, and contact us if it isn't. Then read the actual terms and policies you have to agree to to use this service, and make a note about anything that you find remarkable. Find the existing case for each of these review remarks, or create it if necessary, and create a point to add that case as a remark in the review of the service. Use the <a href="https://github.com/tosdr/tosdr.org/wiki/checklist">checklist</a> to see if you forgot to review any aspects.</p>
 <p>Then you need to wait for a curator to approve your changes, after which your review will show up on <a href="https://tosdr.org">https://tosdr.org</a>, will be picked up by the ToS;DR browser extensions, and included in DuckDuckGo's Privacy Grade, for which our API is one of several input factors. For services whose terms and policies are tracked by <a href="https://tosback.org">ToSBack</a>, you can try out our experimental <a href="/services/331/annotate">annotate view</a>.</p>
-<p>This tool is still very much under construction, and has bugs. Please <a href="https://github.com/tosdr/phoenix/issues/new">open a github issue</a> for anything you think should be improved.</p>
+<p>This tool is still very much under construction, and has bugs. Please <a href="https://github.com/tosdr/edit.tosdr.org/issues/new">open a github issue</a> for anything you think should be improved.</p>
 
 
 <h2>Examples (<%= link_to "see all", services_path %>):</h2>
@@ -96,7 +96,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-            <b><%= username version.whodunnit %>:</b> <%= format_time(version.created_at) %>
+            <b><%= username version.whodunnit %>:</b> <%= version.created_at %>
           </h5>
         </div>
         <div class="col-sm-4">

@@ -7,14 +7,17 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts "Cleaning up the database..."
-Reason.destroy_all
-Comment.destroy_all
-Reason.destroy_all
 Point.destroy_all
+PointComment.destroy_all
 Service.destroy_all
+ServiceComment.destroy_all
 Case.destroy_all
+CaseComment.destroy_all
 Topic.destroy_all
+TopicComment.destroy_all
+Document.destroy_all
 User.destroy_all
+Version.destroy_all
 
 puts "Starts new seeding"
 test_user = User.new(email: "test@email.com", username: "test user", password: "testNonAdminUser1", password_confirmation: "testNonAdminUser1")
