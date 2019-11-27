@@ -30,6 +30,8 @@ class CasesController < ApplicationController
     @points = @case.points.includes(:service).includes(:user)
     if params[:query]
       @points = @points.search_points_by_multiple(params[:query]).where(case: @case)
+    elsif params[:status] && ['declined', 'pending', 'approved', 'changes-requested'].include?(params[:status])
+      @points = @points.where(case: @case, status: params[:status])
     end
   end
 
