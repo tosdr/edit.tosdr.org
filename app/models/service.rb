@@ -17,10 +17,6 @@ class Service < ApplicationRecord
 
   before_validation :strip_input_fields
 
-  def points_by_topic(query)
-    points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
-  end
-
   def self.search_by_name(query)
     Service.where("name ILIKE ?", "%#{query}%")
   end
@@ -63,40 +59,6 @@ class Service < ApplicationRecord
       end
     end
   end
-
-  # function compareClassification(elementA, elementB) {
-  #   if (
-  #     !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
-  #     || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
-  #   ) {
-  #     return 0;
-  #   }
-  #
-  #   if (elementA.dataset.classification === elementB.dataset.classification) {
-  #     return 0;
-  #   }
-  #   // Both do not have the same classification, so if one is good, that one is better:
-  #   if (elementA.dataset.classification === 'good') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'good') {
-  #     return 1;
-  #   }
-  #   // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-  #   if (elementA.dataset.classification === 'neutral') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'neutral') {
-  #     return 1;
-  #   }
-  #   // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-  #   if (elementA.dataset.classification === 'bad') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'bad') {
-  #     return 1;
-  #   }
-  # }
 
   private
 
@@ -143,5 +105,4 @@ class Service < ApplicationRecord
       return "A"
     end
   end
-
 end
