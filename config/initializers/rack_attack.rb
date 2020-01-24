@@ -1,6 +1,4 @@
 class Rack::Attack
-
-
   ### Configure Cache ###
 
   # If you don't want to use Rails.cache (Rack::Attack's default), then
@@ -37,6 +35,35 @@ class Rack::Attack
       req.ip
     end
   end
+
+  throttle('points/ip', limit: 5, period: 10.minutes) do |req|
+    match = req.path.match(/^\/points\/(\w+)/)
+    if (req.patch? || req.put?) &&  !match.nil?
+      req.ip
+    end
+  end
+
+  throttle('throttle document creation', limit: 5, period: 10.minutes) do |req|
+    if req.path.end_with?('/documents') && req.post?
+      req.ip
+    end
+  end
+
+  throttle('throttle document updates', limit: 5, period: 10.minutes) do |req|
+    match = req.path.match(/^\/documents\/(\w+)/)
+    if (req.patch? || req.put?) &&  !match.nil?
+      req.ip
+    end
+  end
+
+  throttle('document creation for specific services', limit: 5, period: 10.minutes) do |req|
+    match = req.path.match(/^\/documents\/(\w+)/)
+    if req.post? && !match.nil?
+      req.ip
+    end
+  end
+
+
 
   ### Prevent Brute-Force Login Attacks ###
 
@@ -82,6 +109,6 @@ class Rack::Attack
   self.throttled_response = lambda do |env|
    [ 503,  # status
      {},   # headers
-     ["Oops! It looks like you're creating more than one service in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]] # body
+     ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]] # body
   end
 end
