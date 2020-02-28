@@ -42,6 +42,7 @@ COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 
 COPY package.json /app/package.json
+ENV PATH=$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
 RUN yarn
 
 COPY . /app/
