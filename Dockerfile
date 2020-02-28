@@ -1,4 +1,4 @@
-FROM ruby:2.6.5-jessie
+FROM ruby:2.3.8-jessie
 
 RUN apt-get update -qq \
     && apt-get install -y \
