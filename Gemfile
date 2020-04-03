@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.3.5'
+ruby '2.6.5'
 
-gem 'postmark-rails'
+gem 'sendgrid-ruby'
 
 gem 'activeadmin'
 gem 'devise'
