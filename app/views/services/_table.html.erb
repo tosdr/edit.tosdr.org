@@ -18,7 +18,7 @@
           <% end %>
         </td>
         <td><%= s.service_rating %> </td>
-        <% if current_user && current_user.curator %><td><%= s.points.where(status: 'pending').count %></td><% end %>
+        <% if current_user && current_user.curator %><td><%= s.pending_points.count %></td><% end %>
         <td class="text-right">
           <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
             <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
