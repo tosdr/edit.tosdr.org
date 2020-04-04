@@ -33,6 +33,10 @@ class Service < ApplicationRecord
     end
   end
 
+  def pending_points
+    !self.points.nil? ? self.points.where(status: "pending") : []
+  end
+
   def sort_service_points(points)
     classifications = ['good', 'neutral', 'bad', 'blocker']
 
