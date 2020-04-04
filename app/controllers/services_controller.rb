@@ -10,10 +10,10 @@ class ServicesController < ApplicationController
   def index
     authorize Service
 
-    @services = Service.includes(points: []).all
+    @services = Service.includes(points: [:case]).all
     @document_counts = Document.group(:service_id).count
     if @query = params[:query]
-      @services = Service.includes(points: []).search_by_name(@query)
+      @services = Service.search_by_name(@query)
     end
   end
 
