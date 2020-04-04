@@ -1,4 +1,4 @@
-$(".services.annotate").ready(function() {
+$(function() {
   function getDataElement(selectionNode) {
     if (
       !selectionNode.parentElement ||
