@@ -13,28 +13,10 @@ class Service < ApplicationRecord
   validates :url, presence: true
   validates :url, uniqueness: true
 
-  attr_accessor :service_rating
-
   before_validation :strip_input_fields
 
   def self.search_by_name(query)
     Service.where("name ILIKE ?", "%#{query}%")
-  end
-
-  def service_rating
-    if File.file?("service_ratings.csv")
-      csv = CSV.read("service_ratings.csv")
-      service_row = csv.find { |row| (row[0] === self.id.to_s) }
-      if service_row.nil? || service_row[1].nil?
-        "N/A"
-      else
-        service_row[1]
-      end
-    else
-      "N/A"
-    end
-  rescue CSV::MalformedCSVError
-    "N/A"
   end
 
   def calculate_service_rating
