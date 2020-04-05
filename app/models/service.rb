@@ -70,7 +70,7 @@ class Service < ApplicationRecord
     end
   end
 
-  def service_rating_get
+  def perform_calculation
     points = self.points
     classification_counts = service_point_classifications_count(points)
     balance = calculate_balance(classification_counts)
