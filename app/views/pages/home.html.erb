@@ -43,7 +43,7 @@
 <h2>Examples (<%= link_to "see all", services_path %>):</h2>
 <div class="row" id="service-container">
   <% @services.each do |s| %>
-  <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.service_rating %>">
+  <div class="col-xs-12 col-sm-6 col-lg-4 serviceDiv" data-rating="<%= s.rating %>">
     <!--CARD -->
     <div class="card">
       <h2 class="card-header card-service" title="<%= s.name %>">
@@ -67,13 +67,13 @@
         </li>
         <% end %>
         </ul>
-        <% if s.service_rating == "N/A" %>
+        <% if s.rating == "N/A" %>
           <% badge_rating = "rating-na" %>
         <% else %>
-          <% badge_rating = "rating-#{s.service_rating}" %>
+          <% badge_rating = "rating-#{s.rating}" %>
         <% end %>
         <div class="card-badge <%= badge_rating %>">
-          <%= s.service_rating %>
+          <%= s.rating %>
         </div>
       </div>
     </div>
