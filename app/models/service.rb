@@ -22,7 +22,23 @@ class Service < ApplicationRecord
   end
 
   def service_rating
-    service_rating_get
+    if File.file?("service_ratings.csv")
+      csv = CSV.read("service_ratings.csv")
+      service_row = csv.find { |row| (row[0] === self.id.to_s) }
+      if service_row.nil? || service_row[1].nil?
+        "N/A"
+      else
+        service_row[1]
+      end
+    else
+      "N/A"
+    end
+  rescue CSV::MalformedCSVError
+    "N/A"
+  end
+
+  def calculate_service_rating
+    perform_calculation
   end
 
   def points_ordered_status_class
@@ -72,11 +88,9 @@ class Service < ApplicationRecord
     end
   end
 
-  def service_rating_get
-    points = self.points
-    classification_counts = service_point_classifications_count(points)
-    balance = calculate_balance(classification_counts)
-    balance
+  def perform_calculation
+    classification_counts = service_point_classifications_count(self.points)
+    calculate_balance(classification_counts)
   end
 
   def service_point_classifications_count(points)

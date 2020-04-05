@@ -34,6 +34,8 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
+# for cron tasks
+gem 'whenever'
 
 group :development do
   gem 'letter_opener'
