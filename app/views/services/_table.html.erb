@@ -20,7 +20,7 @@
         <td><%= s.service_rating %> </td>
         <% if current_user && current_user.curator %><td><%= s.pending_points.count %></td><% end %>
         <td class="text-right">
-          <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
+          <% if s.documents && s.documents.count > 0 %>
             <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
           <% else %>
             <%= link_to "Add one!", new_document_path(service: s), title: "Add a new document to crawl", class: "btn btn-default" %>
