@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190629203821) do
+ActiveRecord::Schema.define(version: 20200405093018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(version: 20190629203821) do
     t.string "slug"
     t.boolean "is_comprehensively_reviewed", default: false, null: false
     t.bigint "user_id"
+    t.string "rating"
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 

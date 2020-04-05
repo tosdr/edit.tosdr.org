@@ -14,6 +14,8 @@ gem "puma", ">= 3.12.4"
 gem 'rails', '5.1.7'
 gem 'redis'
 
+gem 'whenever'
+
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'

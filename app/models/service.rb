@@ -13,16 +13,14 @@ class Service < ApplicationRecord
   validates :url, presence: true
   validates :url, uniqueness: true
 
-  attr_accessor :service_rating
-
   before_validation :strip_input_fields
 
   def self.search_by_name(query)
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
-  def service_rating
-    service_rating_get
+  def calculate_service_rating
+    perform_calculation
   end
 
   def points_ordered_status_class

@@ -11,13 +11,13 @@
     </thead>
     <tbody id="myTableBody">
     <% services.each do |s| %>
-      <tr class="toSort" data-classification="<%= s.service_rating %>">
+      <tr class="toSort" data-classification="<%= s.rating %>">
         <td>
           <%= link_to service_path(s) do %>
             <%= truncate(s.name, length: 30) %>
           <% end %>
         </td>
-        <td><%= s.service_rating %> </td>
+        <td><%= s.rating %> </td>
         <% if current_user && current_user.curator %><td><%= s.pending_points.count %></td><% end %>
         <td class="text-right">
           <% if @document_counts[s.id] && @document_counts[s.id] > 0 %>
