@@ -76,7 +76,6 @@ class PointsController < ApplicationController
 
     if @point.update(status: 'approved')
       create_comment('approved: without comment')
-      UserMailer.reviewed(@point.user, @point, current_user, 'approved', '').deliver_now
 
       redirect_to point_path(@point)
     else
@@ -90,10 +89,6 @@ class PointsController < ApplicationController
     # process a post of the review form
     if @point.update(status: point_params['status'])
       create_comment(point_params['status'] + ': ' + point_params['point_change'])
-
-      if (@point.user_id != current_user.id)
-        UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
-      end
 
       redirect_to point_path(@point)
     else
