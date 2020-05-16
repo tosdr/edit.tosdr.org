@@ -1,6 +1,9 @@
 class CaseCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_case, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @case_comment = CaseComment.new
   end
