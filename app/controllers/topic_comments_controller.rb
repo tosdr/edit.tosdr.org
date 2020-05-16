@@ -1,6 +1,9 @@
 class TopicCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_topic, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @topic_comment = TopicComment.new
   end

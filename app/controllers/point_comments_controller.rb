@@ -1,6 +1,9 @@
 class PointCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_point, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @point_comment = PointComment.new
   end

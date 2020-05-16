@@ -1,6 +1,9 @@
 class DocumentCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_document, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @document_comment = DocumentComment.new
   end
