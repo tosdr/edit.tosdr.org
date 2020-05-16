@@ -9,10 +9,20 @@ class ServicesController < ApplicationController
 
   def index
     authorize Service
-
     @services = Service.all
-    if @query = params[:query]
-      @services = Service.search_by_name(@query)
+  end
+
+  def list_all
+    authorize Service
+
+    object = []
+    services = Service.all
+    services.map do |service|
+      object << { pending_points_count: service.pending_points.count, documents_count: service.documents.count, service: service }
+    end
+
+    respond_to do |format|
+      format.json { render json: object }
     end
   end
 

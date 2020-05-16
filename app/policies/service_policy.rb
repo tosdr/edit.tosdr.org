@@ -3,6 +3,14 @@ class ServicePolicy < ApplicationPolicy
     true
   end
 
+  def list_all?
+    true
+  end
+
+  def service_pending_points?
+    true
+  end
+
   def show?
     true
   end

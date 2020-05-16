@@ -1,34 +1,39 @@
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Rating</th>
-        <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
-        <th scope="col" class="text-right">Documents</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="myTableBody">
-    <% services.each do |s| %>
-      <tr class="toSort" data-classification="<%= s.rating %>">
-        <td>
-          <%= link_to service_path(s) do %>
-            <%= truncate(s.name, length: 30) %>
-          <% end %>
-        </td>
-        <td><%= s.rating %> </td>
-        <% if current_user && current_user.curator %><td><%= s.pending_points.count %></td><% end %>
-        <td class="text-right">
-          <% if s.documents.count && s.documents.count > 0 %>
-            <%= link_to("Annotate", annotate_service_path(s), class: 'btn btn-primary') %>
-          <% else %>
-            <%= link_to "Add one!", new_document_path(service: s), title: "Add a new document to crawl", class: "btn btn-default" %>
-          <% end %>
-        </td>
-        <td></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+<div id="dynamic-services-table" v-cloak>
+
+  <div class="loading" v-if="loading">
+    Loading...
+  </div>
+  <div class="" v-else>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Rating</th>
+            <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
+            <th scope="col" class="text-right">Documents</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="myTableBody">
+          <tr class="toSort" v-for="service in services" :key="service" v-bind:data-classification="service.service.rating">
+            <td>
+              {{ service.service.name }}
+            </td>
+            <td>{{ service.service.rating }} </td>
+            <% if current_user && current_user.curator %>
+            <td>{{ service.pending_points_count }}</td>
+            <% end %>
+            <td class="text-right" v-if="service.documents_count > 0">
+              <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> Annotate </a>
+            </td>
+            <td class="text-right" v-else>
+              <a class="btn btn-default" v-bind:href="'/documents/new?service=' + service.service.id"> Add one!</a>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

@@ -30,11 +30,17 @@ Rails.application.routes.draw do
   post "documents/:id/edit", to: "documents#update"
   post "documents/:id/crawl", to: "documents#crawl", as: :document_crawl
 
+  # api endpoints for vue
+  get "services/list_all", to: "services#list_all", as: "list_all_services"
+
+  # traditional rails routes
   resources :services, except: [:show]
   resources :services, except: [:index] do
     resources :points, only: [:new, :create]
     resources :service_comments, only: [:new, :create]
   end
+
+  # routes for annotation functionality
   get "services/:id/annotate", to: "services#annotate", as: "annotate"
   get "services/:id/annotate?point_id=:point_id", to: "services#annotate", as: "annotate_point"
   post "services/:id/annotate", to: "services#quote"
