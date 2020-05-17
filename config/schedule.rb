@@ -22,3 +22,7 @@
 every 12.hours do
   rake 'service:perform_rating'
 end
+
+every 12.hours do
+  rake 'spam:clean_spam'
+end
