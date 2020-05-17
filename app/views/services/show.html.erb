@@ -51,7 +51,7 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @service.service_comments %>
+  <%= render 'shared/comments', comments: @service.service_comments.includes([:spam]) %>
 
 <br>
 <br>

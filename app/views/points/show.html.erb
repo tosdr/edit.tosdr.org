@@ -87,8 +87,8 @@
 
 <br>
 <br>
- 
-  <%= render 'shared/comments', comments: @point.point_comments %>
+
+  <%= render 'shared/comments', comments: @point.point_comments.includes([:spams]) %>
 
 <br>
 <br>
@@ -116,4 +116,3 @@
 </div>
 
 <% end %>
-
