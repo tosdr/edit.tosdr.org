@@ -9,8 +9,6 @@ class TopicCommentsController < ApplicationController
   end
 
   def create
-    puts topic_comment_params
-    puts @topic.id
     @topic_comment = TopicComment.new(topic_comment_params)
     @topic_comment.user_id = current_user.id
     @topic_comment.topic_id = @topic.id
