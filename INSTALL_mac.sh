@@ -15,12 +15,12 @@ echo ''
 echo '[*] Installing Rbenv'
 
 if [ -d ~/.rbenv ]; then
-  echo 'Rbenv exists installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5
+  echo 'Rbenv exists installing Ruby 2.6.5, it might take a while...'
+  rbenv install 2.6.5
 else
   brew install rbenv
-  echo 'Rbenv exists now installing Ruby 2.3.5, it might take a while...'
-  rbenv install 2.3.5
+  echo 'Rbenv exists now installing Ruby 2.6.5, it might take a while...'
+  rbenv install 2.6.5
 fi
 
 if hash yarn 2>/dev/null; then
@@ -37,8 +37,8 @@ else
   brew services start postgresql
 fi
 
-echo '[*] Setting local ruby version to 2.3.5'
-rbenv local 2.3.5
+echo '[*] Setting local ruby version to 2.6.5'
+rbenv local 2.6.5
 echo '[*] Installing gems'
 bundle install
 echo '[*] Compiling JS'
