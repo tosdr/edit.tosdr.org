@@ -51,7 +51,7 @@
 <br>
 <br>
 
-  <div>(service comments <a href="https://github.com/tosdr/edit.tosdr.org/issues/906">temporarily disabled</a>)</div>
+<%= render 'shared/comments', comments: @service.service_comments.includes([:spams]) %>
 
 <br>
 <br>
