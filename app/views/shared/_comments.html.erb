@@ -14,7 +14,24 @@
         </div>
       </div>
     <% else %>
-      <div>(service comments <a href="https://github.com/tosdr/edit.tosdr.org/issues/906">temporarily disabled</a>)</div>
+      <% comments.sort_by { |obj| obj.created_at }.each do |c| %>
+      <div class="card-inline">
+        <div class="card-inline-item card-inline-service">
+          <h6>On <%= c.created_at %>, <%= username c.user_id %> wrote:</h6>
+          <%=simple_format c.summary %>
+        </div>
+        <div class="">
+          <% if c.spams.any? %>
+            <span class="text-danger"> Flagged as spam </span>
+          <% else %>
+            <% if current_user && (current_user.admin? || current_user.curator?) %>
+              <%= link_to 'Flag as spam', flag_as_spam_path(spammable_type: c.class.name, spammable_id: c.id), class: "text-info"%>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <!-- card-inline-END -->
+      <% end %>
     <% end %>
   </div>
 </div>
