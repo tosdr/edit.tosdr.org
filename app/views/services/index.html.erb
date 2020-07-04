@@ -4,8 +4,6 @@
 
 <br>
 <div id="dynamic-services-table" v-cloak>
-
-
   <div class="card-inline">
     <div class="card-inline-item card-inline-service">
       <div class="row">
@@ -21,9 +19,11 @@
 
         <div class="col-lg-6 text-right justify-content-end">
           <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
-          <% if @services.length == 0 %>
-            <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary mb15' %>
-          <% end %>
+          <div class="" v-if="!loading && !filteredServices.length" v-cloak>
+            <% if current_user && current_user.curator %>
+              <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
+            <% end %>
+          </div>
         </div>
       </div>
       <br>
