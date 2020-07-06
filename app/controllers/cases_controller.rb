@@ -4,9 +4,17 @@ class CasesController < ApplicationController
   before_action :set_case, only: [:show, :edit, :update, :destroy]
 
   def index
-    @topics = Topic.includes(:cases).all
-    if params[:query]
-      @topics = @topics.search_by_topic_title(params[:query])
+  end
+
+  def list_all
+    object = []
+    cases = Case.all
+    cases.map do |c|
+      object << { topic_title: c.topic.title, pending_points: c.points.where(status: 'pending').count, points: c.points.count, pointbox: c.determine_pointbox, case: c }
+    end
+
+    respond_to do |format|
+      format.json { render json: object }
     end
   end
 
@@ -29,9 +37,7 @@ class CasesController < ApplicationController
   def show
     @points = @case.points.includes(:service).includes(:user)
     if params[:query]
-      @points = @points.search_points_by_multiple(params[:query]).where(case: @case)
-    elsif params[:status] && ['declined', 'pending', 'approved', 'changes-requested'].include?(params[:status])
-      @points = @points.where(case: @case, status: params[:status])
+      @points = @points.search_points_by_multiple(params[:query])
     end
   end
 
@@ -53,6 +59,7 @@ class CasesController < ApplicationController
   end
 
   private
+
   def set_case
     @case = Case.find(params[:id])
   end
