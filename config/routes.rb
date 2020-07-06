@@ -51,6 +51,8 @@ Rails.application.routes.draw do
     resources :topic_comments, only: [:new, :create]
   end
 
+  # api endpoints for vue
+  get "cases/list_all", to: "cases#list_all", as: "list_all_cases"
   resources :cases do
     resources :case_comments, only: [:new, :create]
   end
