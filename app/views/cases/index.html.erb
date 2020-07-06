@@ -1,35 +1,63 @@
 <% content_for :title do %>
-  <title>Cases (ToS;DR Phoenix)</title>
+  <title>Cases</title>
 <% end %>
 
-<div class="card-inline">
-  <div class="card-inline-item card-inline-service">
-    <div class="row">
-      <div class="col-lg-6">
-        <h1>Cases</h1>
+<div id="dynamic-cases-table" v-cloak>
+  <div class="card-inline">
+    <div class="card-inline-item card-inline-service">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Cases</h1>
+        </div>
       </div>
-    </div>
-    <br>
-    <br>
-    <div class="row">
-      <div class="col-lg-6">
-        <%= render "shared/search" %>
-      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <%= render "shared/search_vue" %>
+          <div class="mt-2">
+            <span class="text-muted" style="font-size: small;">
+              Search by title or topic
+            </span>
+          </div>
+        </div>
 
-      <div class="col-lg-6 text-right justify-content-end">
-        <% if current_user&.curator? %>
-          <%= link_to 'Add Case', new_case_path, class: 'btn btn-primary smaller-btn-text' %>
-        <% end %>
+        <div class="col-lg-6 text-right justify-content-end">
+          <% if current_user && current_user.curator %>
+            <%= link_to 'Add Case', new_case_path, class: 'btn btn-primary smaller-btn-text' %>
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <div class="loading" v-if="loading">
+        Loading...
+      </div>
+      <div class="" v-else>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Contributions</th>
+                <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
+                <th scope="col" class="text-right">Rating</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="" v-for="c in filteredCases" :key="c">
+                <td><a v-bind:href="'/cases/'+ c.case.id"> {{ c.case.title }} </a></td>
+                <td>{{ c.topic_title }} </td>
+                <td>{{ c.points }} </td>
+                <% if current_user && current_user.curator %><td><a v-bind:href="'/cases/'+ c.case.id + '?query=pending'"> {{ c.pending_points }} </a></td><% end %>
+                <td v-bind:class="c.pointbox"></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <br>
-    <% @topics.each do |t| %>
-      <h3><%= t.title %></h3>
-      <% if t.cases.empty? %>
-          No cases found
-      <% else %>
-        <%= render "shared/table_cases", cases: t.cases %>
-      <% end %>
-    <% end %>
   </div>
 </div>

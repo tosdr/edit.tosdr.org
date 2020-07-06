@@ -9,7 +9,6 @@ class ServicesController < ApplicationController
 
   def index
     authorize Service
-    @services = Service.all
   end
 
   def list_all
