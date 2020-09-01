@@ -10,13 +10,21 @@ class User < ApplicationRecord
   has_many :services
 
   validate :password_validation, if: :password
+  validate :username_validation, if: :username
 
   after_create :send_welcome_mail
+
+  HTTP_URL_REGEX = /\b(?:(?:mailto:\S+|(?:https?|ftp|file):\/\/)?(?:\w+\.)+[a-z]{2,6})\b/
+  URL_REGEX = /\b(?:(?:\w+\.)+[a-z]{2,6})\b/
 
   def password_validation
     unless password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
       errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit'
     end
+  end
+
+  def username_validation
+    errors.add(:username, "Your username cannot contain links") if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX)
   end
 
   def admin?
