@@ -138,7 +138,7 @@ class DocumentsController < ApplicationController
       if (newQuoteStart.nil?)
         puts "Could not find quote"
         puts point[:quoteText]
-        point[:status] = 'draft'
+        point[:status] = 'quote-not-found'
         point.save
       else
         if newQuoteStart != point[:quoteStart]
