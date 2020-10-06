@@ -19,7 +19,7 @@
 
         <div class="col-lg-6 text-right justify-content-end">
           <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
-          <div class="" v-if="!loading && !filteredServices.length" v-cloak>
+          <div class="">
             <% if current_user && current_user.curator %>
               <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
             <% end %>
