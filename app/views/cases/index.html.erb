@@ -48,7 +48,7 @@
             <tbody>
               <tr class="" v-for="c in filteredCases" :key="c">
                 <td v-bind:title="c.case.description"><a v-bind:href="'/cases/'+ c.case.id"> {{ c.case.title }} </a></td>
-                <td>{{ c.topic_title }} </td>
+                <td v-bind:title="c.topic.description">{{ c.topic_title }} </td>
                 <td>{{ c.points }} </td>
                 <% if current_user && current_user.curator %><td><a v-bind:href="'/cases/'+ c.case.id + '?query=pending'"> {{ c.pending_points }} </a></td><% end %>
                 <td v-bind:class="c.pointbox"></td>
