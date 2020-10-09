@@ -10,7 +10,7 @@ class CasesController < ApplicationController
     object = []
     cases = Case.all
     cases.map do |c|
-      object << { topic_title: c.topic.title, pending_points: c.points.where(status: 'pending').count, points: c.points.count, pointbox: c.determine_pointbox, case: c }
+      object << { topic_title: c.topic.title, pending_points: c.points.where(status: 'pending').count, points: c.points.count, pointbox: c.determine_pointbox, case: c, topic: c.topic }
     end
 
     respond_to do |format|
