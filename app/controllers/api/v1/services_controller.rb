@@ -2,7 +2,8 @@ class Api::V1::ServicesController < Api::V1::BaseController
   before_action :set_service, only: [ :show ]
 
   def index
-    @services = policy_scope(Service)
+    policy_scope(Service)
+    @services = Service.all
   end
 
   def show
