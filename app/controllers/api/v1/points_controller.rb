@@ -1,7 +1,8 @@
 class Api::V1::PointsController < Api::V1::BaseController
   before_action :set_point, only: [ :show ]
   def index
-    @points = policy_scope(Point)
+    policy_scope(Point)
+    @points = Point.all
   end
 
   def show
