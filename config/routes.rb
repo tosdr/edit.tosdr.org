@@ -59,9 +59,10 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :topics, only: [ :index, :show ]
-      resources :services, only: [ :index, :show ]
-      resources :points, only: [ :index, :show ]
+      resources :topics, only: [:index, :show]
+      resources :services, only: [:index, :show]
+      resources :points, only: [:index, :show]
+      resources :cases, only: [:index, :show]
     end
   end
 end
