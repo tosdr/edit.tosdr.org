@@ -64,7 +64,7 @@ $(document).ready(function () {
     computed: {
       filteredServices () {
         return this.services.filter((s) => {
-          return s.service.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+          return s.service.name.toLowerCase().match(this.search.toLowerCase()) || s.service.url.toLowerCase().match(this.search.toLowerCase())
         })
       }
     },
