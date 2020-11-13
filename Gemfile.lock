@@ -318,6 +318,7 @@ DEPENDENCIES
   invisible_captcha
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   letter_opener
   listen (~> 3.0.5)
   memory_profiler

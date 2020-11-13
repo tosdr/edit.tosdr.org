@@ -36,6 +36,8 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'sanitize'
 
+# for api pagination
+gem 'kaminari'
 
 group :development do
   gem 'letter_opener'
