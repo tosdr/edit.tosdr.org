@@ -8,6 +8,7 @@ tmp/*
 public/assets
 /tosback2
 node_modules/
+phantomjs
 
 # Ignore application configuration
 /config/application.yml
