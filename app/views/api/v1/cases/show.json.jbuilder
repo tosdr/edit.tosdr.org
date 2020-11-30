@@ -1,1 +1,1 @@
-json.extract! @case, :id, :title, :description, :classification, :topic, :points
+json.extract! @case, :id, :title, :score, :description, :classification, :topic, :points
