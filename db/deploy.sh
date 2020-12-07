@@ -8,7 +8,7 @@ git pull
 git add src
 git commit -am"export"
 ./node_modules/.bin/grunt
-cp dist/api .
+cp -r dist/api .
 git add dist
 git add api
 git commit -am"built"
