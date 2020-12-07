@@ -29,6 +29,10 @@ class TOSBackDoc
     end
   end
 
+  def scraperaw
+    download_and_filter_with_xpath()
+  end
+
   def write
     unless crawl_empty?
       Dir.mkdir(@save_dir) unless File.exists?(@save_dir)
@@ -122,7 +126,7 @@ class TOSBackDoc
   end #strip_tags
 
   attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed
-  private :download_and_filter_with_xpath, :strip_tags, :format_newdata, :skip_notify?, :data_changed?
+  private :strip_tags, :format_newdata, :skip_notify?, :data_changed?
 end #TOSBackDoc
 
 puts 'TOSBackDoc loaded'

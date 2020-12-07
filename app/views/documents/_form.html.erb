@@ -1,5 +1,6 @@
 <%= simple_form_for [@document] do |f| %>
   <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+  <%= f.input :clickpath, hint: "Links to click on from main page. Available: " + @document.service.getMainPageLinks, placeholder: "e.g. \"[Legal] [Privacy]\"" %>
   <%= f.input :name, hint: "Name of this document", placeholder: "e.g. \"Privacy Policy\"" %>
   <%= f.input :url, hint: "Where we should fetch this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
   <%= f.submit "Save", name: "only_create", class: 'btn btn-primary' %>
