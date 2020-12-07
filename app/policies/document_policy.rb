@@ -19,10 +19,6 @@ class DocumentPolicy < ApplicationPolicy
     (!user.nil? && is_owner?) || (!user.nil? && user.curator?)
   end
 
-  def crawl?
-    (!user.nil? && is_owner?) || (!user.nil? && user.curator?)
-  end
-
   private
 
   def is_owner?
