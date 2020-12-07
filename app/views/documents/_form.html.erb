@@ -2,6 +2,5 @@
   <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
   <%= f.input :name, hint: "Name of this document", placeholder: "e.g. \"Privacy Policy\"" %>
   <%= f.input :url, hint: "Where we should fetch this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
-  # <%= f.input :xpath, placeholder: "e.g. \"//*[@id='content']//div[@class='_5tkp _3m9']\"", hint: "<i>(Optional)</i> The location of the terms on the page (Using <a href=\"https://en.wikipedia.org/wiki/XPath\" title=\"Wikipedia explanation of XPath\" target=\"_blank\">XPath</a>.)".html_safe %>
   <%= f.submit "Save", name: "only_create", class: 'btn btn-primary' %>
 <% end %>
