@@ -42,7 +42,7 @@ Point.all.each do |point|
     elsif (point.status == 'declined')
       data['needModeration'] = false if data['needModeration']
       data['tosdr']['irrelevant'] = true if !data['tosdr']['irrelevant']
-    else # status is 'draft', 'pending', 'disputed', 'quote-not-found', or unknown
+    else # status is 'draft', 'pending', 'disputed', 'approved-not-found', 'pending-not-found', or unknown
       data['needModeration'] = true if !data['needModeration']
       data['tosdr']['irrelevant'] = false if data['tosdr']['irrelevant']
     end
