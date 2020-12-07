@@ -30,16 +30,16 @@ class Service < ApplicationRecord
   end
 
   def getMainPageLinks
-    # mainPageUrl = 'https://' + self.url.split(',')[0]
-    # @tbdoc = TOSBackDoc.new({
-    #   url: mainPageUrl,
-    #   xpath: nil
-    # })
-    # puts 'milog scraping ' + mainPageUrl
-    # @tbdoc.scraperaw
-    # puts 'milog scraped ' + mainPageUrl
-    # t = @tbdoc.newdata
-    t = '<script type="text/javascript"> var settings_js_version = "/s2477.js", locale = "en_US"; </script> <script type="text/javascript" src="/lib/l119.js"></script> <script type="text/javascript" src="/locale/en_US/duckduckgo14.js"></script> <script type="text/javascript" src="/util/u506.js"></script> <script type="text/javascript" src="/d2885.js"></script> <script type="text/javascript"> DDG.page = new DDG.Pages.Home(); </script> <div class="site-wrapper site-wrapper--home js-site-wrapper"> <div class="header-wrap--home js-header-wrap"> <div class="header--aside js-header-aside"><a class="header__button--menu js-side-menu-open" href="#">⇶</a><div class="header--aside__item showcase header__label"><span class="header__clickable js-hl-button" data-type="showcase"><span class="js-popout-trig" aria-haspopup="true" aria-label="Check out the list of things that we\'ve also made." role="button" aria-pressed="false"><span id="wedonttrack">Privacy, simplified.</span></span><span class="popout-trig js-popout"><span class="js-popout-link js-showcase-popout ddgsi ddgsi-down" aria-hidden="true" data-type="showcase"></span><div class="modal modal--popout modal--popout--bottom-left modal--popout--sm js-popout-main" data-type="showcase"><div class="modal__box"><div class="modal__body"><nav aria-labelledby="wedonttrack"><section class="showcase__dropdown-top"><ul aria-label="Here are some things that we made that you might like."><li class="fix showcase__dropdown__list"><a href="/app" class="eighteen js-hl-item" aria-hidden="true" data-type="showcase" data-id="app"><div class="woman-icon"></div></a><a href="/app" class="text-left showcase__link eighty js-hl-item" data-type="showcase" data-id="app"><h1 class="showcase__heading">Get Our App &amp; Extension</h1>'
+    mainPageUrl = 'https://' + self.url.split(',')[0]
+    @tbdoc = TOSBackDoc.new({
+      url: mainPageUrl,
+      xpath: nil
+    })
+    puts 'milog scraping ' + mainPageUrl
+    @tbdoc.scraperaw
+    puts 'milog scraped ' + mainPageUrl
+    t = @tbdoc.newdata
+    # t = '<script type="text/javascript"> var settings_js_version = "/s2477.js", locale = "en_US"; </script> <script type="text/javascript" src="/lib/l119.js"></script> <script type="text/javascript" src="/locale/en_US/duckduckgo14.js"></script> <script type="text/javascript" src="/util/u506.js"></script> <script type="text/javascript" src="/d2885.js"></script> <script type="text/javascript"> DDG.page = new DDG.Pages.Home(); </script> <div class="site-wrapper site-wrapper--home js-site-wrapper"> <div class="header-wrap--home js-header-wrap"> <div class="header--aside js-header-aside"><a class="header__button--menu js-side-menu-open" href="#">⇶</a><div class="header--aside__item showcase header__label"><span class="header__clickable js-hl-button" data-type="showcase"><span class="js-popout-trig" aria-haspopup="true" aria-label="Check out the list of things that we\'ve also made." role="button" aria-pressed="false"><span id="wedonttrack">Privacy, simplified.</span></span><span class="popout-trig js-popout"><span class="js-popout-link js-showcase-popout ddgsi ddgsi-down" aria-hidden="true" data-type="showcase"></span><div class="modal modal--popout modal--popout--bottom-left modal--popout--sm js-popout-main" data-type="showcase"><div class="modal__box"><div class="modal__body"><nav aria-labelledby="wedonttrack"><section class="showcase__dropdown-top"><ul aria-label="Here are some things that we made that you might like."><li class="fix showcase__dropdown__list"><a href="/app" class="eighteen js-hl-item" aria-hidden="true" data-type="showcase" data-id="app"><div class="woman-icon"></div></a><a href="/app" class="text-left showcase__link eighty js-hl-item" data-type="showcase" data-id="app"><h1 class="showcase__heading">Get Our App &amp; Extension</h1>'
     # t = 'a <a href="asdf">jolly</a> link and <a href="qwer">another</a> one'
     # t = 'a <a href="asdf">jolly</a> link'
     # t = "this is some string"
