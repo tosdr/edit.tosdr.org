@@ -39,8 +39,6 @@
               <tr>
                 <th scope="col">Title</th>
                 <th scope="col">Topic</th>
-                <th scope="col">Contributions</th>
-                <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
                 <th scope="col" class="text-right">Rating</th>
                 <th></th>
               </tr>
@@ -48,9 +46,7 @@
             <tbody>
               <tr class="" v-for="c in filteredCases" :key="c">
                 <td v-bind:title="c.case.description"><a v-bind:href="'/cases/'+ c.case.id"> {{ c.case.title }} </a></td>
-                <td v-bind:title="c.topic.description"><a v-bind:href="'/topics/'+ c.topic.id"> {{ c.topic_title }} </a></td>
-                <td>{{ c.points }} </td>
-                <% if current_user && current_user.curator %><td><a v-bind:href="'/cases/'+ c.case.id + '?query=pending'"> {{ c.pending_points }} </a></td><% end %>
+                <td v-bind:title="c.case.topic_id"><a v-bind:href="'/topics/'+ c.case.topic_id"> View Topic </a></td>
                 <td v-bind:class="c.pointbox"></td>
                 <td></td>
               </tr>

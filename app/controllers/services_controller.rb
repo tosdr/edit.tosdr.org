@@ -17,7 +17,9 @@ class ServicesController < ApplicationController
     object = []
     services = Service.all
     services.map do |service|
-      object << { pending_points_count: service.pending_points.count, documents_count: service.documents.count, service: service }
+    # This takes way too long:
+    #   object << { pending_points_count: service.pending_points.count, documents_count: service.documents.count, service: service }
+      object << { service: service }
     end
 
     respond_to do |format|

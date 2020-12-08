@@ -17,7 +17,9 @@ class CasesController < ApplicationController
     object = []
     cases = Case.all
     cases.map do |c|
-      object << { topic_title: c.topic.title, pending_points: c.points.where(status: 'pending').count, points: c.points.count, pointbox: c.determine_pointbox, case: c, topic: c.topic }
+    # This is way too slow:
+      # object << { topic_title: c.topic.title, pending_points: c.points.where(status: 'pending').count, points: c.points.count, pointbox: c.determine_pointbox, case: c, topic: c.topic }
+      object << { pointbox: c.determine_pointbox, case: c }
     end
 
     respond_to do |format|

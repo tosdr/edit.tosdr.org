@@ -37,7 +37,7 @@
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Rating</th>
-                <% if current_user && current_user.curator %><th scope="col"># Pending</th><% end %>
+                <th scope="col" class="text-right">View</th>
                 <th scope="col" class="text-right">Documents</th>
                 <th></th>
               </tr>
@@ -48,14 +48,12 @@
                   {{ service.service.name }}
                 </td>
                 <td>{{ service.service.rating }} </td>
-                <% if current_user && current_user.curator %>
-                <td>{{ service.pending_points_count }}</td>
-                <% end %>
-                <td class="text-right" v-if="service.documents_count > 0">
-                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> Annotate </a>
+                
+                <td class="text-right">
+                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id"> Details </a>
                 </td>
-                <td class="text-right" v-else>
-                  <a class="btn btn-default" v-bind:href="'/documents/new?service=' + service.service.id"> Add one!</a>
+                <td class="text-right">
+                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> Annotate </a>
                 </td>
                 <td></td>
               </tr>
