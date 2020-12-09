@@ -79,9 +79,12 @@ a systemwide install.
 
 ### When it's done
 
-Install Rails and Postgres
+Install Rails, Postgres, Yarn, etc
 
-    apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+    sudo apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update && sudo apt install yarn
 
 In your code directory run:
 
