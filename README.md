@@ -26,21 +26,7 @@ git clone https://github.com/tosdr/edit.tosdr.org
 git clone https://github.com/tosdr/tosdr.org
 mkdir tosdr.org/src/pointsPhoenix
 cd edit.tosdr.org
-sh ./db/download.sh
-sh ./db/export.sh
-
-# go look at the export results:
-cd ../tosdr.org
-mv src/points src/pointsOld
-mv src/pointsPhoenix src/points
-mkdir src/pointsPhoenix
-
-# notice some json formatting differences which will be undone again by grunt later:
-git diff
-
-# then build tosdr.org as usual, see https://github.com/tosdr/tosdr.org#build:
-npm install
-./node_modules/.bin/grunt
+sh ./deploy.sh
 ```
 
 ## API
