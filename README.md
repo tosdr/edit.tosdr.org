@@ -26,7 +26,7 @@ git clone https://github.com/tosdr/edit.tosdr.org
 git clone https://github.com/tosdr/tosdr.org
 mkdir tosdr.org/src/pointsPhoenix
 cd edit.tosdr.org
-sh ./deploy.sh
+sh ./db/deploy.sh
 ```
 
 ## API
