@@ -7,7 +7,7 @@ class DocumentsController < ApplicationController
   include Pundit
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_document, only: [:show, :edit, :update]
+  before_action :set_document, only: [:show, :edit, :update, :crawl]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -37,14 +37,13 @@ class DocumentsController < ApplicationController
     @document.user = current_user
 
     if @document.save
-      # perform_crawl
-      # if @document.text.blank?
-      #   flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
-      #   redirect_to document_path(@document)
-      # else
-      #   redirect_to document_path(@document)
-      # end
-      redirect_to document_path(@document)
+      perform_crawl
+      if @document.text.blank?
+        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+        redirect_to document_path(@document)
+      else
+        redirect_to document_path(@document)
+      end
     else
       render 'new'
     end
@@ -55,10 +54,10 @@ class DocumentsController < ApplicationController
 
     @document.update(document_params)
 
-    # # we should probably only be running the crawler if the URL or XPath have changed
-    # if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
-    #   perform_crawl
-    # end
+    # we should probably only be running the crawler if the URL or XPath have changed
+    if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
+      perform_crawl
+    end
 
     if @document.save
       # only want to do this if XPath or URL have changed - the theory is that text is returned blank when there's a defunct URL or XPath to avoid server error upon 404 error in the crawler
@@ -92,18 +91,18 @@ class DocumentsController < ApplicationController
     authorize @document
   end
 
-  # def crawl
-  #   authorize @document
+  def crawl
+    authorize @document
 
-  #   perform_crawl
+    perform_crawl
 
-  #   if @document.text.blank?
-  #     flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
-  #     redirect_to document_path(@document)
-  #   else
-  #     redirect_to document_path(@document)
-  #   end
-  # end
+    if @document.text.blank?
+      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+      redirect_to document_path(@document)
+    else
+      redirect_to document_path(@document)
+    end
+  end
 
   private
 
@@ -120,38 +119,38 @@ class DocumentsController < ApplicationController
     params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath)
   end
 
-  # def perform_crawl
-  #   authorize @document
+  def perform_crawl
+    authorize @document
 
-  #   @tbdoc = TOSBackDoc.new({
-  #     url: @document.url,
-  #     xpath: @document.xpath
-  #   })
+    @tbdoc = TOSBackDoc.new({
+      url: @document.url,
+      xpath: @document.xpath
+    })
 
-  #   @tbdoc.scrape
+    @tbdoc.scrape
 
-  #   @document.update(text: @tbdoc.newdata)
+    @document.update(text: @tbdoc.newdata)
 
-  #   # If text has moved without changing, find it new location.
-  #   # If text _has_ changed and thus can no longer be found, mark it as draft.
-  #   @document.points.each do |point|
-  #     newQuoteStart = @tbdoc.newdata.index(point[:quoteText])
-  #     if (newQuoteStart.nil?)
-  #       puts "Could not find quote"
-  #       puts point[:quoteText]
-  #       point[:status] = -> approved-not-found or pending-not-found
-  #       point.save
-  #     else
-  #       if newQuoteStart != point[:quoteStart]
-  #         puts "Text has moved!"
-  #         puts point[:quoteText]
-  #         puts point[:quoteStart]
-  #         puts newQuoteStart
-  #         point[:quoteStart] = newQuoteStart
-  #         point[:quoteEnd] = newQuoteStart + point[:quoteText].length
-  #         point.save
-  #       end
-  #     end
-  #   end
-  # end
+    # If text has moved without changing, find it new location.
+    # If text _has_ changed and thus can no longer be found, mark it as draft.
+    @document.points.each do |point|
+      newQuoteStart = @tbdoc.newdata.index(point[:quoteText])
+      if (newQuoteStart.nil?)
+        puts "Could not find quote"
+        puts point[:quoteText]
+        point[:status] = 'quote-not-found'
+        point.save
+      else
+        if newQuoteStart != point[:quoteStart]
+          puts "Text has moved!"
+          puts point[:quoteText]
+          puts point[:quoteStart]
+          puts newQuoteStart
+          point[:quoteStart] = newQuoteStart
+          point[:quoteEnd] = newQuoteStart + point[:quoteText].length
+          point.save
+        end
+      end
+    end
+  end
 end
