@@ -10,6 +10,7 @@ class PagesController < ApplicationController
                   .includes(:user)
                   .order(updated_at: :asc)
                   .limit(10)
+                  .offset(rand(100))
     end
 
     if current_user then

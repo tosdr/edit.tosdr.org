@@ -1,3 +1,8 @@
+<% if @pending_points then %>
+<h2>Points for you to review:</h2>
+<%= render 'shared/table_points', points: @pending_points %>
+<% end %>
+
 <% if @change_request_points && @change_request_points.count > 0 then %>
   <h2>Points that need your attention:</h2>
   <%= render 'shared/table_points', points: @change_request_points %>
@@ -6,11 +11,6 @@
 <% if @draft_points && @draft_points.count > 0 then %>
   <h2>Your drafts:</h2>
   <%= render 'shared/table_points', points: @draft_points %>
-<% end %>
-
-<% if @pending_points then %>
-  <h2>Points for you to review:</h2>
-  <%= render 'shared/table_points', points: @pending_points %>
 <% end %>
 
 <% if @services then %>
