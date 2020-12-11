@@ -20,14 +20,10 @@
           <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
 
-        <!-- hiding 'Crawl Document' link because it can cause points to go into the quote-not-found state if the crawl fails.
-        You can still access the same functionality on existing docs in two clicks, if you click 'Edit document' and then 'Crawl Document'
-        Adding a new document also triggers a crawl, but in that case there are no existing points so it's safe.
         <% if policy(@document).crawl? %>
           <%= link_to 'Crawl Document', document_crawl_path(@document), method: :post, class: 'btn btn-link smaller-btn-text' %>
         <% end %>
-        -->
-          <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
+        <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
