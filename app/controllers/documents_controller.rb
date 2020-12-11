@@ -129,7 +129,9 @@ class DocumentsController < ApplicationController
 
     @tbdoc.scrape
 
+    oldLength = @document.text.length
     @document.update(text: @tbdoc.newdata)
+    newLength = @document.text.length
 
     # There is a cron job in the crontab of the 'tosdr' user on the forum.tosdr.org
     # server which runs once a day and before it deploys the site from edit.tosdr.org
@@ -140,5 +142,16 @@ class DocumentsController < ApplicationController
     # switched between:
     # pending <-> pending-not-found
     # approved <-> approved-not-found
+    @document_comment = DocumentComment.new()
+    @document_comment.summary = 'Crawled, old length: ' + oldLength.to_s + ', new length: ' + newLength.to_s
+    @document_comment.user_id = current_user.id
+    @document_comment.document_id = @document.id
+
+    if @document_comment.save
+      puts "Comment added!"
+    else
+      puts "Error adding comment!"
+      puts @document_comment.errors.full_messages
+    end
   end
 end
