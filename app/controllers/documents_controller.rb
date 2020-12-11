@@ -131,26 +131,14 @@ class DocumentsController < ApplicationController
 
     @document.update(text: @tbdoc.newdata)
 
-    # If text has moved without changing, find it new location.
-    # If text _has_ changed and thus can no longer be found, mark it as draft.
-    @document.points.each do |point|
-      newQuoteStart = @tbdoc.newdata.index(point[:quoteText])
-      if (newQuoteStart.nil?)
-        puts "Could not find quote"
-        puts point[:quoteText]
-        point[:status] = 'quote-not-found'
-        point.save
-      else
-        if newQuoteStart != point[:quoteStart]
-          puts "Text has moved!"
-          puts point[:quoteText]
-          puts point[:quoteStart]
-          puts newQuoteStart
-          point[:quoteStart] = newQuoteStart
-          point[:quoteEnd] = newQuoteStart + point[:quoteText].length
-          point.save
-        end
-      end
-    end
+    # There is a cron job in the crontab of the 'tosdr' user on the forum.tosdr.org
+    # server which runs once a day and before it deploys the site from edit.tosdr.org
+    # to tosdr.org, it will run the check_quotes script from
+    # https://github.com/tosdr/tosback-crawler/blob/225a74b/src/eto-admin.js#L121-L123
+    # So that if text has moved without changing, points are updated to the corrected
+    # quoteStart, quoteEnd, and quoteText values where possible, and/or their status is
+    # switched between:
+    # pending <-> pending-not-found
+    # approved <-> approved-not-found
   end
 end
