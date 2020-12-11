@@ -59,8 +59,9 @@
           <cite><%= link_to  @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
         </footer>
       </blockquote>
-      <% if current_user && current_user.id == @point.user_id %>
-        <%= link_to  "Change excerpt", annotate_point_path(@point.service_id, @point.id), { class: "btn btn-default pull-right" } %>
+      <% if current_user && current_user.id == @point.user_id || @point.status === 'approved-not-found' %>
+        <!-- FIXME: include documentId in annotate_point_path -->
+        <%= link_to  "Change excerpt", annotate_point_path(@point.service_id, @point.id) + '&document_id='+@point.document_id.to_s, { class: "btn btn-default pull-right" } %>
       <% end %>
     </div>
   </div>
@@ -72,7 +73,8 @@
     <div class="col-sm-10 col-sm-offset-1 p30 bgw">
       <p>
         This point is not linked to a passage in this service's documents.
-        <%= link_to  "Link it now?", annotate_point_path(@point.service_id, @point.id) %>
+        <!-- FIXME: include documentId in annotate_point_path -->
+        <%= link_to  "Link it now?", annotate_point_path(@point.service_id, @point.id) + '&document_id='+@point.document_id.to_s %>
       </p>
     </div>
   </div>

@@ -3,12 +3,12 @@ class PagesController < ApplicationController
     @versions = Version.order("created_at DESC").limit(50) # .joins('INNER JOIN users ON "whodunnit"= cast(users."id" as text)')
     if current_user&.curator then
       @pending_points = Point
-                  .where(status: 'pending')
+                  .where(status: ['pending', 'approved-not-found'])
                   .where.not(user_id: current_user.id)
                   .includes(:service)
                   .includes(:case)
                   .includes(:user)
-                  .order(updated_at: :desc)
+                  .order(updated_at: :asc)
                   .limit(10)
     end
 

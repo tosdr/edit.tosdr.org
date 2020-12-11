@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   end
   post "documents/new", to: "documents#create"
   post "documents/:id/edit", to: "documents#update"
+  post "documents/:id/crawl", to: "documents#crawl", as: :document_crawl
 
   # api endpoints for vue
   get "services/list_all", to: "services#list_all", as: "list_all_services"

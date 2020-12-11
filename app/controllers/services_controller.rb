@@ -52,7 +52,7 @@ class ServicesController < ApplicationController
     @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     if (params[:point_id] && current_user)
-      @point = Point.find_by id: params[:point_id], user_id: current_user.id
+      @point = Point.find_by id: params[:point_id]
     else
       @topics = Topic.topic_use_frequency
     end
@@ -65,7 +65,7 @@ class ServicesController < ApplicationController
     puts params
     @service = Service.find(params[:id] || params[:service_id])
     if (params[:point_id] && current_user)
-      point = Point.find_by id: params[:point_id], user_id: current_user.id
+      point = Point.find_by id: params[:point_id]
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
@@ -83,7 +83,11 @@ class ServicesController < ApplicationController
     point.source = document.url
     point.quoteStart = params[:quoteStart]
     point.quoteEnd = params[:quoteEnd]
-    point.status = 'pending'
+    if (point.status === 'approved-not-found')
+      point.status = 'approved'
+    else
+      point.status = 'pending'
+    end
     if (point.save)
       if (params[:point_id])
         redirect_to point_path(params[:point_id])

@@ -19,6 +19,10 @@
         <% if policy(@document).update? %>
           <%= link_to 'Edit Document', edit_document_path(@document), class: 'btn btn-primary smaller-btn-text' %>
         <% end %>
+
+        <% if policy(@document).crawl? %>
+          <%= link_to 'Crawl Document', document_crawl_path(@document), method: :post, class: 'btn btn-link smaller-btn-text' %>
+        <% end %>
         <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
       </div>
 
