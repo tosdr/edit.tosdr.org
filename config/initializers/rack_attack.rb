@@ -58,7 +58,9 @@ class Rack::Attack
     end
   end
 
-  throttle('document creation for specific services', limit: 5, period: 10.minutes) do |req|
+  # FIXME: temporarily loosened this from 5 to 50 due to
+  # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
+  throttle('document crawling + creation for specific services', limit: 50, period: 10.minutes) do |req|
     match = req.path.match(/^\/documents\/(\w+)/)
     if req.post? && !match.nil?
       req.ip
