@@ -49,7 +49,9 @@ class Rack::Attack
     end
   end
 
-  throttle('throttle document updates', limit: 5, period: 10.minutes) do |req|
+  # FIXME: temporarily loosened this from 5 to 50 due to
+  # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
+  throttle('throttle document updates', limit: 50, period: 10.minutes) do |req|
     match = req.path.match(/^\/documents\/(\w+)/)
     if (req.patch? || req.put?) &&  !match.nil?
       req.ip
