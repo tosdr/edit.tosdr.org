@@ -1,7 +1,8 @@
 require "#{Rails.root}/lib/tosbackdoc.rb"
 
-
-# in repo root, run:
+# Edit config/database.yml so that development has url: DATABASE_URL.
+# Then in repo root, run:
+# export DATABASE_URL=`heroku config:get DATABASE_URL --app edit-tosdr-org`
 # FROM_ID=151 TO_ID=160 USER_ID=789 rails runner db/crawl_documents.rb
 
 $fromId = ENV['FROM_ID']

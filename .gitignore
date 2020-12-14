@@ -1,3 +1,6 @@
+# temporarily:
+config/database.yml
+
 .bundle
 log/*.log
 tmp/**/*
