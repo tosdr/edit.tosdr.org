@@ -10,8 +10,8 @@ $toId = ENV['TO_ID']
 $userId = ENV['USER_ID']
 
 puts "Crawling documents.."
-Document.where(:id => $fromId..$toId).each do |document|
-  puts document.id
+Document.where(:id => $fromId..$toId, :status => nil).each do |document|
+  puts 'Starting ' + document.id.to_s
 
   puts 'crawling ' + document.url + ' (' + document.xpath + ')'
 
@@ -28,6 +28,19 @@ Document.where(:id => $fromId..$toId).each do |document|
   newLength = document.text.length
   puts 'new length ' + newLength.to_s
 
+  if (newLength == 0 && document.xpath != nil)
+    puts 'Retrying without xpath'
+    @tbdoc2 = TOSBackDoc.new({
+      url: document.url,
+      xpath: nil
+    })
+    @tbdoc2.scrape
+    if (@tbdoc2.newdata.length > 0)
+      puts 'Using this with length ' + @tbdoc2.newdata.length.to_s
+      newLength = @tbdoc2.newdata.length
+      document.update(text: @tbdoc2.newdata, xpath: nil)
+    end
+  end
   @document_comment = DocumentComment.new()
   @document_comment.summary = 'Crawled, old length: ' + oldLength.to_s + ', new length: ' + newLength.to_s
   @document_comment.user_id = $userId
@@ -39,5 +52,7 @@ Document.where(:id => $fromId..$toId).each do |document|
     puts "Error adding comment!"
     puts @document_comment.errors.full_messages
   end
+  puts 'Done ' + document.id.to_s
+  puts '---'
 end
 puts "Finished crawling documents!"
