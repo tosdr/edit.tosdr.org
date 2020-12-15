@@ -24,15 +24,12 @@ module ApplicationHelper
   end
 
   def RankBadge (user)
-	bot_icon = fa_icon "wrench", text: "Bot"
-	admin_icon = fa_icon "shield", text: "ToS;DR"
-	curator_icon = fa_icon "handshake-o", text: "Curator"
+  	bot_icon = fa_icon "wrench", text: "Bot"
+  	admin_icon = fa_icon "shield", text: "ToS;DR"
+  	curator_icon = fa_icon "handshake-o", text: "Curator"
 
     if !user.nil?
     	if(user.bot?)
-
-
-
     		return raw +link_to(bot_icon, "https://github.com/tosdr/tosback-crawler", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
     	end
     	if(user.admin?)
