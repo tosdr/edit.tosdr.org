@@ -29,7 +29,7 @@
       <td><%= link_to point.title, point_path(point), title: "View more details" %></td>
       <td class="<%= pointbox %>"></td>
       <td> <%= point.status %> </td>
-      <td><%= username point.user %> </td>
+      <td><%= username point.user %> <%= RankBadge User.find_by_id(point.user) %></td>
     </tr>
   <% end %>
   </tbody>

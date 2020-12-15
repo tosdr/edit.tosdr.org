@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %>
+              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %><%= RankBadge User.find_by_id(version.whodunnit) %>
           </h5>
         </div>
         <div class="col-sm-4">
