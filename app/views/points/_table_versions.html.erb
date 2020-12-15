@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %>
+              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %><% if User.find_by_id(version.whodunnit).admin? %><sup><span class="label label-danger">Team</span></sup><% elsif User.find_by_id(version.whodunnit).curator? %><sup><span class="label label-primary">Curator</span></sup><% end %>
           </h5>
         </div>
         <div class="col-sm-4">
