@@ -53,7 +53,7 @@ Document.where(:id => $fromId..$toId, :status => nil).each do |document|
     end
     puts 'Done ' + document.id.to_s
   rescue
-    puts 'Fail ' _ document.id.to_s
+    puts 'Fail ' + document.id.to_s
   end
   puts '---'
 end
