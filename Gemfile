@@ -18,6 +18,7 @@ gem 'whenever'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
+gem "font-awesome-rails"
 gem 'font-awesome-sass'
 gem 'formtastic'
 gem 'jquery-rails'
