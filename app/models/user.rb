@@ -35,6 +35,10 @@ class User < ApplicationRecord
     curator
   end
 
+  def bot?
+    bot
+  end
+
   def send_welcome_mail
     UserMailer.welcome(self).deliver_now
   end
