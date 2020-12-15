@@ -22,6 +22,15 @@ module ApplicationHelper
   def topic_comments_path (topic)
     topic_topic_comments_path(topic)
   end
+  
+  def RankBadge (user)
+	if(user.admin?)
+		return raw link_to("ToS;DR", "https://beta.tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
+	end
+	if(user.curator?)
+		return raw link_to("Curator", "https://forum.tosdr.org/t/105", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
+	end
+  end
 
   def username (user_str)
     # puts user_str
