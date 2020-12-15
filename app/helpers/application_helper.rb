@@ -22,23 +22,26 @@ module ApplicationHelper
   def topic_comments_path (topic)
     topic_topic_comments_path(topic)
   end
-  
+
   def RankBadge (user)
 	bot_icon = fa_icon "wrench", text: "Bot"
 	admin_icon = fa_icon "shield", text: "ToS;DR"
 	curator_icon = fa_icon "handshake-o", text: "Curator"
-	if(user.bot?)
-	
-	
-	
-		return raw +link_to(bot_icon, "https://github.com/tosdr/tosback-crawler", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
-	end
-	if(user.admin?)
-		return raw link_to(admin_icon, "https://beta.tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
-	end
-	if(user.curator?)
-		return raw link_to(curator_icon, "https://forum.tosdr.org/t/105", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
-	end
+
+    if !user.nil?
+    	if(user.bot?)
+
+
+
+    		return raw +link_to(bot_icon, "https://github.com/tosdr/tosback-crawler", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
+    	end
+    	if(user.admin?)
+    		return raw link_to(admin_icon, "https://beta.tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
+    	end
+    	if(user.curator?)
+    		return raw link_to(curator_icon, "https://forum.tosdr.org/t/105", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
+    	end
+    end
   end
 
   def username (user_str)
