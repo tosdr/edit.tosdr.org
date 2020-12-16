@@ -43,6 +43,7 @@ module ApplicationHelper
 
   def username (user_str)
     # puts user_str
+  	invalid_icon = fa_icon "user-times", text: "Deleted"
     if user_str
       if user_str.instance_of? User
         if user_str.username
@@ -62,7 +63,7 @@ module ApplicationHelper
       end
       return user_str
     else
-      return 'someone'
+      return raw link_to(invalid_icon, "/users/edit", target: "_blank", title: "This user has deleted his account", class: "label label-default");
     end
   end
 
