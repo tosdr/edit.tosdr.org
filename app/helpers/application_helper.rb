@@ -23,7 +23,7 @@ module ApplicationHelper
     topic_topic_comments_path(topic)
   end
 
-  def RankBadge (user)
+  def rank_badge (user)
   	bot_icon = fa_icon "wrench", text: "Bot"
   	admin_icon = fa_icon "shield", text: "ToS;DR"
   	curator_icon = fa_icon "handshake-o", text: "Curator"

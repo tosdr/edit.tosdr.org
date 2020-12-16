@@ -17,7 +17,7 @@
       <% comments.sort_by { |obj| obj.created_at }.each do |c| %>
       <div class="card-inline">
         <div class="card-inline-item card-inline-service">
-          <h6>On <%= c.created_at %>, <%= username c.user_id %> <%= RankBadge User.find_by_id(c.user_id) %> wrote:</h6>
+          <h6>On <%= c.created_at %>, <%= username c.user_id %> <%= rank_badge User.find_by_id(c.user_id) %> wrote:</h6>
           <%=simple_format c.summary %>
         </div>
         <div class="">
