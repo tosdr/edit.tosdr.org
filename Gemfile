@@ -11,7 +11,7 @@ gem 'figaro'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
 gem "puma", ">= 3.12.4"
-gem 'rails', '5.1.7'
+gem 'rails', '~> 5.2.4.3'
 gem 'redis'
 
 gem 'whenever'
@@ -39,6 +39,8 @@ gem 'sanitize'
 
 # for api pagination
 gem 'kaminari'
+
+gem 'mini_racer'
 
 group :development do
   gem 'letter_opener'
