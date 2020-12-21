@@ -6,6 +6,7 @@ namespace :service do
       initial_rating = service.rating
       new_rating = service.calculate_service_rating
       if initial_rating != new_rating
+        service.rating = new_rating
         service.save(validate: false)
 
         version = Version.new
@@ -13,7 +14,7 @@ namespace :service do
         version.item_id = service.id
         version.event = "update"
         version.whodunnit = "21311"
-        version.object_changes = "This has been an automatic update by an official ToSD;R bot. The rating for this service changed from #{initial_rating} to #{new_rating}."
+        version.object_changes = "This has been an automatic update by an official ToS;DR bot. The rating for this service changed from #{initial_rating} to #{new_rating}."
         version.save
       end
     end
