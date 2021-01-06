@@ -24,6 +24,11 @@ steps:
   - rails db:create db:migrate
   - timeout --preserve-status -v 20 rails server || exit 0;
 
+trigger:
+  event:
+  - push
+  - pull_request
+
 services:
 - name: postgres
   image: postgres:10-alpine
