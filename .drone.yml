@@ -22,7 +22,7 @@ steps:
   - bundle install
   - yarn install
   - rails db:create db:migrate
-  - timeout --preserve-status -v 20 rails server || exit 0; echo $?
+  - timeout --preserve-status -v 20 rails server || exit 0;
 
 services:
 - name: postgres
