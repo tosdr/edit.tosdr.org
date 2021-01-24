@@ -15,7 +15,7 @@
         <%= render "shared/search" %>
       </div>
 
-      <% if current_user %>
+      <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
       <div class="col-lg-6 text-right justify-content-end">
         <%= link_to 'Add Document', new_document_path, class: 'btn btn-primary mb15' %>
       </div>

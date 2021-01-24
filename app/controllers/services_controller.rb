@@ -29,21 +29,30 @@ class ServicesController < ApplicationController
 
   def new
     authorize Service
-
-    @service = Service.new
+	
+	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
+		@service = Service.new
+	else
+		user_not_authorized
+	end
   end
 
   def create
     authorize Service
 
-    @service = Service.new(service_params)
-    @service.user = current_user
+	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
 
-    if @service.save
-      redirect_to service_path(@service)
-    else
-      render :new
-    end
+		@service = Service.new(service_params)
+		@service.user = current_user
+
+		if @service.save
+		  redirect_to service_path(@service)
+		else
+		  render :new
+		end
+	else
+		user_not_authorized
+	end
   end
 
   def annotate

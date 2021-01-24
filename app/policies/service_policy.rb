@@ -24,20 +24,20 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def create?
-    !user.nil?
+    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
   end
 
   def update?
-    (!user.nil? && is_owner?) || (!user.nil? && user.curator?)
+    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
   end
 
   def destroy?
-    (!user.nil? && user.curator?)
+    (!user.nil? && user.admin?) || (!user.nil? && user.curator?)
   end
 
   private
 
   def is_owner?
-    record.user.nil? ? (user.curator?) : (user == record.user)
+    record.user.nil? ? (user.curator?) || (user.admin?) : (user == record.user)
   end
 end

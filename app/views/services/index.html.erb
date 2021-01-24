@@ -20,7 +20,7 @@
         <div class="col-lg-6 text-right justify-content-end">
           <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
           <div class="">
-            <% if current_user && current_user.curator %>
+            <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
               <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
             <% end %>
           </div>
