@@ -21,7 +21,7 @@ $(document).ready(function () {
     computed: {
       filteredCases () {
         return this.cases.filter((c) => {
-          return c.case.title.toLowerCase().match(this.search.toLowerCase()) || c.topic_title.toLowerCase().match(this.search.toLowerCase())
+          return c.case.title.toLowerCase().match(this.search.toLowerCase())
         })
       }
     },
