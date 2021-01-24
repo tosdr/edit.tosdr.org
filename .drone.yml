@@ -3,7 +3,7 @@ name: default
 
 steps:
 - name: Install Bundles
-  image: ruby:2.6.5
+  image: ruby:2.7.2
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -12,17 +12,8 @@ steps:
   - gem install rails
   - bundle install
 
-- name: Install PhantomJS
-  image: debian:buster
-  volumes:
-  - name: executables
-    path: /usr/bin
-  commands:
-  - apt-get update
-  - apt-get install -y phantomjs
-
 - name: Migrate Database
-  image: ruby:2.6.5
+  image: ruby:2.7.2
   environment:
     DATABASE_HOST: postgres
     DATABASE_USER: postgres
@@ -33,7 +24,7 @@ steps:
   - rails db:create db:migrate
 
 - name: Test Server
-  image: ruby:2.6.5
+  image: ruby:2.7.2
   environment:
     DATABASE_HOST: postgres
     DATABASE_USER: postgres
