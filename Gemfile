@@ -5,6 +5,8 @@ ruby '2.7.2'
 
 gem 'sendgrid-ruby'
 
+gem 'kramdown'
+
 gem 'activeadmin'
 gem 'devise'
 gem 'figaro'

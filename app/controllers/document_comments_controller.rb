@@ -12,6 +12,7 @@ class DocumentCommentsController < ApplicationController
     puts document_comment_params
     puts @document.id
     @document_comment = DocumentComment.new(document_comment_params)
+	@document_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@document_comment.summary)).to_html
     @document_comment.user_id = current_user.id
     @document_comment.document_id = @document.id
 
