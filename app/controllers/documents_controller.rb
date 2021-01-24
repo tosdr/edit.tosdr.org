@@ -1,4 +1,5 @@
 require "#{Rails.root}/lib/tosbackdoc.rb"
+require 'zlib'
 
 puts 'loaded?'
 puts TOSBackDoc
@@ -95,19 +96,19 @@ class DocumentsController < ApplicationController
     authorize @document
 
     perform_crawl
-
-    if @document.text.blank?
-      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
-      redirect_to document_path(@document)
-    else
-      redirect_to document_path(@document)
-    end
+	
+	if @document.text.blank?
+	  flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+	  redirect_to document_path(@document)
+	else
+	  redirect_to document_path(@document)
+	end
   end
 
   private
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:info] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
   end
 
@@ -128,30 +129,43 @@ class DocumentsController < ApplicationController
     })
 
     @tbdoc.scrape
+	if not @document.text.blank?
+		oldLength = @document.text.length
+		oldCRC = Zlib::crc32(@document.text)
+	else
+		oldLength = 0
+		oldCRC = 0
+	end
+	newCRC =  Zlib::crc32(@tbdoc.newdata)
+	
+	if oldCRC == newCRC
+		flash[:alert] = "The source document has not been updated. No changes made."
+	else
+		@document.update(text: @tbdoc.newdata)
+		newLength = @document.text.length
+		
 
-    oldLength = @document.text.length
-    @document.update(text: @tbdoc.newdata)
-    newLength = @document.text.length
+		# There is a cron job in the crontab of the 'tosdr' user on the forum.tosdr.org
+		# server which runs once a day and before it deploys the site from edit.tosdr.org
+		# to tosdr.org, it will run the check_quotes script from
+		# https://github.com/tosdr/tosback-crawler/blob/225a74b/src/eto-admin.js#L121-L123
+		# So that if text has moved without changing, points are updated to the corrected
+		# quoteStart, quoteEnd, and quoteText values where possible, and/or their status is
+		# switched between:
+		# pending <-> pending-not-found
+		# approved <-> approved-not-found
+		@document_comment = DocumentComment.new()
+		@document_comment.summary = '<span class="badge badge-warning">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd>'
+		@document_comment.user_id = current_user.id
+		@document_comment.document_id = @document.id
 
-    # There is a cron job in the crontab of the 'tosdr' user on the forum.tosdr.org
-    # server which runs once a day and before it deploys the site from edit.tosdr.org
-    # to tosdr.org, it will run the check_quotes script from
-    # https://github.com/tosdr/tosback-crawler/blob/225a74b/src/eto-admin.js#L121-L123
-    # So that if text has moved without changing, points are updated to the corrected
-    # quoteStart, quoteEnd, and quoteText values where possible, and/or their status is
-    # switched between:
-    # pending <-> pending-not-found
-    # approved <-> approved-not-found
-    @document_comment = DocumentComment.new()
-    @document_comment.summary = 'Crawled, old length: ' + oldLength.to_s + ', new length: ' + newLength.to_s
-    @document_comment.user_id = current_user.id
-    @document_comment.document_id = @document.id
-
-    if @document_comment.save
-      puts "Comment added!"
-    else
-      puts "Error adding comment!"
-      puts @document_comment.errors.full_messages
+		if @document_comment.save
+		  puts "Comment added!"
+		else
+		  puts "Error adding comment!"
+		  puts @document_comment.errors.full_messages
+		end
+		return true
     end
   end
 end
