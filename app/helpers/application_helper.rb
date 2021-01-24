@@ -30,7 +30,7 @@ module ApplicationHelper
 
     if !user.nil?
     	if(user.bot?)
-    		return raw +link_to(bot_icon, "https://github.com/tosdr/tosback-crawler", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
+    		return raw link_to(bot_icon, "https://github.com/tosdr/tosback-crawler", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
     	end
     	if(user.admin?)
     		return raw link_to(admin_icon, "https://beta.tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
@@ -38,6 +38,33 @@ module ApplicationHelper
     	if(user.curator?)
     		return raw link_to(curator_icon, "https://forum.tosdr.org/t/105", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
     	end
+    end
+  end
+
+  def status_badge (status)
+  	approved_icon = fa_icon "check", text: "APPROVED"
+  	declined_icon = fa_icon "times", text: "DECLINED"
+  	pending_icon = fa_icon "clock-o", text: "PENDING"
+  	change_icon = fa_icon "pencil", text: "CHANGES REQUESTED"
+  	draft_icon = fa_icon "file-text", text: "DRAFT"
+
+    if !status.nil?
+    	if(status == "approved")
+    		return raw content_tag(:span, approved_icon, class: "label label-success");
+    	end
+    	if(status == "declined")
+    		return raw content_tag(:span, declined_icon, class: "label label-danger");
+    	end
+    	if(status == "changes-requested")
+    		return raw content_tag(:span, change_icon, class: "label label-warning");
+    	end
+    	if(status == "pending")
+    		return raw content_tag(:span, pending_icon, class: "label label-info");
+    	end
+    	if(status == "draft")
+    		return raw content_tag(:span, draft_icon, class: "label label-primary");
+    	end
+		return status
     end
   end
 

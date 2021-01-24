@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %><%= rank_badge User.find_by_id(version.whodunnit) %>
+              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %> <%= rank_badge User.find_by_id(version.whodunnit) %>
           </h5>
         </div>
         <div class="col-sm-4">
@@ -43,8 +43,8 @@
             <p><b>Updated Analysis:</b> <%= format_figures(analysis, first = false) %></p>
           </div>
           <div class="col-sm-6">
-            <p><b>Previous Status:</b> <%= format_figures(status) %></p>
-            <p><b>Updated Status:</b> <%= format_figures(status, first = false) %></p>
+            <p><b>Previous Status:</b> <%= status_badge format_figures(status) %></p>
+            <p><b>Updated Status:</b> <%= status_badge format_figures(status, first = false) %></p>
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@
         <% end %>
         <td><%= link_to point.quoteText ? "\"" + point.quoteText + "\"" : point.title, point_path(point), title: "View more details" %></td>
         <td class="<%= pointbox %>"></td>
-        <td> <%= point.status %> </td>
+        <td> <%= status_badge point.status %> </td>
         <td><%= username point.user %> <%= rank_badge User.find_by_id(point.user) %></td>
       </tr>
     <% end %>
