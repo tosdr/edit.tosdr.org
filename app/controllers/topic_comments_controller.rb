@@ -10,6 +10,7 @@ class TopicCommentsController < ApplicationController
 
   def create
     @topic_comment = TopicComment.new(topic_comment_params)
+	@topic_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@topic_comment.summary)).to_html
     @topic_comment.user_id = current_user.id
     @topic_comment.topic_id = @topic.id
 

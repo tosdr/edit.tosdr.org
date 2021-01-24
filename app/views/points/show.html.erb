@@ -27,7 +27,7 @@
     <span class="bolder">Service:</span> <%= link_to @point.service.name, service_path(@point.service), title: 'View this service' %>
   </div>
   <div class="col-sm-2">
-    <span class="bolder">Status:</span> <%= @point.status %>
+    <span class="bolder">Status:</span> <%= status_badge @point.status %>
   </div>
   <div class="col-sm-2">
     <% if @point.case.nil? %>

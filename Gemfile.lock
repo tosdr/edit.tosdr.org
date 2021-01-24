@@ -152,6 +152,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    kramdown (2.3.0)
+      rexml
     launchy (2.5.0)
       addressable (~> 2.7)
     letter_opener (1.7.0)
@@ -258,6 +260,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rexml (3.2.4)
     ruby2_keywords (0.0.2)
     ruby_http_client (3.5.1)
     sanitize (5.2.1)
@@ -341,6 +344,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
+  kramdown
   letter_opener
   listen (~> 3.0.5)
   memory_profiler

@@ -2,7 +2,7 @@
   <div class="row row-form">
     <%= simple_form_for([@service, @service_comment]) do |f| %>
       <div class="form-inputs col-xs-12">
-        <%= f.input :summary, as: :text %>
+        <%= f.input :summary, hint: link_to("We support markdown!", "https://kramdown.gettalong.org/syntax.html", target: "_blank"), as: :text %>
       </div>
       <%= invisible_captcha :subject %>
       <div class="form-actions col-xs-4 col-sm-2 col-md-2">

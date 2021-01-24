@@ -1,6 +1,9 @@
 class PointsController < ApplicationController
   include Pundit
-
+  include ApplicationHelper
+  include ActionView::Helpers::TagHelper
+  include FontAwesome::Rails::IconHelper
+  
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review, :approve]
   before_action :set_topics, only: [:new, :create, :edit, :update, :post_review, :approve]
@@ -75,7 +78,7 @@ class PointsController < ApplicationController
     authorize @point
 
     if @point.update(status: 'approved')
-      create_comment('approved: without comment')
+      create_comment(status_badge('approved') + raw('<br>') + 'No comment given')
 
       redirect_to point_path(@point)
     else
@@ -88,7 +91,8 @@ class PointsController < ApplicationController
 
     # process a post of the review form
     if @point.update(status: point_params['status'])
-      create_comment(point_params['status'] + ': ' + point_params['point_change'])
+	
+      create_comment(status_badge(point_params['status']) + raw('<br>') + point_params['point_change'])
 
       redirect_to point_path(@point)
     else
