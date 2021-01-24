@@ -155,7 +155,7 @@ class DocumentsController < ApplicationController
 		# pending <-> pending-not-found
 		# approved <-> approved-not-found
 		@document_comment = DocumentComment.new()
-		@document_comment.summary = '<span class="badge badge-warning">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd>'
+		@document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd>'
 		@document_comment.user_id = current_user.id
 		@document_comment.document_id = @document.id
 
