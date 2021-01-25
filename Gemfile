@@ -37,6 +37,7 @@ gem 'coffee-rails'
 # for tosback2:
 gem 'capybara'
 gem 'poltergeist'
+gem 'cuprite'
 gem 'sanitize'
 
 # for api pagination
