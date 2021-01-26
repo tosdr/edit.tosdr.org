@@ -88,6 +88,7 @@ class TOSBackDoc
 
       session = Capybara::Session.new :cuprite
       # session.driver.browser.js_errors = false
+	  session.driver.timeout = 15
       session.driver.headers = {"User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"}
       session.visit @url
       raise "404 Error" if session.status_code == 404
