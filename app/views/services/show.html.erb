@@ -30,7 +30,7 @@
 
 
         <% if @service.documents.count == 0 %>
-          <% if policy(@document).create? %>
+          <% if policy(@service).create? %>
             <%= link_to "Add Document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-link smaller-btn-text" %>
           <% end %>
         <% else %>
