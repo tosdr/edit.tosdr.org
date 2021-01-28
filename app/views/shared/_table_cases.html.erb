@@ -23,7 +23,9 @@
     <tr>
       <td><%= link_to c.title, case_path(c), title: "View points connected to this case" %></td>
       <td class="text-center"> <%= c.points.count %></td>
-      <% if current_user && current_user.curator %><td><%= c.points.where(status: 'pending').count %></td><% end %>
+      <% if current_user && current_user.curator %>
+        <td><%= link_to c.points.where(status: 'pending').count, case_path(c, status: "pending") %></td>
+      <% end %>
       <td></td>
       <td class="<%= pointbox %> text-center"></td>
       <td></td>

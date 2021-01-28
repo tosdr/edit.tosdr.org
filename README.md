@@ -1,6 +1,6 @@
 # Phoenix
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=edit.tosdr.org)
+![Heroku](https://heroku-badge.herokuapp.com/?app=edit-tosdr-org)
 
 Phoenix is a web app to submit points to the Terms of Service; Didn't Read project. The template used is located [here](https://github.com/lewagon/rails-templates)
 
@@ -26,21 +26,7 @@ git clone https://github.com/tosdr/edit.tosdr.org
 git clone https://github.com/tosdr/tosdr.org
 mkdir tosdr.org/src/pointsPhoenix
 cd edit.tosdr.org
-sh ./db/download.sh
-sh ./db/export.sh
-
-# go look at the export results:
-cd ../tosdr.org
-mv src/points src/pointsOld
-mv src/pointsPhoenix src/points
-mkdir src/pointsPhoenix
-
-# notice some json formatting differences which will be undone again by grunt later:
-git diff
-
-# then build tosdr.org as usual, see https://github.com/tosdr/tosdr.org#build:
-npm install
-./node_modules/.bin/grunt
+sh ./db/deploy.sh
 ```
 
 ## API
@@ -49,6 +35,7 @@ All the details on the API can be found on the [wiki](https://github.com/tosdr/e
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)
+* [Jesse](https://github.com/JesseWeinstein)
 * [Madeline](https://github.com/madoleary)
 * [Michiel](https://github.com/michielbdejong)
 * [Vincent](https://github.com/vinnl)

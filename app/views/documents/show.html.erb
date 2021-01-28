@@ -23,7 +23,7 @@
         <% if policy(@document).crawl? %>
           <%= link_to 'Crawl Document', document_crawl_path(@document), method: :post, class: 'btn btn-link smaller-btn-text' %>
         <% end %>
-          <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
+        <%= link_to 'Add Comment', new_document_document_comment_path(@document), class: 'btn btn-link smaller-btn-text' %>
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
@@ -47,7 +47,7 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @document.document_comments %>
+  <%= render 'shared/comments', comments: @document.document_comments.includes([:spams]) %>
 
 <br>
 <br>

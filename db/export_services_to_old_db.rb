@@ -45,8 +45,8 @@ Service.all.each do |service|
     # data['tosdr']['rated'] = service.grade
     data['meta']['spec-version'] = '1.1'
 
-    if (service.is_comprehensively_reviewed && service.service_rating)
-      data['tosdr']['rated'] = service.service_rating
+    if (service.is_comprehensively_reviewed && service.rating)
+      data['tosdr']['rated'] = service.rating
     end
 
     data['slug'] = (service.slug || service.name.split(' ').join('').split('.').join('-')).downcase

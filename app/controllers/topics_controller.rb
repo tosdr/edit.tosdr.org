@@ -1,5 +1,5 @@
 class TopicsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_curator, except: [:index, :show]
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
 

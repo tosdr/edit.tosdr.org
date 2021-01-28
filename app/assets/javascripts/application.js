@@ -1,5 +1,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
-//= require jquery-readyselector
+//= require vue
 //= require_tree .

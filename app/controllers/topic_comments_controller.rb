@@ -1,14 +1,16 @@
 class TopicCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_topic, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @topic_comment = TopicComment.new
   end
 
   def create
-    puts topic_comment_params
-    puts @topic.id
     @topic_comment = TopicComment.new(topic_comment_params)
+	@topic_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@topic_comment.summary)).to_html
     @topic_comment.user_id = current_user.id
     @topic_comment.topic_id = @topic.id
 

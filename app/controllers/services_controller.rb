@@ -9,31 +9,50 @@ class ServicesController < ApplicationController
 
   def index
     authorize Service
+  end
 
-    @services = Service.includes(points: []).all
-    @document_counts = Document.group(:service_id).count
-    if @query = params[:query]
-      @services = Service.includes(points: []).search_by_name(@query)
+  def list_all
+    authorize Service
+
+    object = []
+    services = Service.all
+    services.map do |service|
+    # This takes way too long:
+    #   object << { pending_points_count: service.pending_points.count, documents_count: service.documents.count, service: service }
+      object << { service: service }
+    end
+
+    respond_to do |format|
+      format.json { render json: object }
     end
   end
 
   def new
     authorize Service
-
-    @service = Service.new
+	
+	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
+		@service = Service.new
+	else
+		user_not_authorized
+	end
   end
 
   def create
     authorize Service
 
-    @service = Service.new(service_params)
-    @service.user = current_user
+	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
 
-    if @service.save
-      redirect_to service_path(@service)
-    else
-      render :new
-    end
+		@service = Service.new(service_params)
+		@service.user = current_user
+
+		if @service.save
+		  redirect_to service_path(@service)
+		else
+		  render :new
+		end
+	else
+		user_not_authorized
+	end
   end
 
   def annotate
@@ -42,7 +61,7 @@ class ServicesController < ApplicationController
     @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     if (params[:point_id] && current_user)
-      @point = Point.find_by id: params[:point_id], user_id: current_user.id
+      @point = Point.find_by id: params[:point_id]
     else
       @topics = Topic.topic_use_frequency
     end
@@ -55,7 +74,7 @@ class ServicesController < ApplicationController
     puts params
     @service = Service.find(params[:id] || params[:service_id])
     if (params[:point_id] && current_user)
-      point = Point.find_by id: params[:point_id], user_id: current_user.id
+      point = Point.find_by id: params[:point_id]
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
@@ -73,7 +92,11 @@ class ServicesController < ApplicationController
     point.source = document.url
     point.quoteStart = params[:quoteStart]
     point.quoteEnd = params[:quoteEnd]
-    point.status = 'pending'
+    if (point.status === 'approved-not-found')
+      point.status = 'approved'
+    else
+      point.status = 'pending'
+    end
     if (point.save)
       if (params[:point_id])
         redirect_to point_path(params[:point_id])

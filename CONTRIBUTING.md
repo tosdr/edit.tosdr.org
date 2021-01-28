@@ -56,7 +56,13 @@ a systemwide install.
 4. Restart your shell so that PATH changes take effect. (Opening a new
    terminal tab will usually do it.)
 
-5. Verify that rbenv is properly set up using this
+5. Install [ruby-build][], which provides the `rbenv install` command.
+   ~~~ sh
+   mkdir -p "$(rbenv root)"/plugins
+   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+   ~~~
+
+6. Verify that rbenv is properly set up using this
    [rbenv-doctor](https://github.com/rbenv/rbenv-installer/blob/master/bin/rbenv-doctor) script:
 
     ~~~ sh
@@ -71,22 +77,22 @@ a systemwide install.
     Auditing installed plugins: OK
     ~~~
 
-6. _(Optional)_ Install [ruby-build][], which provides the
-   `rbenv install` command that simplifies the process of
-   [installing new Ruby versions](#installing-ruby-versions).
-
 ### When it's done
 
-Install Rails and Postgres
+Install Rails, Postgres, Yarn, etc
 
-    apt install rails postgresql libpq-dev
+    sudo apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update && sudo apt install yarn
 
 In your code directory run:
 
-    git clone https://github.com/tosdr/phoenix
-    cd phoenix
-    rbenv install 2.3.5
-    rbenv local 2.3.5
+    git clone https://github.com/tosdr/edit.tosdr.org
+    cd edit.tosdr.org
+    rbenv install 2.6.5
+    rbenv local 2.6.5
+    gem install bundler
     bundle install
     yarn
     rails db:create db:migrate db:seed

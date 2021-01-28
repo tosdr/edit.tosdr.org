@@ -14,7 +14,7 @@ class Document < ApplicationRecord
   validate :custom_uniqueness_check
 
   def custom_uniqueness_check
-    doc = Document.where(url: self.url, xpath: self.xpath)
+    doc = Document.where(url: self.url, xpath: self.xpath, status: nil)
     if doc.any? && (doc.first.id != self.id)
       go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
       self.errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")

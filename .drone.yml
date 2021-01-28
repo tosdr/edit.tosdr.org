@@ -1,0 +1,63 @@
+kind: pipeline
+name: default
+
+steps:
+- name: Install Bundles
+  image: ruby:2.7.2
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - gem install bundler
+  - gem install rails
+  - bundle install
+
+- name: Migrate Database
+  image: ruby:2.7.2
+  environment:
+    DATABASE_HOST: postgres
+    DATABASE_USER: postgres
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  commands:
+  - rails db:create db:migrate
+
+- name: Test Server
+  image: ruby:2.7.2
+  environment:
+    DATABASE_HOST: postgres
+    DATABASE_USER: postgres
+    RAILS_ENV: test
+  volumes:
+  - name: bundle
+    path: /usr/local/bundle
+  - name: executables
+    path: /usr/bin
+  commands:
+  - rails server -d
+  - sleep 20
+  - kill $(cat tmp/pids/server.pid)
+
+
+trigger:
+  event:
+  - push
+  - pull_request
+
+services:
+- name: postgres
+  image: postgres
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_DB: postgres
+    POSTGRES_HOST_AUTH_METHOD: trust
+
+node:
+  os: linux
+
+volumes:
+- name: bundle
+  temp: {}
+- name: executables
+  temp: {}

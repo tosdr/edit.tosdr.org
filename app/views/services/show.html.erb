@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-6">
         <h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
-        <h5> Rating: <%= @service.service_rating %></h5>
+        <h5> Rating: <%= @service.rating %></h5>
       </div>
 
       <div class="col-lg-6 text-right justify-content-end">
@@ -30,7 +30,7 @@
 
 
         <% if @service.documents.count == 0 %>
-          <% if current_user %>
+          <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
             <%= link_to "Add Document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-link smaller-btn-text" %>
           <% end %>
         <% else %>
@@ -51,7 +51,7 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @service.service_comments %>
+<%= render 'shared/comments', comments: @service.service_comments.includes([:spams]) %>
 
 <br>
 <br>

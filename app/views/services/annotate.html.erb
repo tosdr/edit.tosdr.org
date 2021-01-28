@@ -53,9 +53,11 @@
         <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
       </li>
     <% end %>
-    <li style="list-style-type: none; padding-top: 1rem;">
-      <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-default" %>
-    </li>
+	<% if policy(@service).create? %>
+        <li style="list-style-type: none; padding-top: 1rem;">
+            <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-default" %>
+		</li>
+	<% end %>
   </ul>
 </div>
 

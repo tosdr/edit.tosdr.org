@@ -1,28 +1,33 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.3.5'
+ruby '2.7.2'
 
-gem 'postmark-rails'
+gem 'sendgrid-ruby'
+
+gem 'kramdown'
 
 gem 'activeadmin'
 gem 'devise'
 gem 'figaro'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
-gem 'puma', '~> 3.10.0'
-gem 'rails', '5.1.7'
+gem "puma", ">= 3.12.4"
+gem 'rails', '~> 5.2.4.3'
 gem 'redis'
+
+gem 'whenever'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
+gem "font-awesome-rails"
 gem 'font-awesome-sass'
 gem 'formtastic'
 gem 'jquery-rails'
+gem 'vuejs-rails', '~> 2.3.2'
 gem 'paper_trail'
 gem 'pundit'
 gem 'rack-attack'
-gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'rb-readline'
@@ -32,8 +37,13 @@ gem 'coffee-rails'
 # for tosback2:
 gem 'capybara'
 gem 'poltergeist'
+gem 'cuprite'
 gem 'sanitize'
 
+# for api pagination
+gem 'kaminari'
+
+gem 'mini_racer'
 
 group :development do
   gem 'letter_opener'

@@ -1,6 +1,9 @@
 class CaseCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_case, only: [:new, :create]
+
+  invisible_captcha only: [:create], honeypot: :subject
+
   def new
     @case_comment = CaseComment.new
   end
@@ -9,6 +12,7 @@ class CaseCommentsController < ApplicationController
     puts case_comment_params
     puts @case.id
     @case_comment = CaseComment.new(case_comment_params)
+	@case_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@case_comment.summary)).to_html
     @case_comment.user_id = current_user.id
     @case_comment.case_id = @case.id
 

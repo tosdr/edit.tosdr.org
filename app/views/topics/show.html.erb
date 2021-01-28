@@ -7,8 +7,8 @@
   <div class="card-inline-item card-inline-service">
     <div class="row">
       <div class="col-lg-6">
-        <h3><%= @topic.title %></h3>
-        <p><%= @topic.subtitle %></p>
+        <h3><%= @topic.title %>&nbsp;<sub><%= @topic.subtitle %></sub></h3>
+        <p><%= @topic.description %></p>
       </div>
     </div>
 
@@ -42,4 +42,4 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @topic.topic_comments %>
+  <%= render 'shared/comments', comments: @topic.topic_comments.includes([:spams]) %>

@@ -13,20 +13,14 @@ class Service < ApplicationRecord
   validates :url, presence: true
   validates :url, uniqueness: true
 
-  attr_accessor :service_rating
-
   before_validation :strip_input_fields
-
-  def points_by_topic(query)
-    points.joins(:topic).where("topics.title ILIKE ?", "%#{query}%")
-  end
 
   def self.search_by_name(query)
     Service.where("name ILIKE ?", "%#{query}%")
   end
 
-  def service_rating
-    service_rating_get
+  def calculate_service_rating
+    perform_calculation
   end
 
   def points_ordered_status_class
@@ -35,6 +29,10 @@ class Service < ApplicationRecord
     service_points_hash.each_value do |points|
       sort_service_points(points)
     end
+  end
+
+  def pending_points
+    !self.points.nil? ? self.points.where(status: "pending") : []
   end
 
   def sort_service_points(points)
@@ -64,40 +62,6 @@ class Service < ApplicationRecord
     end
   end
 
-  # function compareClassification(elementA, elementB) {
-  #   if (
-  #     !['good', 'neutral', 'bad', 'blocker'].includes(elementA.dataset.classification)
-  #     || !['good', 'neutral', 'bad', 'blocker'].includes(elementB.dataset.classification)
-  #   ) {
-  #     return 0;
-  #   }
-  #
-  #   if (elementA.dataset.classification === elementB.dataset.classification) {
-  #     return 0;
-  #   }
-  #   // Both do not have the same classification, so if one is good, that one is better:
-  #   if (elementA.dataset.classification === 'good') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'good') {
-  #     return 1;
-  #   }
-  #   // Both do not have the same classification, and neither is good, so if one is neutral, that one is better:
-  #   if (elementA.dataset.classification === 'neutral') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'neutral') {
-  #     return 1;
-  #   }
-  #   // Both do not have the same classification, and neither is good or neutral, so if one is bad, the other is a blocker:
-  #   if (elementA.dataset.classification === 'bad') {
-  #     return -1;
-  #   }
-  #   if (elementB.dataset.classification === 'bad') {
-  #     return 1;
-  #   }
-  # }
-
   private
 
   def strip_input_fields
@@ -106,7 +70,7 @@ class Service < ApplicationRecord
     end
   end
 
-  def service_rating_get
+  def perform_calculation
     points = self.points
     classification_counts = service_point_classifications_count(points)
     balance = calculate_balance(classification_counts)
@@ -143,5 +107,4 @@ class Service < ApplicationRecord
       return "A"
     end
   end
-
 end

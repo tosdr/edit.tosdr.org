@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190629203821) do
+ActiveRecord::Schema.define(version: 2020_12_15_125020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20190629203821) do
     t.bigint "service_id"
     t.boolean "reviewed"
     t.bigint "user_id"
+    t.string "status"
     t.index ["service_id"], name: "index_documents_on_service_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
@@ -141,7 +142,19 @@ ActiveRecord::Schema.define(version: 20190629203821) do
     t.string "slug"
     t.boolean "is_comprehensively_reviewed", default: false, null: false
     t.bigint "user_id"
+    t.string "rating"
+    t.string "status"
     t.index ["user_id"], name: "index_services_on_user_id"
+  end
+
+  create_table "spams", force: :cascade do |t|
+    t.string "spammable_type"
+    t.bigint "spammable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "flagged_by_admin_or_curator", default: false
+    t.boolean "cleaned", default: false
+    t.index ["spammable_type", "spammable_id"], name: "index_spams_on_spammable_type_and_spammable_id"
   end
 
   create_table "topic_comments", force: :cascade do |t|
@@ -183,6 +196,7 @@ ActiveRecord::Schema.define(version: 20190629203821) do
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.boolean "bot", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
