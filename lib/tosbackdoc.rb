@@ -1,5 +1,6 @@
-require 'capybara/cuprite'
 require 'sanitize'
+require 'httparty'
+require 'json'
 
 class TOSBackDoc
   @site = nil
@@ -10,6 +11,7 @@ class TOSBackDoc
   @reviewed ||= nil
   @save_dir ||= nil
   @save_path ||= nil
+  @apiresponse ||= nil
 
   def initialize(hash)
     @site = hash[:site]
@@ -79,26 +81,20 @@ class TOSBackDoc
   end #puts_doc
 
   def download_and_filter_with_xpath
-    begin
-	Capybara.javascript_driver = :cuprite
-      Capybara.register_driver :cuprite do |app|
-        Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil })
-      end
-	  
-
-      session = Capybara::Session.new :cuprite
-      # session.driver.browser.js_errors = false
-	  session.driver.timeout = 15
-      session.driver.headers = {"User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"}
-      session.visit @url
-      raise "404 Error" if session.status_code == 404
-      @newdata = @xpath.nil? ? session.find(:xpath, "//body")['innerHTML'] : session.find(:xpath, @xpath)['innerHTML']
-    rescue => e
-      puts "#{url}:\t#{e.message}"
-      @newdata = ""
-    ensure
-      session.driver.quit
-    end
+	begin
+		response = HTTParty.get('https://crawler.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+		
+		@apiresponse = JSON.parse(response.body)
+		  
+		if @apiresponse["error"]
+			puts @apiresponse["message"]
+		else
+			@newdata = @apiresponse["raw_html"]
+		end
+	rescue => e
+		@apiresponse = {"error" => true, "message" => { "name" => "We could not reach our crawler server", "message" => "TCP HTTParty.get error"}}
+		puts e
+	end
   end
 
   def format_newdata()
@@ -111,7 +107,7 @@ class TOSBackDoc
   def strip_tags()
     begin
       @newdata = Sanitize.clean(@newdata, :remove_contents => ["script", "style"], :elements => %w[ abbr b blockquote br cite code dd dfn dl dt em i li ol p q s small strike strong sub sup u ul ], :whitespace_elements => []) # strips non-style html tags and removes content between <script> and <style> tags
-      # puts "worked"
+      puts "stripped"
     rescue Encoding::CompatibilityError
       # puts "rescued"
       @newdata.encode!("UTF-8", :undef => :replace)
@@ -124,7 +120,7 @@ class TOSBackDoc
     end
   end #strip_tags
 
-  attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed
+  attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed, :apiresponse
   private :download_and_filter_with_xpath, :strip_tags, :format_newdata, :skip_notify?, :data_changed?
 end #TOSBackDoc
 

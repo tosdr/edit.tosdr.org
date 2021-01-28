@@ -57,18 +57,24 @@ class DocumentsController < ApplicationController
 
     # we should probably only be running the crawler if the URL or XPath have changed
     if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
-      perform_crawl
+      crawlresult = perform_crawl
     end
 
     if @document.save
       # only want to do this if XPath or URL have changed - the theory is that text is returned blank when there's a defunct URL or XPath to avoid server error upon 404 error in the crawler
       # need to alert people if the crawler wasn't able to retrieve any text...
-      if @document.text.blank?
-        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
-        redirect_to document_path(@document)
-      else
-        redirect_to document_path(@document)
-      end
+	  
+      if crawlresult != nil
+		if crawlresult["error"]
+			flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate.<br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
+			redirect_to document_path(@document)
+		else
+			flash[:notice] = "The crawler has updated the document"
+			redirect_to document_path(@document)
+		end
+	  else
+		redirect_to document_path(@document)
+	  end
     else
       render 'edit'
     end
@@ -94,14 +100,13 @@ class DocumentsController < ApplicationController
 
   def crawl
     authorize @document
-
-    perform_crawl
-	
-	if @document.text.blank?
-	  flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
+	crawlresult = perform_crawl
+    if crawlresult["error"]
+	  flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate.<br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
 	  redirect_to document_path(@document)
 	else
-	  redirect_to document_path(@document)
+	flash[:notice] = "The crawler has updated the document"
+	redirect_to document_path(@document)
 	end
   end
 
@@ -129,6 +134,11 @@ class DocumentsController < ApplicationController
     })
 
     @tbdoc.scrape
+	
+	if @tbdoc.apiresponse["error"]
+		return @tbdoc.apiresponse
+	end
+	
 	if not @document.text.blank?
 		oldLength = @document.text.length
 		oldCRC = Zlib::crc32(@document.text)
@@ -139,7 +149,10 @@ class DocumentsController < ApplicationController
 	newCRC =  Zlib::crc32(@tbdoc.newdata)
 	
 	if oldCRC == newCRC
-		flash[:alert] = "The source document has not been updated. No changes made."
+		@tbdoc.apiresponse["error"] = true
+		@tbdoc.apiresponse["message"]["name"] = "The source document has not been updated. No changes made."
+		@tbdoc.apiresponse["message"]["remoteStacktrace"] = "SourceDocument"
+		return @tbdoc.apiresponse
 	else
 		@document.update(text: @tbdoc.newdata)
 		newLength = @document.text.length
@@ -165,7 +178,7 @@ class DocumentsController < ApplicationController
 		  puts "Error adding comment!"
 		  puts @document_comment.errors.full_messages
 		end
-		return true
+		return @tbdoc.apiresponse
     end
   end
 end

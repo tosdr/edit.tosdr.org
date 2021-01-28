@@ -7,6 +7,7 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
+
 gem 'activeadmin'
 gem 'devise'
 gem 'figaro'
@@ -39,6 +40,7 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'cuprite'
 gem 'sanitize'
+gem 'httparty'
 
 # for api pagination
 gem 'kaminari'
