@@ -7,6 +7,7 @@
         <%= f.input :score, placeholder: 50, input_html: { min: 0, max: 100, value: @case.score || 50 }, label: 'Weight', hint: "Range: 0..100. Higher weights make good points extra good, and bad/blocker points extra bad. Higher weight points have more impact on a service's rating, and are also displayed more prominently in the review summaries on <a href=\"https://tosdr.org\">ToS;DR</a>.".html_safe %>
         <%= f.association :topic, collection: Topic.order('title ASC'), hint: "Pick the topic where the case applies" %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
+        <%= f.input :docbot_regex, label: 'DocBot Regex', hint: "(Optional) Regex for use in the DocBot Server. Insert nothing if you do not know what this is." %>
         <%= f.input :privacy_related, label: "This case is related to privacy, meaning it will affect <a href=\"https://spreadprivacy.com/privacy-simplified/\">DuckDuckGo's Privacy Grade</a>.".html_safe, checked_value: true, unchecked_value: false %>
       </div>
   </div>

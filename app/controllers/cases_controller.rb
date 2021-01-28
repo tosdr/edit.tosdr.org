@@ -90,7 +90,7 @@ class CasesController < ApplicationController
   end
 
   def case_params
-    params.require(:case).permit(:classification, :score, :title, :description, :topic_id, :privacy_related)
+    params.require(:case).permit(:classification, :score, :title, :description, :topic_id, :privacy_related, :docbot_regex)
   end
 
   def set_curator
