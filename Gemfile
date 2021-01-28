@@ -36,9 +36,6 @@ gem 'invisible_captcha'
 gem 'coffee-rails'
 
 # for tosback2:
-gem 'capybara'
-gem 'poltergeist'
-gem 'cuprite'
 gem 'sanitize'
 gem 'httparty'
 
