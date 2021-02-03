@@ -101,9 +101,9 @@ ActiveRecord::Schema.define(version: 2021_01_28_200439) do
     t.bigint "case_id"
     t.string "oldId"
     t.text "point_change"
-    t.boolean "service_needs_rating_update", default: false
     t.integer "quoteStart"
     t.integer "quoteEnd"
+    t.boolean "service_needs_rating_update", default: false
     t.bigint "document_id"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"

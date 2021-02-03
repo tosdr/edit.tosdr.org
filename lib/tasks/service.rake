@@ -19,4 +19,20 @@ namespace :service do
       end
     end
   end
+  
+  
+  desc "Mark as reviewed if approved points are over 20"
+  task mark_as_reviewed: :environment do
+    services = Service.all
+	puts "Getting unreviewed services"
+    services.where('is_comprehensively_reviewed = false').each do |service|
+		approvedPoints = service.points.where("status = 'approved'");
+		if approvedPoints.length >= 20 		
+			puts "Found #{service.name} - #{service.id}"
+			service.is_comprehensively_reviewed = true
+			service.save(validate: false)
+			puts "Saved Service"
+		end
+    end
+  end
 end
