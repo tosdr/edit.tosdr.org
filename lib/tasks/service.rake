@@ -32,6 +32,13 @@ namespace :service do
 			service.is_comprehensively_reviewed = true
 			service.save(validate: false)
 			puts "Saved Service"
+			version = Version.new
+			version.item_type = "Service"
+			version.item_id = service.id
+			version.event = "update"
+			version.whodunnit = "21311"
+			version.object_changes = "This has been an automatic update by an official ToS;DR bot. The service has been marked as comprehensively reviewed due to a threshold of 20 approved points"
+			version.save
 		end
     end
   end
