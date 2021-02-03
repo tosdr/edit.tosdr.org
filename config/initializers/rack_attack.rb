@@ -30,7 +30,10 @@ class Rack::Attack
   # Throttle POST requests to */services by IP address
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:signups/ip:#{req.ip}"
-  throttle('services/ip', limit: 2, period: 10.minutes) do |req|
+
+  # FIXME: temporarily loosened this from 2 to 50 due to
+  # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
+  throttle('services/ip', limit: 50, period: 10.minutes) do |req|
     if req.path.end_with?('/services') && req.post?
       req.ip
     end
