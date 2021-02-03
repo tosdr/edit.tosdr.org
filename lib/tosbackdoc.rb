@@ -82,8 +82,11 @@ class TOSBackDoc
 
   def download_and_filter_with_xpath
 	begin
-		response = HTTParty.get('https://crawler.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
-		
+		if not @xpath.blank?
+			response = HTTParty.get('https://crawler.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+		else
+			response = HTTParty.get('https://crawler.tosdr.org/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+		end
 		@apiresponse = JSON.parse(response.body)
 		  
 		if @apiresponse["error"]
@@ -92,7 +95,7 @@ class TOSBackDoc
 			@newdata = @apiresponse["raw_html"]
 		end
 	rescue => e
-		@apiresponse = {"error" => true, "message" => { "name" => "We could not reach our crawler server", "message" => "TCP HTTParty.get error"}}
+		@apiresponse = {"error" => true, "message" => { "name" => "Crawler Request Rescue", "message" => e}}
 		puts e
 	end
   end
