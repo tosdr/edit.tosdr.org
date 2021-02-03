@@ -43,14 +43,19 @@ module ApplicationHelper
 
   def status_badge (status)
   	approved_icon = fa_icon "check", text: "APPROVED"
+  	approved_nf_icon = fa_icon "check", text: "QUOTE NOT FOUND"
   	declined_icon = fa_icon "times", text: "DECLINED"
   	pending_icon = fa_icon "clock-o", text: "PENDING"
+  	pending_nf_icon = fa_icon "clock-o", text: "QUOTE NOT FOUND"
   	change_icon = fa_icon "pencil", text: "CHANGES REQUESTED"
   	draft_icon = fa_icon "file-text", text: "DRAFT"
 
     if !status.nil?
     	if(status == "approved")
     		return raw content_tag(:span, approved_icon, class: "label label-success");
+    	end
+    	if(status == "approved-not-found")
+    		return raw content_tag(:span, approved_nf_icon, class: "label label-success");
     	end
     	if(status == "declined")
     		return raw content_tag(:span, declined_icon, class: "label label-danger");
@@ -60,6 +65,9 @@ module ApplicationHelper
     	end
     	if(status == "pending")
     		return raw content_tag(:span, pending_icon, class: "label label-info");
+    	end
+    	if(status == "pending-not-found")
+    		return raw content_tag(:span, pending_nf_icon, class: "label label-info");
     	end
     	if(status == "draft")
     		return raw content_tag(:span, draft_icon, class: "label label-primary");
