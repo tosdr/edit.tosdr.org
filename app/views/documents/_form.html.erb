@@ -3,6 +3,6 @@
   <%= f.input :name, hint: "Name of this document", placeholder: "e.g. \"Privacy Policy\"" %>
   <%= f.input :url, hint: "Where we should fetch this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
   <%= f.input :xpath, input_html: { value: (f.object.xpath.present?) ? f.object.xpath : '//body' }, placeholder: "e.g. \"//*[@id='content']//div[@class='_5tkp _3m9']\"", hint: "The location of the terms on the page (Using <a href=\"https://en.wikipedia.org/wiki/XPath\" title=\"Wikipedia explanation of XPath\" target=\"_blank\">XPath</a>.)".html_safe %>
-  <%= f.input :crawler_server, collection: ["eu", "us"], hint: "Select from which country the crawler should be used. Useful if blocked by EU. (Optional)", selected: "eu" %>
+  <%= f.input :crawler_server, collection: ["eu", "us"], hint: "Select from which country the crawler should be used. Useful if blocked by EU. (Optional)", selected: @document.crawler_server || "eu" %>
   <%= f.submit "Crawl Document", name: "only_create", class: 'btn btn-primary' %>
 <% end %>
