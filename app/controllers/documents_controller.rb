@@ -56,7 +56,7 @@ class DocumentsController < ApplicationController
     @document.update(document_params)
 
     # we should probably only be running the crawler if the URL or XPath have changed
-    if @document.saved_changes.keys.any? { |attribute| ["url", "xpath"].include? attribute }
+    if @document.saved_changes.keys.any? { |attribute| ["url", "xpath", "crawler_server"].include? attribute }
       crawlresult = perform_crawl
     end
 
@@ -122,7 +122,7 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath)
+    params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath, :crawler_server)
   end
 
   def perform_crawl
@@ -130,7 +130,8 @@ class DocumentsController < ApplicationController
 
     @tbdoc = TOSBackDoc.new({
       url: @document.url,
-      xpath: @document.xpath
+      xpath: @document.xpath,
+	  server: @document.crawler_server
     })
 
     @tbdoc.scrape
