@@ -86,3 +86,10 @@ production:
   database: phoenix_production
   username: phoenix
   password: <%= ENV['PHOENIX_DATABASE_PASSWORD'] %>
+
+docker:
+  <<: *default
+  database: phoenix_production
+  username: docker
+  password: docker
+  host: localhost
