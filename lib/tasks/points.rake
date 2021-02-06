@@ -71,7 +71,7 @@ namespace :points do
 	include ApplicationHelper
 	include ActionView::Helpers::TagHelper
     points = Point.all
-	matches = points.where("updated_at < ? and (status = 'pending-not-found' or status = 'approved-not-found')", 4.months.ago )
+	matches = points.where("updated_at < ? and (status = 'pending-not-found' or status = 'approved-not-found')", 2.months.ago )
 
 	puts points.length
 	puts matches.length
