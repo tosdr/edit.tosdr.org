@@ -15,8 +15,6 @@ namespace :points do
         if point.save
 
 			puts "Point ID: "+ point.id.to_s
-			puts "Point created_at: " + point.created_at.to_s
-			puts "Point updated_at: " + point.updated_at.to_s
 			@point_comment = PointComment.new()
 			@point_comment.summary = status_badge('declined') + raw('<br>') + 'Point automatically declined as no activity have been monitored over a course of 2 months'
 			@point_comment.user_id = "21311"
