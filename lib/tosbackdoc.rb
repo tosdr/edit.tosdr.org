@@ -85,9 +85,9 @@ class TOSBackDoc
   def download_and_filter_with_xpath
 	begin
 		if not @xpath.blank?
-			response = HTTParty.get('https://crawler.'+@server+'.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get('https://'+@server+'.crawler.api.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
 		else
-			response = HTTParty.get('https://crawler.'+@server+'.tosdr.org/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get('https://'+@server+'.crawler.api.tosdr.org/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
 		end
 		@apiresponse = JSON.parse(response.body)
 		  
