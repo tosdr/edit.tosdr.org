@@ -24,9 +24,9 @@ module ApplicationHelper
   end
 
   def rank_badge (user)
-  	bot_icon = fa_icon "robot", text: "Bot"
-  	admin_icon = fa_icon "tools", text: "Staff"
-  	curator_icon = fa_icon "hands-helping", text: "Curator"
+  	bot_icon = fa_icon "robot", text: " Bot"
+  	admin_icon = fa_icon "tools", text: " Staff"
+  	curator_icon = fa_icon "hands-helping", text: " Curator"
 
     if !user.nil?
     	if(user.bot?)
@@ -42,13 +42,13 @@ module ApplicationHelper
   end
 
   def status_badge (status)
-  	approved_icon = fa_icon "check", text: "APPROVED"
-  	approved_nf_icon = fa_icon "check", text: "QUOTE NOT FOUND"
-  	declined_icon = fa_icon "times", text: "DECLINED"
-  	pending_icon = fa_icon "clock", text: "PENDING"
-  	pending_nf_icon = fa_icon "clock", text: "QUOTE NOT FOUND"
-  	change_icon = fa_icon "edit", text: "CHANGES REQUESTED"
-  	draft_icon = fa_icon "pencil-ruler", text: "DRAFT"
+  	approved_icon = fa_icon "check", text: " APPROVED"
+  	approved_nf_icon = fa_icon "check", text: " QUOTE NOT FOUND"
+  	declined_icon = fa_icon "times", text: " DECLINED"
+  	pending_icon = fa_icon "clock", text: " PENDING"
+  	pending_nf_icon = fa_icon "clock", text: " QUOTE NOT FOUND"
+  	change_icon = fa_icon "edit", text: " CHANGES REQUESTED"
+  	draft_icon = fa_icon "pencil-ruler", text: " DRAFT"
 
     if !status.nil?
     	if(status == "approved")
