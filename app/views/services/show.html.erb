@@ -12,7 +12,7 @@
 
       <div class="col-lg-6 text-right justify-content-end">
         <% if @service.wikipedia && @service.wikipedia.length > 0 %>
-          <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
+          <h5 class="fw2 fl gray"><%= link_to fa_icon('wikipedia-w', type: :fab), @service.wikipedia %>
         <% end %>
       </div>
     </div>
