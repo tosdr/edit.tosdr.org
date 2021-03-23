@@ -7,6 +7,7 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
+gem 'babel-transpiler'
 
 gem 'activeadmin'
 gem 'devise'
@@ -21,8 +22,7 @@ gem 'whenever'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
-gem "font-awesome-rails"
-gem 'font-awesome-sass'
+gem "font_awesome5_rails"
 gem 'formtastic'
 gem 'jquery-rails'
 gem 'vuejs-rails', '~> 2.3.2'

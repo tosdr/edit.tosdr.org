@@ -1,7 +1,7 @@
 namespace :points do
   desc "Decline points with changes requested"
   task decline_changesrequested: :environment do
-	include FontAwesome::Rails::IconHelper
+	include FontAwesome5::Rails::IconHelper
 	include ApplicationHelper
 	include ActionView::Helpers::TagHelper
     points = Point.all
@@ -34,7 +34,7 @@ namespace :points do
 
   desc "Decline points with drafts over 2 months old"
   task decline_draft: :environment do
-	include FontAwesome::Rails::IconHelper
+	include FontAwesome5::Rails::IconHelper
 	include ApplicationHelper
 	include ActionView::Helpers::TagHelper
     points = Point.all
@@ -67,7 +67,7 @@ namespace :points do
 
   desc "Decline points with *-not-found over 1 month old"
   task decline_notfound: :environment do
-	include FontAwesome::Rails::IconHelper
+	include FontAwesome5::Rails::IconHelper
 	include ApplicationHelper
 	include ActionView::Helpers::TagHelper
     points = Point.all
