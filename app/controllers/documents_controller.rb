@@ -69,7 +69,7 @@ class DocumentsController < ApplicationController
 			flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate.<br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
 			redirect_to document_path(@document)
 		else
-			flash[:notice] = "The crawler has updated the document<br><a href='"+crawlresult["imageurl"]+"' target='_blank'><img src='"+crawlresult["imageurl"]+"' width='128'></a>"
+			flash[:notice] = "The crawler has updated the document"
 			redirect_to document_path(@document)
 		end
 	  else
