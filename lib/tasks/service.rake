@@ -46,18 +46,20 @@ namespace :service do
   task create_slug: :environment do
     services = Service.all
 	puts "Getting services without a slug"
-	puts services.where('slug is null').length
-    services.where('slug is null').each do |service|
-		service.slug = (service.slug || service.name.gsub(/[ ]/i, '_').gsub(/[^0-9a-z\_]/i, '').gsub(/_+/i, '_').downcase)
-		if service.save(validate: false)
-			puts "Created slug for #{service.id}: #{service.slug}"
-			version = Version.new
-			version.item_type = "Service"
-			version.item_id = service.id
-			version.event = "update"
-			version.whodunnit = "21311"
-			version.object_changes = "A slug for the service has been generated: #{service.slug}"
-			version.save
+    services.each do |service|
+		slug = (service.slug || service.name.gsub(/[ ]/i, '_').gsub(/[^0-9a-z\_]/i, '').gsub(/_+/i, '_').downcase)
+		if slug != service.slug
+			service.slug = slug
+			if service.save(validate: false)
+				puts "Created slug for #{service.id}: #{service.slug}"
+				version = Version.new
+				version.item_type = "Service"
+				version.item_id = service.id
+				version.event = "update"
+				version.whodunnit = "21311"
+				version.object_changes = "A slug for the service has been generated: #{service.slug}"
+				version.save
+			end
 		end
     end
   end
