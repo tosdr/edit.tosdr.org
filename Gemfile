@@ -7,6 +7,9 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
+gem "fog-aws"
+gem "carrierwave"
+
 gem 'babel-transpiler'
 
 gem 'activeadmin'

@@ -46,7 +46,20 @@ class ServicesController < ApplicationController
 		@service.user = current_user
 
 		if @service.save
-		  redirect_to service_path(@service)
+            uploader = LogoUploaderController.new(@service.id)
+            if params[:service][:logo]
+              puts "Uploaded image"
+              if uploader.store!(params[:service][:logo])
+                flash[:notice] = "Created service with logo!"
+                redirect_to service_path(@service)
+              else
+                flash[:alert] = "Uploading the logo failed!"
+                redirect_to service_path(@service)
+              end
+            else
+                flash[:notice] = "The service has been created!"
+                redirect_to service_path(@service)
+            end
 		else
 		  render :new
 		end
@@ -128,12 +141,26 @@ class ServicesController < ApplicationController
   end
 
   def update
+    uploader = LogoUploaderController.new(params[:id] || params[:service_id])
     @service = Service.find(params[:id] || params[:service_id])
 
     authorize @service
     if @service.update(service_params)
-      redirect_to service_path(@service)
+        if params[:service][:logo]
+          puts "Uploaded image"
+          if uploader.store!(params[:service][:logo])
+            flash[:notice] = "Uploaded logo!"
+            redirect_to service_path(@service)
+          else
+            flash[:alert] = "Uploading the logo failed!"
+            render :edit
+          end
+        else
+            flash[:notice] = "The service has been updated!"
+            redirect_to service_path(@service)
+        end
     else
+      flash[:alert] = "Failed to update the service!"
       render :edit
     end
   end

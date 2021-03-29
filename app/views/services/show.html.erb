@@ -6,7 +6,7 @@
   <div class="card-inline-item card-inline-service">
     <div class="row">
       <div class="col-lg-6">
-        <h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
+        <img src="<%= ENV['S3_CDN'] %>/<%= @service.id %>.png" width="64"></img><h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
         <h5> Rating: <%= @service.rating %></h5>
       </div>
 
