@@ -35,6 +35,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
+                <th scope="col">Logo</th>
                 <th scope="col">Name</th>
                 <th scope="col">Rating</th>
                 <th scope="col" class="text-right">View</th>
@@ -44,6 +45,9 @@
             </thead>
             <tbody id="myTableBody">
               <tr class="toSort" v-for="service in filteredServices" :key="service" v-bind:data-classification="service.service.rating">
+                <td>
+                    <img v-bind:src="'<%= ENV['S3_CDN'] %>/' + service.service.id + '.png'" width="32"/>
+                </td>
                 <td>
                   {{ service.service.name }}
                 </td>
