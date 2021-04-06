@@ -35,6 +35,9 @@ class Document < ApplicationRecord
       if (p.status === 'declined') then
         next;
       end
+      if (p.quoteText.nil?) then
+        next;
+      end
       quoteStart = self.text.index(p.quoteText)
       if (p.quoteStart == quoteStart && p.quoteEnd == p.quoteStart + p.quoteText.length)
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
