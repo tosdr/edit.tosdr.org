@@ -1,7 +1,3 @@
-# Contributing
-
-To contribute, you can either [set up your development environment yourself](#manual-environment-setup), or [use Docker Compose](#automated-environment-setup).
-
 ## Quickstart
 
 1. Clone the repository with: `git clone
