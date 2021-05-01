@@ -53,9 +53,6 @@ services:
     POSTGRES_DB: postgres
     POSTGRES_HOST_AUTH_METHOD: trust
 
-node:
-  os: linux
-
 volumes:
 - name: bundle
   temp: {}
