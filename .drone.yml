@@ -51,12 +51,12 @@ steps:
     port: 22
     script:
       - service phoenix restart
-when:
-  event:
-    - promote
-    - cron
-  cron:
-  - deploy
+  when:
+    event:
+      - promote
+      - cron
+    cron:
+    - deploy
 
 services:
 - name: postgres
