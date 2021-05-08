@@ -79,8 +79,8 @@ steps:
     port: 22
     script:
       - service phoenix restart
-  when:
-    event:
+trigger:
+  event:
     - promote
     - cron
   cron:
