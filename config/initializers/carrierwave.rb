@@ -6,6 +6,7 @@ CarrierWave.configure do |config|
     aws_access_key_id: ENV["S3_ACCESS_KEY"],
     aws_secret_access_key: ENV["S3_SECRET_KEY"],
     host: ENV["S3_HOST"],
+    path_style: true,
     endpoint: ENV["S3_ENDPOINT"]
   }
 
