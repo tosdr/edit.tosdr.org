@@ -44,6 +44,25 @@ trigger:
   event:
   - push
   - pull_request
+  
+- name: Deploy Production
+  image: appleboy/drone-ssh
+  settings:
+    host: 
+        from_secret: SSH_HOST
+    username:
+        from_secret: SSH_USER
+    key:
+        from_secret: SSH_KEY
+    port: 22
+    script:
+      - service phoenix restart
+  when:
+    event:
+    - promote
+    - cron
+  cron:
+  - deploy
 
 services:
 - name: postgres
