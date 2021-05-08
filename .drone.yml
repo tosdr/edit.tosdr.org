@@ -39,12 +39,24 @@ steps:
   - sleep 20
   - kill $(cat tmp/pids/server.pid)
 
-
-trigger:
+- name: Deploy Production
+  image: appleboy/drone-ssh
+  settings:
+    host: 
+        from_secret: SSH_HOST
+    username:
+        from_secret: SSH_USER
+    key:
+        from_secret: SSH_KEY
+    port: 22
+    script:
+      - service phoenix restart
+when:
   event:
-  - push
-  - pull_request
-
+    - promote
+    - cron
+  cron:
+  - deploy
 
 services:
 - name: postgres
@@ -59,30 +71,4 @@ volumes:
   temp: {}
 - name: executables
   temp: {}
-  
-  
----
-kind: pipeline
-name: deploy
-
-  
-steps:
-- name: Deploy Production
-  image: appleboy/drone-ssh
-  settings:
-    host: 
-        from_secret: SSH_HOST
-    username:
-        from_secret: SSH_USER
-    key:
-        from_secret: SSH_KEY
-    port: 22
-    script:
-      - service phoenix restart
-trigger:
-  event:
-    - promote
-    - cron
-  cron:
-  - deploy
   
