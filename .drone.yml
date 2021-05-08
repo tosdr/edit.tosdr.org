@@ -44,7 +44,29 @@ trigger:
   event:
   - push
   - pull_request
+
+
+services:
+- name: postgres
+  image: postgres
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_DB: postgres
+    POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+- name: bundle
+  temp: {}
+- name: executables
+  temp: {}
   
+  
+---
+kind: pipeline
+name: deploy
+
+  
+steps:
 - name: Deploy Production
   image: appleboy/drone-ssh
   settings:
@@ -63,17 +85,4 @@ trigger:
     - cron
   cron:
   - deploy
-
-services:
-- name: postgres
-  image: postgres
-  environment:
-    POSTGRES_USER: postgres
-    POSTGRES_DB: postgres
-    POSTGRES_HOST_AUTH_METHOD: trust
-
-volumes:
-- name: bundle
-  temp: {}
-- name: executables
-  temp: {}
+  
