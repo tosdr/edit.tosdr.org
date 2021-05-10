@@ -45,7 +45,7 @@ gem 'httparty'
 # for api pagination
 gem 'kaminari'
 
-# gem 'mini_racer'
+gem 'mini_racer'
 
 group :development do
   gem 'letter_opener'
