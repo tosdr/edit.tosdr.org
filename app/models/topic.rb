@@ -18,7 +18,7 @@ class Topic < ApplicationRecord
   end
 
   def self.topic_use_frequency
-    Topic.where.not(id: 53).includes(:cases).joins(cases: :points).group(:id).order('COUNT(points.id) DESC')
+    Topic.where.not(id: 53).includes(:cases)
   end
 
   def case_use_frequency
