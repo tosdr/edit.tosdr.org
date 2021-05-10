@@ -13,3 +13,5 @@ phantomjs
 # Ignore application configuration
 /config/application.yml
 .vs/
+Gemfile.lock
+.idea

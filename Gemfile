@@ -18,7 +18,7 @@ gem 'figaro'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
 gem "puma", ">= 3.12.4"
-gem 'rails', '~> 5.2.4.3'
+gem 'rails', '~> 5.2.5'
 gem 'redis'
 
 gem 'whenever'
@@ -45,7 +45,7 @@ gem 'httparty'
 # for api pagination
 gem 'kaminari'
 
-gem 'mini_racer'
+# gem 'mini_racer'
 
 group :development do
   gem 'letter_opener'
@@ -67,8 +67,4 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
-end
-
-group :production do
-  gem 'heroku-deflater'
 end
