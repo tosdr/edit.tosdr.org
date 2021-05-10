@@ -3,16 +3,7 @@ class Api::V1::PointsController < Api::V1::BaseController
 
   def index
     policy_scope(Point)
-
-    if params[:page]
-      @points = Point.page(params[:page]).per(100)
-      page_count = @points.total_pages
-    else
-      @points = Point.order('updated_at DESC')
-      page_count = 1
-    end
-
-    render json: { points: @points, meta: { total_pages: page_count, total_records: Point.count } }
+    render json: { see: "https://tosdr.atlassian.net/l/c/6gWVHRND" }
   end
 
   def show
@@ -21,7 +12,6 @@ class Api::V1::PointsController < Api::V1::BaseController
   private
 
   def set_point
-    @point = Point.find(params[:id])
-    authorize @point
+    render json: { see: "https://tosdr.atlassian.net/l/c/6gWVHRND" }
   end
 end
