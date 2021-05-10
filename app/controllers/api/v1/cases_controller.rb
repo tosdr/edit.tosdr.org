@@ -1,8 +1,12 @@
 class Api::V1::CasesController < Api::V1::BaseController
-  before_action :set_case, only: [ :show ]
+  before_action :set_case, only: [:show]
+
   def index
     policy_scope(Case)
-    @cases = Case.all
+    render json: { see: "https://tosdr.atlassian.net/l/c/6gWVHRND" }
+    return
+    #
+    # @cases = Case.all
   end
 
   def show
@@ -11,7 +15,6 @@ class Api::V1::CasesController < Api::V1::BaseController
   private
 
   def set_case
-    @case = Case.find(params[:id])
-    authorize @case
+    render json: { see: "https://tosdr.atlassian.net/l/c/6gWVHRND" }
   end
 end
