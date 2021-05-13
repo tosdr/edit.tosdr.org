@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 
@@ -72,3 +73,8 @@ volumes:
 - name: executables
   temp: {}
   
+---
+kind: signature
+hmac: 4bb40e03f91142dc13ef96bf5cb9646d597240d6525169f1099eeb6bec576070
+
+...
