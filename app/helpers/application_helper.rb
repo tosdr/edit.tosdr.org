@@ -33,10 +33,10 @@ module ApplicationHelper
     		return raw link_to(bot_icon, "https://to.tosdr.org/bot", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
     	end
     	if(user.admin?)
-    		return raw link_to(admin_icon, "https://tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
+    		return raw link_to(admin_icon, "https://to.tosdr.org/about", target: "_blank", title: "This user is a ToS;DR Team member", class: "label label-danger");
     	end
     	if(user.curator?)
-    		return raw link_to(curator_icon, "https://forum.tosdr.org/t/105", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
+    		return raw link_to(curator_icon, "https://to.tosdr.org/8dd5k", target: "_blank", title: "This user is a phoenix curator", class: "label label-primary");
     	end
     end
   end
@@ -98,7 +98,7 @@ module ApplicationHelper
       end
       return user_str
     else
-      return raw link_to(invalid_icon, "/users/edit", target: "_blank", title: "This user has deleted his account", class: "label label-default");
+      return raw link_to(invalid_icon, "/users/edit", target: "_blank", title: "This user has deleted their account", class: "label label-default");
     end
   end
 
