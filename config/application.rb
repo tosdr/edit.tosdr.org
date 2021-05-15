@@ -25,7 +25,7 @@ module Phoenix
       generate.helper false
     end
 
-    config.version = "1.0.0"
+    config.version = "1.1.0"
 
     config.autoload_paths += %W[#{config.root}/lib]
 
