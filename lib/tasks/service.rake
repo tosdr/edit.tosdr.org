@@ -47,8 +47,12 @@ namespace :service do
     services = Service.all
 	puts "Getting services without a slug"
 	puts services.where('slug is null').length
-    services.where('slug is null').each do |service|
-		service.slug = (service.slug || service.name.gsub(/[ ]/i, '_').gsub(/[^0-9a-z\_]/i, '').gsub(/_+/i, '_').downcase)
+    services.where('slug is null OR slug = \'\'').each do |service|
+		service.slug = ActiveSupport::Inflector.transliterate(service.name).parameterize.downcase
+    if(service.slug.empty?)
+      puts "Failed to transliterate #{service.name}. Reverting slug to ID"
+      service.slug = service.id
+    end
 		if service.save(validate: false)
 			puts "Created slug for #{service.id}: #{service.slug}"
 			version = Version.new
