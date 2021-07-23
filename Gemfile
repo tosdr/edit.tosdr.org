@@ -68,3 +68,6 @@ group :development, :test do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
 end
+
+gem "sentry-ruby"
+gem "sentry-rails"
