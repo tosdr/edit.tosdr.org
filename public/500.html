@@ -968,6 +968,18 @@ c.modifiers.flip.padding);b.setAttribute("x-placement",a);M(b,{position:c.positi
             }
         });
     </script>
-      <script type="text/javascript" src="https://tosdr.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/24/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=9ab981d7"></script>
+        <script src='https://sentry.tosdr.org/js-sdk-loader/768d6b987bc24cc3bbe67fe7e70a2414.min.js' crossorigin="anonymous"></script>
+        <script>
+            Sentry.init({
+                dsn: "https://768d6b987bc24cc3bbe67fe7e70a2414@sentry.tosdr.org/3",
+                beforeSend(event, hint) {
+                    // Check if it is an exception, and if so, show the report dialog
+                    if (event.exception) {
+                        Sentry.showReportDialog({ eventId: event.event_id });
+                    }
+                    return event;
+                },
+            });
+        </script>
 
 </body></html>
