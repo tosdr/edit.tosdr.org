@@ -109,6 +109,6 @@ depends_on:
   
 ---
 kind: signature
-hmac: cd /mnt/e/RubymineProjects/edit.tosdr.org/
+hmac: a29627988571c3cd2703b83405d57470a026c0a4029a5ed6ec95de451b8d8bfd
 
 ...
