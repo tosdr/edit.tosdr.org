@@ -29,16 +29,22 @@ class Document < ApplicationRecord
     if (!self.text)
       self.text = ''
     end
+
     quotes = []
+
     snippets = []
+
     self.points.each do |p|
       if (p.status === 'declined') then
-        next;
+        next
       end
+
       if (p.quoteText.nil?) then
-        next;
+        next
       end
+
       quoteStart = self.text.index(p.quoteText)
+
       if (p.quoteStart == quoteStart && p.quoteEnd == p.quoteStart + p.quoteText.length)
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
         quotes << p
@@ -48,10 +54,12 @@ class Document < ApplicationRecord
           puts '-----'
           puts p.quoteText
           puts '-----'
-          puts self.text[p.quoteStart, p.quoteEnd]
+          puts self.text[p.quoteStart, p.quoteEnd] if p.quoteStart && p.quoteEnd
           puts '-----'
-          puts self.text.index(self.text[p.quoteStart, p.quoteEnd])
+          puts self.text.index(self.text[p.quoteStart, p.quoteEnd]) if p.quoteStart && p.quoteEnd
           puts '-----'
+          puts 'quoteStart is nil - was it entered correctly?' if p.quoteStart.nil? && p.quoteEnd
+          puts 'quoteEnd is nil - was it entered correctly?' if p.quoteStart && p.quoteEnd.nil?
           puts '-----'
           puts self.text.index(p.quoteText)
           puts '-----'
@@ -61,11 +69,14 @@ class Document < ApplicationRecord
         end
       end
     end
+
     cursor = 0
+
     quotes.sort! do |x,y|
       puts 'comparing ' + x.quoteStart.to_s + ' to ' + y.quoteStart.to_s
       x.quoteStart - y.quoteStart
     end
+
     quotes.each do |q|
       puts 'quote to snippet ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s + ' ..' + cursor.to_s
       if (q.quoteStart > cursor)
@@ -85,7 +96,9 @@ class Document < ApplicationRecord
         puts 'skipping empty'
       end
     end
+
     puts 'final snippet ' + cursor.to_s + ' -> ' + self.text.length.to_s
+
     snippets.push({
       text: self.text[cursor, self.text.length - cursor]
     })
