@@ -48,25 +48,6 @@ class Document < ApplicationRecord
       if (p.quoteStart == quoteStart && p.quoteEnd == p.quoteStart + p.quoteText.length)
         puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
         quotes << p
-      else
-        if quoteStart
-          puts 'quote not found! [' + p.quoteStart.to_s + '==' + quoteStart.to_s + '][' + p.quoteEnd.to_s + '==' + (quoteStart + p.quoteText.length).to_s + ']'
-          puts '-----'
-          puts p.quoteText
-          puts '-----'
-          puts self.text[p.quoteStart, p.quoteEnd] if p.quoteStart && p.quoteEnd
-          puts '-----'
-          puts self.text.index(self.text[p.quoteStart, p.quoteEnd]) if p.quoteStart && p.quoteEnd
-          puts '-----'
-          puts 'quoteStart is nil - was it entered correctly?' if p.quoteStart.nil? && p.quoteEnd
-          puts 'quoteEnd is nil - was it entered correctly?' if p.quoteStart && p.quoteEnd.nil?
-          puts '-----'
-          puts self.text.index(p.quoteText)
-          puts '-----'
-          puts '-----'
-        else
-          puts 'no quoteStart found!'
-        end
       end
     end
 
@@ -102,6 +83,7 @@ class Document < ApplicationRecord
     snippets.push({
       text: self.text[cursor, self.text.length - cursor]
     })
+    
     snippets
   end
 end
