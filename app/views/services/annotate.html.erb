@@ -11,38 +11,39 @@
   <input type="hidden" name="quoteCaseId" id="quoteCaseId">
 </form>
 
+
 <h2><%= link_to  @service.name, service_path(@service) %></h2>
 
 <% if @topics %>
-<div class="lead">
-  Highlight lines that are of interest to users to link them to a case.
-</div>
-<div id="caseToast" class="toast">
-  <form id="caseDropdown">
-    <select>
-      <% @topics.each do |topic| %>
-        <optgroup label="<%= topic.title %>">
-          <% topic.cases.each do |c| %>
-            <option data-case-id="<%= c.id %>"><%= c.title %></option>
-          <% end %>
-        </optgroup>
-      <% end %>
-    </select>
-    <button type="submit" class="btn btn-primary">Annotate</button>
-  </form>
-</div>
-<% else %>
-<div class="lead">
-  Highlight the lines that support the point <i><%= @point.title %></i>.
-</div>
-<div id="pointToast" class="toast">
-  <form id="pointForm">
-    <div class="form-group">
-      <%= @point.title %>
-    </div>
-    <button type="submit" class="btn btn-primary">Link to this excerpt</button>
-  </form>
-</div>
+  <div class="lead">
+    Highlight lines that are of interest to users to link them to a case.
+  </div>
+  <div id="caseToast" class="toast">
+    <form id="caseDropdown">
+      <select>
+        <% @topics.each do |topic| %>
+          <optgroup label="<%= topic.title %>">
+            <% topic.cases.each do |c| %>
+              <option data-case-id="<%= c.id %>"><%= c.title %></option>
+            <% end %>
+          </optgroup>
+        <% end %>
+      </select>
+      <button type="submit" class="btn btn-primary">Annotate</button>
+    </form>
+  </div>
+  <% else %>
+  <div class="lead">
+    Highlight the lines that support the point <i><%= @point.title %></i>.
+  </div>
+  <div id="pointToast" class="toast">
+    <form id="pointForm">
+      <div class="form-group">
+        <%= @point.title %>
+      </div>
+      <button type="submit" class="btn btn-primary">Link to this excerpt</button>
+    </form>
+  </div>
 <% end %>
 
 <div id="toc">
@@ -53,11 +54,11 @@
         <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
       </li>
     <% end %>
-	<% if policy(@service).create? %>
-        <li style="list-style-type: none; padding-top: 1rem;">
-            <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-default" %>
-		</li>
-	<% end %>
+  	<% if policy(@service).create? %>
+      <li style="list-style-type: none; padding-top: 1rem;">
+        <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-primary" %>
+  		</li>
+  	<% end %>
   </ul>
 </div>
 
@@ -65,13 +66,20 @@
   <% @documents.each do |doc| %>
     <div class="docAnchor" id="doc_<%= doc.id %>">
       <div class="panel panel-default">
-        <div
-          class="panel-heading"
-        ><h3 class="h5"><%= link_to doc.name, document_path(doc) %></h3>
+        <div class="panel-heading pb-2">
+          <h3><%= link_to doc.name, document_path(doc) %></h3>
+          <% if policy(doc).restore_points? %>
+            <% if doc.snippets[:points_needing_restoration].present? %>
+              <%= link_to("Restore quotes", document_restore_points_path(doc), method: :post, class: 'btn btn-sm btn-warning') %>
+              <div>
+                <small>Quotes for certain points were not found. Click here to try to restore them.</small>
+              </div>
+            <% end %>
+          <% end %>
         </div>
         <div class="panel-body documentContent" data-content="<%= doc.text %>">
           <% offset = 0 %>
-          <% doc.snippets.each do |snippet| %>
+          <% doc.snippets[:snippets].each do |snippet| %>
             <% if snippet[:pointId] %>
               <p><%= link_to hide_tags(snippet[:text]), point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></p>
             <% else %>
@@ -84,4 +92,5 @@
     </div>
   <% end %>
 </div>
+
 <%= link_to("Add a point not linked to a document", new_service_point_path(@service), class: 'btn btn-primary') %>

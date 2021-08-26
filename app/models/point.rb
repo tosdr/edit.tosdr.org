@@ -20,4 +20,14 @@ class Point < ApplicationRecord
   def self.search_points_by_multiple(query)
     Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%", "%#{query}%", "%#{query}%")
   end
+
+  def restore
+    quote_start = self.document.text.index(self.quoteText)
+    quote_end = quote_start + self.quoteText.length
+
+    self.quoteStart = quote_start
+    self.quoteEnd = quote_end
+
+    self.save
+  end
 end

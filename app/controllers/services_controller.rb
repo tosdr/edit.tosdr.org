@@ -29,7 +29,7 @@ class ServicesController < ApplicationController
 
   def new
     authorize Service
-	
+
 	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
 		@service = Service.new
 	else
@@ -71,7 +71,7 @@ class ServicesController < ApplicationController
   def annotate
     authorize Service
 
-    @service = Service.includes(documents: [:points]).find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: [:points, :user]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     if (params[:point_id] && current_user)
       @point = Point.find_by id: params[:point_id]

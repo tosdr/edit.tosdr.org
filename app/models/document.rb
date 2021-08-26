@@ -31,29 +31,37 @@ class Document < ApplicationRecord
     end
 
     quotes = []
-
     snippets = []
+    points_with_quote_text_to_restore_in_doc = []
 
     self.points.each do |p|
-      if (p.status === 'declined') then
+      if p.status === 'declined'
         next
       end
 
-      if (p.quoteText.nil?) then
+      if p.quoteText.nil?
         next
       end
 
-      quoteStart = self.text.index(p.quoteText)
+      quote_exists_in_text = !self.text.index(p.quoteText).nil?
 
-      if (p.quoteStart == quoteStart && p.quoteEnd == p.quoteStart + p.quoteText.length)
-        puts 'quote ok! ' + p.quoteStart.to_s + '->' + p.quoteEnd.to_s + ': ' + p.quoteText
-        quotes << p
+      if quote_exists_in_text
+        quote_start = self.text.index(p.quoteText)
+        quote_start_changed = p.quoteStart != quote_start
+        quote_end_changed = p.quoteEnd != p.quoteStart + p.quoteText.length
+
+        if (!quote_start_changed && !quote_end_changed)
+          # quote is okay, so we store it
+          quotes << p
+        else
+          points_with_quote_text_to_restore_in_doc << p
+        end
       end
     end
 
     cursor = 0
 
-    quotes.sort! do |x,y|
+    quotes.sort! do |x, y|
       puts 'comparing ' + x.quoteStart.to_s + ' to ' + y.quoteStart.to_s
       x.quoteStart - y.quoteStart
     end
@@ -73,8 +81,6 @@ class Document < ApplicationRecord
         })
         puts 'cursor to ' + q.quoteEnd.to_s
         cursor = q.quoteEnd
-      else
-        puts 'skipping empty'
       end
     end
 
@@ -83,7 +89,10 @@ class Document < ApplicationRecord
     snippets.push({
       text: self.text[cursor, self.text.length - cursor]
     })
-    
-    snippets
+
+    {
+      snippets: snippets,
+      points_needing_restoration: points_with_quote_text_to_restore_in_doc
+    }
   end
 end

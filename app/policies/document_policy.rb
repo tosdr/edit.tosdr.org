@@ -23,6 +23,10 @@ class DocumentPolicy < ApplicationPolicy
     (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
   end
 
+  def restore_points?
+    is_owner?
+  end
+
   private
 
   def is_owner?
