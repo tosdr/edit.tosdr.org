@@ -8,7 +8,7 @@
 services:
 - postgres:14.5
 variables:
-  POSTGRES_USER: postgres
+  POSTGRES_USER: phoenix
   POSTGRES_DB: phoenix
   POSTGRES_HOST_AUTH_METHOD: trust
   LICENSE_FINDER_CLI_OPTS: '--recursive'
