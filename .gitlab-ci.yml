@@ -15,7 +15,6 @@ variables:
   LICENSE_FINDER_CLI_OPTS: '--recursive'
 stages:
 - test
-- compile
 - publish
 
 sast:
@@ -27,7 +26,7 @@ include:
 - template: Security/License-Scanning.gitlab-ci.yml
 
 migrate-and-test:
-  stage: compile
+  stage: test
   variables:
     DATABASE_URL: postgres://phoenix:phoenix@localhost:5432/phoenix
   image:
