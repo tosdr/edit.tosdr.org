@@ -10,7 +10,7 @@ services:
 - redis:latest
 variables:
   POSTGRES_USER: postgres
-  POSTGRES_DB: crisp_dev
+  POSTGRES_DB: phoenix
   POSTGRES_HOST_AUTH_METHOD: trust
   LICENSE_FINDER_CLI_OPTS: '--recursive'
 stages:
@@ -29,14 +29,14 @@ include:
 migrate-and-test:
   stage: compile
   variables:
-    COMPOSER_ALLOW_SUPERUSER: 1
+    DATABASE_URL: postgres://phoenix:phoenix@localhost:5432/phoenix
   image:
     name: ruby:2.7.2
   script:
   - gem install bundler
   - gem install rails
   - bundle install
-  - rails db:create db:migrate
+  - rails db:migrate
   - rails server -d
   - sleep 20
   - kill $(cat tmp/pids/server.pid)
