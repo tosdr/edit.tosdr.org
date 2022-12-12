@@ -7,7 +7,6 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 services:
 - postgres:14.5
-- redis:latest
 variables:
   POSTGRES_USER: postgres
   POSTGRES_DB: phoenix
@@ -28,7 +27,7 @@ include:
 migrate-and-test:
   stage: test
   variables:
-    DATABASE_URL: postgres://phoenix:phoenix@localhost:5432/phoenix
+    DATABASE_URL: postgres://phoenix:phoenix@postgres:5432/phoenix
   image:
     name: ruby:2.7.2
   script:
