@@ -8,8 +8,6 @@ fi
 
 export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
-service postgresql start
-
 rails db:migrate
 
 rake tmp:clear
