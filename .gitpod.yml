@@ -36,7 +36,8 @@ tasks:
 
 
   - name: Crawler
-    init: cd .gitpod && docker-compose up -f crawler.docker-compose.yml
+    init: docker pull registry.jrbit.de/tosdr/crawler.tosdr.org:latest && docker pull selenium/standalone-chrome:4.6.0-20221104
+    command: cd .gitpod && docker-compose up -f crawler.docker-compose.yml
 
   - name: Phoenix
     env:
