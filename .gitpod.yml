@@ -57,6 +57,7 @@ tasks:
              bundle install && 
              gp ports await 5432 && 
              rails db:migrate &&
+             rails db:seed &&
              rails server
 
 
