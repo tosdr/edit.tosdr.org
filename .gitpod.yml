@@ -23,10 +23,6 @@ tasks:
     init: docker pull postgres
     command: 'docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres --net="host" --rm postgres'
 
-  - name: Redis
-    init: docker pull redis
-    command: 'docker run -p 6379:6379 --name redis --net="host" --rm redis'
-
 
   - name: Mailhog
     init: docker pull mailhog/mailhog
@@ -34,6 +30,7 @@ tasks:
 
   - name: Phoenix
     init: rvm install "ruby-2.7.2" && 
+          rvm use 2.7.2 &&
           gem install bundler &&
           gem install rails &&
           bundle install
