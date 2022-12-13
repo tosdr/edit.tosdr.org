@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+  selenium:
+    image: 'selenium/standalone-chrome:4.6.0-20221104'
+
+  crawler:
+    image: 'registry.jrbit.de/tosdr/crawler.tosdr.org:latest'
+    links:
+      - selenium
+    ports:
+      - 5000:80
+    environment:
+      - SELENIUM_SERVER=http://selenium:4444
+      - IGNORE_ROBOTS=true
+      - FORBIDDEN_MIME=application/octet-stream
+      - ALLOWED_MIME=text/plain,text/html,application/pdf,text/html; charset=UTF-8,text/html; charset=utf-8
+      - SENTRY_DSN=https://2f3572a1ac2344f98dc954269e7c1791@sentry.tosdr.org/4
+      - CRAWLER=localhost

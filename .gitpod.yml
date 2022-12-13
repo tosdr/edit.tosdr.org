@@ -18,6 +18,12 @@ ports:
     description: Database Manager
     port: 5050
     onOpen: notify
+
+
+  - name: Crawler
+    description: ToS;DR Crawler
+    port: 5000
+    onOpen: notify
 tasks:
   - name: Postgres
     init: docker pull postgres
@@ -28,10 +34,14 @@ tasks:
     init: docker pull mailhog/mailhog
     command: 'docker run -p 1025:1025 -p 8025:8025 --name mailhog --net="host" --rm mailhog/mailhog'
 
+
+  - name: Crawler
+    init: cd .gitpod && docker-compose up -f crawler.docker-compose.yml
+
   - name: Phoenix
     env:
       RAILS_ENV: development
-      CRAWLER_API_KEY: 1234
+      CRAWLER_API_KEY: not_needed
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
       LANG: en_US.UTF-8
       RACK_ENV: development

@@ -7,6 +7,23 @@ puts TOSBackDoc
 class DocumentsController < ApplicationController
   include Pundit
 
+  PROD_CRAWLERS = {
+    "eu.crawler.api.tosdr.org": "Europe",
+    "us.crawler.api.tosdr.org": "United States",
+    "arachne.crawler.api.tosdr.org": "Arachne",
+    "floppy.crawler.api.tosdr.org": "Floppy",
+    "avidreader.crawler.api.tosdr.org": "AvidReader",
+    "nosypeeper.crawler.api.tosdr.org": "NosyPeeper",
+    "atlas.crawler.api.tosdr.org": "Atlas",
+    "whale.crawler.api.tosdr.org": "Whale"
+  }
+
+
+  DEV_CRAWLERS = {
+    "localhost:5000": "Local Crawler (GitPod)"
+  }
+
+
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_document, only: [:show, :edit, :update, :crawl, :restore_points]
 
@@ -53,6 +70,7 @@ class DocumentsController < ApplicationController
   def update
     authorize @document
 
+
     @document.update(document_params)
 
     # we should probably only be running the crawler if the URL or XPath have changed
@@ -75,7 +93,7 @@ class DocumentsController < ApplicationController
   		   redirect_to document_path(@document)
   	  end
     else
-      render 'edit'
+      render 'edit', :locals => { crawlers: prod_crawlers}
     end
   end
 
@@ -94,6 +112,8 @@ class DocumentsController < ApplicationController
   end
 
   def show
+    # ["eu", "Europe"], ["us", "United States"], ["arachne", "Arachne Crawler"], ["floppy", "Floppy Crawler"], ["avidreader", "AvidReader Crawler"], ["nosypeeper", "NosyPeeper Crawler"], ["atlas", "Atlas Crawler"], ["whale", "Whale Crawler"]
+
     authorize @document
   end
 

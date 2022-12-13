@@ -12,7 +12,7 @@ class TOSBackDoc
   @save_dir ||= nil
   @save_path ||= nil
   @apiresponse ||= nil
-  @server ||= 'eu'
+  @server ||= 'eu.crawler.api.tosdr.org'
 
   def initialize(hash)
     @site = hash[:site]
@@ -85,9 +85,9 @@ class TOSBackDoc
   def download_and_filter_with_xpath
 	begin
 		if not @xpath.blank?
-			response = HTTParty.get('http://'+@server+'.crawler.api.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get('http://'+@server+'/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
 		else
-			response = HTTParty.get('http://'+@server+'.crawler.api.tosdr.org/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get('http://'+@server+'/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
 		end
 		@apiresponse = JSON.parse(response.body)
 		  
