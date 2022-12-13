@@ -42,7 +42,6 @@ tasks:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
       LANG: en_US.UTF-8
       RACK_ENV: development
-      RAILS_ENV: development
       VIS_ENV: development
       RAILS_LOG_TO_STDOUT: enabled
       RAILS_SERVE_STATIC_FILES: enabled
