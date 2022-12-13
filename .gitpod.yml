@@ -1,0 +1,86 @@
+ports:
+  - name: Frontend
+    description: Phoenix Frontend
+    port: 3000
+    onOpen: notify
+
+  - name: Mailhog SMTP
+    description: Dev SMTP server
+    port: 1025
+    onOpen: ignore
+
+  - name: Mailhog Web
+    description: Dev Mailhog Web server
+    port: 8025
+    onOpen: notify
+
+  - name: pgAdmin
+    description: Database Manager
+    port: 5050
+    onOpen: notify
+tasks:
+  - name: Postgres
+    init: docker pull postgres
+    command: 'docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres --net="host" --rm postgres'
+
+  - name: Redis
+    init: docker pull redis
+    command: 'docker run -p 6379:6379 --name redis --net="host" --rm redis'
+
+
+  - name: Mailhog
+    init: docker pull mailhog/mailhog
+    command: 'docker run -p 1025:1025 -p 8025:8025 --name mailhog --net="host" --rm mailhog/mailhog'
+
+  - name: Phoenix
+    init: gem install bundler &&
+          gem install rails &&
+          bundle install
+    env:
+      RAILS_ENV: development
+      CRAWLER_API_KEY: 1234
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      LANG: en_US.UTF-8
+      RACK_ENV: development
+      RAILS_ENV: development
+      VIS_ENV: development
+      RAILS_LOG_TO_STDOUT: enabled
+      RAILS_SERVE_STATIC_FILES: enabled
+      S3_ACCESS_KEY: jback
+      S3_BUCKET: logos
+      S3_CDN: https://s3.tosdr.org/logos
+      S3_ENDPOINT: https://s3.tosdr.org
+      S3_SECRET_KEY: 12345
+      S3_HOST: s3.tosdr.org
+      SENDGRID_PASSWORD: 12345
+      SENDGRID_USERNAME: apikey
+      RAILS_MAX_THREADS: 500
+      PORT: 3000
+      SECRET_KEY_BASE: 12345
+      SENTRY_DSN: https://c0d549cf9ae645cdb525e308c04d44b4@sentry.internal.jrbit.de/23
+    command: gp ports await 5432 && gp ports await 6379 && 
+             rails db:migrate &&
+             rails server
+
+
+
+  - name: pgAdmin
+    init: docker pull dpage/pgadmin4
+    command: docker run --name pgadmin --rm --net="host" -p 5050:80 -e PGADMIN_DEFAULT_EMAIL=pgadmin@tosdr.org -e PGADMIN_DEFAULT_PASSWORD=password -e PGADMIN_CONFIG_SERVER_MODE=False dpage/pgadmin4 
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - eamodio.gitlens
+    - TeamHub.teamhub
+    - felixfbecker.php-debug
+    - neilbrayfield.php-docblocker
+    - bmewburn.vscode-intelephense-client
+    - mtxr.sqltools
+    - mtxr.sqltools-driver-pg
+    - mblode.twig-language-2
+    - GitLab.gitlab-workflow
+    - DEVSENSE.composer-php-vscode
+    - caponetto.vscode-diff-viewer
+    - 42Crunch.vscode-openapi
+    - mjmlio.vscode-mjml
