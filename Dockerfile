@@ -6,6 +6,8 @@ ENV RAILS_LOG_TO_STDOUT=enabled
 ENV RACK_ENV=production
 ENV LANG=en_US.UTF-8
 
+ARG GIT_TAG=nightly
+
 EXPOSE 3000
 
 
