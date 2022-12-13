@@ -33,7 +33,8 @@ tasks:
     command: 'docker run -p 1025:1025 -p 8025:8025 --name mailhog --net="host" --rm mailhog/mailhog'
 
   - name: Phoenix
-    init: gem install bundler &&
+    init: rvm install "ruby-2.7.2" && 
+          gem install bundler &&
           gem install rails &&
           bundle install
     env:
