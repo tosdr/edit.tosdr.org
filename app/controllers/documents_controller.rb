@@ -20,7 +20,8 @@ class DocumentsController < ApplicationController
 
 
   DEV_CRAWLERS = {
-    "localhost:5000": "Local Crawler (GitPod)"
+    "localhost:5000": "Standalone (localhost:5000)"
+    "crawler:5000": "Docker-Compose (crawler:5000)"
   }
 
 
