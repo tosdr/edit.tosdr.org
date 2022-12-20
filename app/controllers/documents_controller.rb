@@ -9,13 +9,9 @@ class DocumentsController < ApplicationController
 
   PROD_CRAWLERS = {
     "eu.crawler.api.tosdr.org": "Europe",
-    "us.crawler.api.tosdr.org": "United States",
-    "arachne.crawler.api.tosdr.org": "Arachne",
-    "floppy.crawler.api.tosdr.org": "Floppy",
-    "avidreader.crawler.api.tosdr.org": "AvidReader",
-    "nosypeeper.crawler.api.tosdr.org": "NosyPeeper",
-    "atlas.crawler.api.tosdr.org": "Atlas",
-    "whale.crawler.api.tosdr.org": "Whale"
+    "us.crawler.api.tosdr.org": "United States"
+    "us-east.crawler.api.tosdr.org": "United States (East)"
+    "us-west.crawler.api.tosdr.org": "United States (West)"
   }
 
 
