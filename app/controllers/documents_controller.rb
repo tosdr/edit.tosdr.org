@@ -9,8 +9,8 @@ class DocumentsController < ApplicationController
 
   PROD_CRAWLERS = {
     "eu.crawler.api.tosdr.org": "Europe",
-    "us.crawler.api.tosdr.org": "United States"
-    "us-east.crawler.api.tosdr.org": "United States (East)"
+    "us.crawler.api.tosdr.org": "United States",
+    "us-east.crawler.api.tosdr.org": "United States (East)",
     "us-west.crawler.api.tosdr.org": "United States (West)"
   }
 
