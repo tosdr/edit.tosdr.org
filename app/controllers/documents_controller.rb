@@ -8,10 +8,8 @@ class DocumentsController < ApplicationController
   include Pundit
 
   PROD_CRAWLERS = {
-    "eu.crawler.api.tosdr.org": "Europe",
     "eu-central.crawler.api.tosdr.org": "Europe (Central)",
     "eu-west.crawler.api.tosdr.org": "Europe (West)",
-    "us.crawler.api.tosdr.org": "United States",
     "us-east.crawler.api.tosdr.org": "United States (East)",
     "us-west.crawler.api.tosdr.org": "United States (West)"
   }
