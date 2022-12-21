@@ -118,7 +118,7 @@ class DocumentsController < ApplicationController
     authorize @document
 	  crawlresult = perform_crawl
     if crawlresult["error"]
-      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
+      flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Region: "+ crawlresult["message"]["crawler"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
 	    redirect_to document_path(@document)
 	  else
 	    flash[:notice] = "The crawler has updated the document"
@@ -171,6 +171,19 @@ class DocumentsController < ApplicationController
     @tbdoc.scrape
 
   	if @tbdoc.apiresponse["error"]
+
+  		@document_comment = DocumentComment.new()
+  		@document_comment.summary = '<span class="label label-info">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + "</kbd>"
+  		@document_comment.user_id = current_user.id
+  		@document_comment.document_id = @document.id
+
+  		if @document_comment.save
+  		  puts "Comment added!"
+  		else
+  		  puts "Error adding comment!"
+  		  puts @document_comment.errors.full_messages
+  		end
+
   		return @tbdoc.apiresponse
   	end
 
@@ -188,6 +201,20 @@ class DocumentsController < ApplicationController
   		@tbdoc.apiresponse["error"] = true
   		@tbdoc.apiresponse["message"]["name"] = "The source document has not been updated. No changes made."
   		@tbdoc.apiresponse["message"]["remoteStacktrace"] = "SourceDocument"
+
+
+  		@document_comment = DocumentComment.new()
+  		@document_comment.summary = '<span class="label label-info">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + "</kbd>"
+  		@document_comment.user_id = current_user.id
+  		@document_comment.document_id = @document.id
+
+  		if @document_comment.save
+  		  puts "Comment added!"
+  		else
+  		  puts "Error adding comment!"
+  		  puts @document_comment.errors.full_messages
+  		end
+
   		return @tbdoc.apiresponse
   	else
   		@document.update(text: @tbdoc.newdata)
@@ -204,7 +231,7 @@ class DocumentsController < ApplicationController
   		# pending <-> pending-not-found
   		# approved <-> approved-not-found
   		@document_comment = DocumentComment.new()
-  		@document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd>'
+  		@document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd><br> Crawler: <kbd>' + @tbdoc.apiresponse["message"]["crawler"] + "</kbd>"
   		@document_comment.user_id = current_user.id
   		@document_comment.document_id = @document.id
 
