@@ -173,7 +173,7 @@ class DocumentsController < ApplicationController
   	if @tbdoc.apiresponse["error"]
 
   		@document_comment = DocumentComment.new()
-  		@document_comment.summary = '<span class="label label-danger">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + "</kbd>"
+  		@document_comment.summary = '<span class="label label-danger">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + '</kbd><br>Stacktrace: <kbd>'+ @tbdoc.apiresponse["message"]["remoteStacktrace"] + "</kbd>"
   		@document_comment.user_id = current_user.id
   		@document_comment.document_id = @document.id
 
@@ -204,7 +204,7 @@ class DocumentsController < ApplicationController
 
 
   		@document_comment = DocumentComment.new()
-  		@document_comment.summary = '<span class="label label-danger">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + "</kbd>"
+  		@document_comment.summary = '<span class="label label-danger">Attempted to Crawl Document</span><br>Error Message: <kbd>'+ @tbdoc.apiresponse["message"]["name"] +'</kbd><br>Crawler: <kbd>'+ @tbdoc.apiresponse["message"]["crawler"] + '</kbd><br>Stacktrace: <kbd>'+ @tbdoc.apiresponse["message"]["remoteStacktrace"] + "</kbd>"
   		@document_comment.user_id = current_user.id
   		@document_comment.document_id = @document.id
 
