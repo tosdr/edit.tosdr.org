@@ -52,13 +52,21 @@ class DocumentsController < ApplicationController
     @document.user = current_user
 
     if @document.save
-      perform_crawl
-      if @document.text.blank?
-        flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. Please check that the XPath and URL are accurate."
-        redirect_to document_path(@document)
-      else
-        redirect_to document_path(@document)
-      end
+      crawlresult = perform_crawl
+      
+      if crawlresult != nil
+    		if crawlresult["error"]
+    			flash[:alert] = "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: "+ crawlresult["message"]["name"].to_s + "<br>Stacktrace: "+ CGI.escapeHTML(crawlresult["message"]["remoteStacktrace"].to_s)
+    			redirect_to document_path(@document)
+    		else
+    			flash[:notice] = "The crawler has updated the document"
+    			redirect_to document_path(@document)
+    		end
+  	  else
+  		   redirect_to document_path(@document)
+  	  end
+
+
     else
       render 'new'
     end
