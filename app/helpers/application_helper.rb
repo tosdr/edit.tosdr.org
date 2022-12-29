@@ -93,7 +93,7 @@ module ApplicationHelper
         end
         user = User.find_by_id(user_id)
         if user
-          return user.username + '(' + user.id.to_s +')' || 'user ' + user.id.to_s
+          return user.username + '(' + user.id.to_s + ')' || 'user ' + user.id.to_s
         end
       end
       return user_str
