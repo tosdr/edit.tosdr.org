@@ -8,6 +8,7 @@ class DocumentsController < ApplicationController
   include Pundit
 
   PROD_CRAWLERS = {
+    "https://api.tosdr.org/crawl/v1": "Random",
     "https://api.tosdr.org/crawl/v1/eu": "Europe (Recommended)",
     "https://api.tosdr.org/crawl/v1/us": "United States (Recommended)",
     "https://api.tosdr.org/crawl/v1/eu-west": "Europe (West)",
