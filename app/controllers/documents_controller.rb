@@ -8,16 +8,16 @@ class DocumentsController < ApplicationController
   include Pundit
 
   PROD_CRAWLERS = {
-    "eu-central.crawler.api.tosdr.org": "Europe (Central)",
-    "eu-west.crawler.api.tosdr.org": "Europe (West)",
-    "us-east.crawler.api.tosdr.org": "United States (East)",
-    "us-west.crawler.api.tosdr.org": "United States (West)"
+    "https://api.tosdr.org/crawl/v1/eu-central": "Europe (Central)",
+    "https://api.tosdr.org/crawl/v1/eu-west": "Europe (West)",
+    "https://api.tosdr.org/crawl/v1/us-east": "United States (East)",
+    "https://api.tosdr.org/crawl/v1/us-west": "United States (West)"
   }
 
 
   DEV_CRAWLERS = {
-    "localhost:5000": "Standalone (localhost:5000)",
-    "crawler:5000": "Docker-Compose (crawler:5000)"
+    "http://localhost:5000": "Standalone (localhost:5000)",
+    "http://crawler:5000": "Docker-Compose (crawler:5000)"
   }
 
 
