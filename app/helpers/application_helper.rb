@@ -105,7 +105,7 @@ module ApplicationHelper
           return 'you'
         end
         user = User.find_by_id(user_id)
-        if user
+        if user and user.username and user.id
           return raw user.username + ' <sup>(' + user.id.to_s + ')</sup>' || 'user ' + user.id.to_s
         end
       end

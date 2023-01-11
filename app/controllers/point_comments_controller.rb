@@ -17,6 +17,10 @@ class PointCommentsController < ApplicationController
     @point_comment.point_id = @point.id
 
     if @point_comment.save
+
+      if(current_user.admin or current_user.curator)
+        report_spam(@point_comment.summary, "ham")
+      end
       flash[:notice] = "Comment added!"
     else
       flash[:notice] = "Error adding comment!"

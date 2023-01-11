@@ -1,6 +1,7 @@
 class ServiceCommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_service, only: [:new, :create]
+  include ApplicationHelper
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -17,6 +18,9 @@ class ServiceCommentsController < ApplicationController
     @service_comment.service_id = @service.id
 
     if @service_comment.save
+      if(current_user.admin or current_user.curator)
+        report_spam(@service_comment.summary, "ham")
+      end
       flash[:notice] = "Comment added!"
     else
       flash[:notice] = "Error adding comment!"

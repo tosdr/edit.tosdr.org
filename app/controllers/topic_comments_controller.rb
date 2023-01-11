@@ -15,6 +15,11 @@ class TopicCommentsController < ApplicationController
     @topic_comment.topic_id = @topic.id
 
     if @topic_comment.save
+
+      if(current_user.admin or current_user.curator)
+        report_spam(@topic_comment.summary, "ham")
+      end
+
       flash[:notice] = "Comment added!"
     else
       flash[:notice] = "Error adding comment!"

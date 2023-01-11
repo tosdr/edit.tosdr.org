@@ -17,6 +17,10 @@ class CaseCommentsController < ApplicationController
     @case_comment.case_id = @case.id
 
     if @case_comment.save
+
+      if(current_user.admin or current_user.curator)
+        report_spam(@case_comment.summary, "ham")
+      end
       flash[:notice] = "Comment added!"
     else
       flash[:notice] = "Error adding comment!"

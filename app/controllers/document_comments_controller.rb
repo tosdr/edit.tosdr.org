@@ -17,6 +17,10 @@ class DocumentCommentsController < ApplicationController
     @document_comment.document_id = @document.id
 
     if @document_comment.save
+
+      if(current_user.admin or current_user.curator)
+        report_spam(@document_comment.summary, "ham")
+      end
       flash[:notice] = "Comment added!"
     else
       flash[:notice] = "Error adding comment!"
