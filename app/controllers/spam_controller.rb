@@ -1,5 +1,6 @@
 class SpamController < ApplicationController
   include Pundit
+  include ApplicationHelper
 
   before_action :authenticate_user!
 
@@ -11,7 +12,9 @@ class SpamController < ApplicationController
     flagger_is_permitted = current_user && (current_user.admin? || current_user.curator?) ? true : false
     spam = Spam.new(spammable_type: params[:spammable_type], spammable_id: params[:spammable_id].to_i, flagged_by_admin_or_curator: flagger_is_permitted)
     spam.save
-    #report_spam()
+
+    puts "Flagged as Spam"
+    report_spam(spam.spammable_type.constantize.find(spam.spammable_id).summary, "spam")
     redirect_to(request.referrer || root_path)
   end
 
