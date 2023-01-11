@@ -39,9 +39,13 @@ module ApplicationHelper
   def rank_badge (user)
   	bot_icon = fa_icon "robot", text: " Bot"
   	admin_icon = fa_icon "tools", text: " Staff"
+  	banned_icon = fa_icon "ban", text: " Suspended"
   	curator_icon = fa_icon "hands-helping", text: " Curator"
 
     if !user.nil?
+    	if(user.deactivated?)
+    		return raw link_to(banned_icon, "https://to.tosdr.org/banned", target: "_blank", title: "This user has been suspended", class: "label label-danger");
+    	end
     	if(user.bot?)
     		return raw link_to(bot_icon, "https://to.tosdr.org/bot", target: "_blank", title: "This user is an official ToS;DR Bot", class: "label label-warning");
     	end
