@@ -14,8 +14,8 @@ class SpamController < ApplicationController
 
     spam_owner = User.find(params[:spammable_type].constantize.find(params[:spammable_id]).user_id)
   
-    if spam_owner.admin or spam_owner.curator
-      flash[:alert] = "You are not authorized to perform this action on admins or curators."
+    if spam_owner.admin or spam_owner.curator or spam_owner.bot
+      flash[:alert] = "You are not authorized to perform this action on admins, curators or bots."
       redirect_to(request.referrer || root_path)
       return
     end
