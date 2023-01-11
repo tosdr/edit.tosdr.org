@@ -44,6 +44,9 @@ tasks:
       RAILS_ENV: development
       CRAWLER_API_KEY: not_needed
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      DATABASE_HOST: localhost
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
       LANG: en_US.UTF-8
       RACK_ENV: development
       VIS_ENV: development

@@ -1,3 +1,5 @@
+require 'httparty'
+
 module ApplicationHelper
   def annotate_service_path (service)
     service_path(service) + '/annotate'
@@ -21,6 +23,17 @@ module ApplicationHelper
 
   def topic_comments_path (topic)
     topic_topic_comments_path(topic)
+  end
+
+  def report_spam (text, type)
+    response = HTTParty.post('https://api.tosdr.org/spam/v1/', :body => {
+      :text => text,
+      :type => type
+    },
+    :headers => {
+      :apikey => ENV['TOSDR_API_KEY']
+    });
+    puts response
   end
 
   def rank_badge (user)
