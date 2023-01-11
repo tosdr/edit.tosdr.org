@@ -91,6 +91,8 @@ class PointsController < ApplicationController
 
     # process a post of the review form
     if @point.update(status: point_params['status'])
+
+      report_spam(point_params['point_change'], "ham")
 	
       create_comment(status_badge(point_params['status']) + raw('<br>') + point_params['point_change'])
 
