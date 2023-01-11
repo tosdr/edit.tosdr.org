@@ -211,8 +211,10 @@ class DocumentsController < ApplicationController
 
   	if oldCRC == newCRC
   		@tbdoc.apiresponse["error"] = true
-  		@tbdoc.apiresponse["message"]["name"] = "The source document has not been updated. No changes made."
-  		@tbdoc.apiresponse["message"]["remoteStacktrace"] = "SourceDocument"
+      @tbdoc.apiresponse["message"] = {
+        "name" => "The source document has not been updated. No changes made.",
+        "remoteStacktrace" => "SourceDocument"
+      }
 
 
   		@document_comment = DocumentComment.new()
