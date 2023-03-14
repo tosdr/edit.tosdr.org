@@ -18,3 +18,5 @@ if [ -v INIT_SETUP ]; then
 fi
 
 bundle exec puma -C config/puma.rb
+
+exec "$@"
