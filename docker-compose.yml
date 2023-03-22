@@ -6,10 +6,12 @@ services:
     build:
       context: ./
     ports:
-      - 3000:3000
+      - 9090:3000
     volumes:
-      - ./app:/app/edit.tosdr.org/app/
-      - ./spec:/app/edit.tosdr.org/spec/
+      - ./app:/usr/src/edit.tosdr.org/app/
+      - ./db:/usr/src/edit.tosdr.org/db/
+      - ./config:/usr/src/edit.tosdr.org/config/
+      - ./spec:/usr/src/edit.tosdr.org/spec/
     networks:
       - dbs
     environment:
@@ -17,6 +19,7 @@ services:
       - DATABASE_USER=root
       - DATABASE_PASSWORD=dbrootpassword
       - DATABASE_NAME=postgres
+      - H_API_KEY=abcd1234
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer
