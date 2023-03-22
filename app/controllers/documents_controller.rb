@@ -25,6 +25,7 @@ class DocumentsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_document, only: %i[show edit update crawl restore_points]
+  # after_save :run_crawler, only: %i[create update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -129,11 +130,10 @@ class DocumentsController < ApplicationController
     if crawlresult['error']
       flash[:alert] =
         "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Region: ' + crawlresult['message']['crawler'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
-      redirect_to document_path(@document)
     else
       flash[:notice] = 'The crawler has updated the document'
-      redirect_to document_path(@document)
     end
+    redirect_to document_path(@document)
   end
 
   def restore_points
@@ -167,6 +167,23 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath, :crawler_server)
+  end
+
+  def run_crawler
+    crawlresult = perform_crawl
+
+    if !crawlresult.nil?
+      if crawlresult['error']
+        flash[:alert] =
+          "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
+        redirect_to document_path(@document)
+      else
+        flash[:notice] = 'The crawler has updated the document'
+        redirect_to document_path(@document)
+      end
+    else
+      redirect_to document_path(@document)
+    end
   end
 
   # to-do: refactor out comment assembly
