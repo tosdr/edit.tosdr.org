@@ -7,8 +7,8 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
-gem "fog-aws"
-gem "carrierwave"
+gem 'fog-aws'
+gem 'carrierwave'
 
 gem 'babel-transpiler'
 
@@ -17,7 +17,7 @@ gem 'devise'
 gem 'figaro'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
-gem "puma", ">= 3.12.4"
+gem 'puma', '>= 3.12.4'
 gem 'rails', '~> 5.2.5'
 gem 'redis'
 
@@ -25,7 +25,7 @@ gem 'whenever'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
-gem "font_awesome5_rails"
+gem 'font_awesome5_rails'
 gem 'formtastic'
 gem 'jquery-rails'
 gem 'vuejs-rails', '~> 2.3.2'
@@ -67,7 +67,20 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof'
+  gem 'database_cleaner-active_record'
+  gem 'factory_bot_rails'
+  gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
+  gem 'pundit-matchers', '~> 1.6.0'
+  gem 'rspec-rails', '~> 4.0.2'
+  gem 'rubocop-rspec', require: false
+  gem 'simplecov', require: false
+  gem 'webmock'
+  gem 'capybara'
 end
 
-gem "sentry-ruby"
-gem "sentry-rails"
+gem 'sentry-ruby'
+gem 'sentry-rails'
+gem 'grape', '~> 1.7'
+gem 'grape-entity'
+gem 'grape_on_rails_routes'
+gem 'rack-cors'
