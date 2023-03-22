@@ -10,14 +10,12 @@ Rails.application.configure do
 
   # Settings specified here will take precedence over those in config/application.rb.
   web_host = ENV['WEB_HOST'] || 'localhost'
-  web_port = ENV['WEB_PORT'] || '3000'
+  web_port = ENV['WEB_PORT'] || '9090'
 
   config.action_controller.default_url_options = {
     host: web_host,
     port: web_port
   }
-
-  # routes.default_url_options[:host] = 'localhost:3000'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
