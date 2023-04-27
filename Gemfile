@@ -16,7 +16,7 @@ gem 'activeadmin'
 gem 'devise'
 gem 'figaro'
 gem 'jbuilder', '~> 2.0'
-gem 'pg', '~> 0.21'
+gem 'pg', '~> 1.4'
 gem "puma", ">= 3.12.4"
 gem 'rails', '~> 5.2.5'
 gem 'redis'
@@ -45,7 +45,7 @@ gem 'httparty'
 # for api pagination
 gem 'kaminari'
 
-gem 'mini_racer'
+gem 'mini_racer' if RUBY_PLATFORM !~ "mingw32" # Too many problems, is it even needed?
 
 group :development do
   gem 'letter_opener'
@@ -66,8 +66,13 @@ group :development, :test do
   gem 'rack-mini-profiler'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'stackprof'
+  gem 'stackprof' if RUBY_PLATFORM !~ "mingw32" # Not supported on Microsoft Windows
 end
 
 gem "sentry-ruby"
 gem "sentry-rails"
+
+gem 'sys-proctable'
+gem 'fast_stack'
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+gem 'tzinfo-data'
