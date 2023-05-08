@@ -21,7 +21,7 @@ Rails.application.configure do
    web_host = ENV['WEB_HOST'] || 'edit.tosdr.org'
    routes.default_url_options[:host] = web_host
    if ENV['WEB_PORT']
-     routes.default_url_options[:port] = 3000
+     routes.default_url_options[:port] = 9090
    end
 
   # routes.default_url_options[:host] = 'edit.tosdr.org'
