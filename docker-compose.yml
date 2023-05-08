@@ -9,6 +9,7 @@ services:
       - 9090:3000
     volumes:
       - ./app:/usr/src/edit.tosdr.org/app/
+      - ./lib:/usr/src/edit.tosdr.org/lib/
       - ./db:/usr/src/edit.tosdr.org/db/
       - ./config:/usr/src/edit.tosdr.org/config/
       - ./spec:/usr/src/edit.tosdr.org/spec/
