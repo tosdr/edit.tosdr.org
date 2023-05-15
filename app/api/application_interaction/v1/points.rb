@@ -19,8 +19,12 @@ module ApplicationInteraction
 
         def authenticate!
           annotation_id = params[:annotation_id] || ''
+          document_id = params[:document_id] || ''
+          service_id = params[:service_id] || ''
+          case_title = params[:case_title] || ''
+          required_params_present = case_title.present? && annotation_id.present? && document_id.present? && service_id.present?
           current_user_authenticated = current_user && (current_user.admin || current_user.curator)
-          error!('404 Not found', 404) unless annotation_id.present? && current_user_authenticated
+          error!('404 Not found', 404) unless required_params_present && current_user_authenticated
         end
       end
 
