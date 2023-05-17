@@ -69,7 +69,7 @@ group :development, :test do
   gem 'stackprof'
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
-  gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
+  gem 'faker'
   gem 'pundit-matchers', '~> 1.6.0'
   gem 'rspec-rails', '~> 4.0.2'
   gem 'rubocop-rspec', require: false
