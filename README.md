@@ -6,6 +6,10 @@ Phoenix is a web app to submit points to the Terms of Service; Didn't Read proje
 
 The app was developed with Ruby on Rails. The database uses PostgreSQL. You must have those if you want to run the app.
 
+If you want to quickly spin-up a development ready instance of Phoenix you can
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/tosdr/edit.tosdr.org])
+
 Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information. If anything is missing, please let us know.
 
 ## Database
