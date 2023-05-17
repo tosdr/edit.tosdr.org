@@ -20,7 +20,7 @@ services:
       - DATABASE_USER=root
       - DATABASE_PASSWORD=dbrootpassword
       - DATABASE_NAME=postgres
-      - H_API_KEY=abcd1234
+      - H_ORIGIN=localhost:500
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer
