@@ -41,5 +41,10 @@ module Phoenix
     config.action_view.embed_authenticity_token_in_remote_forms = true
     config.action_mailer.raise_delivery_errors = false
     config.middleware.use Rack::Attack
+
+    # Logging config for Docker
+    logger           = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 end

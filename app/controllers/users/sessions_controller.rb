@@ -3,10 +3,16 @@
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
-  # GET /resource/sign_in
-  def new
-    super
+  respond_to :html, :json
+
+  def verified_request?
+    request.format.json? or super()
   end
+
+  # GET /resource/sign_in
+  # def new
+  #   super
+  # end
 
   # POST /resource/sign_in
   def create
@@ -18,6 +24,13 @@ class Users::SessionsController < Devise::SessionsController
   # def destroy
   #   super
   # end
+
+  def after_sign_out_path_for(resource_or_scope)
+    user = User.find_by_h_key(cookies[:h_key])
+    user&.update!(h_key: nil)
+    cookies.delete(:h_key)
+    root_path
+  end
 
   # protected
 

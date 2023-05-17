@@ -26,9 +26,7 @@ class Document < ApplicationRecord
   end
 
   def snippets
-    if (!self.text)
-      self.text = ''
-    end
+    self.text = '' unless self.text
 
     quotes = []
     snippets = []
