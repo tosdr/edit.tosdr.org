@@ -42,7 +42,7 @@ class PointPolicy < ApplicationPolicy
   private
 
   def is_owner?
-    record.user.nil? ? (user.curator?) : (user == record.user)
+    record.user.nil? ? user.curator? : (user == record.user)
   end
 
   def is_peer_curator?
