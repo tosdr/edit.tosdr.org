@@ -23,8 +23,7 @@ module ApplicationInteraction
           service_id = params[:service_id] || ''
           case_title = params[:case_title] || ''
           required_params_present = case_title.present? && annotation_id.present? && document_id.present? && service_id.present?
-          current_user_authenticated = current_user && (current_user.admin || current_user.curator)
-          error!('404 Not found', 404) unless required_params_present && current_user_authenticated
+          error!('404 Not found', 404) unless required_params_present && current_user
         end
       end
 
@@ -63,12 +62,15 @@ module ApplicationInteraction
           end
 
           authenticate!
-          service = Service.find(params[:service_id]&.to_i)
-          document = Document.find(params[:document_id]&.to_i)
           case_title = params[:case_title]&.strip
           case_ref = Case.find_by_title(case_title)
           point = Point.find_by_annotation_ref(params[:annotation_id])
-          if point.update!(service: service, case: case_ref, user: point.user, analysis: point.analysis, title: case_ref.title, status: point.status, annotation_ref: point.annotation_ref, document: document)
+
+          if (point.user != current_user) && !current_user.curator?
+            error!('404 Not found', 404)
+          end
+
+          if point.update!(case: case_ref, title: case_ref.title)
             present point, with: ::ApplicationInteraction::Entities::Point
           else
             error!('404 Not found', 404)
