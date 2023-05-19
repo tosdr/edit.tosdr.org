@@ -16,7 +16,8 @@ gem 'activeadmin'
 gem 'devise'
 gem 'figaro'
 gem 'jbuilder', '~> 2.0'
-gem 'pg', '~> 1.4'
+gem 'pg', '~> 0.21' if RUBY_PLATFORM !~ /mingw32/
+gem 'pg', '~> 1.4' if RUBY_PLATFORM =~ /mingw32/
 gem "puma", ">= 3.12.4"
 gem 'rails', '~> 5.2.5'
 gem 'redis'
@@ -45,7 +46,7 @@ gem 'httparty'
 # for api pagination
 gem 'kaminari'
 
-gem 'mini_racer' if RUBY_PLATFORM !~ "mingw32" # Too many problems, is it even needed?
+gem 'mini_racer' if RUBY_PLATFORM !~ /mingw32/ # Too many problems, is it even needed?
 
 group :development do
   gem 'letter_opener'
@@ -66,13 +67,19 @@ group :development, :test do
   gem 'rack-mini-profiler'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'stackprof' if RUBY_PLATFORM !~ "mingw32" # Not supported on Microsoft Windows
+  gem 'stackprof' if RUBY_PLATFORM !~ /mingw32/ # Not supported on Microsoft Windows
 end
 
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'grape', '~> 1.7'
+gem 'grape-entity'
+gem 'grape_on_rails_routes'
+gem 'rack-cors'
+gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 
-gem 'sys-proctable'
-gem 'fast_stack'
+# For Windows only
+gem 'sys-proctable' if RUBY_PLATFORM =~ /mingw32/
+gem 'fast_stack' if RUBY_PLATFORM =~ /mingw32/
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
-gem 'tzinfo-data'
+gem 'tzinfo-data' if RUBY_PLATFORM =~ /mingw32/
