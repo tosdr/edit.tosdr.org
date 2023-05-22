@@ -12,7 +12,6 @@ module ApplicationInteraction
           # authenticate using the h_key cookie and the client-side authenticated user's username
           if request.headers['H-Key']
             user = User.find_by_h_key(request.headers['H-Key'])
-            byebug
             return user unless !user || user.username != request.headers['User']
           end
         end
