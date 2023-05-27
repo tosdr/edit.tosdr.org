@@ -72,11 +72,6 @@ end
 
 gem "sentry-ruby"
 gem "sentry-rails"
-gem 'grape', '~> 1.7'
-gem 'grape-entity'
-gem 'grape_on_rails_routes'
-gem 'rack-cors'
-gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 
 # For Windows only
 gem 'sys-proctable' if RUBY_PLATFORM =~ /mingw32/
