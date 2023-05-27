@@ -5,6 +5,18 @@ Rails.application.configure do
     Bullet.raise         = true # raise an error if n+1 query occurs
   end
   # Settings specified here will take precedence over those in config/application.rb.
+  web_host = ENV['WEB_HOST'] || 'localhost'
+  web_port = ENV['WEB_PORT'] || '9090'
+
+  config.action_controller.default_url_options = {
+    host: web_host,
+    port: web_port
+  }
+
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.default_url_options = { host: 'localhost', port: 9090 }
+
+  config.log_level = :info
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
@@ -15,7 +27,7 @@ Rails.application.configure do
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
-  config.eager_load = false
+  config.eager_load = true
 
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true

@@ -4,13 +4,20 @@ Rails.application.configure do
     Bullet.alert         = true
     Bullet.bullet_logger = true
     Bullet.console       = true
-  # Bullet.growl         = true
     Bullet.rails_logger  = true
     Bullet.add_footer    = true
   end
-  # Settings specified here will take precedence over those in config/application.rb.
 
-  routes.default_url_options[:host] = 'localhost:3000'
+  # Settings specified here will take precedence over those in config/application.rb.
+  web_host = ENV['WEB_HOST'] || 'localhost'
+  web_port = ENV['WEB_PORT'] || '9090'
+
+  config.action_controller.default_url_options = {
+    host: web_host,
+    port: web_port
+  }
+
+  config.logger = ActiveSupport::Logger.new(STDOUT)
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

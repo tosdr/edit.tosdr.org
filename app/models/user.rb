@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'securerandom'
 
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -51,7 +52,7 @@ class User < ApplicationRecord
     end
   end
 
-  # def active_for_authentication?
-  #   super && !deactivated
-  # end
+  def after_database_authentication
+    self.update!(h_key: SecureRandom.hex(13)) unless self.h_key
+  end
 end

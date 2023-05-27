@@ -129,6 +129,7 @@ class DocumentsController < ApplicationController
     if crawlresult['error']
       flash[:alert] =
         "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Region: ' + crawlresult['message']['crawler'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
+
       redirect_to document_path(@document)
     else
       flash[:notice] = 'The crawler has updated the document'
@@ -210,7 +211,8 @@ class DocumentsController < ApplicationController
       # switched between:
       # pending <-> pending-not-found
       # approved <-> approved-not-found
-      @document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + old_length.to_s + ' CRC ' + old_crc.to_s + '</kbd><br><b>New length:</b> <kbd>' + new_length.to_s + ' CRC ' + new_crc.to_s + '</kbd><br> Crawler: <kbd>' + @tbdoc.apiresponse['message']['crawler'] + '</kbd>'
+      crawler = @tbdoc.apiresponse['message']['crawler'] || ''
+      @document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + old_length.to_s + ' CRC ' + old_crc.to_s + '</kbd><br><b>New length:</b> <kbd>' + new_length.to_s + ' CRC ' + new_crc.to_s + '</kbd><br> Crawler: <kbd>' + crawler + '</kbd>'
       @document_comment.user_id = current_user.id
       @document_comment.document_id = @document.id
     end

@@ -17,7 +17,14 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
-  routes.default_url_options[:host] = 'edit.tosdr.org'
+   # Settings specified here will take precedence over those in config/application.rb.
+   web_host = ENV['WEB_HOST'] || 'edit.tosdr.org'
+   routes.default_url_options[:host] = web_host
+   if ENV['WEB_PORT']
+     routes.default_url_options[:port] = 9090
+   end
+
+  # routes.default_url_options[:host] = 'edit.tosdr.org'
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -67,7 +74,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store

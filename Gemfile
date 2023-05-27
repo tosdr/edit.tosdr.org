@@ -7,8 +7,8 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
-gem "fog-aws"
-gem "carrierwave"
+gem 'fog-aws'
+gem 'carrierwave'
 
 gem 'babel-transpiler'
 
@@ -26,7 +26,7 @@ gem 'whenever'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
-gem "font_awesome5_rails"
+gem 'font_awesome5_rails'
 gem 'formtastic'
 gem 'jquery-rails'
 gem 'vuejs-rails', '~> 2.3.2'
@@ -68,10 +68,24 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'stackprof' if RUBY_PLATFORM !~ /mingw32/ # Not supported on Microsoft Windows
+  gem 'database_cleaner-active_record'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'pundit-matchers', '~> 1.6.0'
+  gem 'rspec-rails', '~> 4.0.2'
+  gem 'rubocop-rspec', require: false
+  gem 'simplecov', require: false
+  gem 'webmock'
+  gem 'capybara'
 end
 
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'grape', '~> 1.7'
+gem 'grape-entity'
+gem 'grape_on_rails_routes'
+gem 'rack-cors'
+gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 
 # For Windows only
 gem 'sys-proctable' if RUBY_PLATFORM =~ /mingw32/

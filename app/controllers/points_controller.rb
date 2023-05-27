@@ -53,8 +53,11 @@ class PointsController < ApplicationController
 
   def show
     authorize @point
-
-    @versions = @point.versions.includes(:item).reverse()
+    # to-do : error handling
+    annotation = Point.retrieve_annotation(@point.annotation_ref)
+    annotation_json = JSON.parse(annotation['target_selectors'])
+    @point_text = annotation_json[2]['exact']
+    @versions = @point.versions.includes(:item).reverse
   end
 
   def update
@@ -91,11 +94,8 @@ class PointsController < ApplicationController
 
     # process a post of the review form
     if @point.update(status: point_params['status'])
-
       report_spam(point_params['point_change'], "ham")
-	
       create_comment(status_badge(point_params['status']) + raw('<br>') + point_params['point_change'])
-
       redirect_to point_path(@point)
     else
       render :edit
