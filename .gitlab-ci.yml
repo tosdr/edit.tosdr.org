@@ -28,7 +28,7 @@ migrate-and-test:
   stage: test
   variables:
     DATABASE_URL: postgres://phoenix:phoenix@postgres:5432/phoenix
-    H_ORIGIN: localhost:5000
+    H_ORIGIN: http://localhost:5000
   image:
     name: ruby:2.7.2
   script:
