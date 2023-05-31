@@ -54,9 +54,12 @@ class PointsController < ApplicationController
   def show
     authorize @point
     # to-do : error handling
-    annotation = Point.retrieve_annotation(@point.annotation_ref)
-    annotation_json = JSON.parse(annotation['target_selectors'])
-    @point_text = annotation_json[2]['exact']
+    @point_text = @point.quoteText
+    if @point.annotation_ref
+      annotation = Point.retrieve_annotation(@point.annotation_ref)
+      annotation_json = JSON.parse(annotation['target_selectors'])
+      @point_text = annotation_json[2]['exact']
+    end
     @versions = @point.versions.includes(:item).reverse
   end
 

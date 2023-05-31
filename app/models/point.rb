@@ -55,8 +55,7 @@ class Point < ApplicationRecord
     b64_decoded = Base64.urlsafe_decode64(utf_encoded)
     # unpack decoded with uuid format
     # https://apidock.com/ruby/String/unpack
-    hex_str = b64_decoded.unpack('H8H4H4H4H12').join('-')
-    hex_str
+    b64_decoded.unpack('H8H4H4H4H12').join('-')
     # TO-DO: check for flake id, error handling, tests
   end
 end
