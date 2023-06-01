@@ -12,12 +12,11 @@ class PointCommentsController < ApplicationController
     puts point_comment_params
     puts @point.id
     @point_comment = PointComment.new(point_comment_params)
-	@point_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@point_comment.summary)).to_html
+	  @point_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@point_comment.summary)).to_html
     @point_comment.user_id = current_user.id
     @point_comment.point_id = @point.id
 
     if @point_comment.save
-
       if(current_user.admin or current_user.curator)
         report_spam(@point_comment.summary, "ham")
       end

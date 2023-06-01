@@ -37,7 +37,7 @@ class Document < ApplicationRecord
         next
       end
 
-      if p.quoteText.nil?
+      if p.quoteText.nil? || (p.quoteStart.nil? && p.quoteEnd.nil?)
         next
       end
 
