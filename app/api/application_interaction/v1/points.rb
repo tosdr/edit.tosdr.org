@@ -46,9 +46,8 @@ module ApplicationInteraction
           verify_attrs!
           service = Service.find(params[:service_id]&.to_i)
           document = Document.find(params[:document_id]&.to_i)
-          case_title = params[:case_title]&.strip
+          case_title = params[:case_title]
           case_ref = Case.find_by_title(case_title)
-
 
           point = Point.new(service: service, case: case_ref, user: current_user, analysis: 'Generated through the annotate view', title: case_ref.title, status: 'pending', annotation_ref: params[:annotation_id], document: document)
 
