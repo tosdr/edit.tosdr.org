@@ -26,7 +26,7 @@ namespace :service do
     services = Service.all
 	  puts "Getting unreviewed services"
     services.where('is_comprehensively_reviewed = false').each do |service|
-		  approved_points = service.points.where("status = 'approved'");
+		  approved_points = service.approved_points
 		  if approved_points.length >= 20 		
         puts "Found #{service.name} - #{service.id}"
         service.is_comprehensively_reviewed = true
