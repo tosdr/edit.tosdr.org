@@ -62,49 +62,52 @@ class Service < ApplicationRecord
     end
   end
 
+  def approved_points
+    self.points.select { |p| p.status == 'approved' && !p.case.nil? }
+  end
+
   private
 
   def strip_input_fields
-    self.attributes.each do |key, value|
-      self[key] = value.strip if value.respond_to?("strip")
+    attributes.each do |key, value|
+      self[key] = value.strip if value.respond_to?('strip')
     end
   end
 
   def perform_calculation
-    points = self.points
-    classification_counts = service_point_classifications_count(points)
-    balance = calculate_balance(classification_counts)
-    balance
+    counts = determine_counts
+    balance = determine_balance(counts)
+    calculate_grade(counts, balance)
   end
 
-  def service_point_classifications_count(points)
-    approved_points = points.select { |p| p.status == 'approved' && !p.case.nil? }
+  def determine_counts
     total_ratings = approved_points.map { |p| p.case.classification }
     counts = Hash.new 0
     total_ratings.each { |rating| counts[rating] += 1 }
     counts
   end
 
-  def calculate_balance(counts)
+  def determine_balance(counts)
     num_bad = counts['bad']
     num_blocker = counts['blocker']
     num_good = counts['good']
 
-    balance = num_good - num_bad - 3 * num_blocker
-    balance
+    (num_good * 3) - num_bad - (num_blocker * 3)
+  end
 
-    if (num_blocker + num_bad + num_good == 0)
-      return "N/A"
-    elsif (balance < -10)
-      return "E"
-    elsif (num_blocker > 0)
-      return "D"
-    elsif (balance < -4)
-      return "C"
-    elsif (num_bad > 0)
-      return "B"
+  def calculate_grade(counts, balance)
+    if (counts['blocker'] + counts['bad'] + counts['good']).zero?
+      'N/A'
+    elsif balance < -13 || counts['blocker'] > counts['good']
+      'E'
+    elsif counts['blocker'] >= 3
+      'D'
+    elsif balance < -4 || (counts['bad'] >= counts['good'])
+      'C'
+    elsif counts['bad'].positive? && (counts['bad'] < counts['good'])
+      'B'
     else
-      return "A"
+      'A'
     end
   end
 end
