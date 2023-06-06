@@ -207,7 +207,7 @@ class DocumentsController < ApplicationController
       # to tosdr.org, it will run the check_quotes script from
       # https://github.com/tosdr/tosback-crawler/blob/225a74b/src/eto-admin.js#L121-L123
       # So that if text has moved without changing, points are updated to the corrected
-      # quoteStart, quoteEnd, and quoteText values where possible, and/or their status is
+      # quote_start, quote_end, and quote_text values where possible, and/or their status is
       # switched between:
       # pending <-> pending-not-found
       # approved <-> approved-not-found

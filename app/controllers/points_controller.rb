@@ -54,7 +54,7 @@ class PointsController < ApplicationController
   def show
     authorize @point
     # to-do : error handling
-    @point_text = @point.quoteText
+    @point_text = @point.quote_text
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
       annotation_json = JSON.parse(annotation['target_selectors'])
@@ -144,7 +144,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
   end
 
   def check_status

@@ -14,8 +14,8 @@ puts "Exporting points..."
 Point.all.each do |point|
   # puts point.to_json
   # puts point.service.to_json
-  if (point.oldId.nil?) then 
-    point['oldId'] = point.id.to_s
+  if (point.old_id.nil?) then 
+    point['old_id'] = point.id.to_s
   end
   # puts point.to_json
   filename = point.id.to_s + '.json'
@@ -31,9 +31,9 @@ Point.all.each do |point|
   data['title'] = point.title
   data['quoteDoc'] = point.document.name if point.document
   # data['quoteRev'] = "latest"
-  data['quoteStart'] = point.quoteStart if point.quoteStart
-  data['quoteEnd'] = point.quoteEnd if point.quoteEnd
-  data['quoteText'] = point.quoteText if point.quoteText && point.quoteText.length > 0
+  data['quoteStart'] = point.quote_start if point.quote_start
+  data['quoteEnd'] = point.quote_end if point.quote_end
+  data['quoteText'] = point.quote_text if point.quote_text && point.quote_text.length > 0
   data['tosdr']['tldr'] = point.analysis
   if (!point.case_id.nil? && point.case.title != 'none' && point.case.title.length > 0) # if case is nil then we don't export the point status
     if (point.status == 'approved')
@@ -58,21 +58,21 @@ Point.all.each do |point|
     data['services'] = [ serviceSlug ]
   end
 
-  if (mapping['toId'][ point.oldId ])
+  if (mapping['toId'][ point.old_id ])
     puts '------------'
-    puts (point.oldId )
-    puts mapping['toId'][ point.oldId ]
+    puts (point.old_id )
+    puts mapping['toId'][ point.old_id ]
     puts point.id.to_s
   end
-  mapping['toId'][point.oldId] = point.id.to_s
+  mapping['toId'][point.old_id] = point.id.to_s
 
   if (mapping['toSlug'][point.id.to_s])
     puts point.id.to_s
     puts mapping['toSlug'][point.id.to_s]
-    puts point.oldId
+    puts point.old_id
     panic()
   end
-  mapping['toSlug'][point.id.to_s] = point.oldId
+  mapping['toSlug'][point.id.to_s] = point.old_id
 
   # puts "Writing " + filepath_points + filename
   File.write(filepath_points + filename, JSON.pretty_unparse(data))

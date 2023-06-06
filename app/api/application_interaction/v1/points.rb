@@ -54,8 +54,7 @@ module ApplicationInteraction
 
           annotation = Point.retrieve_annotation(point.annotation_ref)
           annotation_json = JSON.parse(annotation['target_selectors'])
-          point.quoteText = annotation_json[2]['exact']
-          point.source = document.url
+          point.quote_text = annotation_json[2]['exact']
 
           if point.save
             present point, with: ::ApplicationInteraction::Entities::Point

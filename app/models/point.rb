@@ -21,10 +21,10 @@ class Point < ApplicationRecord
   end
 
   def restore
-    quote_start = document.text.index(quoteText)
-    quote_end = quote_start + quoteText.length
-    self.quoteStart = quote_start
-    self.quoteEnd = quote_end
+    quote_start = document.text.index(quote_text)
+    quote_end = quote_start + quote_text.length
+    self.quote_start = quote_start
+    self.quote_end = quote_end
     save
   end
 

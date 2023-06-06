@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_05_154346) do
+ActiveRecord::Schema.define(version: 2023_06_06_113550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,13 +266,13 @@ ActiveRecord::Schema.define(version: 2023_04_05_154346) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "service_id"
-    t.string "quoteText"
+    t.string "quote_text"
     t.bigint "case_id"
-    t.string "oldId"
+    t.string "old_id"
     t.text "point_change"
     t.boolean "service_needs_rating_update", default: false
-    t.integer "quoteStart"
-    t.integer "quoteEnd"
+    t.integer "quote_start"
+    t.integer "quote_end"
     t.bigint "document_id"
     t.string "annotation_ref"
     t.index ["case_id"], name: "index_points_on_case_id"

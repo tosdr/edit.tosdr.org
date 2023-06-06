@@ -91,7 +91,7 @@ class ServicesController < ApplicationController
     else
       @case = Case.find(params[:quoteCaseId])
       point = Point.new(
-        params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quoteStart, :quoteEnd, :quoteText)
+        params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
       )
       point.user = current_user
       point.case = @case
@@ -101,10 +101,10 @@ class ServicesController < ApplicationController
     end
     document = Document.find(params[:document_id])
     point.document = document
-    point.quoteText = document.text[params[:quoteStart].to_i, params[:quoteEnd].to_i - params[:quoteStart].to_i]
+    point.quote_text = document.text[params[:quote_start].to_i, params[:quote_end].to_i - params[:quote_start].to_i]
     point.source = document.url
-    point.quoteStart = params[:quoteStart]
-    point.quoteEnd = params[:quoteEnd]
+    point.quote_start = params[:quote_start]
+    point.quote_end = params[:quote_end]
     if (point.status === 'approved-not-found')
       point.status = 'approved'
     else
