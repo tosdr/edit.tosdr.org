@@ -45,7 +45,6 @@ migrate-and-test:
 
 docker-nightly:
   stage: publish
-  environment: staging
   needs:
     - migrate-and-test
   image:
@@ -61,7 +60,6 @@ docker-nightly:
 
 docker-prod:
   stage: publish
-  environment: production
   needs:
     - migrate-and-test
   image:
