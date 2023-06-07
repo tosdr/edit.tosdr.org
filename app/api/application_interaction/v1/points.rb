@@ -19,6 +19,7 @@ module ApplicationInteraction
 
         def authenticate!
           error!('404 Not found', 404) unless current_user
+          set_papertrail_user(current_user&.id)
         end
 
         def verify_attrs!
