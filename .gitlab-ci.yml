@@ -46,6 +46,8 @@ migrate-and-test:
 docker-nightly:
   stage: publish
   environment: staging
+  needs:
+    - migrate-and-test
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
@@ -60,6 +62,8 @@ docker-nightly:
 docker-prod:
   stage: publish
   environment: production
+  needs:
+    - migrate-and-test
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
