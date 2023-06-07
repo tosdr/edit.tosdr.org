@@ -15,6 +15,7 @@ variables:
 stages:
 - test
 - publish
+- deploy
 
 sast:
   stage: test
@@ -44,6 +45,7 @@ migrate-and-test:
 
 docker-nightly:
   stage: publish
+  environment: staging
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
@@ -57,12 +59,38 @@ docker-nightly:
 
 docker-prod:
   stage: publish
+  environment: production
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
     - ''
   script:
   - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-    --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}" --build-arg GIT_TAG=${CI_COMMIT_TAG}
+    --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}" --destination "${CI_REGISTRY_IMAGE}:stable" --build-arg GIT_TAG=${CI_COMMIT_TAG}
   rules:
   - if: $CI_COMMIT_TAG
+  
+deploy-prod:
+  stage: deploy
+  environment:
+    name: production
+    url: https://edit.tosdr.org
+  needs:
+    - docker-prod
+  script:
+    - curl -X POST $PORTAINER_WEBHOOK_URL
+  rules:
+    - if: $CI_COMMIT_TAG
+  
+  
+deploy-staging:
+  stage: deploy
+  environment:
+    name: staging
+    url: https://edit.staging.tosdr.org
+  needs:
+    - docker-prod
+  script:
+    - curl -X POST $PORTAINER_WEBHOOK_URL
+  rules:
+    - if: $CI_COMMIT_TAG
