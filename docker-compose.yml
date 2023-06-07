@@ -21,6 +21,7 @@ services:
       - DATABASE_PASSWORD=dbrootpassword
       - DATABASE_NAME=postgres
       - H_ORIGIN=http://localhost:5000
+      - WEB_PORT=9090
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer

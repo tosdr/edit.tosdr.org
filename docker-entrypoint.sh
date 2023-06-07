@@ -19,6 +19,6 @@ fi
 
 bundle exec puma -C config/puma.rb
 
-bundle exec rails s -b 0.0.0.0 -p 9090
+bundle exec rails s -b 0.0.0.0 -p $WEB_PORT
 
 exec "$@"
