@@ -89,8 +89,8 @@ deploy-staging:
     name: staging
     url: https://edit.staging.tosdr.org
   needs:
-    - docker-prod
+    - docker-nightly
   script:
     - curl -X POST $PORTAINER_WEBHOOK_URL
   rules:
-    - if: $CI_COMMIT_TAG
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
