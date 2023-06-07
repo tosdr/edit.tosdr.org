@@ -76,6 +76,8 @@ docker-prod:
   
 deploy-prod:
   stage: deploy
+  image:
+    name: curlimages/curl
   environment:
     name: production
     url: https://edit.tosdr.org
@@ -89,6 +91,8 @@ deploy-prod:
   
 deploy-staging:
   stage: deploy
+  image:
+    name: curlimages/curl
   environment:
     name: staging
     url: https://edit.staging.tosdr.org
