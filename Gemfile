@@ -78,6 +78,12 @@ group :development, :test do
   gem 'capybara'
 end
 
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-persistence'
+gem 'uuid', '~> 2.3', '>= 2.3.9'
+gem 'binascii'
+gem 'elasticsearch', '< 7.14'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'grape', '~> 1.7'
@@ -86,3 +92,4 @@ gem 'grape_on_rails_routes'
 gem 'grape-papertrail', '~> 0.2.0'
 gem 'rack-cors'
 gem 'uuidtools', '~> 2.1', '>= 2.1.5'
+

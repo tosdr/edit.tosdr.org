@@ -58,4 +58,95 @@ class Point < ApplicationRecord
     b64_decoded.unpack('H8H4H4H4H12').join('-')
     # TO-DO: check for flake id, error handling, tests
   end
+
+  def self.determine_url_safe_id(value)
+    hex_string = UUID.validate(value) && value.split("-").join
+    data = Binascii.a2b_hex(hex_string)
+    b64_encoded = Base64.urlsafe_encode64(data)
+    b64_encoded[0...-2]
+  end
+
+  def build_target_selectors
+    target_selectors = []
+    target_selectors << {
+                            "type"=>"RangeSelector",
+                            "endOffset"=>nil,
+                            "startOffset"=>nil,
+                            "endContainer"=>nil,
+                            "startContainer"=>nil
+                          }
+    target_selectors << { "end"=>nil, "type"=>"TextPositionSelector", "start"=>nil }
+    exact = quote_text
+    document_text = document.text
+    prefix = document_text[quote_start - 31...quote_start]
+    suffix = document_text[quote_end...quote_end + 31]
+    target_selectors << {'type'=>'TextQuoteSelector', 'exact'=>exact, 'prefix'=>prefix, 'suffix'=>suffix}
+    target_selectors
+  end
+
+  def build_annotation
+    document_id = retrieve_annotation_document_id
+    {
+      userid: 'acct:' + user.username + '@' + ENV['WEB_HOST'],
+      groupid: '__world__',
+      tags: [] << self.case.title,
+      shared: true,
+      target_uri: determine_target_uri(self),
+      target_uri_normalized: determine_target_uri_normalized(self),
+      target_selectors: build_target_selectors,
+      references: [],
+      extra: {"serviceId"=>service.id.to_s, "documentId"=>document_id.to_s},
+      deleted: false,
+      document_id: document_id
+    }
+  end
+
+  def create_annotation_in_db
+    attrs = build_annotation
+    annotation = Annotation.new(attrs)
+    annotation.save!
+  end
+
+  def retrieve_annotation_document_id
+    target_uri = determine_target_uri(self)
+    annotations_at_target = Annotation.where(target_uri: target_uri)
+
+    if annotations_at_target.present?
+      annotations_at_target.pluck(:document_id).uniq[0]
+    else
+      # create document in H -__-
+      nil
+    end
+  end
+
+  def associate_annotation
+  end
+
+  def index_annotation_to_es
+    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
+    Annotation.__elasticsearch__.client = client
+    Annotation.__elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: determine_url_safe_id(id), body: build_annotation
+  end
+
+  private
+
+  def determine_target_uri(point)
+    path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)
+    # this is really bad but we need to do it for the migration
+    if Rails.env == 'development'
+      'http://' + ENV['WEB_HOST'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
+    else
+      'https://' + ENV['WEB_HOST'] + path + '/annotate'
+    end
+  end
+
+  def determine_target_uri_normalized(point)
+    # this is really bad but we need to do it for the migration
+    path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)
+    if Rails.env == 'development'
+      'httpx://' + ENV['WEB_HOST'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
+    else
+      'httpx://' + ENV['WEB_HOST'] + path + '/annotate'
+    end
+  end
 end

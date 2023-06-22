@@ -16,6 +16,7 @@ services:
       - ./spec:/usr/src/edit.tosdr.org/spec/
     networks:
       - dbs
+      - elasticsearch
     environment:
       - RAILS_ENV=development
       - DATABASE_HOST=db
@@ -24,6 +25,8 @@ services:
       - DATABASE_NAME=postgres
       - H_ORIGIN=http://localhost:5000
       - WEB_PORT=9090
+      - ELASTICSEARCH_HOST=elasticsearch
+      - AUTHORITY=localhost
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer
@@ -43,3 +46,6 @@ networks:
     external: true
     # Specify name so that it does not append stack name
     name: dbs
+  elasticsearch:
+    external: true
+    name: elasticsearch
