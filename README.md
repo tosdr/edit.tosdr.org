@@ -15,7 +15,7 @@ Once a service has been comprehensively analysed in Phoenix, as determined by ou
 
 An A grade indicates that the service treats users with a high level of respect for their privacy and personal data. [DuckDuckGo](https://tosdr.org/en/service/222) is an example of an A-graded service. Grades D and E indicate that the services treat users with a low level of respect for their privacy and personal data. Examples include [CNN](https://tosdr.org/en/service/318) and [Facebook](https://tosdr.org/en/service/182). 
 
-The grades are calculated based on an algorithm, which, in our case, is really just a simple list of conditions that factor in a balance of any given service's points. This algorithm is subject to change. You can read more about it on our [forum](https://tosdr.community/). We discuss how it has changed, and is changing, here: [Updating the algorithm for service grades – thoughts?](https://tosdr.community/t/updating-the-algorithm-for-service-grades-thoughts/2926/1)
+The grades are calculated based on an algorithm, which, in our case, is really just a simple list of conditions that factor in the balance of any given service's points, the relationship of the points to each other, and certain thresholds. This algorithm is subject to change. You can read more about it on our [forum](https://tosdr.community/). We discuss how it has changed here: [Updating the algorithm for service grades – thoughts?](https://tosdr.community/t/updating-the-algorithm-for-service-grades-thoughts/2926/1)
 
 **Infrastructure**
 
@@ -109,6 +109,7 @@ If you have installed [Docker compose](https://docs.docker.com/compose/install/)
 To prepare the application, run the following command inside the repository folder to build it and initialise the database:
 
     $ docker-compose build
+    $ docker-compose run web rails db:seed
 
 From then on, you can start the application by running:
 
@@ -122,17 +123,16 @@ So,
 
      This will start the server on port 9090 (http://localhost:5000)
      
-2. Create your user via the sign-up page
-3. Confirm your user manually
+2. Create your user via the sign-up page, or use one of the seeded users.
+   There are three seeded users: tosdr_admin, tosdr_curator, tosdr_user. You can log in with any one of these email addresses: admin@selfhosted.tosdr.org, curator@selfhosted.tosdr.org, user@selfhosted.tosdr.org, with the password `Justforseed1`, which will work for all three.
+4. If you created your own user, confirm your user manually
     * `docker-compose run web rails c`
     * Find your user: `user = User.find_by_username('your_username')`
     * Confirm user: `user.confirm`
 
-4. Sign-in
+5. Sign-in
 
-At the moment, you have to create your own data via the web interface or the rails console (`docker-compose run web rails c`), but we are working on a proper seed so that this will no longer be the case. 
-
-To **annotate** a service, you will need to: create a service, create a document for that service, create a topic, and create a case that belongs to the topic.
+To **annotate** a service, navigate to the services page from the top-right menu, choose a service, and click `View Documents`. Begin by highlighting a piece of text from this page. **H and the Hypothesis client must be running.**
 
 For a demonstration of how annotations work, feel free to [inspect the video attached to this PR](https://github.com/tosdr/edit.tosdr.org/pull/1116).
 
