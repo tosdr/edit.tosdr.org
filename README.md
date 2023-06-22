@@ -1,6 +1,8 @@
 ## Phoenix
 
-**Overview** -- feel free to skip ahead to **Development**, if you're more interested in technical implementation.
+### Overview
+
+Feel free to skip ahead to **Development**, if you're more interested in technical implementation.
 
 Phoenix is a web application to submit *points* to the Terms of Service; Didn't Read (ToS;DR) project. Think of a *point* as a succinct, easy-to-understand mini-conclusion sourced from the complex text of a privacy policy or terms of service agreement. For example, [You can retrieve an archive of your data](https://edit.tosdr.org/points/32363), or [Your personal data is used for automated decision-making, profiling or AI training
 ](https://edit.tosdr.org/points/33639)
@@ -40,7 +42,7 @@ Requirements:
 * Hypothesis
     * **Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
 
-**Hypothesis installation** - H
+### Hypothesis installation - part 1
 
 H is the Hypothesis web service and api. 
 
@@ -88,8 +90,8 @@ H is the Hypothesis web service and api.
    Instructions [here](https://h.readthedocs.io/en/latest/developing/integrating-client/).
    
    Ensure that you export the environment variables `CLIENT_URL` and `CLIENT_OAUTH_ID` to the `h/` working directory.
-   
- **Hypothesis installation** - client
+
+### Hypothesis installation - part 2
  
 1. Clone [our fork of the Hypothesis client](https://github.com/tosdr/client) into the same directory as Phoenix and H.
 2. `cd client` and `make dev`
@@ -98,7 +100,7 @@ H is the Hypothesis web service and api.
     
     Instructions are [here](https://h.readthedocs.io/projects/client/en/latest/developers/developing.html#running-the-client-from-h), if needed.
     
-**Running Phoenix**
+### Running Phoenix
 
 The following steps should be completed from the working directory of `edit.tosdr.org/`
 
@@ -151,7 +153,6 @@ All the details on the API can be found on the [wiki](https://github.com/tosdr/e
 
 ### Hosting
 * https://edit.tosdr.org (production)
-
 
 ## License
 
