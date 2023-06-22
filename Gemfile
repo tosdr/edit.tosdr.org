@@ -87,8 +87,7 @@ gem 'grape_on_rails_routes'
 gem 'rack-cors'
 gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 
-# For Windows only
-gem 'sys-proctable' if RUBY_PLATFORM =~ /mingw32/
-gem 'fast_stack' if RUBY_PLATFORM =~ /mingw32/
-gem 'wdm', '>= 0.1.0' if Gem.win_platform?
-gem 'tzinfo-data' if RUBY_PLATFORM =~ /mingw32/
+gem 'sys-proctable', :platforms => :mswin
+gem 'fast_stack', :platforms => :mswin
+gem 'wdm', '>= 0.1.0', :platforms => :mswin
+gem 'tzinfo-data', :platforms => :mswin
