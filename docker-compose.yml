@@ -5,6 +5,7 @@ services:
     stdin_open: true
     build:
       context: ./
+      dockerfile: Dockerfile
     ports:
       - 9090:3000
     volumes:
@@ -16,6 +17,7 @@ services:
     networks:
       - dbs
     environment:
+      - RAILS_ENV=development
       - DATABASE_HOST=db
       - DATABASE_USER=root
       - DATABASE_PASSWORD=dbrootpassword
@@ -27,6 +29,8 @@ services:
     image: adminer
     ports:
       - 1337:8080
+    environment:
+      - RAILS_ENV=development
 
 volumes:
   # Create volume called web for persistent storage
