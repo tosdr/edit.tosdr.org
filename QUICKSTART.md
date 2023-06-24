@@ -96,6 +96,15 @@ In your code directory run:
 
 And you're ready to code !
 
+## Test your pull requests with a copy of the live data
+
+This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local phoenix repo:
+
+```sh
+sh ./db/download.sh
+rails s
+```
+
 ## Automated environment setup
 
 If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
@@ -110,6 +119,16 @@ From then on, you can start the application by running:
     $ docker-compose up
 
 (Add the `--build` argument if you add or remove dependencies.)
+
+To import a database dump from Heroku:
+
+```sh
+rm latest.dump
+heroku pg:backups:capture --app edit-tosdr-org
+heroku pg:backups:download --app edit-tosdr-org
+docker-compose run db pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development -h db -U postgres --no-password /app/latest.dump
+docker-compose run web rails db:migrate
+```
 
 ## Committing & Pull Requests
 
