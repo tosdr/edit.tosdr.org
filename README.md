@@ -25,7 +25,7 @@ For annotation, Phoenix relies on a customised instance of [Hypothesis](https://
 
 This is a *new implementation*, [merged](https://github.com/tosdr/edit.tosdr.org/pull/1116) for use in production on May 17, 2023. That said, it is still experimental.
 
-Phoenix, when used, also connects to two other services: Atlassian, which runs [the widget](https://status.tosdr.org) that helps us to monitor the application's health, and jrbit.de, which is where both our databases live and our system for reporting errors.
+Phoenix, when used, also connects to two other services: Atlassian, which runs [the widget](https://status.tosdr.org) that helps us to monitor the application's health, and jrbit.de, which is where our databases live as well as our system for reporting errors.
 
 ## Development
 
