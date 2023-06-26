@@ -46,7 +46,7 @@ Requirements:
 
 H is the Hypothesis web service and api. 
 
-1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone.
+1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone. **The correct branch to work from is the *phoenix-integration* branch.**
 
     The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). 
 
@@ -89,11 +89,11 @@ H is the Hypothesis web service and api.
 
    Instructions [here](https://h.readthedocs.io/en/latest/developing/integrating-client/).
    
-   Ensure that you export the environment variables `CLIENT_URL` and `CLIENT_OAUTH_ID` to the `h/` working directory.
+   Ensure that you export the environment variables `CLIENT_URL` and `CLIENT_OAUTH_ID` to the `h/` directory, i.e. the same shell in which you launch the h dev server.
 
 ### Hypothesis installation - part 2
  
-1. Clone [our fork of the Hypothesis client](https://github.com/tosdr/client) into the same directory as Phoenix and H.
+1. Clone [our fork of the Hypothesis client](https://github.com/tosdr/client/tree/phoenix-integration) into the same directory as Phoenix and H. **The correct branch to work from is the *phoenix-integration* branch.**
 2. `cd client` and `make dev`
     
     You will need Node version 14.17.6. H will also have to be running.
