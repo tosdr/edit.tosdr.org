@@ -2,7 +2,7 @@
 
 ### Overview
 
-Feel free to skip ahead to [**Development**](https://github.com/tosdr/edit.tosdr.org/blob/updating-docs/README.md#development), if you're more interested in technical implementation.
+Feel free to skip ahead to [**Development**](https://github.com/tosdr/edit.tosdr.org#development), if you're more interested in technical implementation.
 
 Phoenix is a web application to submit *points* to the Terms of Service; Didn't Read (ToS;DR) project. Think of a *point* as a succinct, easy-to-understand mini-conclusion sourced from the complex text of a privacy policy or terms of service agreement. For example, [You can retrieve an archive of your data](https://edit.tosdr.org/points/32363), or [Your personal data is used for automated decision-making, profiling or AI training
 ](https://edit.tosdr.org/points/33639)
