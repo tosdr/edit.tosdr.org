@@ -1,5 +1,5 @@
 class PointsController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
   include ApplicationHelper
   include ActionView::Helpers::TagHelper
   include FontAwesome5::Rails::IconHelper

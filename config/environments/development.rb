@@ -53,7 +53,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Only trace queries in development
-  ActiveRecordQueryTrace.enabled = true
+  # ActiveRecordQueryTrace.enabled = true
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

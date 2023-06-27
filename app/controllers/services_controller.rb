@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
 
   before_action :authenticate_user!, except: [:index, :show]
 

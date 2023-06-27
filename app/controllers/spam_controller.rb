@@ -1,5 +1,5 @@
 class SpamController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
   include ApplicationHelper
 
   before_action :authenticate_user!

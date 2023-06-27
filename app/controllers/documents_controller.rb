@@ -5,7 +5,7 @@ puts 'loaded?'
 puts TOSBackDoc
 
 class DocumentsController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
 
   PROD_CRAWLERS = {
     "https://api.tosdr.org/crawl/v1": 'Random',
