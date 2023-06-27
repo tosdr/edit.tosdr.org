@@ -64,8 +64,8 @@ tasks:
       PORT: 3000
       SECRET_KEY_BASE: 12345
       SENTRY_DSN: https://c0d549cf9ae645cdb525e308c04d44b4@sentry.internal.jrbit.de/23
-    command: rvm install 2.7.2 && 
-             rvm use 2.7.2 --default &&
+    command: rvm install 3.0.6 && 
+             rvm use 3.0.6 --default &&
              gem install bundler &&
              gem install rails &&
              bundle install && 
