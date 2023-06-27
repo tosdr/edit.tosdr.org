@@ -34,8 +34,7 @@ class Point < ApplicationRecord
 
   # uuid - d8084a2c-c98b-11ed-bfb9-5341372e7080 - what's stored in h's annotation table
   # url-safe string from uuid (computed by h) - 2AhKLMmLEe2_uVNBNy5wgA - what we're sent from client
-  def self.retrieve_by_annotation_uuid(id = nil)
-    id ||= annotation_ref
+  def self.retrieve_by_annotation_uuid(id)
     uuid = determine_uuid(id)
     sql = ApplicationRecord.sanitize_sql(["SELECT * FROM annotation WHERE id = '%s'", uuid])
     annotation = execute_statement(sql)
@@ -46,6 +45,25 @@ class Point < ApplicationRecord
     results = ActiveRecord::Base.connection.exec_query(sql)
     results = nil unless results.present?
     results
+  end
+
+  def migrate
+    unless annotation_ref
+      annotation = create_annotation_in_db
+      annotation = link_annotation(annotation)
+    end
+
+    uuid = annotation_uuid
+    if annotation_ref && !Annotation.find(uuid).present?
+      puts `MIGRATION: point #{point.id} has annotation_ref but no corresponding annotation`
+      return
+    end
+
+    annotation.index_elasticsearch
+  end
+
+  def annotation_uuid
+    Point.determine_uuid(annotation_ref)
   end
 
   def self.determine_uuid(value)
@@ -59,7 +77,7 @@ class Point < ApplicationRecord
     # TO-DO: check for flake id, error handling, tests
   end
 
-  def self.determine_url_safe_id(value)
+  def determine_url_safe_id(value)
     hex_string = UUID.validate(value) && value.split("-").join
     data = Binascii.a2b_hex(hex_string)
     b64_encoded = Base64.urlsafe_encode64(data)
@@ -95,7 +113,7 @@ class Point < ApplicationRecord
       target_uri_normalized: determine_target_uri_normalized(self),
       target_selectors: build_target_selectors,
       references: [],
-      extra: {"serviceId"=>service.id.to_s, "documentId"=>document_id.to_s},
+      extra: { "serviceId" => service.id.to_s, "documentId" => document_id.to_s },
       deleted: false,
       document_id: document_id
     }
@@ -103,8 +121,14 @@ class Point < ApplicationRecord
 
   def create_annotation_in_db
     attrs = build_annotation
-    annotation = Annotation.new(attrs)
-    annotation.save!
+    transaction do
+      annotation = Annotation.new(attrs)
+      annotation.save!
+    end
+    annotation.reload
+    annotation
+  rescue ActiveRecord::RecordInvalid => e
+    puts `MIGRATION ERROR for #{point.id} at annotation creation: #{e.record.errors}`
   end
 
   def retrieve_annotation_document_id
@@ -115,11 +139,22 @@ class Point < ApplicationRecord
       annotations_at_target.pluck(:document_id).uniq[0]
     else
       # create document in H -__-
-      nil
+      h_document = HDocument.new(title: 'Terms of Service; Didn\'t Read - Phoenix', web_uri: determine_target_uri(self))
+      h_document.save!
+      h_document.reload
+      h_document.id
     end
   end
 
-  def associate_annotation
+  def link_annotation(annotation)
+    transaction do
+      ref = determine_url_safe_id(annotation.id)
+      update!(annotation_ref: ref)
+    end
+    annotation.reload
+    annotation
+  rescue ActiveRecord::RecordInvalid => e
+    puts `MIGRATION ERROR for #{point.id} at link annotation: #{e.record.errors}`
   end
 
   def index_annotation_to_es
