@@ -1,13 +1,8 @@
 class Annotation < ApplicationRecord
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
-  
+  include Elasticsearch::Model::Proxy
+  # include Elasticsearch::Model::Callbacks
   self.table_name = 'annotation'
-  belongs_to :h_document
-
-  def document
-    HDocument.find(document_id)
-  end
+  belongs_to :h_document, class_name: 'HDocument', foreign_key: 'document_id'
 
   def target
     target = {"source": target_uri}
@@ -21,11 +16,10 @@ class Annotation < ApplicationRecord
   end
 
   def document_dict
-    return {} if !document
-    
+    return {} unless h_document
     document_dict = {}
-    document_dict["title"] = [document.title] if document.title
-    document_dict["web_uri"] = document.web_uri if document.web_uri
+    document_dict["title"] = [h_document.title] if h_document.title
+    document_dict["web_uri"] = h_document.web_uri if h_document.web_uri
     document_dict
   end
 
@@ -60,7 +54,7 @@ class Annotation < ApplicationRecord
       "group": groupid,
       "shared": shared,
       "target": target,
-      "document": document_dict,
+      "document": document,
       "thread_ids": thread_ids,
     }
 
@@ -69,7 +63,7 @@ class Annotation < ApplicationRecord
 
   def index_elasticsearch
     client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
-    Annotation.__elasticsearch__.client = client
-    Annotation.__elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: annotation.determine_url_safe_id(annotation.id), body: annotation.annotation_dict
+    __elasticsearch__.client = client
+    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: determine_url_safe_id(id), body: annotation_dict
   end
 end
