@@ -12,6 +12,8 @@ macOS run `sh INSTALL_mac.sh`.
 
 ## Manual environment setup
 
+If you are using Microsoft Windows, download Ruby [here](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.2-1/rubyinstaller-devkit-2.7.2-1-x64.exe).
+
 ### Install Ruby with [Rbenv](https://github.com/rbenv/rbenv)
 
 (shamelessly copied from Rbenv doc)
@@ -82,7 +84,9 @@ Install Rails, Postgres, Yarn, etc
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     sudo apt update && sudo apt install yarn
 
-In your code directory run:
+If you are using Windows, install node.js [here](https://nodejs.org/dist/v18.16.0/node-v18.16.0-x64.msi) (comes with Yarn) and PostgreSQL [here](https://sbp.enterprisedb.com/getfile.jsp?fileid=1258422). Install Ruby on Rails by running `gem install rails` on the command line.
+
+In your code directory run (if you are using Windows, do not run the `rbenv` commands):
 
     git clone https://github.com/tosdr/edit.tosdr.org
     cd edit.tosdr.org
