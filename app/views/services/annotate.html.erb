@@ -2,15 +2,6 @@
   <title>Review <%= @service.name %> (ToS;DR Phoenix)</title>
 <% end %>
 
-<form method="POST" id="quoteForm">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <input type="hidden" name="document_id" id="document_id">
-  <input type="hidden" name="quoteRev" id="quoteRev">
-  <input type="hidden" name="quote_start" id="quote_start">
-  <input type="hidden" name="quote_end" id="quote_end">
-  <input type="hidden" name="quoteCaseId" id="quoteCaseId">
-</form>
-
 <h2><%= link_to  @service.name, service_path(@service) %></h2>
 
 <% if @topics %>
