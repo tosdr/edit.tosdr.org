@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-buster
+FROM ruby:3.0.6-buster
 
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=enabled
@@ -20,8 +20,8 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresq
     rm -rf /var/lib/apt/lists/* && \
     yarn
 
-RUN gem install bundler -v 2.2.6
+RUN gem install bundler -v 2.4.14
 COPY Gemfile Gemfile.lock ./
-RUN bundle check || bundle install --without development test --jobs 4 --retry 3
+RUN bundle check || bundle install --jobs 4 --retry 3
 
 CMD ["bash", "docker-entrypoint.sh"]

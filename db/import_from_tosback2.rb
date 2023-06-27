@@ -12,7 +12,7 @@ $crawls_path = {
 $crawls_separator = "/"
 $crawls_extension = ".txt"
 
-def importRules()
+def importRules
   Dir.foreach($rules_path) do |xml_file| # loop for each xml file/rule
     next if xml_file == "." || xml_file == ".."
     
@@ -44,8 +44,8 @@ def importRules()
             docPoints = doc.points
             puts docPoints
             docPoints.each do |p|
-              quoteStart = text.index(p.quoteText)
-              if (quoteStart.nil?)
+              quote_start = text.index(p.quote_text)
+              if (quote_start.nil?)
                 comment = Comment.create({
                   point: p,
                   summary: 'Cannot find this point in the updated document, manual review required!'
@@ -63,12 +63,12 @@ def importRules()
                   panic()
                 end
               else
-                quoteEnd = quoteStart + p.quoteText.length
-                if (quoteStart != p.quoteStart || quoteEnd != p.quoteEnd)
-                  puts 'reindexing point ' + p.id + ' (' + p.quoteStart + ' -> ' + quoteStart + ', ' +p.quoteEnd + ' -> ' + quoteEnd +  ')'
+                quote_end = quote_start + p.quote_text.length
+                if (quote_start != p.quote_start || quote_end != p.quote_end)
+                  puts 'reindexing point ' + p.id + ' (' + p.quote_start + ' -> ' + quote_start + ', ' +p.quote_end + ' -> ' + quote_end +  ')'
                   p.update({
-                    quoteStart: quoteStart,
-                    quoteEnd: quoteEnd
+                    quote_start: quote_start,
+                    quote_end: quote_end
                   })
                   if (!p.save())
                     puts p.errors.full_messages

@@ -1,5 +1,5 @@
 class CasesController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
 
   before_action :authenticate_user!, except: [:index, :show, :list_all]
   before_action :set_curator, only: [:destroy]

@@ -37,16 +37,16 @@ class Document < ApplicationRecord
         next
       end
 
-      if p.quoteText.nil? || (p.quoteStart.nil? && p.quoteEnd.nil?)
+      if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
         next
       end
 
-      quote_exists_in_text = !self.text.index(p.quoteText).nil?
+      quote_exists_in_text = !self.text.index(p.quote_text).nil?
 
       if quote_exists_in_text
-        quote_start = self.text.index(p.quoteText)
-        quote_start_changed = p.quoteStart != quote_start
-        quote_end_changed = p.quoteEnd != p.quoteStart + p.quoteText.length
+        quote_start = self.text.index(p.quote_text)
+        quote_start_changed = p.quote_start != quote_start
+        quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
 
         if (!quote_start_changed && !quote_end_changed)
           # quote is okay, so we store it
@@ -60,25 +60,25 @@ class Document < ApplicationRecord
     cursor = 0
 
     quotes.sort! do |x, y|
-      puts 'comparing ' + x.quoteStart.to_s + ' to ' + y.quoteStart.to_s
-      x.quoteStart - y.quoteStart
+      puts 'comparing ' + x.quote_start.to_s + ' to ' + y.quote_start.to_s
+      x.quote_start - y.quote_start
     end
 
     quotes.each do |q|
-      puts 'quote to snippet ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s + ' ..' + cursor.to_s
-      if (q.quoteStart > cursor)
-        puts 'unquoted ' + cursor.to_s + ' -> ' + q.quoteStart.to_s
+      puts 'quote to snippet ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s + ' ..' + cursor.to_s
+      if (q.quote_start > cursor)
+        puts 'unquoted ' + cursor.to_s + ' -> ' + q.quote_start.to_s
         snippets.push({
-          text: self.text[cursor, q.quoteStart - cursor]
+          text: self.text[cursor, q.quote_start - cursor]
         })
-        puts 'quoted ' + q.quoteStart.to_s + ' -> ' + q.quoteEnd.to_s
+        puts 'quoted ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s
         snippets.push({
           pointId: q.id,
-          text: self.text[q.quoteStart, q.quoteEnd - q.quoteStart],
+          text: self.text[q.quote_start, q.quote_end - q.quote_start],
           title: q.title
         })
-        puts 'cursor to ' + q.quoteEnd.to_s
-        cursor = q.quoteEnd
+        puts 'cursor to ' + q.quote_end.to_s
+        cursor = q.quote_end
       end
     end
 

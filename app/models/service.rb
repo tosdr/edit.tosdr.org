@@ -32,7 +32,7 @@ class Service < ApplicationRecord
   end
 
   def pending_points
-    !self.points.nil? ? self.points.where(status: "pending") : []
+    !points.nil? ? points.where(status: "pending") : []
   end
 
   def sort_service_points(points)
@@ -63,15 +63,7 @@ class Service < ApplicationRecord
   end
 
   def approved_points
-    self.points.select { |p| p.status == 'approved' && !p.case.nil? }
-  end
-
-  private
-
-  def strip_input_fields
-    attributes.each do |key, value|
-      self[key] = value.strip if value.respond_to?('strip')
-    end
+    points.select { |p| p.status == 'approved' && !p.case.nil? }
   end
 
   def perform_calculation
@@ -92,22 +84,30 @@ class Service < ApplicationRecord
     num_blocker = counts['blocker']
     num_good = counts['good']
 
-    (num_good * 3) - num_bad - (num_blocker * 3)
+    num_good - num_bad - (num_blocker * 3)
   end
 
   def calculate_grade(counts, balance)
     if (counts['blocker'] + counts['bad'] + counts['good']).zero?
       'N/A'
-    elsif balance < -13 || counts['blocker'] > counts['good']
+    elsif balance <= -10 || counts['blocker'] > counts['good']
       'E'
-    elsif counts['blocker'] >= 3
+    elsif counts['blocker'] >= 3 || counts['bad'] > counts['good']
       'D'
-    elsif balance < -4 || (counts['bad'] >= counts['good'])
+    elsif balance < 5
       'C'
-    elsif counts['bad'].positive? && (counts['bad'] < counts['good'])
+    elsif counts['bad'].positive?
       'B'
     else
       'A'
+    end
+  end
+
+  private
+
+  def strip_input_fields
+    attributes.each do |key, value|
+      self[key] = value.strip if value.respond_to?('strip')
     end
   end
 end
