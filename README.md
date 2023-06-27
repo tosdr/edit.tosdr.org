@@ -35,9 +35,9 @@ Requirements:
 * [Docker](https://docs.docker.com/engine/install/) and [docker-compose](https://)
     * We rely on Docker as an attempt to be OS-agnostic
     * If you **are not able to use Docker**, install the following: 
-        * Ruby 2.7.2
-        * Rails (Phoenix uses version 5.2.5)
-        * Bundler 2.2.6
+        * Ruby 3.0.6
+        * Rails (Phoenix uses version 6.0.6.1)
+        * Bundler 2.4.14
         * Postgres 11.5
         * Node.js (to access Yarn) 12.20.0
         * Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information on manual set-up. If anything is missing, please let us know.
@@ -67,9 +67,9 @@ H is the Hypothesis web service and api.
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
 2. `cd h`
-3. `docker create network dbs`
+3. `docker create network dbs` and `docker create network elasticsearch`
 
-    In order for H and Phoenix to work together, they share a database, which is [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
+    In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
 5. `make services`
 7. `make dev`
    
