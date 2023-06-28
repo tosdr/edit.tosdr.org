@@ -124,9 +124,9 @@ class Point < ApplicationRecord
     transaction do
       annotation = Annotation.new(attrs)
       annotation.save!
+      annotation.reload
+      annotation
     end
-    annotation.reload
-    annotation
   rescue ActiveRecord::RecordInvalid => e
     puts `MIGRATION ERROR for #{point.id} at annotation creation: #{e.record.errors}`
   end
