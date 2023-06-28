@@ -140,6 +140,8 @@ For a demonstration of how annotations work, feel free to [inspect the video att
 
 ## Database
 
+**This wiki has been deprecated. We are in the process of updating it.**
+
 All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/database).
 
 ## API
