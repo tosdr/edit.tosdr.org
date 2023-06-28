@@ -144,7 +144,7 @@ All the details on the database schema can be found on the [wiki](https://github
 
 ## API
 
-All the details on the API can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/api)
+All the details on the API can be found [here](https://developers.tosdr.org/dev/restful-api)
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)
