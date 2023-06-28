@@ -16,14 +16,16 @@ class User < ApplicationRecord
   HTTP_URL_REGEX = /\b(?:(?:mailto:\S+|(?:https?|ftp|file):\/\/)?(?:\w+\.)+[a-z]{2,6})\b/
   URL_REGEX = /\b(?:(?:\w+\.)+[a-z]{2,6})\b/
   PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
+  USERNAME_REGEX = /^[A-Za-z0-9._]{3,30}@.*$/
 
   def password_validation
     password_valid = password =~ PASSWORD_REGEX
-    errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit' unless password_valid
+    errors.add :password, 'Must include at least one lowercase letter, one uppercase letter, and one digit' unless password_valid
   end
 
   def username_validation
-    errors.add(:username, "Your username cannot contain links") if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX)
+    errors.add(:username, 'Username cannot contain links') if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX)
+    errors.add(:username, 'Must have only letters, numbers, periods, and underscores') if username.match USERNAME_REGEX
   end
 
   def admin?
