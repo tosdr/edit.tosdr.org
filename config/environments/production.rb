@@ -17,12 +17,9 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
-   # Settings specified here will take precedence over those in config/application.rb.
-   web_host = ENV['WEB_HOST'] || 'edit.tosdr.org'
-   routes.default_url_options[:host] = web_host
-   if ENV['WEB_PORT']
-     routes.default_url_options[:port] = ENV['WEB_PORT']
-   end
+  # Settings specified here will take precedence over those in config/application.rb.
+  web_host = ENV['WEB_HOST'] || 'edit.tosdr.org'
+  routes.default_url_options[:host] = web_host
 
   # routes.default_url_options[:host] = 'edit.tosdr.org'
 
