@@ -13,15 +13,13 @@ class User < ApplicationRecord
   validate :password_validation, if: :password
   validate :username_validation, if: :username
 
-  after_create :send_welcome_mail
-
   HTTP_URL_REGEX = /\b(?:(?:mailto:\S+|(?:https?|ftp|file):\/\/)?(?:\w+\.)+[a-z]{2,6})\b/
   URL_REGEX = /\b(?:(?:\w+\.)+[a-z]{2,6})\b/
+  PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
 
   def password_validation
-    unless password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
-      errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit'
-    end
+    password_valid = password =~ PASSWORD_REGEX
+    errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit' unless password_valid
   end
 
   def username_validation
@@ -38,10 +36,6 @@ class User < ApplicationRecord
 
   def bot?
     bot
-  end
-
-  def send_welcome_mail
-    UserMailer.welcome(self).deliver_now
   end
 
   def hard_delete

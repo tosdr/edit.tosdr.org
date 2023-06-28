@@ -32,17 +32,20 @@
 </style>
 </head>
 <body>
-  <h1>Hi <%= @user.username? ? @user.username : "you" %>!</h1>
+  <h1>Hi <%= @user.username? ? @user.username : "" %>! Welcome to ToS;DR!</h1>
 
-  <p>Someone signed this email address up with Terms of Service; Didn't Read, the crowdreading tool at <a href="https://edit.tosdr.org">edit.tosdr.org</a> (or Phoenix as we like to call it). If it wasn't you, please let us know as soon as possible, by emailing <a mailto="team@tosdr.org">team@tosdr.org</a>.</p>
+  <p>Please confirm your account email through the link below:</p>
 
-  <p>Please bear in mind that this site is still in beta. You can follow the development at <a href="https://github.com/tosdr/edit.tosdr.org">our repository</a> or on <a href="https://blog.tosdr.org">our blog</a>.</p>
+  <p><%= link_to 'Confirm', confirmation_url(@resource, confirmation_token: @token) %></p>
 
-  <p>Being under active development, things can change, a lot, quite quickly. We will notify you if we make changes to our privacy policy or our terms of service. If you have any questions, please email <a mailto="team@tosdr.org">team@tosdr.org</a>.</p>
+  <p>Doing so will make you a confirmed contributor to the Terms of Service; Didn't Read crowdreading tool on <a href="https://edit.tosdr.org">Edit</a> (also referred to as Phoenix). If you did not sign up to this website, please contact us as soon as possible at <a mailto="team@tosdr.org">team@tosdr.org</a>.</p>
 
-  <div class="btn"><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></div>
+  <p>Please keep in mind that this version is still under development. You can follow development or inspect our technical documentation on <a href="https://github.com/tosdr/edit.tosdr.org">github</a>, or on our <a href="https://tosdr.community/">forum</a>.</p>
 
-  <p>Thanks for your contributions!</p>
+  <p>We will try to keep you updated on changes. If you have any questions please contact our team at <a mailto="team@tosdr.org">team at tosdr org</a>.</p>
+
+  <div class="btn"><a href="https://edit.tosdr.org">Happy contributing!</a></div>
+
   <p>The ToS;DR Team</p>
 </body>
 </html>
