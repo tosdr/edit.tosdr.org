@@ -24,8 +24,7 @@ class User < ApplicationRecord
   end
 
   def username_validation
-    errors.add(:username, 'Username cannot contain links') if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX)
-    errors.add(:username, 'Must have only letters, numbers, periods, and underscores') if username.match USERNAME_REGEX
+    errors.add(:username, 'Username cannot contain links, and must have only letters, numbers, periods, and underscores') if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX) || !(username.match USERNAME_REGEX)
   end
 
   def admin?
