@@ -16,7 +16,7 @@ class User < ApplicationRecord
   HTTP_URL_REGEX = /\b(?:(?:mailto:\S+|(?:https?|ftp|file):\/\/)?(?:\w+\.)+[a-z]{2,6})\b/
   URL_REGEX = /\b(?:(?:\w+\.)+[a-z]{2,6})\b/
   PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
-  USERNAME_REGEX = /^[A-Za-z0-9._]{3,30}@.*$/
+  USERNAME_REGEX = /\A[\w\.]+\z/
 
   def password_validation
     password_valid = password =~ PASSWORD_REGEX
