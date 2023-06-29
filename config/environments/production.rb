@@ -18,7 +18,7 @@ Rails.application.configure do
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
-  web_host = ENV['WEB_HOST'] || 'edit.tosdr.org'
+  web_host = ENV['AUTHORITY'] || 'edit.tosdr.org'
   routes.default_url_options[:host] = web_host
 
   # routes.default_url_options[:host] = 'edit.tosdr.org'
