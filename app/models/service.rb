@@ -96,7 +96,7 @@ class Service < ApplicationRecord
       'D'
     elsif balance < 5
       'C'
-    elsif counts['bad'].positive?
+    elsif counts['bad'] > 0
       'B'
     else
       'A'
