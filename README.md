@@ -77,7 +77,7 @@ H is the Hypothesis web service and api.
 4. `docker create network elasticsearch`
 
     In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
-5. `make services`, which launches the docker services needed to run h.
+5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
 
    If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node version 14.17.6* and *yarn version ~1.22.11*.
