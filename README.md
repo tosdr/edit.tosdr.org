@@ -32,7 +32,7 @@ Phoenix, when used, also connects to two other services: Atlassian, which runs [
 First, clone Phoenix :)
 
 Requirements:
-* [Docker](https://docs.docker.com/engine/install/) and [docker-compose](https://)
+* [Docker](https://docs.docker.com/engine/install/) and docker-compose
     * We rely on Docker as an attempt to be OS-agnostic
     * If you **are not able to use Docker**, install the following: 
         * Ruby 3.0.6
@@ -48,10 +48,10 @@ Requirements:
 
 H is the Hypothesis web service and api. 
 
-1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone. **The correct branch to work from is the *phoenix-integration* branch.**
+1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone, and `cd h/`. **The correct branch to work from is the *phoenix-integration* branch.**
 
-    The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). 
-
+    **ATTENTION**: The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). Please also consult these docs as needed.
+   
     Note the prerequisites:
 
     > Before installing your development environment you’ll need to install each of these prerequisites:
@@ -62,18 +62,27 @@ H is the Hypothesis web service and api.
 
     Your **Node version in the shell in which you are developing must be 14.17.6**. To manage Node versions, we suggest [nvm](https://github.com/nvm-sh/nvm).
 
-    With pyenv, you will need to install **python version 3.8.12**.
+    With pyenv, you will need to install **python version 3.8.12**. From the `/h` directory:
+   ```
+   pyenv install 3.8.12
+   pyenv init
+   ```
+   Relaunch your shell.
+   ```
+   pyenv shell 3.8.12
+   ```
 
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
-2. `cd h`
-3. `docker create network dbs` and `docker create network elasticsearch`
+4. `docker create network elasticsearch`
 
     In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
-5. `make services`
+5. `make services`, which launches the docker services needed to run h.
 7. `make dev`
+
+   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node version 14.17.6* and *yarn version ~1.22.11*.
    
-   This will start the server on port 5000 (http://localhost:5000)
+   Otherwise, `make dev` will start the server on port 5000 (http://localhost:5000)
    
    The `make dev` command will not start H in debug mode, i.e., you will not be able to run `pdb.set_trace()`.
    
@@ -82,7 +91,7 @@ H is the Hypothesis web service and api.
    You will have to exit and restart `tox` whenever changes are made to the code. Additionally, in debug mode, certain functionalities may be restricted. You will not be able to create and persist annotations from the client if H is running in debug mode, for example.
    
    To launch the shell and poke around in the database, run `make shell`.
-8. Create an admin user from the shell
+9. Create an admin user from the shell
 
    You will need an admin user to set up OAuth between H and the Hypothesis client. 
    
