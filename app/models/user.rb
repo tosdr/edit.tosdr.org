@@ -26,7 +26,7 @@ class User < ApplicationRecord
   end
 
   def normalize_username
-    username.gsub(/[^a-zA-Z0-9\_\.]/, '')
+    username.present? ? username.gsub(/[^a-zA-Z0-9\_\.]/, '') : 'anonymous'
   end
 
   def username_validation
