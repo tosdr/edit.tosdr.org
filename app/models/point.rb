@@ -105,7 +105,7 @@ class Point < ApplicationRecord
   def build_annotation
     document_id = retrieve_annotation_document_id
     {
-      userid: 'acct:' + user.username + '@' + ENV['AUTHORITY'],
+      userid: 'acct:' + user.normalize_username + '@' + ENV['AUTHORITY'],
       groupid: '__world__',
       tags: [] << self.case.title,
       shared: true,

@@ -27,7 +27,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def after_sign_out_path_for(resource_or_scope)
     user = User.find_by_h_key(cookies[:h_key])
-    user&.update!(h_key: nil)
+    user&.update!(skip_on_sign_out: true, h_key: nil)
     cookies.delete(:h_key)
     root_path
   end
