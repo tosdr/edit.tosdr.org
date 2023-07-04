@@ -9,7 +9,8 @@ class ServicesController < ApplicationController
 
   def index
     authorize Service
-    @services = Service.order(:name).page(params[:page] || 1)
+    @q = Service.ransack(params[:q])
+    @services = @q.result(distinct: true).page(params[:page] || 1)
   end
 
   def new

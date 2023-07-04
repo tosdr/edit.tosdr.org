@@ -22,6 +22,37 @@
         </div>
       </div>
       <br>
+      <br>
+      <div class="row">
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :name_cont %>
+              <%= f.search_field :name_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+
+              <%= f.label :rating_cont %>
+              <%= f.search_field :rating_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= sort_link(@q, :rating) %>
+          </div>
+        </div>
+      </div>
+
+      <br>
       <div class="">
         <div class="table-responsive">
           <table class="table table-striped">
@@ -45,7 +76,7 @@
                   <%= service.name %>
                 </td>
                 <td>
-                  <%= service.rating || 'N/A' %>
+                  <%= service.rating || 'No rating yet' %>
                 </td>
                 
                 <td class="text-right">
