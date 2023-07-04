@@ -58,7 +58,6 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">Logo</th>
                 <th scope="col">Name</th>
                 <th scope="col">Rating</th>
                 <th scope="col" class="text-right">View</th>
@@ -69,9 +68,6 @@
             <tbody id="myTableBody">
             <% @services.each do |service| %>
               <tr class="toSort">
-                <td>
-                    <img src="'<%= ENV['S3_CDN'] %>/' + service.id + '.png'" width="32"/>
-                </td>
                 <td>
                   <%= service.name %>
                 </td>
