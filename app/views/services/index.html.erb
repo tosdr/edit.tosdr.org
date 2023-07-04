@@ -3,7 +3,7 @@
 <% end %>
 
 <br>
-<div id="dynamic-services-table" v-cloak>
+<div>
   <div class="card-inline">
     <div class="card-inline-item card-inline-service">
       <div class="row">
@@ -13,12 +13,7 @@
       </div>
       <br>
       <div class="row">
-        <div class="col-lg-6">
-          <%= render "shared/search_vue" %>
-        </div>
-
-        <div class="col-lg-6 text-right justify-content-end">
-          <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
+        <div class="col-lg-6 text-left">
           <div class="">
             <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
               <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
@@ -27,10 +22,7 @@
         </div>
       </div>
       <br>
-      <div class="loading" v-if="loading">
-        Loading...
-      </div>
-      <div class="" v-else>
+      <div class="">
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
@@ -44,23 +36,27 @@
               </tr>
             </thead>
             <tbody id="myTableBody">
-              <tr class="toSort" v-for="service in filteredServices" :key="service" v-bind:data-classification="service.service.rating">
+            <% @services.each do |service| %>
+              <tr class="toSort">
                 <td>
-                    <img v-bind:src="'<%= ENV['S3_CDN'] %>/' + service.service.id + '.png'" width="32"/>
+                    <img src="'<%= ENV['S3_CDN'] %>/' + service.id + '.png'" width="32"/>
                 </td>
                 <td>
-                  {{ service.service.name }}
+                  <%= service.name %>
                 </td>
-                <td>{{ service.service.rating }} </td>
+                <td>
+                  <%= service.rating || 'N/A' %>
+                </td>
                 
                 <td class="text-right">
-                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id"> Details </a>
+                  <%= link_to 'Details', service_path(service), class: 'btn btn-primary smaller-btn-text' %>
                 </td>
                 <td class="text-right">
-                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> Annotate </a>
+                  <%= link_to 'Annotate', annotate_path(service), class: 'btn btn-primary smaller-btn-text' %>
                 </td>
                 <td></td>
               </tr>
+            <% end %>
             </tbody>
           </table>
         </div>
@@ -68,3 +64,4 @@
     </div>
   </div>
 </div>
+<%= paginate @services %>
