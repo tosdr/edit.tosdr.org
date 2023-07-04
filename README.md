@@ -80,7 +80,7 @@ H is the Hypothesis web service and api.
 5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
 
-   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node version 14.17.6* and *yarn version ~1.22.11*.
+   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node version 14.17.6* and *yarn*.
    
    Otherwise, `make dev` will start the server on port 5000 (http://localhost:5000)
    
