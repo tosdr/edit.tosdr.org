@@ -84,19 +84,19 @@ class Service < ApplicationRecord
     num_blocker = counts['blocker']
     num_good = counts['good']
 
-    num_good - num_bad - (num_blocker * 3)
+    (num_good * 3) - num_bad - (num_blocker * 3)
   end
 
   def calculate_grade(counts, balance)
     if (counts['blocker'] + counts['bad'] + counts['good']).zero?
       'N/A'
-    elsif balance <= -10 || counts['blocker'] > counts['good']
+    elsif balance < -13 || counts['blocker'] > counts['good']
       'E'
-    elsif counts['blocker'] >= 3 || counts['bad'] > counts['good']
+    elsif counts['blocker'] >= 3
       'D'
-    elsif balance < 5
+    elsif balance < -4 || (counts['bad'] >= counts['good'])
       'C'
-    elsif counts['bad'] > 0
+    elsif counts['bad'].positive? && (counts['bad'] < counts['good'])
       'B'
     else
       'A'
