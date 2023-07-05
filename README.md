@@ -39,7 +39,7 @@ Requirements:
         * Rails (Phoenix uses version 6.0.6.1)
         * Bundler 2.4.14
         * Postgres 11.5
-        * Node.js (to access Yarn) 12.20.0
+        * Node.js (to access Yarn)
         * Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information on manual set-up. If anything is missing, please let us know.
 * Hypothesis
     * **Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
