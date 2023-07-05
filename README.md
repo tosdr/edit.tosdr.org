@@ -60,7 +60,7 @@ H is the Hypothesis web service and api.
     > * Docker. Follow the instructions on the Docker website to install “Docker Engine - Community”.
     > * pyenv. Follow the instructions in the pyenv README to install it. The Homebrew method works best on macOS.
 
-    Your **Node version in the shell in which you are developing must be 14.17.6**. To manage Node versions, we suggest [nvm](https://github.com/nvm-sh/nvm).
+    Your **Node version in the shell in which you are developing must be more recent than 12.20.0**. To manage Node versions, we suggest [nvm](https://github.com/nvm-sh/nvm).
 
     With pyenv, you will need to install **python version 3.8.12**. From the `/h` directory:
    ```
@@ -80,7 +80,7 @@ H is the Hypothesis web service and api.
 5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
 
-   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node version 14.17.6* and *yarn*.
+   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node* and *yarn*.
    
    Otherwise, `make dev` will start the server on port 5000 (http://localhost:5000)
    
@@ -107,7 +107,7 @@ H is the Hypothesis web service and api.
 1. Clone [our fork of the Hypothesis client](https://github.com/tosdr/client/tree/phoenix-integration) into the same directory as Phoenix and H. **The correct branch to work from is the *phoenix-integration* branch.**
 2. `cd client` and `make dev`
     
-    You will need Node version 14.17.6. H will also have to be running.
+    You will need a Node version that is more recent than 12.20.0. H will also have to be running.
     
     Instructions are [here](https://h.readthedocs.io/projects/client/en/latest/developers/developing.html#running-the-client-from-h), if needed.
     
