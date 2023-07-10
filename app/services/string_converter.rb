@@ -1,5 +1,5 @@
 # lib/services/string_converter.rb
-class Services::StringConverter
+class StringConverter
   def initialize(string:)
     @string = string
   end
