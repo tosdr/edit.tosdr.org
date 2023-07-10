@@ -35,7 +35,7 @@ class Annotation < ApplicationRecord
 
     result = {
       "authority": userid_parts[:domain],
-      "id": StringConverter.new(string: id).to_url_safe,
+      "id": ::Services::StringConverter.new(string: id).to_url_safe,
       "created": Time.iso8601(DateTime.parse(created.to_s).to_s),
       "updated": Time.iso8601(DateTime.parse(updated.to_s).to_s),
       "user": userid,
@@ -57,6 +57,6 @@ class Annotation < ApplicationRecord
   def index_elasticsearch
     client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
     __elasticsearch__.client = client
-    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: StringConverter.new(string: id).to_url_safe, body: annotation_dict
+    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: ::Services::StringConverter.new(string: id).to_url_safe, body: annotation_dict
   end
 end
