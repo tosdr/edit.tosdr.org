@@ -10,22 +10,27 @@ class User < ApplicationRecord
   has_many :documents
   has_many :services
 
-  validate :password_validation, if: :password
-  validate :username_validation, if: :username
+  attr_accessor :skip_on_sign_out
 
-  after_create :send_welcome_mail
+  validate :password_validation, if: :password
+  validate :username_validation, if: :username, unless: :skip_on_sign_out
 
   HTTP_URL_REGEX = /\b(?:(?:mailto:\S+|(?:https?|ftp|file):\/\/)?(?:\w+\.)+[a-z]{2,6})\b/
   URL_REGEX = /\b(?:(?:\w+\.)+[a-z]{2,6})\b/
+  PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
+  USERNAME_REGEX = /\A[\w\.]+\z/
 
   def password_validation
-    unless password =~ /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
-      errors.add :password, 'must include at least one lowercase letter, one uppercase letter, and one digit'
-    end
+    password_valid = password =~ PASSWORD_REGEX
+    errors.add :password, 'Must include at least one lowercase letter, one uppercase letter, and one digit' unless password_valid
+  end
+
+  def normalize_username
+    username.present? ? username.gsub(/[^a-zA-Z0-9\_\.]/, '') : 'anonymous'
   end
 
   def username_validation
-    errors.add(:username, "Your username cannot contain links") if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX)
+    errors.add(:username, 'Username cannot contain links, and must have only letters, numbers, periods, and underscores') if (username.match HTTP_URL_REGEX) || (username.match URL_REGEX) || !(username.match USERNAME_REGEX)
   end
 
   def admin?
@@ -40,10 +45,6 @@ class User < ApplicationRecord
     bot
   end
 
-  def send_welcome_mail
-    UserMailer.welcome(self).deliver_now
-  end
-
   def hard_delete
     points.update_all user_id: 1 # change to anonymous account id
     if PointComment.where user_id: id
@@ -53,6 +54,8 @@ class User < ApplicationRecord
   end
 
   def after_database_authentication
-    self.update!(h_key: SecureRandom.hex(13)) unless self.h_key
+    self.skip_on_sign_out = true
+    self.h_key = SecureRandom.hex(13) unless self.h_key
+    save!
   end
 end

@@ -105,7 +105,7 @@ class Point < ApplicationRecord
   def build_annotation
     document_id = retrieve_annotation_document_id
     {
-      userid: 'acct:' + user.username + '@' + ENV['WEB_HOST'],
+      userid: 'acct:' + user.normalize_username + '@' + ENV['AUTHORITY'],
       groupid: '__world__',
       tags: [] << self.case.title,
       shared: true,
@@ -124,9 +124,9 @@ class Point < ApplicationRecord
     transaction do
       annotation = Annotation.new(attrs)
       annotation.save!
+      annotation.reload
+      annotation
     end
-    annotation.reload
-    annotation
   rescue ActiveRecord::RecordInvalid => e
     puts `MIGRATION ERROR for #{point.id} at annotation creation: #{e.record.errors}`
   end
@@ -169,9 +169,9 @@ class Point < ApplicationRecord
     path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)
     # this is really bad but we need to do it for the migration
     if Rails.env == 'development'
-      'http://' + ENV['WEB_HOST'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
+      'http://' + ENV['AUTHORITY'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
     else
-      'https://' + ENV['WEB_HOST'] + path + '/annotate'
+      'https://' + ENV['AUTHORITY'] + path + '/annotate'
     end
   end
 
@@ -179,9 +179,9 @@ class Point < ApplicationRecord
     # this is really bad but we need to do it for the migration
     path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)
     if Rails.env == 'development'
-      'httpx://' + ENV['WEB_HOST'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
+      'httpx://' + ENV['AUTHORITY'] + ':' + ENV['WEB_PORT'] + path + '/annotate'
     else
-      'httpx://' + ENV['WEB_HOST'] + path + '/annotate'
+      'httpx://' + ENV['AUTHORITY'] + path + '/annotate'
     end
   end
 end

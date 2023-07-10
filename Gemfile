@@ -38,6 +38,7 @@ gem 'pundit'
 gem 'rails', '~> 6.0', '>= 6.0.5'
 gem 'rack-attack'
 gem 'rack-cors'
+gem 'ransack'
 gem 'rb-readline'
 gem 'redis'
 # for tosback2:

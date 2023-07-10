@@ -5,7 +5,7 @@ Rails.application.configure do
     Bullet.raise         = true # raise an error if n+1 query occurs
   end
   # Settings specified here will take precedence over those in config/application.rb.
-  web_host = ENV['WEB_HOST'] || 'localhost'
+  web_host = ENV['AUTHORITY'] || 'localhost'
   web_port = ENV['WEB_PORT'] || '9090'
 
   config.action_controller.default_url_options = {

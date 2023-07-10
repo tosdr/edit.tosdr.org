@@ -32,14 +32,14 @@ Phoenix, when used, also connects to two other services: Atlassian, which runs [
 First, clone Phoenix :)
 
 Requirements:
-* [Docker](https://docs.docker.com/engine/install/) and [docker-compose](https://)
+* [Docker](https://docs.docker.com/engine/install/) and docker-compose
     * We rely on Docker as an attempt to be OS-agnostic
     * If you **are not able to use Docker**, install the following: 
-        * Ruby 2.7.2
-        * Rails (Phoenix uses version 5.2.5)
-        * Bundler 2.2.6
+        * Ruby 3.0.6
+        * Rails (Phoenix uses version 6.0.6.1)
+        * Bundler 2.4.14
         * Postgres 11.5
-        * Node.js (to access Yarn) 12.20.0
+        * Node.js (to access Yarn)
         * Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information on manual set-up. If anything is missing, please let us know.
 * Hypothesis
     * **Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
@@ -48,10 +48,10 @@ Requirements:
 
 H is the Hypothesis web service and api. 
 
-1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone. **The correct branch to work from is the *phoenix-integration* branch.**
+1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone, and `cd h/`. **The correct branch to work from is the *phoenix-integration* branch.**
 
-    The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). 
-
+    **ATTENTION**: The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). Please also consult these docs as needed.
+   
     Note the prerequisites:
 
     > Before installing your development environment you’ll need to install each of these prerequisites:
@@ -60,20 +60,29 @@ H is the Hypothesis web service and api.
     > * Docker. Follow the instructions on the Docker website to install “Docker Engine - Community”.
     > * pyenv. Follow the instructions in the pyenv README to install it. The Homebrew method works best on macOS.
 
-    Your **Node version in the shell in which you are developing must be 14.17.6**. To manage Node versions, we suggest [nvm](https://github.com/nvm-sh/nvm).
+    Your **Node version in the shell in which you are developing must be more recent than 12.20.0**. To manage Node versions, we suggest [nvm](https://github.com/nvm-sh/nvm).
 
-    With pyenv, you will need to install **python version 3.8.12**.
+    With pyenv, you will need to install **python version 3.8.12**. From the `/h` directory:
+   ```
+   pyenv install 3.8.12
+   pyenv init
+   ```
+   Relaunch your shell.
+   ```
+   pyenv shell 3.8.12
+   ```
 
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
-2. `cd h`
-3. `docker create network dbs`
+4. `docker create network elasticsearch`
 
-    In order for H and Phoenix to work together, they share a database, which is [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
-5. `make services`
+    In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
+5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
+
+   If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node* and *yarn*.
    
-   This will start the server on port 5000 (http://localhost:5000)
+   Otherwise, `make dev` will start the server on port 5000 (http://localhost:5000)
    
    The `make dev` command will not start H in debug mode, i.e., you will not be able to run `pdb.set_trace()`.
    
@@ -82,7 +91,7 @@ H is the Hypothesis web service and api.
    You will have to exit and restart `tox` whenever changes are made to the code. Additionally, in debug mode, certain functionalities may be restricted. You will not be able to create and persist annotations from the client if H is running in debug mode, for example.
    
    To launch the shell and poke around in the database, run `make shell`.
-8. Create an admin user from the shell
+9. Create an admin user from the shell
 
    You will need an admin user to set up OAuth between H and the Hypothesis client. 
    
@@ -98,7 +107,7 @@ H is the Hypothesis web service and api.
 1. Clone [our fork of the Hypothesis client](https://github.com/tosdr/client/tree/phoenix-integration) into the same directory as Phoenix and H. **The correct branch to work from is the *phoenix-integration* branch.**
 2. `cd client` and `make dev`
     
-    You will need Node version 14.17.6. H will also have to be running.
+    You will need a Node version that is more recent than 12.20.0. H will also have to be running.
     
     Instructions are [here](https://h.readthedocs.io/projects/client/en/latest/developers/developing.html#running-the-client-from-h), if needed.
     
@@ -140,11 +149,13 @@ For a demonstration of how annotations work, feel free to [inspect the video att
 
 ## Database
 
+**This wiki has been deprecated. We are in the process of updating it.**
+
 All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/database).
 
 ## API
 
-All the details on the API can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/api)
+All the details on the API can be found [here](https://developers.tosdr.org/dev/restful-api)
 
 ## Core developers
 * [Chris](https://github.com/piks3l/)

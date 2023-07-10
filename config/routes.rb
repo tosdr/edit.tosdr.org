@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   post 'documents/:id/restore_points', to: 'documents#restore_points', as: :document_restore_points
 
   # api endpoints for vue
-  get 'services/list_all', to: 'services#list_all', as: 'list_all_services'
+  # get 'services/list_all', to: 'services#list_all', as: 'list_all_services'
 
   # traditional rails routes
   resources :services, except: [:show]

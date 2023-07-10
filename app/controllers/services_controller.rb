@@ -9,63 +9,48 @@ class ServicesController < ApplicationController
 
   def index
     authorize Service
-  end
-
-  def list_all
-    authorize Service
-
-    object = []
-    services = Service.all
-    services.map do |service|
-    # This takes way too long:
-    #   object << { pending_points_count: service.pending_points.count, documents_count: service.documents.count, service: service }
-      object << { service: service }
-    end
-
-    respond_to do |format|
-      format.json { render json: object }
-    end
+    @q = Service.ransack(params[:q])
+    @services = @q.result(distinct: true).page(params[:page] || 1)
   end
 
   def new
     authorize Service
 
-	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
-		@service = Service.new
-	else
-		user_not_authorized
-	end
+    if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
+      @service = Service.new
+    else
+      user_not_authorized
+    end
   end
 
   def create
     authorize Service
 
-	if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
+	  if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
+      @service = Service.new(service_params)
+      @service.user = current_user
 
-		@service = Service.new(service_params)
-		@service.user = current_user
-
-		if @service.save
-            uploader = LogoUploaderController.new(@service.id)
-            if params[:service][:logo]
-              puts "Uploaded image"
-              if uploader.store!(params[:service][:logo])
-                flash[:notice] = "Created service with logo!"
-                redirect_to service_path(@service)
-              else
-                flash[:alert] = "Uploading the logo failed!"
-                redirect_to service_path(@service)
-              end
-            else
-                flash[:notice] = "The service has been created!"
-                redirect_to service_path(@service)
-            end
-		else
-		  render :new
-		end
-	else
-		user_not_authorized
-	end
+      if @service.save
+        uploader = LogoUploaderController.new(@service.id)
+        if params[:service][:logo]
+          puts "Uploaded image"
+          if uploader.store!(params[:service][:logo])
+            flash[:notice] = "Created service with logo!"
+            redirect_to service_path(@service)
+          else
+            flash[:alert] = "Uploading the logo failed!"
+            redirect_to service_path(@service)
+          end
+        else
+          flash[:notice] = "The service has been created!"
+          redirect_to service_path(@service)
+        end
+      else
+        render :new
+      end
+    else
+      user_not_authorized
+    end
   end
 
   def annotate

@@ -580,6 +580,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 6.0, >= 6.0.5)
+  ransack
   rb-readline
   redis
   rspec-rails (~> 4.0.2)
