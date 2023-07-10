@@ -27,11 +27,11 @@ module Phoenix
 
     config.version = (ENV["GIT_TAG"].present?) ? ENV["GIT_TAG"] : "Development"
 
-    config.autoload_paths += %W[#{config.root}/lib]
+    # config.autoload_paths += %W[#{config.root}/lib]
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
-    config.autoloader = :classic
+    # config.autoloader = :classic
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
