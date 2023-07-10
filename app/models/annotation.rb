@@ -29,20 +29,13 @@ class Annotation < ApplicationRecord
     return {"username": matches[1], "domain": matches[2]} if matches
   end
 
-  def determine_url_safe_id(value)
-    hex_string = UUID.validate(value) && value.split("-").join
-    data = Binascii.a2b_hex(hex_string)
-    b64_encoded = Base64.urlsafe_encode64(data)
-    b64_encoded[0...-2]
-  end
-
   def annotation_dict
     document = document_dict
     userid_parts = split_userid
 
     result = {
       "authority": userid_parts[:domain],
-      "id": determine_url_safe_id(id),
+      "id": Services::StringConverter.new(string: id).to_url_safe,
       "created": Time.iso8601(DateTime.parse(created.to_s).to_s),
       "updated": Time.iso8601(DateTime.parse(updated.to_s).to_s),
       "user": userid,
@@ -64,6 +57,6 @@ class Annotation < ApplicationRecord
   def index_elasticsearch
     client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
     __elasticsearch__.client = client
-    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: determine_url_safe_id(id), body: annotation_dict
+    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: Services::StringConverter.new(string: id).to_url_safe, body: annotation_dict
   end
 end

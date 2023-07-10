@@ -35,7 +35,7 @@ class Point < ApplicationRecord
   # uuid - d8084a2c-c98b-11ed-bfb9-5341372e7080 - what's stored in h's annotation table
   # url-safe string from uuid (computed by h) - 2AhKLMmLEe2_uVNBNy5wgA - what we're sent from client
   def self.retrieve_by_annotation_uuid(id)
-    uuid = determine_uuid(id)
+    uuid = Services::StringConverter.new(string: id).to_uuid
     sql = ApplicationRecord.sanitize_sql(["SELECT * FROM annotation WHERE id = '%s'", uuid])
     annotation = execute_statement(sql)
     annotation[0]
@@ -48,12 +48,14 @@ class Point < ApplicationRecord
   end
 
   def migrate
+    # only creates new annotation if point is not already linked to an annotation
     unless annotation_ref
       annotation = create_annotation_in_db
       annotation = link_annotation(annotation)
     end
 
     uuid = annotation_uuid
+    # does not perform the migration if point's annotation_ref does not exist
     if annotation_ref && !Annotation.find(uuid).present?
       puts `MIGRATION: point #{point.id} has annotation_ref but no corresponding annotation`
       return
@@ -63,42 +65,24 @@ class Point < ApplicationRecord
   end
 
   def annotation_uuid
-    Point.determine_uuid(annotation_ref)
-  end
-
-  def self.determine_uuid(value)
-    utf_encoded = value.encode('UTF-8') + '=='.encode('UTF-8')
-    # Returns the Base64-decoded version of str
-    # https://ruby-doc.org/stdlib-2.4.0/libdoc/base64/rdoc/Base64.html#method-i-urlsafe_decode64
-    b64_decoded = Base64.urlsafe_decode64(utf_encoded)
-    # unpack decoded with uuid format
-    # https://apidock.com/ruby/String/unpack
-    b64_decoded.unpack('H8H4H4H4H12').join('-')
-    # TO-DO: check for flake id, error handling, tests
-  end
-
-  def determine_url_safe_id(value)
-    hex_string = UUID.validate(value) && value.split("-").join
-    data = Binascii.a2b_hex(hex_string)
-    b64_encoded = Base64.urlsafe_encode64(data)
-    b64_encoded[0...-2]
+    Services::StringConverter.new(string: annotation_ref).to_uuid
   end
 
   def build_target_selectors
     target_selectors = []
     target_selectors << {
-                            "type"=>"RangeSelector",
-                            "endOffset"=>nil,
-                            "startOffset"=>nil,
-                            "endContainer"=>nil,
-                            "startContainer"=>nil
-                          }
-    target_selectors << { "end"=>nil, "type"=>"TextPositionSelector", "start"=>nil }
+                            'type' => 'RangeSelector',
+                            'endOffset' => nil,
+                            'startOffset' => nil,
+                            'endContainer' => nil,
+                            'startContainer' => nil
+                        }
+    target_selectors << { 'end' => nil, 'type' => 'TextPositionSelector', 'start' => nil }
     exact = quote_text
     document_text = document.text
     prefix = document_text[quote_start - 31...quote_start]
     suffix = document_text[quote_end...quote_end + 31]
-    target_selectors << {'type'=>'TextQuoteSelector', 'exact'=>exact, 'prefix'=>prefix, 'suffix'=>suffix}
+    target_selectors << { 'type' => 'TextQuoteSelector', 'exact' => exact, 'prefix' => prefix, 'suffix' => suffix }
     target_selectors
   end
 
@@ -113,7 +97,7 @@ class Point < ApplicationRecord
       target_uri_normalized: determine_target_uri_normalized(self),
       target_selectors: build_target_selectors,
       references: [],
-      extra: { "serviceId" => service.id.to_s, "documentId" => document_id.to_s },
+      extra: { 'serviceId' => service.id.to_s, 'documentId' => document_id.to_s },
       deleted: false,
       document_id: document_id
     }
@@ -148,19 +132,13 @@ class Point < ApplicationRecord
 
   def link_annotation(annotation)
     transaction do
-      ref = determine_url_safe_id(annotation.id)
+      ref = Services::StringConverter.new(string: annotation.id).to_url_safe
       update!(annotation_ref: ref)
+      annotation.reload
+      annotation
     end
-    annotation.reload
-    annotation
   rescue ActiveRecord::RecordInvalid => e
     puts `MIGRATION ERROR for #{point.id} at link annotation: #{e.record.errors}`
-  end
-
-  def index_annotation_to_es
-    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
-    Annotation.__elasticsearch__.client = client
-    Annotation.__elasticsearch__.client.index index: 'hypothesis', type: 'annotation', id: determine_url_safe_id(id), body: build_annotation
   end
 
   private
