@@ -35,7 +35,7 @@ class Point < ApplicationRecord
   # uuid - d8084a2c-c98b-11ed-bfb9-5341372e7080 - what's stored in h's annotation table
   # url-safe string from uuid (computed by h) - 2AhKLMmLEe2_uVNBNy5wgA - what we're sent from client
   def self.retrieve_by_annotation_uuid(id)
-    uuid = Services::StringConverter.new(string: id).to_uuid
+    uuid = StringConverter.new(string: id).to_uuid
     sql = ApplicationRecord.sanitize_sql(["SELECT * FROM annotation WHERE id = '%s'", uuid])
     annotation = execute_statement(sql)
     annotation[0]
@@ -65,7 +65,7 @@ class Point < ApplicationRecord
   end
 
   def annotation_uuid
-    Services::StringConverter.new(string: annotation_ref).to_uuid
+    StringConverter.new(string: annotation_ref).to_uuid
   end
 
   def build_target_selectors
@@ -132,7 +132,7 @@ class Point < ApplicationRecord
 
   def link_annotation(annotation)
     transaction do
-      ref = Services::StringConverter.new(string: annotation.id).to_url_safe
+      ref = StringConverter.new(string: annotation.id).to_url_safe
       update!(annotation_ref: ref)
       annotation.reload
       annotation
