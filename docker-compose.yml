@@ -1,5 +1,29 @@
 version: '3'
 services:
+  db:
+    image: postgres:11.5-alpine
+    container_name: db
+    hostname: db 
+    ports:
+      - '127.0.0.1:5432:5432'
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "postgres"]
+        interval: 1s
+    environment:
+      POSTGRESQL_ROOT_PASSWORD: dbrootpassword
+    volumes:
+      # Will use db volume and inside to path /var/lib/mysql
+      - db:/var/lib/postgresql/data
+    networks:
+      - dbs
+  elasticsearch:
+    image: hypothesis/elasticsearch:latest
+    ports:
+      - '127.0.0.1:9200:9200'
+    environment:
+      - discovery.type=single-node
+    networks:
+      - elasticsearch
   web:
     tty: true
     stdin_open: true
@@ -17,6 +41,7 @@ services:
     networks:
       - dbs
       - elasticsearch
+      - engine
     environment:
       - RAILS_ENV=development
       - DATABASE_HOST=db
@@ -38,8 +63,10 @@ services:
 volumes:
   # Create volume called web for persistent storage
   web:
-    # Specify name so it does not append stack name and become wordpress_wordpress
+    # Specify name so it does not append stack name
     name: web
+  db:
+    name: db
 networks:
   dbs:
     # Joins existing network of this name (it was created by db container)
@@ -49,3 +76,6 @@ networks:
   elasticsearch:
     external: true
     name: elasticsearch
+  engine:
+    external: true
+    name: engine
