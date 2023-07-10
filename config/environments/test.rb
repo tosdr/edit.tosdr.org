@@ -14,9 +14,11 @@ Rails.application.configure do
   }
 
   config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.default_url_options = { host: 'localhost', port: 9090 }
+  config.action_mailer.default_url_options = { host: web_host, port: web_port }
 
   config.log_level = :info
+
+  config.hosts << 'example.com'
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that

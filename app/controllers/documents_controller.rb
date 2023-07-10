@@ -11,7 +11,6 @@ class DocumentsController < ApplicationController
     "https://api.tosdr.org/crawl/v1": 'Random',
     "https://api.tosdr.org/crawl/v1/eu": 'Europe (Recommended)',
     "https://api.tosdr.org/crawl/v1/us": 'United States (Recommended)',
-    "https://api.tosdr.org/crawl/v1/eu-west": 'Europe (West)',
     "https://api.tosdr.org/crawl/v1/eu-central": 'Europe (Central)',
     "https://api.tosdr.org/crawl/v1/eu-west": 'Europe (West)',
     "https://api.tosdr.org/crawl/v1/us-east": 'United States (East)',
