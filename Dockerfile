@@ -21,6 +21,7 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresq
 
 RUN gem install bundler -v 2.4.14
 COPY Gemfile Gemfile.lock ./
-RUN bundle check || bundle install --jobs 4 --retry 3
+# not great but need to do this until we dissociate dockerfiles between envs
+RUN bundle check || if [ $RAILS_ENV == 'production' ] ; then bundle install --without development test --jobs 4 --retry 3 ; else bundle install --jobs 4 --retry 3 ; fi
 
 CMD ["bash", "docker-entrypoint.sh"]
