@@ -57,8 +57,7 @@ class Point < ApplicationRecord
     uuid = annotation_uuid
     # does not perform the migration if point's annotation_ref does not exist
     if annotation_ref && !Annotation.find(uuid).present?
-      puts `MIGRATION: point #{point.id} has annotation_ref but no corresponding annotation`
-      return
+      puts `MIGRATION: point #{id} has annotation_ref but no corresponding annotation`
     end
 
     annotation.index_elasticsearch
@@ -112,15 +111,18 @@ class Point < ApplicationRecord
       annotation
     end
   rescue ActiveRecord::RecordInvalid => e
-    puts `MIGRATION ERROR for #{point.id} at annotation creation: #{e.record.errors}`
+    puts `MIGRATION ERROR for #{id} at annotation creation: #{e.record.errors}`
   end
 
   def retrieve_annotation_document_id
     target_uri = determine_target_uri(self)
     annotations_at_target = Annotation.where(target_uri: target_uri)
+    h_docs_at_target_uri = HDocument.where(web_uri: target_uri)
 
     if annotations_at_target.present?
       annotations_at_target.pluck(:document_id).uniq[0]
+    elsif h_docs_at_target_uri.present?
+      h_docs_at_target_uri.first.id
     else
       # create document in H -__-
       h_document = HDocument.new(title: 'Terms of Service; Didn\'t Read - Phoenix', web_uri: determine_target_uri(self))
@@ -138,7 +140,7 @@ class Point < ApplicationRecord
       annotation
     end
   rescue ActiveRecord::RecordInvalid => e
-    puts `MIGRATION ERROR for #{point.id} at link annotation: #{e.record.errors}`
+    puts `MIGRATION ERROR for #{id} at link annotation: #{e.record.errors}`
   end
 
   private
