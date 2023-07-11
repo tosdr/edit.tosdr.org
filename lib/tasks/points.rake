@@ -1,7 +1,9 @@
 namespace :points do
 	desc 'Migrate points to hypothesis annotations, index into elasticsearch'
 	task migrate: :environment do
-		points = Point.where(annotation_ref: nil).where.not(document_id: nil).where.not(status: 'declined')
+		docs_nil_text = Document.where(text: nil)
+		points = Point.where.not(document_id: docs_nil_text)
+		points = points.where(annotation_ref: nil).where.not(document_id: nil).where.not(status: 'declined')
 		points.each do |point|
 			point.migrate
 		end
