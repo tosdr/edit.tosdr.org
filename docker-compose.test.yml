@@ -1,0 +1,7 @@
+# docker-compose.test.yml
+services:
+  web:
+    volumes:
+      - ./db:/usr/src/edit.tosdr.org/db/
+    environment:
+      - RAILS_ENV=test

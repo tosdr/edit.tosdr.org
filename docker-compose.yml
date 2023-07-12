@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   web:
     tty: true
@@ -6,6 +6,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      target: dev
     ports:
       - 9090:3000
     volumes:
@@ -20,8 +21,7 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_HOST=db
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=dbrootpassword
+      - DATABASE_USER=postgres
       - DATABASE_NAME=postgres
       - H_ORIGIN=http://localhost:5000
       - WEB_PORT=9090
