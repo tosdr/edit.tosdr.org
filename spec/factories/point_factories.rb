@@ -7,6 +7,6 @@ FactoryBot.define do
 
     title { Faker::Name.unique.name }
     source { Faker::Internet.url }
-    status { ['approved', 'pending', 'declined', 'changes-requested', 'draft', 'approved-not-found', 'pending-not-found'].sample }
+    status { ['approved', 'pending', 'declined'].sample }
   end
 end
