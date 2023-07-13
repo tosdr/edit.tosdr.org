@@ -71,7 +71,7 @@
           <% offset = 0 %>
           <% doc.snippets[:snippets].each do |snippet| %>
             <% if snippet[:pointId] %>
-              <hypothesis-highlight class="hypothesis-highlight user-annotations"> <%= link_to hide_tags(snippet[:text]), point_path(snippet[:pointId]), title: snippet[:title], :data => { :document_id => doc.id, :offset => offset }%></hypothesis-highlight>
+              <hypothesis-highlight class="hypothesis-highlight user-annotations"> <%= hide_tags(snippet[:text])%></hypothesis-highlight>
             <% else %>
               <p> <%= content_tag(:div, hide_tags(snippet[:text]), :data => { :document_id => doc.id, :revision => 'latest', :offset => offset }) %> </p>
             <% end %>

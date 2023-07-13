@@ -11,9 +11,12 @@ module ApplicationInteraction
       helpers do
         def current_user
           # authenticate using the h_key cookie and the client-side authenticated user's username
-          if params[:h_key]
-            user = User.find_by_h_key(params[:h_key])
-            return user unless !user || user.username != params[:user]
+          h_key = params[:h_key] || request.headers['H-Key']
+          username = params[:user] || request.headers['User']
+
+          if h_key
+            user = User.find_by_h_key(h_key)
+            return user unless !user || user.username != username
           end
         end
 
@@ -32,7 +35,14 @@ module ApplicationInteraction
       end
 
       resource :points do
-        desc 'Links point to annotation'
+        desc 'Facilitates links between points to annotations'
+        
+        get do
+          authenticate!
+          annotation_id = request.headers['Annotation-Id']
+          point = Point.find_by_annotation_ref(annotation_id)
+          present point, with: ::ApplicationInteraction::Entities::Point
+        end
 
         post do
           params do
