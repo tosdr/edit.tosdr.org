@@ -41,8 +41,10 @@ Requirements:
         * Postgres 11.5
         * Node.js (to access Yarn)
         * Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information on manual set-up. If anything is missing, please let us know.
-* Hypothesis
-    * **Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
+
+There are two ways to run Phoenix in development: with Hypothesis, or without Hypothesis. Plenty of hacking around can be done without running Hypothesis, particularly if you just want to get your feet wet or see what the codebase is all about. If you are not interested in running Hypothesis, please skip ahead to [Running Phoenix](https://github.com/tosdr/edit.tosdr.org#running-phoenix).
+
+**Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
 
 ### Hypothesis installation - part 1
 
