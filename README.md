@@ -29,8 +29,6 @@ Phoenix, when used, also connects to two other services: Atlassian, which runs [
 
 ## Development
 
-First, clone Phoenix :)
-
 Requirements:
 * [Docker](https://docs.docker.com/engine/install/) and docker-compose
     * We rely on Docker as an attempt to be OS-agnostic
@@ -45,6 +43,54 @@ Requirements:
 There are two ways to run Phoenix in development: with Hypothesis, or without Hypothesis. Plenty of hacking around can be done without running Hypothesis, particularly if you just want to get your feet wet or see what the codebase is all about. If you are not interested in running Hypothesis, please skip ahead to [Running Phoenix](https://github.com/tosdr/edit.tosdr.org#running-phoenix).
 
 **Disclaimer:** Use of Hypothesis within Phoenix is not supported without Docker
+
+### Running Phoenix
+
+First, clone Phoenix :)
+
+The following steps should be completed from the working directory of `edit.tosdr.org/`
+
+If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two steps, after which it can be started with a single command in the future.
+
+To prepare the application, run the following command inside the repository folder to build it and initialise the database:
+
+    $ docker-compose build
+    $ docker-compose run web rails db:seed
+
+From then on, you can start the application by running:
+
+    $ docker-compose up
+
+(Add the `--build` argument if you add or remove dependencies.)
+
+So,
+
+1. `docker-compose up`
+
+   This will launch the following services: 1) the database (`postgres:11.5-alpine`), 2) the Phoenix web application, 3) Elasticsearch (needed to run Hypothesis), 4) adminer (for inspecting the database).
+
+   If you don't need to run Hypothesis and wish simply to run the web application and the database, you can launch these services on their own by specifying them in the docker-compose command: `docker-compose up web db`
+   
+   The Phoenix web application runs on port 9090 (http://localhost:9090).
+
+   **For debugging:** To debug application code with `byebug`, open a new terminal tab and attach to the running web application container, `docker attach edittosdrorg_web_1`.
+
+   **For running tests:** We are in the process of developing our test coverage. Our test environment also runs in Docker and relies on [rspec](https://github.com/rspec/rspec-rails). You can launch tests with the following command: `docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bundle exec rspec`
+
+   **To access the rails console:** `docker-compose run web rails c`
+     
+3. Create your user via the sign-up page, or use one of the seeded users.
+   There are three seeded users: tosdr_admin, tosdr_curator, tosdr_user. You can log in with any one of these email addresses: admin@selfhosted.tosdr.org, curator@selfhosted.tosdr.org, user@selfhosted.tosdr.org, with the password `Justforseed1`, which will work for all three.
+4. If you created your own user, confirm your user manually
+    * `docker-compose run web rails c`
+    * Find your user: `user = User.find_by_username('your_username')`
+    * Confirm user: `user.confirm`
+
+5. Sign-in
+
+To **annotate** a service, navigate to the services page from the top-right menu, choose a service, and click `View Documents`. Begin by highlighting a piece of text from this page. **H and the Hypothesis client must be running.**
+
+For a demonstration of how annotations work, feel free to [inspect the video attached to this PR](https://github.com/tosdr/edit.tosdr.org/pull/1116).
 
 ### Hypothesis installation - part 1
 
@@ -112,42 +158,6 @@ H is the Hypothesis web service and api.
     You will need a Node version that is more recent than 12.20.0. H will also have to be running.
     
     Instructions are [here](https://h.readthedocs.io/projects/client/en/latest/developers/developing.html#running-the-client-from-h), if needed.
-    
-### Running Phoenix
-
-The following steps should be completed from the working directory of `edit.tosdr.org/`
-
-If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two steps, after which it can be started with a single command in the future.
-
-To prepare the application, run the following command inside the repository folder to build it and initialise the database:
-
-    $ docker-compose build
-    $ docker-compose run web rails db:seed
-
-From then on, you can start the application by running:
-
-    $ docker-compose up
-
-(Add the `--build` argument if you add or remove dependencies.)
-
-So,
-
-1. `docker-compose up`
-
-     This will start the server on port 9090 (http://localhost:5000)
-     
-2. Create your user via the sign-up page, or use one of the seeded users.
-   There are three seeded users: tosdr_admin, tosdr_curator, tosdr_user. You can log in with any one of these email addresses: admin@selfhosted.tosdr.org, curator@selfhosted.tosdr.org, user@selfhosted.tosdr.org, with the password `Justforseed1`, which will work for all three.
-4. If you created your own user, confirm your user manually
-    * `docker-compose run web rails c`
-    * Find your user: `user = User.find_by_username('your_username')`
-    * Confirm user: `user.confirm`
-
-5. Sign-in
-
-To **annotate** a service, navigate to the services page from the top-right menu, choose a service, and click `View Documents`. Begin by highlighting a piece of text from this page. **H and the Hypothesis client must be running.**
-
-For a demonstration of how annotations work, feel free to [inspect the video attached to this PR](https://github.com/tosdr/edit.tosdr.org/pull/1116).
 
 ## Database
 
