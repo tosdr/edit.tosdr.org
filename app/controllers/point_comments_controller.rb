@@ -1,6 +1,6 @@
 class PointCommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_point, only: [:new, :create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_point, only: %i[new create]
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -9,21 +9,16 @@ class PointCommentsController < ApplicationController
   end
 
   def create
-    puts point_comment_params
-    puts @point.id
     @point_comment = PointComment.new(point_comment_params)
-	  @point_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@point_comment.summary)).to_html
+    @point_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@point_comment.summary)).to_html
     @point_comment.user_id = current_user.id
     @point_comment.point_id = @point.id
 
     if @point_comment.save
-      if(current_user.admin or current_user.curator)
-        report_spam(@point_comment.summary, "ham")
-      end
-      flash[:notice] = "Comment added!"
+      report_spam(@point_comment.summary, 'ham') if current_user.admin || current_user.curator
+      flash[:notice] = 'Comment added!'
     else
-      flash[:notice] = "Error adding comment!"
-      puts @point_comment.errors.full_messages
+      flash[:notice] = 'Error adding comment!'
     end
     redirect_to point_path(@point)
   end

@@ -1,9 +1,8 @@
 class PointsController < ApplicationController
   include Pundit::Authorization
-  include ApplicationHelper
   include ActionView::Helpers::TagHelper
   include FontAwesome5::Rails::IconHelper
-  
+
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: [:show, :edit, :update, :review, :post_review, :approve]
   before_action :set_topics, only: [:new, :create, :edit, :update, :post_review, :approve]
@@ -121,7 +120,7 @@ class PointsController < ApplicationController
   end
 
   def create_comment(comment_text)
-    PointComment.create(point_id: @point.id, summary: comment_text, user_id: current_user.id)
+    PointComment.create!(point_id: @point.id, summary: comment_text, user_id: current_user.id)
   end
 
   def point_create_options(point, path)
