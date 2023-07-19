@@ -31,10 +31,6 @@ class PointPolicy < ApplicationPolicy
     is_peer_curator?
   end
 
-  def post_review?
-    is_peer_curator?
-  end
-
   def user_points?
     !user.nil?
   end

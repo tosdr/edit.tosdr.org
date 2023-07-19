@@ -115,9 +115,11 @@ class Rack::Attack
   # If you want to return 503 so that the attacker might be fooled into
   # believing that they've successfully broken your app (or you just want to
   # customize the response), then uncomment these lines.
-  self.throttled_responder = lambda do |env|
-   [503,  # status
-     {},   # headers
-     ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]] # body
+  self.throttled_responder = lambda do |_env|
+    [
+      503, # status
+      {}, # headers
+      ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]
+    ] # body
   end
 end

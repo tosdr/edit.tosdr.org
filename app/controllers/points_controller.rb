@@ -4,29 +4,24 @@ class PointsController < ApplicationController
   include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: [:show, :edit, :update, :review, :post_review, :approve]
-  before_action :set_topics, only: [:new, :create, :edit, :update, :post_review, :approve]
-  before_action :check_status, only: [:create, :update]
+  before_action :set_point, only: %i[show edit update review approve]
+  before_action :set_topics, only: %i[new create edit update approve]
+  before_action :check_status, only: %i[create update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     authorize Point
 
-    @points = Point.includes(:service, :case, :user).order("RANDOM()").limit(100)
-
-    if @query = params[:query]
-      @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query)
-    end
+    @points = Point.includes(:service, :case, :user).order('RANDOM()').limit(100)
+    @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query) if @query == params[:query]
   end
 
   def new
     authorize Point
 
     @point = Point.new
-    if params[:service_id]
-      @point.service_id = params[:service_id]
-    end
+    @point.service_id = params[:service_id] if params[:service_id]
   end
 
   def create
@@ -57,7 +52,7 @@ class PointsController < ApplicationController
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
       annotation_json = JSON.parse(annotation['target_selectors'])
-      @point_text = annotation_json[2]['exact']
+      @point_text = annotation_json[2] && annotation_json[2]['exact']
     end
     @versions = @point.versions.includes(:item).reverse
   end
@@ -65,8 +60,17 @@ class PointsController < ApplicationController
   def update
     authorize @point
 
+    if (point_params[:case_id] != @point.case_id) && @point.annotation_ref
+      case_obj = Case.find(point_params[:case_id])
+      uuid = StringConverter.new(string: @point.annotation_ref).to_uuid
+      annotation = Annotation.find(uuid)
+      annotation.tags = [] << case_obj.title
+    end
+
     if @point.update(point_params)
-      create_comment(@point.point_change)
+      annotation.save!
+      comment = @point.point_change.present? ? @point.point_change : 'point updated without comment'
+      create_comment(comment)
       redirect_to point_path(@point)
     elsif @point.case.nil?
       render :edit
@@ -83,39 +87,18 @@ class PointsController < ApplicationController
     authorize @point
 
     if @point.update(status: 'approved')
-      create_comment(status_badge('approved') + raw('<br>') + 'No comment given')
-
+      comment = status_badge('approved') + raw('<br>') + 'No comment given'
+      create_comment(comment)
       redirect_to point_path(@point)
     else
       render :edit
-    end
-  end
-
-  def post_review
-    authorize @point
-
-    # process a post of the review form
-    if @point.update(status: point_params['status'])
-      report_spam(point_params['point_change'], "ham")
-      create_comment(status_badge(point_params['status']) + raw('<br>') + point_params['point_change'])
-      redirect_to point_path(@point)
-    else
-      render :edit
-    end
-  end
-
-  def user_points
-    @points = current_user.points.includes([:service, :case])
-
-    if @query = params[:query]
-      @points = current_user.points.includes([:service, :case, :user]).search_points_by_multiple(@query)
     end
   end
 
   private
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
   end
 
@@ -126,7 +109,7 @@ class PointsController < ApplicationController
   def point_create_options(point, path)
     if point.save
       redirect_to path
-      flash[:notice] = "You created a point!"
+      flash[:notice] = 'Point created'
     elsif point.case.nil?
       render :new
     else
@@ -143,11 +126,11 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
+    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document)
   end
 
   def check_status
-    if (!['draft', 'pending', 'declined'].include? point_params['status'])
+    unless %w[draft pending declined].include? point_params['status']
       render :edit
     end
   end
