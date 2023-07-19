@@ -39,7 +39,9 @@ class Rack::Attack
     end
   end
 
-  throttle('points/ip', limit: 5, period: 10.minutes) do |req|
+  # FIXME: temporarily loosened this from 5 to 50 due to
+  # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
+  throttle('points/ip', limit: 50, period: 10.minutes) do |req|
     match = req.path.match(/^\/points\/(\w+)/)
     if (req.patch? || req.put?) &&  !match.nil?
       req.ip
@@ -114,7 +116,7 @@ class Rack::Attack
   # believing that they've successfully broken your app (or you just want to
   # customize the response), then uncomment these lines.
   self.throttled_responder = lambda do |env|
-   [ 503,  # status
+   [503,  # status
      {},   # headers
      ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]] # body
   end
