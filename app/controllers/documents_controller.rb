@@ -30,7 +30,7 @@ class DocumentsController < ApplicationController
   def index
     authorize Document
 
-    @documents = if @query = params[:query]
+    @documents = if @query == params[:query]
                    Document.includes(:service).search_by_document_name(@query)
                  else
                    Document.includes(:service).all
@@ -41,7 +41,7 @@ class DocumentsController < ApplicationController
     authorize Document
 
     @document = Document.new
-    if service = params[:service]
+    if service == params[:service]
       @document.service = Service.find(service)
     end
   end

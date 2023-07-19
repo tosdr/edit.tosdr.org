@@ -1,7 +1,6 @@
 class ServiceCommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_service, only: [:new, :create]
-  include ApplicationHelper
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_service, only: %i[new create]
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -10,21 +9,16 @@ class ServiceCommentsController < ApplicationController
   end
 
   def create
-    puts service_comment_params
-    puts @service.id
     @service_comment = ServiceComment.new(service_comment_params)
-	@service_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@service_comment.summary)).to_html
+    @service_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@service_comment.summary)).to_html
     @service_comment.user_id = current_user.id
     @service_comment.service_id = @service.id
 
     if @service_comment.save
-      if(current_user.admin or current_user.curator)
-        report_spam(@service_comment.summary, "ham")
-      end
-      flash[:notice] = "Comment added!"
+      report_spam(@service_comment.summary, 'ham') if current_user.admin || current_user.curator
+      flash[:notice] = 'Comment added!'
     else
-      flash[:notice] = "Error adding comment!"
-      puts @service_comment.errors.full_messages
+      flash[:notice] = 'Error adding comment!'
     end
     redirect_to service_path(@service)
   end

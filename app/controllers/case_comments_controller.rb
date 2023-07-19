@@ -1,6 +1,6 @@
 class CaseCommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_case, only: [:new, :create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_case, only: %i[new create]
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -9,22 +9,16 @@ class CaseCommentsController < ApplicationController
   end
 
   def create
-    puts case_comment_params
-    puts @case.id
     @case_comment = CaseComment.new(case_comment_params)
-	@case_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@case_comment.summary)).to_html
+    @case_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@case_comment.summary)).to_html
     @case_comment.user_id = current_user.id
     @case_comment.case_id = @case.id
 
     if @case_comment.save
-
-      if(current_user.admin or current_user.curator)
-        report_spam(@case_comment.summary, "ham")
-      end
-      flash[:notice] = "Comment added!"
+      report_spam(@case_comment.summary, 'ham') if current_user.admin || current_user.curator
+      flash[:notice] = 'Comment added!'
     else
-      flash[:notice] = "Error adding comment!"
-      puts @case_comment.errors.full_messages
+      flash[:notice] = 'Error adding comment!'
     end
     redirect_to case_path(@case)
   end

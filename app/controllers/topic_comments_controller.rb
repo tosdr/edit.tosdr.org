@@ -1,6 +1,6 @@
 class TopicCommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_topic, only: [:new, :create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_topic, only: %i[new create]
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -10,20 +10,15 @@ class TopicCommentsController < ApplicationController
 
   def create
     @topic_comment = TopicComment.new(topic_comment_params)
-	@topic_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@topic_comment.summary)).to_html
+    @topic_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@topic_comment.summary)).to_html
     @topic_comment.user_id = current_user.id
     @topic_comment.topic_id = @topic.id
 
     if @topic_comment.save
-
-      if(current_user.admin or current_user.curator)
-        report_spam(@topic_comment.summary, "ham")
-      end
-
-      flash[:notice] = "Comment added!"
+      report_spam(@topic_comment.summary, 'ham') if current_user.admin || current_user.curator
+      flash[:notice] = 'Comment added!'
     else
-      flash[:notice] = "Error adding comment!"
-      puts @topic_comment.errors.full_messages
+      flash[:notice] = 'Error adding comment!'
     end
     redirect_to topic_path(@topic)
   end

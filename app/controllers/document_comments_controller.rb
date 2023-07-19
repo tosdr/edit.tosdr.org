@@ -1,6 +1,6 @@
 class DocumentCommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_document, only: [:new, :create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_document, only: %i[new create]
 
   invisible_captcha only: [:create], honeypot: :subject
 
@@ -9,21 +9,16 @@ class DocumentCommentsController < ApplicationController
   end
 
   def create
-    puts document_comment_params
-    puts @document.id
     @document_comment = DocumentComment.new(document_comment_params)
-	@document_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@document_comment.summary)).to_html
+    @document_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@document_comment.summary)).to_html
     @document_comment.user_id = current_user.id
     @document_comment.document_id = @document.id
 
     if @document_comment.save
-
-      if(current_user.admin or current_user.curator)
-        report_spam(@document_comment.summary, "ham")
-      end
-      flash[:notice] = "Comment added!"
+      report_spam(@document_comment.summary, 'ham') if current_user.admin || current_user.curator
+      flash[:notice] = 'Comment added!'
     else
-      flash[:notice] = "Error adding comment!"
+      flash[:notice] = 'Error adding comment!'
       puts @document_comment.errors.full_messages
     end
     redirect_to document_path(@document)
