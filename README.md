@@ -52,9 +52,12 @@ The following steps should be completed from the working directory of `edit.tosd
 
 If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two steps, after which it can be started with a single command in the future.
 
-To prepare the application, run the following command inside the repository folder to build it and initialise the database:
+To prepare the application, run the following commands inside the repository folder to build it and initialise the database:
 
     $ docker-compose build
+    $ docker network create elasticsearch
+    $ docker network create dbs
+    $ docker-compose up
     $ docker-compose run web rails db:seed
 
 From then on, you can start the application by running:
