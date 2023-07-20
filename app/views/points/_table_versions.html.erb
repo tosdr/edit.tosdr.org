@@ -36,15 +36,15 @@
         <div class="row">
           <div class="col-sm-6">
             <p><b>Previous Title:</b> <%= format_figures(title) %></p>
-            <p><b>Updated Title:</b> <%= format_figures(title, first = false) %></p>
+            <p><b>Updated Title:</b> <%= format_figures(title, first: false) %></p>
           </div>
           <div class="col-sm-6">
             <p><b>Previous Analysis:</b> <%= format_figures(analysis) %></p>
-            <p><b>Updated Analysis:</b> <%= format_figures(analysis, first = false) %></p>
+            <p><b>Updated Analysis:</b> <%= format_figures(analysis, first: false) %></p>
           </div>
           <div class="col-sm-6">
             <p><b>Previous Status:</b> <%= status_badge format_figures(status) %></p>
-            <p><b>Updated Status:</b> <%= status_badge format_figures(status, first = false) %></p>
+            <p><b>Updated Status:</b> <%= status_badge format_figures(status, first: false) %></p>
           </div>
         </div>
       </div>
