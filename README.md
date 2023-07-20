@@ -52,9 +52,12 @@ The following steps should be completed from the working directory of `edit.tosd
 
 If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two steps, after which it can be started with a single command in the future.
 
-To prepare the application, run the following command inside the repository folder to build it and initialise the database:
+To prepare the application, run the following commands inside the repository folder to build it and initialise the database:
 
     $ docker-compose build
+    $ docker network create elasticsearch
+    $ docker network create dbs
+    $ docker-compose up
     $ docker-compose run web rails db:seed
 
 From then on, you can start the application by running:
@@ -122,9 +125,6 @@ H is the Hypothesis web service and api.
 
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
-4. `docker create network elasticsearch`
-
-    In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
 5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
 
