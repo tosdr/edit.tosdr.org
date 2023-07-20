@@ -125,9 +125,6 @@ H is the Hypothesis web service and api.
 
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
-4. `docker create network elasticsearch`
-
-    In order for H and Phoenix to work together, they share a database and an elasticsearch instance. Both are [defined](https://github.com/tosdr/h/blob/phoenix-integration/docker-compose.yml) over a docker network and launched with H.
 5. `make services`, which launches the docker services needed to run H.
 7. `make dev`
 
