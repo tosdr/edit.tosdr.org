@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# spec/requests/api/application_interaction/v1/points_spec.rb
 describe ApplicationInteraction::V1::Points, type: :request do
   before :each do
     @user = FactoryBot.create(:user_confirmed, h_key: 'testkey1234')
