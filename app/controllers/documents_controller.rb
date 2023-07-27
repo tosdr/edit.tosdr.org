@@ -58,7 +58,7 @@ class DocumentsController < ApplicationController
       if !crawlresult.nil?
         if crawlresult['error']
           flash[:alert] =
-            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
+            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
           redirect_to document_path(@document)
         else
           flash[:notice] = 'The crawler has updated the document'
@@ -89,7 +89,7 @@ class DocumentsController < ApplicationController
       if !crawlresult.nil?
         if crawlresult['error']
           flash[:alert] =
-            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
+            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
           redirect_to document_path(@document)
         else
           flash[:notice] = 'The crawler has updated the document'
@@ -127,7 +127,7 @@ class DocumentsController < ApplicationController
     crawlresult = perform_crawl
     if crawlresult['error']
       flash[:alert] =
-        "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Region: ' + crawlresult['message']['crawler'].to_s + '<br>Stacktrace: ' + CGI.escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
+        "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Region: ' + crawlresult['message']['crawler'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
 
       redirect_to document_path(@document)
     else

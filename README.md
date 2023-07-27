@@ -50,9 +50,9 @@ First, clone Phoenix :)
 
 The following steps should be completed from the working directory of `edit.tosdr.org/`
 
-If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two steps, after which it can be started with a single command in the future.
+If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves five configuration commands, after which it can be started with a single command in the future.
 
-To prepare the application, run the following commands inside the repository folder to build it and initialise the database:
+To prepare the application, run the following commands inside the repository folder to build the application and initialise the database:
 
     $ docker-compose build
     $ docker network create elasticsearch
@@ -60,11 +60,13 @@ To prepare the application, run the following commands inside the repository fol
     $ docker-compose up
     $ docker-compose run web rails db:seed
 
+A note on Docker networks: we use them to facilitate development with Hypothesis. Hypothesis and Phoenix share a database, as well as an Elasticsearch instance. The `dbs` network is the shared database, and the `elasticsearch` network is the shared Elasticsearch instance.
+
 From then on, you can start the application by running:
 
     $ docker-compose up
 
-(Add the `--build` argument if you add or remove dependencies.)
+(Add the `--build` argument if you add or remove dependencies, such as gems)
 
 So,
 
@@ -72,7 +74,7 @@ So,
 
    This will launch the following services: 1) the database (`postgres:11.5-alpine`), 2) the Phoenix web application, 3) Elasticsearch (needed to run Hypothesis), 4) adminer (for inspecting the database).
 
-   If you don't need to run Hypothesis and wish simply to run the web application and the database, you can launch these services on their own by specifying them in the docker-compose command: `docker-compose up web db`
+   If you wish simply to run the web application and the database, you can launch these services on their own by specifying them in the docker-compose command: `docker-compose up web db`
    
    The Phoenix web application runs on port 9090 (http://localhost:9090).
 
