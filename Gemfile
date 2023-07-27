@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 # for api pagination
 gem 'kaminari'
-gem 'kramdown', '~> 1.11', '>= 1.11.1'
+gem 'kramdown'
 gem 'mini_racer'
 gem 'paper_trail'
 gem 'pg', '~> 0.21'
