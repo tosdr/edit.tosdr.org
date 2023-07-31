@@ -16,11 +16,35 @@ class Service < ApplicationRecord
   before_validation :strip_input_fields
 
   def self.search_by_name(query)
-    Service.where("name ILIKE ?", "%#{query}%")
+    Service.where('name ILIKE ?', "%#{query}%")
   end
 
   def calculate_service_rating
     perform_calculation
+  end
+
+  def ota_service(prioritize_pga = true)
+    # prioritize pga
+    collection = prioritize_pga ? 'pga' : ''
+    res = Ota::RetrieveService.new(service_name: name, terms_type: '', collection: collection).service
+    body = JSON.parse(res.body)
+    # return nil if request failed for whatever reason
+    return nil unless body['failures'].empty?
+
+    # return result for pga declaration if it exists
+    services = body['results']
+    # return nil if no results
+    return nil if services.empty?
+
+    # return first declaration in result set
+    services[0]
+  end
+
+  def ota_service_link
+    service = ota_service
+    return service['url'] if service
+
+    nil
   end
 
   def points_ordered_status_class
