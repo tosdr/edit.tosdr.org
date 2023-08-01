@@ -21,7 +21,7 @@ class PointsController < ApplicationController
   end
 
   def list_docbot
-    @docbot_points = Point.docbot_points
+    @docbot_points = Point.docbot
     @q = @docbot_points.ransack(params[:q])
     @docbot_points = @q.result(distinct: true).page(params[:page] || 1)
   end
