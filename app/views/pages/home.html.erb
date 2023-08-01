@@ -1,19 +1,25 @@
-<% if @pending_points then %>
-<h2>Points for you to review:</h2>
+<% if @pending_points %>
+<h2>User-created points to review:</h2>
 <%= render 'shared/table_points', points: @pending_points %>
 <% end %>
 
-<% if @change_request_points && @change_request_points.count > 0 then %>
-  <h2>Points that need your attention:</h2>
+<% if @docbot_points %>
+  <h2>Docbot-created points to review:</h2>
+  <%= render 'shared/table_points', points: @docbot_points %>
+  <%= link_to "More", list_docbot_path, class: "btn btn-primary box-shadow-for-button" %>
+<% end %>
+
+<% if @change_request_points && @change_request_points.count > 0 %>
+  <h2>Points requiring attention:</h2>
   <%= render 'shared/table_points', points: @change_request_points %>
 <% end %>
 
-<% if @draft_points && @draft_points.count > 0 then %>
+<% if @draft_points && @draft_points.count > 0 %>
   <h2>Your drafts:</h2>
   <%= render 'shared/table_points', points: @draft_points %>
 <% end %>
 
-<% if @services then %>
+<% if @services %>
 <header class="tc ph4">
   <h1 class="fw2 mv3">
     <strong>Terms of Service;</strong> Didn't Read

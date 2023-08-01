@@ -17,6 +17,18 @@ class PointsController < ApplicationController
     @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query) if @query == params[:query]
   end
 
+  def list_docbot
+    docbot_user = User.find_by_username('docbot')
+    @docbot_points = Point.includes(:case)
+                          .includes(:service)
+                          .includes(:user)
+                          .where(user_id: docbot_user.id)
+                          .where(status: 'pending')
+    #                     .order('ml_score DESC')
+    @q = @docbot_points.ransack(params[:q])
+    @docbot_points = @q.result(distinct: true).page(params[:page] || 1)
+  end
+
   def new
     authorize Point
 
