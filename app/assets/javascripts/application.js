@@ -1,6 +1,9 @@
-//= require jquery
-//= require jquery_ujs
+//= require jquery3
+//= require popper
 //= require bootstrap-sprockets
 //= require vue
-//= require_tree .
 //= require font_awesome5
+
+import 'bootstrap/dist/js/bootstrap'
+import 'bootstrap/dist/css/bootstrap'
+require("stylesheets/application.scss")

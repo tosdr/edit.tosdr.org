@@ -1,5 +1,8 @@
 {
-  "name": "phoenix",
-  "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/webpacker": "^5.2.1",
+    "bootstrap": "^5.3.1",
+    "jquery": "^3.7.0",
+    "popper.js": "^1.16.1"
+  }
 }

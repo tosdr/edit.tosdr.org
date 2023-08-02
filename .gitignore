@@ -14,3 +14,15 @@ phantomjs
 /config/application.yml
 .vs/
 .idea
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore coverage
+./coverage/*
+
+# Ignore coverage
+/coverage/*
