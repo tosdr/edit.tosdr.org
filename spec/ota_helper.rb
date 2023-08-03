@@ -99,6 +99,45 @@ RESPONSE_FAILURE = {
   ]
 }
 
+RESPONSE_DOCUMENTS = {
+  "id": "service-1",
+  "name": "Service/1",
+  "terms": [
+    {
+      "type": "Terms of Service",
+      "sourceDocuments": [
+        {
+          "location": "https://service1.com/tos-1",
+          "executeClientScripts": false,
+          "contentSelectors": "#main",
+          "insignificantContentSelectors": ".returnToTop",
+          "filters": ["cleanUrls"],
+        },
+        {
+          "location": "https://service1.com/tos-2",
+          "executeClientScripts": false,
+          "contentSelectors": "#main",
+          "insignificantContentSelectors": ".returnToTop",
+          "filters": ["cleanUrls"],
+        }
+      ]  
+    },
+    {
+      "type": "Privacy Policy",
+      "sourceDocuments": [
+        {
+          "location": "https://service1.com/privacy-policy",
+          "executeClientScripts": true,
+          "contentSelectors": "body",
+          "insignificantContentSelectors": ".returnToTop",
+          "filters": ["cleanUrls"],
+        }
+      ]
+    }
+  ],
+  "filters": "function cleanUrls(document) {…}"
+}
+
 def stub_base(url, response)
   response = response.to_json
   stub_request(:get, url).
@@ -115,6 +154,11 @@ def stub_base(url, response)
   Net::HTTP.start(uri.host, uri.port) do |http|
     http.request(req)
   end
+end
+
+def stub_documents_request(url)
+  response = RESPONSE_DOCUMENTS
+  stub_base(url, response)
 end
 
 def stub_service_request(resource, filter = nil)

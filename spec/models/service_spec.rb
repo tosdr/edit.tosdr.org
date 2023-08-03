@@ -58,5 +58,24 @@ describe Service do
         expect(res).to be_nil
       end
     end
+
+    describe '#ota_documents' do
+      it 'returns an array of available documents' do
+        service = FactoryBot.create(:service, name: 'facebook')
+        url = 'http://173.173.173.173/api/v1/service/facebook'
+        stub_documents_request(url)
+        res = service.ota_documents(url)
+        expect(res.length).to eq(2)
+      end
+
+      it 'filters the documents if terms type is specified' do
+        service = FactoryBot.create(:service, name: 'facebook')
+        url = 'http://173.173.173.173/api/v1/service/facebook'
+        stub_documents_request(url)
+        terms_type = 'Terms of Service'
+        res = service.ota_documents(url, terms_type)
+        expect(res[0]['type']).to eq(terms_type)
+      end
+    end
   end
 end
