@@ -38,8 +38,7 @@ class Point < ApplicationRecord
          .need_review('pending')
          .limit(10)
          .offset(rand(100))
-
-    # .order('ml_score DESC')
+         .order('ml_score DESC')
   end
 
   def self.draft(user)
