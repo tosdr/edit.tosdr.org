@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_03_115359) do
+ActiveRecord::Schema.define(version: 2023_08_03_141537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -285,6 +285,7 @@ ActiveRecord::Schema.define(version: 2023_08_03_115359) do
     t.integer "quote_end"
     t.bigint "document_id"
     t.string "annotation_ref"
+    t.integer "ml_score"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
