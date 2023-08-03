@@ -58,7 +58,7 @@ To prepare the application, run the following commands inside the repository fol
     $ docker network create elasticsearch
     $ docker network create dbs
     $ docker-compose up
-    $ docker-compose run web rails db:seed
+    $ docker exec -it edittosdrorg_web_1 rails db:seed
 
 A note on Docker networks: we use them to facilitate development with Hypothesis. Hypothesis and Phoenix share a database, as well as an Elasticsearch instance. The `dbs` network is the shared database, and the `elasticsearch` network is the shared Elasticsearch instance.
 
