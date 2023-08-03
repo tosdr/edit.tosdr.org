@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # app/services/ota/retrieve_service.rb
 class Ota::RetrieveService
-  BASE_OTA_URL = 'http://api.opentermsarchive.org/v1'.freeze
+  BASE_OTA_URL = 'http://api.opentermsarchive.org/v1'
 
   def initialize(service_name:, terms_type:, collection:)
     @service_name = service_name
