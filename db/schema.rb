@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(version: 2023_08_03_141537) do
     t.integer "quote_end"
     t.bigint "document_id"
     t.string "annotation_ref"
-    t.integer "ml_score"
+    t.decimal "ml_score"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
