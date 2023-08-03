@@ -1,4 +1,9 @@
+# frozen_string_literal: true
+
+# app/models/document.rb
 class Document < ApplicationRecord
+  include Ota
+
   has_paper_trail
 
   belongs_to :service
@@ -13,6 +18,10 @@ class Document < ApplicationRecord
 
   validate :custom_uniqueness_check
 
+  def self.search_by_document_name(query)
+    Document.joins(:service).where('services.name ILIKE ? or documents.name ILIKE ? or documents.url ILIKE?', "%#{query}%", "%#{query}%", "%#{query}%")
+  end
+
   def custom_uniqueness_check
     doc = Document.where(url: self.url, xpath: self.xpath, status: nil)
     if doc.any? && (doc.first.id != self.id)
@@ -21,39 +30,25 @@ class Document < ApplicationRecord
     end
   end
 
-  def self.search_by_document_name(query)
-    Document.joins(:service).where("services.name ILIKE ? or documents.name ILIKE ? or documents.url ILIKE?", "%#{query}%", "%#{query}%", "%#{query}%")
-  end
-
   def snippets
-    self.text = '' unless self.text
+    self.text = '' unless text
 
     quotes = []
     snippets = []
     points_with_quote_text_to_restore_in_doc = []
 
-    self.points.each do |p|
-      if p.status === 'declined'
-        next
-      end
+    points.each do |p|
+      next if p.status == 'declined'
+      next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
 
-      if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
-        next
-      end
-
-      quote_exists_in_text = !self.text.index(p.quote_text).nil?
-
+      quote_exists_in_text = !text.index(p.quote_text).nil?
       if quote_exists_in_text
-        quote_start = self.text.index(p.quote_text)
+        quote_start = text.index(p.quote_text)
         quote_start_changed = p.quote_start != quote_start
         quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
 
-        if (!quote_start_changed && !quote_end_changed)
-          # quote is okay, so we store it
-          quotes << p
-        else
-          points_with_quote_text_to_restore_in_doc << p
-        end
+        quote_ok = !quote_start_changed && !quote_end_changed
+        quote_ok ? quotes << p : points_with_quote_text_to_restore_in_doc << p
       end
     end
 
@@ -66,17 +61,17 @@ class Document < ApplicationRecord
 
     quotes.each do |q|
       puts 'quote to snippet ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s + ' ..' + cursor.to_s
-      if (q.quote_start > cursor)
+      if q.quote_start > cursor
         puts 'unquoted ' + cursor.to_s + ' -> ' + q.quote_start.to_s
         snippets.push({
-          text: self.text[cursor, q.quote_start - cursor]
-        })
+                        text: self.text[cursor, q.quote_start - cursor]
+                      })
         puts 'quoted ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s
         snippets.push({
-          pointId: q.id,
-          text: self.text[q.quote_start, q.quote_end - q.quote_start],
-          title: q.title
-        })
+                        pointId: q.id,
+                        text: self.text[q.quote_start, q.quote_end - q.quote_start],
+                        title: q.title
+                      })
         puts 'cursor to ' + q.quote_end.to_s
         cursor = q.quote_end
       end
@@ -85,8 +80,8 @@ class Document < ApplicationRecord
     puts 'final snippet ' + cursor.to_s + ' -> ' + self.text.length.to_s
 
     snippets.push({
-      text: self.text[cursor, self.text.length - cursor]
-    })
+                    text: self.text[cursor, self.text.length - cursor]
+                  })
 
     {
       snippets: snippets,

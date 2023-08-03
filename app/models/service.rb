@@ -1,4 +1,9 @@
+# frozen_string_literal: true
+
+# app/models/service.rb
 class Service < ApplicationRecord
+  include Ota
+
   has_paper_trail
 
   belongs_to :user, optional: true
