@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_03_141537) do
+ActiveRecord::Schema.define(version: 2023_08_15_093829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,9 @@ ActiveRecord::Schema.define(version: 2023_08_03_141537) do
     t.bigint "case_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "char_start"
+    t.integer "char_end"
+    t.decimal "ml_score"
     t.index ["case_id"], name: "index_docbot_records_on_case_id"
     t.index ["document_id"], name: "index_docbot_records_on_document_id"
   end
