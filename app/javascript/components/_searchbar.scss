@@ -1,0 +1,62 @@
+.search-bar {
+  // margin: 20px 0 20px 0;
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+}
+#custom-search-input {
+        // margin: 10px 15px 0;
+        padding: 0;
+        flex: 1 1 auto;
+    }
+
+    #custom-search-input .search-query {
+        padding-left: 20px;
+        padding-right: 35px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 20px;
+    }
+
+    #custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: absolute;
+        top: 5px;
+        left: -35px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color:#AAA;
+    }
+
+    .search-query:focus + button {
+        z-index: 3;
+    }
+.reset-btn {
+  flex: 0 0 auto;
+  .btn {
+    border-radius: 20px;
+    margin-left: 5px;
+  }
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.custom-text {
+  font-size: 12px;
+}
+
+.custom-padding {
+  padding: 10px 12px;
+}

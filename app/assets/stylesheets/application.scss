@@ -1,13 +1,14 @@
 
+// External libraries
+// @import "bootstrap-sprockets";
+// @import "bootstrap";
+@import "../node_modules/bootstrap/scss/bootstrap";
 
 // Graphical variables
 @import "config/fonts";
 @import "config/colors";
 @import "config/bootstrap_variables";
 
-// External libraries
-@import "bootstrap-sprockets";
-@import "bootstrap";
 @import 'font_awesome5.css';
 
 // Your CSS partials

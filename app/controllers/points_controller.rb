@@ -1,7 +1,7 @@
 class PointsController < ApplicationController
   include Pundit::Authorization
   include ActionView::Helpers::TagHelper
-  include FontAwesome5::Rails::IconHelper
+  # include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: %i[show edit update review approve]

@@ -1,0 +1,21 @@
+// Import your layouts CSS files here.
+// Examples:
+// @import "dashboard";
+// @import "profile";
+// @import "map";
+
+//Title for Pages
+.title {
+  text-align: center;
+  margin-bottom: 50px;
+  & h2 {
+    font-size: 1.8em;
+    line-height: 50px;
+  }
+
+  & p {
+    font-size: 1.5em;
+    line-height: 0.5em;
+    font-weight: lighter;
+  }
+}

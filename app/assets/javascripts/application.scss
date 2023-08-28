@@ -1,0 +1,21 @@
+@import "~bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,700,800|Lato:300,400,400italic,700');
+
+// Graphical variables
+@import "config/fonts";
+@import "config/colors";
+@import "config/bootstrap_variables";
+
+@import 'font_awesome5.css';
+
+// Your CSS partials
+@import "layouts/index";
+@import "components/index";
+@import "pages/index";
+
+.overflow {
+  width: 1000px;
+  height: 300px;
+  overflow: auto;
+}
+

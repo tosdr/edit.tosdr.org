@@ -103,6 +103,10 @@ class Service < ApplicationRecord
     end
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "id", "is_comprehensively_reviewed", "keywords", "name", "rating", "related", "slug", "status", "updated_at", "url", "user_id", "wikipedia"]
+  end
+
   private
 
   def strip_input_fields

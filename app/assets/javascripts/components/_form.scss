@@ -1,0 +1,58 @@
+.form-login {
+  background: white;
+  padding: 10px 20px;
+  margin-top: 30px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.3);
+
+  h2 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .text-area {
+    width: 100%;
+    resize: vertical;
+
+  }
+}
+
+.form-actions {
+  padding: 20px 15px;
+  .btn {
+    padding: 10px 0;
+    width: 100%;
+    margin: 0px;
+    margin-top: 10px;
+  }
+}
+
+.form-control {
+  border-radius: 4px;
+}
+
+.row-form div {
+  -webkit-transition: width 0.3s ease, margin 0.3s ease;
+  -moz-transition: width 0.3s ease, margin 0.3s ease;
+  -o-transition: width 0.3s ease, margin 0.3s ease;
+  transition: width 0.3s ease, margin 0.3s ease;
+}
+
+.form-field-width {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.margin-bottom-larger {
+  margin-bottom: 25px;
+}
+
+.margin-top-medium {
+  margin-top: 15px;
+}
+
+.margin-top-larger {
+  margin-top: 25px;
+}

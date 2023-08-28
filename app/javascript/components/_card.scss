@@ -1,0 +1,278 @@
+$badge-radius: 35px;
+$padding-base-vertical:     6px !default;
+$padding-base-horizontal:   12px !default;
+
+$padding-large-vertical:    10px !default;
+$padding-large-horizontal:  16px !default;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  border-radius: $border-radius-base;
+  height: 300px;
+  margin: $padding-large-vertical 0;
+
+  & .card-service {
+    margin: 0;
+    padding: $padding-base-vertical $padding-base-horizontal;
+    font-size: $font-size-h2;
+    font-weight: $headings-font-weight;
+    letter-spacing: 1.75px;
+    text-align: center;
+    background-color: $gray-lighter;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: $border-radius-base $border-radius-base 0 0;
+  }
+  & .card-block {
+    flex-grow: 1;
+    padding: $padding-large-vertical $padding-large-horizontal;
+
+    .card-text {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      ul {
+        max-height: 150px;
+        overflow: hidden;
+      }
+    }
+  }
+  .card-footer {
+    padding: $padding-large-vertical;
+  }
+}
+
+$pointPaddingLeft : 35px;
+
+.xs-icon {
+  background-size: 16px;
+  background-position: left top !important;
+  padding-left: 24px !important;
+}
+.point-good {
+  background-image: image-url("assets/images/point-good.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.point-neutral {
+  background-image: image-url("assets/images/point-neutral.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.point-bad {
+  background-image: image-url("assets/images/point-bad.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.point-blocker {
+  background-image: image-url("assets/images/point-blocker.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+
+
+.card-badge {
+  height: $badge-radius * 2;
+  min-width: $badge-radius * 2;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 2px;
+}
+.rating-A {
+  background-color: #1BA321;
+}
+.rating-B {
+  background-color: #C7E128;
+}
+.rating-C {
+  background-color: #FFB727;
+}
+.rating-D {
+  background-color: #F26A15;
+}
+.rating-F {
+  background-color: #D02620;
+}
+.rating-na {
+  color: #363636 !important;
+  font-weight: lighter;
+  // "N/A" is three characters, so it should be smaller than the other ratings:
+  font-size: 30px;
+  // To place the "N/A" in the middle of the badge, the line-height should be as high as the other badges' font size,
+  // plus half its own font size to shift it down to the middle.
+  line-height: 48px+(30px/2);
+  background-color: transparent;
+}
+
+// Service Rating badge
+.service-badge {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+  &.rating-na {
+    font-size: 0.65em;
+    line-height: 1.3em;
+    padding-top: 0.5rem;
+  }
+}
+
+// Card-inline
+.container.card-container {
+  margin: 0px 0px;
+}
+.card-inline {
+  display: flex;
+  font-size: 0.9em;
+  min-width: 300px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0;
+  padding: 10px 20px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  & .btn {
+    padding: 4px;
+  }
+
+  .box-shadow-for-button {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+}
+.card-inline:nth-child(even) {
+  background-color: #FCFCFC;
+}
+.card-inline:nth-child(odd) {
+  background-color: #F6F6F6;
+}
+.card-inline:first-child {
+  border-radius: 4px 4px 0 0;
+}
+.card-inline-header {
+  margin-top: 0px;
+  background-color: #ededed !important;
+  & .card-inline-rating {
+    padding: 0 5px;
+  }
+}
+.card-inline-vote {
+  flex: 0 0 20px;
+}
+.card-inline-service {
+  flex: 1 1 10%;
+  padding-right: 5px;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+.card-inline-point {
+  flex: 1 1 50%;
+  padding: 0px 5px;
+}
+.card-inline-rating {
+  flex: 0 0 56px;
+  text-align: center;
+  padding: 5px 5px 5px 20px;
+}
+.card-inline-status {
+  flex: 0 0 70px;
+  text-align: center;
+}
+.card-inline-featured {
+  flex: 0 0 81px;
+  text-align: center;
+  padding: 0 5px;
+
+}
+.card-inline-topic {
+  flex: 0 0 80px;
+  text-align: center;
+}
+.card-inline-contribution {
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 0 5px;
+  max-width: 120px;
+}
+.card-inline-url {
+  flex: 1 1 auto;
+  padding: 0 5px;
+  overflow: auto;
+}
+.card-inline-grade {
+  flex: 0 1 64px;
+  text-align: center;
+  padding: 0 10px;
+}
+.card-inline-options {
+  flex: 0 0 158px;
+  text-align: right;
+}
+
+// better CSS by attributes
+.card-inline-150 {
+  flex: 1 1 150px;
+  padding-right: 5px;
+}
+.card-inline-shrink-80 {
+  flex: 0 1 80px;
+}
+.card-inline-shrink-40 {
+  flex: 0 1 40px;
+}
+.card-inline-autogrow {
+  flex: 1 1 auto;
+  padding: 0 5px;
+}
+
+// Case rating show badge
+.case-good:after {
+  content: image-url("assets/images/point-good.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+
+.case-neutral:after {
+  content: image-url("assets/images/point-neutral.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.case-bad:after {
+  content: image-url("assets/images/point-bad.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}
+.case-blocker:after {
+  content: image-url("assets/images/point-blocker.png");
+  /* The rating image is 29x29 */
+  height: 29px;
+  width: 29px;
+}

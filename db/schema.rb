@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_06_113550) do
+ActiveRecord::Schema.define(version: 2023_08_15_093829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,14 +28,14 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
-  create_table "alembic_version", primary_key: "version_num", id: :string, limit: 32, force: :cascade do |t|
+  create_table "alembic_version", primary_key: "version_num", id: { type: :string, limit: 32 }, force: :cascade do |t|
   end
 
   create_table "annotation", id: :uuid, default: -> { "uuid_generate_v1mc()" }, force: :cascade do |t|
@@ -115,6 +115,19 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
     t.boolean "privacy_related"
     t.string "docbot_regex"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
+  end
+
+  create_table "docbot_records", force: :cascade do |t|
+    t.string "model_version"
+    t.bigint "document_id"
+    t.bigint "case_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "char_start"
+    t.integer "char_end"
+    t.decimal "ml_score"
+    t.index ["case_id"], name: "index_docbot_records_on_case_id"
+    t.index ["document_id"], name: "index_docbot_records_on_document_id"
   end
 
   create_table "document", id: :serial, force: :cascade do |t|
@@ -229,7 +242,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
     t.text "name", null: false
     t.datetime "enqueued_at", default: -> { "now()" }, null: false
     t.datetime "scheduled_at", default: -> { "now()" }, null: false
-    t.datetime "expires_at", default: -> { "(now() + '30 days'::interval)" }, null: false
+    t.datetime "expires_at", default: -> { "(now() + 'P30D'::interval)" }, null: false
     t.integer "priority", null: false
     t.text "tag", null: false
     t.jsonb "kwargs", default: {}, null: false
@@ -275,6 +288,7 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
     t.integer "quote_end"
     t.bigint "document_id"
     t.string "annotation_ref"
+    t.decimal "ml_score"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
@@ -441,7 +455,8 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
   end
 
   create_table "versions", force: :cascade do |t|
-    t.string "item_type", null: false
+    t.string "item_type"
+    t.string "{:null=>false}"
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
@@ -459,6 +474,8 @@ ActiveRecord::Schema.define(version: 2023_06_06_113550) do
   add_foreign_key "case_comments", "cases"
   add_foreign_key "case_comments", "users"
   add_foreign_key "cases", "topics"
+  add_foreign_key "docbot_records", "cases"
+  add_foreign_key "docbot_records", "documents"
   add_foreign_key "document_comments", "documents"
   add_foreign_key "document_comments", "users"
   add_foreign_key "document_meta", "document", name: "fk__document_meta__document_id__document"

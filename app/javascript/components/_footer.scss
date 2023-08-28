@@ -1,0 +1,49 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 80px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #5b5b5b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    color: white;
+    opacity: 0.5;
+    text-decoration: none;
+    font-size: 1.5rem;
+    padding: 0 10px;
+  }
+}
+.footer-links a:hover {
+  opacity: 0.9;
+}
+.footer-mobile {
+  width: 100%;
+  margin: 0 15px;
+  padding: 0 0;
+}
+.footer-mobile a {
+  font-size: 1.5rem;
+  padding: 0 0;
+}
+
+

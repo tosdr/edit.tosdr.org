@@ -1,30 +1,52 @@
-<div class="navbar-tosdr navbar-fixed-top">
+<div class="navbar-tosdr navbar-expand-lg navbar-light bg-light fixed-top">
   <!-- Left Navigation -->
   <div class="navbar-tosdr-left">
     <!-- Logo -->
-    <%= link_to root_path, class: "navbar-tosdr-brand" do %>
+    <%= link_to root_path, class: "navbar-brand navbar-tosdr-brand" do %>
       <div class="navbar-tosdr-title">
         <%= image_tag "favicon.ico" %>
         <strong>ToS;</strong>DR
       </div>
     <% end %>
     <% if Rails.env == 'development' %>
-      <strong class="label label-danger">DEVELOPMENT ENVIRONMENT</strong>
+      <strong class="badge badge-danger">DEVELOPMENT ENVIRONMENT</strong>
     <% end %>
 
     <% if Rails.env == 'staging' %>
-      <strong class="label label-warning">STAGING ENVIRONMENT</strong>
+      <strong class="badge badge-warning">STAGING ENVIRONMENT</strong>
     <% end %>
     <% unless current_user.nil? %>
-      <%= link_to "Find a service to annotate", services_path, class: "btn btn-primary btn-sm" %>
+      <%= link_to "Annotate service", services_path, class: "btn btn-primary btn-sm" %>
     <% end %>
+  </div>
 
-
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled">Disabled</a>
+      </li>
+    </ul>
   </div>
 
   <!-- Right Navigation -->
   <div class="navbar-tosdr-right hidden-xs hidden-sm">
-
     <!-- Links -->
     <% unless current_user.nil? %>
       <div class="navbar-tosdr-group">

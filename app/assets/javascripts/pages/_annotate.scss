@@ -1,0 +1,51 @@
+#toc {
+  padding-top: 1rem;
+}
+
+.toast {
+  position: absolute;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2rem 5rem;
+  background: #fff;
+  border: 1px solid #ffe;
+  box-shadow: #ccc 1px 1px 1rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 200ms ease;
+
+  select {
+    width: 90%;
+    text-overflow: ellipsis;
+  }
+}
+
+.toast.withSelection {
+  display: block;
+  opacity: 1;
+}
+
+.hiddenTag {
+  // This is, admittedly, brittle: this originally had a width of zero and a line-height of zero,
+  // but Chrome would then not include the contents in `document.getSelection().toString()` - which
+  // we *do* want, because that allows us to find the selected text in the originally scraped
+  // document. At the time of writing, it appears it does include the contents of elements with a
+  // width of 0.1px, but unfortunately, I could not find documentation on that behaviour, or a
+  // guarantee that it will stay that way. Sorry!
+  width: 0.1px;
+  line-height: 0.1;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.documentContent {
+  line-height: 1.8;
+}
+
+.docAnchor {
+  // The header navbar is 60px, so if we make this element 60px higher,
+  // anchors can link to this title without it being covered by the header.
+  margin-top: -60px;
+  padding-top: 60px;
+}
