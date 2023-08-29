@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_15_093829) do
+ActiveRecord::Schema.define(version: 2023_08_29_154217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 2023_08_15_093829) do
     t.integer "char_start"
     t.integer "char_end"
     t.decimal "ml_score"
+    t.string "text_version"
     t.index ["case_id"], name: "index_docbot_records_on_case_id"
     t.index ["document_id"], name: "index_docbot_records_on_document_id"
   end
@@ -188,6 +189,7 @@ ActiveRecord::Schema.define(version: 2023_08_15_093829) do
     t.bigint "user_id"
     t.string "status"
     t.string "crawler_server"
+    t.string "text_version"
     t.index ["service_id"], name: "index_documents_on_service_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
