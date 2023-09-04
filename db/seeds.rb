@@ -98,3 +98,27 @@ documents.each do |doc|
 end
 
 puts "#{documents.length} documents added!"
+
+puts 'seeding docbot-created points'
+
+docbot = User.find_by_username('docbot')
+
+unless docbot
+  docbot = User.new(email: 'docbot@test.org', username: 'docbot', admin: true, curator: true)
+  docbot.confirm
+  docbot.save! validate: false
+  docbot.reload
+end
+
+services = Service.pluck(:id)
+cases = Case.pluck(:id)
+documents = Document.pluck(:id)
+
+100.times do
+  service_id = services.sample
+  case_id = cases.sample
+  title = Case.find(case_id).title
+  document_id = documents.sample
+  ml_score = Faker::Number.between(from: 0.0, to: 1.0).round(2)
+  Point.create!(title: title, case_id: case_id, service_id: service_id, document_id: document_id, ml_score: ml_score, user_id: docbot.id, status: 'pending')
+end

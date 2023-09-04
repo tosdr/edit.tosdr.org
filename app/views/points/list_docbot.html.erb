@@ -1,0 +1,76 @@
+<% content_for :title do %>
+  <title>Docbot points</title>
+<% end %>
+
+<br>
+<div>
+  <div class="card-inline">
+    <div class="card-inline-item card-inline-service">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Docbot-created points</h1>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q, url: list_docbot_path,
+                                    html: { method: :get } do |f| %> 
+              <%= f.label :title_cont %>
+              <%= f.search_field :title_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= sort_link(@q, :ml_score, 'Sort ML score', default_order: :asc) %>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div class="">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Service</th>
+                <th scope="col">Title</th>
+                <th scope="col">Rating</th>
+                <th scope="col">ML score</th>
+                <th scope="col">Status</th>
+                <th scope="col">Author</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="myTableBody">
+            <% @docbot_points.each do |point| %>
+              <% if point.case&.classification == 'good' %>
+                <% pointbox = "point-good" %>
+              <% elsif point.case&.classification == 'neutral' %>
+                <% pointbox = "point-neutral" %>
+              <% elsif point.case&.classification == 'bad' %>
+                <% pointbox = "point-bad" %>
+              <% elsif point.case&.classification == 'blocker' %>
+                <% pointbox = "point-blocker" %>
+              <% end %>
+              <tr class="toSort" data-classification="<%= point.case&.classification %>">
+                <th scope="row"><%= point.service.name %></th>
+                <td><%= link_to point.quote_text ? "\"" + point.quote_text + "\"" : point.title, point_path(point), title: "View more details" %></td>
+                <td class="<%= pointbox %>"></td>
+                <td> <%= point.ml_score.to_s %> </td>
+                <td> <%= status_badge point.status %> </td>
+                <td><%= username point.user %> <%= rank_badge User.find_by_id(point.user) %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= paginate @docbot_points %>
