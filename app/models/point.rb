@@ -12,7 +12,6 @@ class Point < ApplicationRecord
   has_many :point_comments, dependent: :destroy
 
   validates :title, presence: true
-  validates :title, presence: true
   validates :status, inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found], allow_nil: false }
   validates :case_id, presence: true
 

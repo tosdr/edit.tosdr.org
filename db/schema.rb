@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_31_115734) do
+ActiveRecord::Schema.define(version: 2023_09_04_133816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 2023_08_31_115734) do
   end
 
   create_table "docbot_records", force: :cascade do |t|
-    t.string "model_version"
+    t.string "docbot_version"
     t.bigint "document_id"
     t.bigint "case_id"
     t.datetime "created_at", null: false
@@ -291,7 +291,7 @@ ActiveRecord::Schema.define(version: 2023_08_31_115734) do
     t.bigint "document_id"
     t.string "annotation_ref"
     t.decimal "ml_score"
-    t.string "model_version"
+    t.string "docbot_version"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
