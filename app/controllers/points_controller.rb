@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# app/controllers/points_controller.rb
 class PointsController < ApplicationController
   include Pundit::Authorization
   include ActionView::Helpers::TagHelper
@@ -16,14 +13,8 @@ class PointsController < ApplicationController
   def index
     authorize Point
 
-    @points = Point.eager_loaded.order('RANDOM()').limit(100)
-    @points = Point.eager_loaded.search_points_by_multiple(@query) if @query == params[:query]
-  end
-
-  def list_docbot
-    @docbot_points = Point.docbot
-    @q = @docbot_points.ransack(params[:q])
-    @docbot_points = @q.result(distinct: true).page(params[:page] || 1)
+    @points = Point.includes(:service, :case, :user).order('RANDOM()').limit(100)
+    @points = Point.includes(:service, :case, :user).search_points_by_multiple(@query) if @query == params[:query]
   end
 
   def new

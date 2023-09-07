@@ -1,58 +1,20 @@
 # frozen_string_literal: true
 
-# app/models/point.rb
 class Point < ApplicationRecord
   has_paper_trail
-
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
   belongs_to :document, optional: true
+
   belongs_to :service
   belongs_to :case
+
   has_many :point_comments, dependent: :destroy
 
   validates :title, presence: true
+  validates :title, presence: true
   validates :status, inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found], allow_nil: false }
   validates :case_id, presence: true
-
-  scope :eager_loaded, -> { includes(:case, :service, :user) }
-  scope :user_reviewable, ->(users) { where.not(user_id: users) }
-  scope :need_review, ->(status) { where(status: status) }
-  scope :docbot_created, ->(user) { where(user_id: user) }
-  scope :current_user_points, ->(user) { where(user_id: user) }
-
-  def self.pending(users)
-    Point.eager_loaded
-         .user_reviewable(users)
-         .need_review(%w[pending approved-not-found])
-         .order(updated_at: :asc)
-         .limit(10)
-         .offset(rand(100))
-  end
-
-  def self.docbot
-    docbot_user = User.find_by_username('docbot')
-    Point.eager_loaded
-         .docbot_created(docbot_user.id)
-         .need_review('pending')
-         .limit(10)
-         .offset(rand(100))
-         .order('ml_score DESC')
-  end
-
-  def self.draft(user)
-    Point.eager_loaded
-         .current_user_points(user)
-         .need_review('draft')
-         .limit(10)
-  end
-
-  def self.changes_requested(user)
-    Point.eager_loaded
-         .current_user_points(user)
-         .need_review('changes-requested')
-         .limit(10)
-  end
 
   def self.search_points_by_multiple(query)
     Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%", "%#{query}%", "%#{query}%")

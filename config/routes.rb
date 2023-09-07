@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   get 'my_points', to: 'points#user_points', as: :my_points
   get 'points/:id/review', to: 'points#review', as: 'review'
   get 'points/:id/approve', to: 'points#approve', as: 'approve'
-  get 'list_docbot', to: 'points#list_docbot', as: 'list_docbot'
   resources :points, only: :index
   resources :points, except: [:index] do
     resources :point_comments, only: %i[new create]
