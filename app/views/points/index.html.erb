@@ -1,6 +1,6 @@
 <% if current_user %>
   <% content_for :title do %>
-    <title>Points (ToS;DR Phoenix)</title>
+    <title>Points</title>
   <% end %>
 
   <div class="card-inline">
@@ -8,30 +8,107 @@
       <div class="row">
         <div class="col-lg-6">
           <h1>Points</h1>
-          <% if @points.length == 100 %>
-            (showing only 100 items)
-          <% else %>
-            (showing all <%= @points.length %> items)
-          <% end %>
         </div>
       </div>
       <br>
-      <br>
-      <div class="row">
-        <div class="col-lg-6">
-          <%= render "shared/search" %>
-        </div>
 
-        <div class="col-lg-6 text-right justify-content-end">
-          <button class="btn btn-success" id="orderByPoint">Order Points by Rating</button>
+      <div class="row">
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :service_name_matches %>
+              <%= f.search_field :service_name_matches %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :title_cont %>
+              <%= f.search_field :title_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :status_cont %>
+              <%= f.search_field :status_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :user_username_cont, "Auther username contains" %>
+              <%= f.search_field :user_username_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :case_classification_cont, "Rating (good, neutral, bad, blocker)" %>
+              <%= f.search_field :case_classification_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
         </div>
       </div>
       <br>
       <% if @points.empty? %>
         <p>There are no points to display at this time!</p>
       <% else %>
-        <%= render "shared/table_points", points: @points %>
+      <% service = false unless service %>
+        <div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Service</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Rating</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Author</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="myTableBody">
+                <% @points.each do |point| %>
+                  <% if point.case&.classification == 'good' %>
+                    <% pointbox = "point-good" %>
+                  <% elsif point.case&.classification == 'neutral' %>
+                    <% pointbox = "point-neutral" %>
+                  <% elsif point.case&.classification == 'bad' %>
+                    <% pointbox = "point-bad" %>
+                  <% elsif point.case&.classification == 'blocker' %>
+                    <% pointbox = "point-blocker" %>
+                  <% end %>
+                  <tr class="toSort" data-classification="<%= point.case&.classification %>">
+                    <% unless service %>
+                      <th scope="row"><%= point.service.name %></th>
+                    <% end %>
+                    <td><%= link_to point.quote_text ? "\"" + point.quote_text + "\"" : point.title, point_path(point), title: "View more details" %></td>
+                    <td class="<%= pointbox %>"></td>
+                    <td> <%= status_badge point.status %> </td>
+                    <td><%= username point.user %> <%= rank_badge User.find_by_id(point.user) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
+  <%= paginate @points %>
 <% end %>

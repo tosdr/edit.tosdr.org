@@ -15,10 +15,6 @@ class Service < ApplicationRecord
 
   before_validation :strip_input_fields
 
-  def self.search_by_name(query)
-    Service.where("name ILIKE ?", "%#{query}%")
-  end
-
   def calculate_service_rating
     perform_calculation
   end
