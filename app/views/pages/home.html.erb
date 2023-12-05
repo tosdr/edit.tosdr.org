@@ -3,7 +3,7 @@
 <%= render 'shared/table_points', points: @pending_points %>
 <% end %>
 
-<% if @docbot_points %>
+<% if @docbot_points && @docbot_points.count > 0 %>
   <h2>Docbot-created points to review:</h2>
   <%= render 'shared/table_points', points: @docbot_points %>
   <%= link_to "More", list_docbot_path, class: "btn btn-primary box-shadow-for-button" %>

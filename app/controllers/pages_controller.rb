@@ -7,8 +7,11 @@ class PagesController < ApplicationController
     # .joins('INNER JOIN users ON "whodunnit"= cast(users."id" as text)')
     if current_user&.curator
       docbot_user = User.find_by_username('docbot')
-      @pending_points = Point.pending([current_user.id, docbot_user.id])
-      @docbot_points = Point.docbot
+      ids = []
+      ids << current_user.id
+      ids << docbot_user.id if docbot_user.present?
+      @pending_points = Point.pending(ids)
+      @docbot_points = docbot_user.present? ? Point.docbot : []
     end
 
     if current_user
