@@ -37,13 +37,13 @@
     <% end %>
   </div>
   <div class="col-sm-2">
-    <span class="bolder">Changes:</span> <%= @point.versions.size %>
+    <span class="bolder">Changes:</span> <%= @versions.size %>
   </div>
   <div class="col-sm-2">
     <span class="bolder">Source:</span> <a href=<%= @point.source %>>link</a>
   </div>
   <div class="col-sm-2">
-    <span class="bolder">Author:</span> <%= username @point.user_id %> <%= rank_badge User.find_by_id(@point.user_id) %>
+    <span class="bolder">Author:</span> <%= username @point.user_id %> <%= rank_badge @point.user %>
   </div>
 </div>
 
@@ -92,12 +92,12 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @point.point_comments.includes([:spams]) %>
+  <%= render 'shared/comments', comments: @point.point_comments.includes([:user, :spams]) %>
 
 <br>
 <br>
 
-<% if !@point.versions.nil? %>
+<% if !@versions.nil? %>
 
 <div class="row">
   <div class="col-sm-12">
