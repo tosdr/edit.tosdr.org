@@ -47,7 +47,7 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @document.document_comments.includes([:spams]) %>
+  <%= render 'shared/comments', comments: @document.document_comments.includes([:user, :spams]) %>
 
 <br>
 <br>
