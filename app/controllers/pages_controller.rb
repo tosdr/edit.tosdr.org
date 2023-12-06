@@ -3,7 +3,8 @@
 # app/controllers/pages_controller.rb
 class PagesController < ApplicationController
   def home
-    @versions = Version.order('created_at DESC').limit(50)
+    versions = Version.order('created_at DESC').limit(50)
+    @versions = versions.includes(:item)
     # .joins('INNER JOIN users ON "whodunnit"= cast(users."id" as text)')
     if current_user&.curator
       docbot_user = User.find_by_username('docbot')
