@@ -107,7 +107,7 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service = Service.includes(points: [:case, :user], versions: [:item]).find(params[:id] || params[:service_id])
+    @service = Service.includes(points: [:case, :user]).find(params[:id] || params[:service_id])
     authorize @service
 
     if current_user
@@ -116,7 +116,7 @@ class ServicesController < ApplicationController
       @points = @service.points.where(status: 'approved')
     end
 
-    @versions = @service.versions
+    @versions = @service.versions.includes(:item).reverse
   end
 
   def edit
