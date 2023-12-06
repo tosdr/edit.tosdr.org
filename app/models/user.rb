@@ -9,6 +9,11 @@ class User < ApplicationRecord
   has_many :points
   has_many :documents
   has_many :services
+  has_many :point_comments
+  has_many :case_comments
+  has_many :document_comments
+  has_many :service_comments
+  has_many :topic_comments
 
   attr_accessor :skip_on_sign_out
 

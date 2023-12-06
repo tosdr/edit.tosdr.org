@@ -20,7 +20,7 @@
           <% end %>
         </td>
         <td><%= v.created_at %></td>
-        <td><%= username v.whodunnit %> <%= rank_badge User.find_by_id(v.whodunnit) %></td>
+        <td><%= username v.whodunnit %> <%= rank_badge v.item.respond_to?(:user) ? v.item.user : v.whodunnit %></td>
       </tr>
       <% end %>
     </tbody>

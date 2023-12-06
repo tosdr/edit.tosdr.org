@@ -63,7 +63,7 @@
                 <td class="<%= pointbox %>"></td>
                 <td> <%= point.ml_score.to_s %> </td>
                 <td> <%= status_badge point.status %> </td>
-                <td><%= username point.user %> <%= rank_badge User.find_by_id(point.user) %></td>
+                <td><%= username point.user %> <%= rank_badge point.user %></td>
               </tr>
             <% end %>
             </tbody>
