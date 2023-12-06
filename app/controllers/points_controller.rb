@@ -15,9 +15,8 @@ class PointsController < ApplicationController
 
   def index
     authorize Point
-
-    @points = Point.eager_loaded.order('RANDOM()').limit(100)
-    @points = Point.eager_loaded.search_points_by_multiple(@query) if @query == params[:query]
+    @q = Point.eager_loaded.ransack(params[:q])
+    @points = @q.result(distinct: true).page(params[:page] || 1)
   end
 
   def list_docbot
