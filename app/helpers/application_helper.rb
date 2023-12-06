@@ -21,7 +21,9 @@ module ApplicationHelper
     admin_icon = fa_icon 'tools', text: ' Staff'
     banned_icon = fa_icon 'ban', text: ' Suspended'
     curator_icon = fa_icon 'hands-helping', text: ' Curator'
-
+    
+    id = user
+    user = User.find(user.to_i) if id.instance_of? String
     return if user.nil?
 
     if user.deactivated?
@@ -77,7 +79,7 @@ module ApplicationHelper
     user_id = user_str.to_i
     return 'you' if user_id && current_user && user_id == current_user.id
 
-    user = User.find_by_id(user_id)
+    user = User.find(user_id)
     return raw user.username + ' <sup>(' + user.id.to_s + ')</sup>' || 'user ' + user.id.to_s if user&.username && user&.id
 
     user_str
