@@ -41,9 +41,10 @@ class DocumentsController < ApplicationController
     authorize Document
 
     @document = Document.new
-    if service == params[:service]
-      @document.service = Service.find(service)
-    end
+    service = params[:service]
+    return unless service
+
+    @document.service = Service.find(service)
   end
 
   def create
