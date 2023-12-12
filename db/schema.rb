@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_04_133816) do
+ActiveRecord::Schema.define(version: 2023_12_11_184004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 2023_09_04_133816) do
     t.string "status"
     t.string "crawler_server"
     t.string "text_version"
+    t.boolean "ota_sourced", default: false
     t.index ["service_id"], name: "index_documents_on_service_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
