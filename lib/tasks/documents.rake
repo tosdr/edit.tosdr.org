@@ -2,6 +2,12 @@ require "#{Rails.root}/lib/tosbackdoc.rb"
 require 'zlib'
 
 namespace :documents do
+	desc "Pull document text from OTA github"
+	task fetch_ota_text: :environmnet do
+		documents = Document.includes(:service).all
+		documents.each(&:fetch_ota_text)
+	end
+
   desc "Recrawl all invalid documents"
   task recrawl: :environment do
     documents = Document.all
