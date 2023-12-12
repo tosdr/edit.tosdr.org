@@ -23,11 +23,54 @@ class Document < ApplicationRecord
   end
 
   def custom_uniqueness_check
-    doc = Document.where(url: self.url, xpath: self.xpath, status: nil)
-    if doc.any? && (doc.first.id != self.id)
-      go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
-      self.errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
+    doc = Document.where(url: url, xpath: xpath, status: nil)
+
+    return unless doc.any? && (doc.first.id != id)
+
+    go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
+    errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
+  end
+
+  def fetch_ota_text
+    versions = %w[pga-versions contrib-versions]
+    service_name = service.name
+    service_name = service_name.strip
+    service_name = service_name.gsub(/\s/, '%20')
+
+    # put url in variable
+    # check pga-versions first
+    version_name = versions[0]
+    service_version_url = "https://github.com/OpenTermsArchive/#{version_name}/tree/main/#{service_name}"
+    service_version = HTTParty.get(service_version_url)
+
+    # check contrib-versions second
+    if service_version.code == 404
+      version_name = versions[1]
+      service_version_url = "https://github.com/OpenTermsArchive/#{versions_name}/tree/main/#{service_name}"
+      service_version = HTTParty.get(service_version_url)
     end
+
+    # early return if service not in pga, nor contrib
+    return if service_version.code == 404
+
+    document_ota_url = generate_ota_url(version_name, service_name)
+    document_markdown = HTTParty.get(document_ota_url)
+
+    # early return if document not stored in ota github
+    return if document_markdown.code == 404
+
+    document_html = Kramdown::Document.new(document_markdown).to_html
+    self.text = document_html
+    self.ota_sourced = true
+    save
+  end
+
+  def generate_ota_url(version, service)
+    document_name = name
+    document_name = document_name.strip
+    document_name = document_name.gsub(/\s/, '%20')
+
+    "https://raw.githubusercontent.com/OpenTermsArchive/#{version}/main/#{service}/#{document_name}.md"
   end
 
   def snippets
