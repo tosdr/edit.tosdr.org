@@ -29,12 +29,8 @@ class DocumentsController < ApplicationController
 
   def index
     authorize Document
-
-    @documents = if @query == params[:query]
-                   Document.includes(:service).search_by_document_name(@query)
-                 else
-                   Document.includes(:service).all
-                 end
+    @q = Document.includes(:service).ransack(params[:q])
+    @documents = @q.result(distinct: true).page(params[:page] || 1)
   end
 
   def new
