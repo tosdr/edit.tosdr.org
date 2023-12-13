@@ -2,8 +2,6 @@
 
 # app/models/document.rb
 class Document < ApplicationRecord
-  include Ota
-
   has_paper_trail
 
   belongs_to :service
@@ -37,24 +35,17 @@ class Document < ApplicationRecord
     service_name = service_name.strip
     service_name = service_name.gsub(/\s/, '%20')
 
-    # put url in variable
-    # check pga-versions first
+    # first: check for document in pga
     version_name = versions[0]
-    service_version_url = "https://github.com/OpenTermsArchive/#{version_name}/tree/main/#{service_name}"
-    service_version = HTTParty.get(service_version_url)
-
-    # check contrib-versions second
-    if service_version.code == 404
-      version_name = versions[1]
-      service_version_url = "https://github.com/OpenTermsArchive/#{versions_name}/tree/main/#{service_name}"
-      service_version = HTTParty.get(service_version_url)
-    end
-
-    # early return if service not in pga, nor contrib
-    return if service_version.code == 404
-
     document_ota_url = generate_ota_url(version_name, service_name)
     document_markdown = HTTParty.get(document_ota_url)
+
+    # second: check for document in contrib
+    if document_markdown.code == 404
+      version_name = versions[1]
+      document_ota_url = generate_ota_url(version_name, service_name)
+      document_markdown = HTTParty.get(document_ota_url)
+    end
 
     # early return if document not stored in ota github
     return if document_markdown.code == 404
