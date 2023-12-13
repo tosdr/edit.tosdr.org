@@ -1,20 +1,24 @@
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Service</th>
-      <th>Type</th>
-      <th>URL</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  <% documents.each do |d| %>
-    <tr>
-      <td><%= link_to d.service.name, service_path(d.service), title: "View the service connected to this document" %></td>
-      <td> <%= link_to truncate(d.name, length: 30), document_path(d), title: "Inspect this document" %></td>
-      <td><%= truncate(d.url, length: 30) %></td>
-      <td></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Service</th>
+          <th scope="col">Type</th>
+          <th scope="col">URL</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @documents.each do |d| %>
+        <tr class="toSort">
+          <td><%= link_to d.service.name, service_path(d.service), title: "View the service connected to this document" %></td>
+          <td><%= link_to truncate(d.name, length: 30), document_path(d), title: "Inspect this document" %></td>
+          <td><%= truncate(d.url, length: 30) %></td>
+          <td></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -7,19 +7,36 @@
       <div class="col-lg-6">
         <h1>Documents</h1>
       </div>
+      <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
+        <div class="col-lg-6 text-right justify-content-end">
+          <%= link_to 'Add Document', new_document_path, class: 'btn btn-primary mb15' %>
+        </div>
+      <% end %>
     </div>
     <br>
     <br>
     <div class="row">
-      <div class="col-lg-6">
-        <%= render "shared/search" %>
-      </div>
+      <div class="col-lg-4 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+              <%= f.label :name_cont %>
+              <%= f.search_field :name_cont %>
 
-      <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
-      <div class="col-lg-6 text-right justify-content-end">
-        <%= link_to 'Add Document', new_document_path, class: 'btn btn-primary mb15' %>
-      </div>
-      <% end %>
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-6 text-left">
+          <div class="">
+            <%= search_form_for @q do |f| %>
+
+              <%= f.label :service_name_cont %>
+              <%= f.search_field :service_name_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
     </div>
     <br>
     <% if @documents.empty? %>
@@ -29,3 +46,4 @@
     <% end %>
   </div>
 </div>
+<%= paginate @documents %>
