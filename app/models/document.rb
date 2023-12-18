@@ -53,6 +53,9 @@ class Document < ApplicationRecord
     document_html = Kramdown::Document.new(document_markdown).to_html
     self.text = document_html
     self.ota_sourced = true
+    self.url = document_ota_url
+    self.crawler_server = nil
+    self.xpath = nil
     save
   end
 
