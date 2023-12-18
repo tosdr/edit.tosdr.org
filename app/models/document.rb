@@ -55,7 +55,6 @@ class Document < ApplicationRecord
     self.ota_sourced = true
     self.url = document_ota_url
     self.crawler_server = nil
-    self.xpath = nil
     save
   end
 
