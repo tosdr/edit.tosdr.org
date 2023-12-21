@@ -58,7 +58,8 @@ class ServicesController < ApplicationController
 
     @service = Service.includes(documents: [:points, :user]).find(params[:id] || params[:service_id])
     @documents = @service.documents
-    if (params[:point_id] && current_user)
+    @sourced_from_ota = @documents.where(ota_sourced: true).any?
+    if params[:point_id] && current_user
       @point = Point.find_by id: params[:point_id]
     else
       @topics = Topic.topic_use_frequency
@@ -109,13 +110,9 @@ class ServicesController < ApplicationController
   def show
     @service = Service.includes(points: [:case, :user]).find(params[:id] || params[:service_id])
     authorize @service
-
-    if current_user
-      @points = @service.points_ordered_status_class.values.flatten
-    else
-      @points = @service.points.where(status: 'approved')
-    end
-
+    @sourced_from_ota = @service.documents.where(ota_sourced: true).any?
+    @points = @service.points.where(status: 'approved') unless current_user
+    @points = @service.points_ordered_status_class.values.flatten if current_user
     @versions = @service.versions.includes(:item).reverse
   end
 

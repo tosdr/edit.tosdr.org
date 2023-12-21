@@ -36,12 +36,27 @@
   </div>
 <% end %>
 
+<% if @sourced_from_ota %>
+  <div>
+    Some of the documents for this service have been sourced from the Open Terms Archive as part of an ongoing effort to improve our data. Please <%= link_to "read here", "https://tosdr.community/t/partnership-between-phoenix-and-open-terms-archive-sourcing-document-text/3100", :target => "_blank" %> for more information.
+  </div>
+<% end %>
+<br>
 <div id="toc">
   <p>Documents:</p>
   <ul class="list-group">
     <% @documents.each do |doc| %>
       <li class="list-group-item">
-        <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+        <div class="row">
+          <div class="col-lg-6">
+            <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+          </div>
+          <% if doc.ota_sourced %>
+            <div class="col-lg-6 text-right small">
+              <%= link_to "text sourced from Open Terms Archive", doc.url, :target => "_blank" %>
+            </div>
+          <% end %>
+        </div>
       </li>
     <% end %>
   	<% if policy(@service).create? %>
