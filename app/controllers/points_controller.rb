@@ -7,7 +7,7 @@ class PointsController < ApplicationController
   include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: %i[show edit update review approve]
+  before_action :set_point, only: %i[show edit update review post_review approve]
   before_action :set_topics, only: %i[new create edit update approve]
   before_action :check_status, only: %i[create update]
 
@@ -89,6 +89,27 @@ class PointsController < ApplicationController
 
   def review
     authorize @point
+  end
+
+  def post_review
+    authorize @point
+
+    # process a post of the review form
+    invalid_status = point_params['status'] != 'approved' && point_params['status'] != 'declined' && point_params['status'] != 'changes-requested'
+    return if invalid_status
+    
+    if @point.update(status: point_params['status'])
+      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      create_comment(point_params['status'] + ': ' + point_params['point_change'])
+
+      if @point.user_id != current_user.id
+        UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
+      end
+
+      redirect_to point_path(@point)
+    else
+      render :review
+    end
   end
 
   def approve

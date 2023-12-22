@@ -27,6 +27,10 @@ class PointPolicy < ApplicationPolicy
     is_peer_curator?
   end
 
+  def post_review?
+    is_peer_curator?
+  end
+
   def approve?
     is_peer_curator?
   end
