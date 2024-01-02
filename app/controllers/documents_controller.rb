@@ -96,7 +96,7 @@ class DocumentsController < ApplicationController
         redirect_to document_path(@document)
       end
     else
-      render 'edit', locals: { crawlers: prod_crawlers }
+      render 'edit', locals: { crawlers: PROD_CRAWLERS }
     end
   end
 
