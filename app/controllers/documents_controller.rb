@@ -196,7 +196,7 @@ class DocumentsController < ApplicationController
 
     if changes_made
       @document.update(text: @tbdoc.newdata)
-      new_length = @document.text.length
+      new_length = @document.text ? @document.text.length : 'no text retrieved by crawler'
 
       # There is a cron job in the crontab of the 'tosdr' user on the forum.tosdr.org
       # server which runs once a day and before it deploys the site from edit.tosdr.org
