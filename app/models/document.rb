@@ -52,8 +52,12 @@ class Document < ApplicationRecord
 
     document_html = Kramdown::Document.new(document_markdown).to_html
 
-    # compare text for **possible** language differences
-    # old_text_snippets = retrieve_snippets(document_html)
+    # compare text for **possible** language (i.e., English, German, etc.) differences
+    new_text_snippets = retrieve_snippets(document_html)
+    new_text_snippets = new_text_snippets[:snippets]
+    no_matches = new_text_snippets.length == 1 && !new_text_snippets[0][:pointId]
+    return if no_matches
+
     self.text = document_html
     self.ota_sourced = true
     self.url = document_ota_url
