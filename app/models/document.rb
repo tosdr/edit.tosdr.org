@@ -51,6 +51,9 @@ class Document < ApplicationRecord
     return if document_markdown.code == 404
 
     document_html = Kramdown::Document.new(document_markdown).to_html
+
+    # compare text for **possible** language differences
+    # old_text_snippets = retrieve_snippets(document_html)
     self.text = document_html
     self.ota_sourced = true
     self.url = document_ota_url
@@ -67,7 +70,11 @@ class Document < ApplicationRecord
   end
 
   def snippets
-    self.text = '' unless text
+    retrieve_snippets(text)
+  end
+
+  def retrieve_snippets(text_given)
+    text_to_scan = text_given ? text_given : ''
 
     quotes = []
     snippets = []
@@ -77,9 +84,9 @@ class Document < ApplicationRecord
       next if p.status == 'declined'
       next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
 
-      quote_exists_in_text = !text.index(p.quote_text).nil?
+      quote_exists_in_text = !text_to_scan.index(p.quote_text).nil?
       if quote_exists_in_text
-        quote_start = text.index(p.quote_text)
+        quote_start = text_to_scan.index(p.quote_text)
         quote_start_changed = p.quote_start != quote_start
         quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
 
@@ -100,12 +107,12 @@ class Document < ApplicationRecord
       if q.quote_start > cursor
         puts 'unquoted ' + cursor.to_s + ' -> ' + q.quote_start.to_s
         snippets.push({
-                        text: self.text[cursor, q.quote_start - cursor]
+                        text: text_to_scan[cursor, q.quote_start - cursor]
                       })
         puts 'quoted ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s
         snippets.push({
                         pointId: q.id,
-                        text: self.text[q.quote_start, q.quote_end - q.quote_start],
+                        text: text_to_scan[q.quote_start, q.quote_end - q.quote_start],
                         title: q.title
                       })
         puts 'cursor to ' + q.quote_end.to_s
@@ -113,10 +120,10 @@ class Document < ApplicationRecord
       end
     end
 
-    puts 'final snippet ' + cursor.to_s + ' -> ' + self.text.length.to_s
+    puts 'final snippet ' + cursor.to_s + ' -> ' + text_to_scan.length.to_s
 
     snippets.push({
-                    text: self.text[cursor, self.text.length - cursor]
+                    text: text_to_scan[cursor, text_to_scan.length - cursor]
                   })
 
     {
