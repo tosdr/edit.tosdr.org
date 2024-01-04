@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'about', to: 'pages#about'
   get 'flag_spam', to: 'spam#flag_as_spam', as: 'flag_as_spam'
 
-  get 'my_points', to: 'points#user_points', as: :my_points
+  get 'my_points', to: 'points#user_points', as: 'my_points'
   get 'points/:id/review', to: 'points#review', as: 'review'
   post 'points/:id/review', to: 'points#post_review', as: 'post_review'
   get 'points/:id/approve', to: 'points#approve', as: 'approve'

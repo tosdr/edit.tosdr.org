@@ -19,6 +19,12 @@ class PointsController < ApplicationController
     @points = @q.result(distinct: true).page(params[:page] || 1)
   end
 
+  def user_points
+    authorize Point
+    @q = Point.eager_loaded.current_user_points(current_user).ransack(params[:q])
+    @points = @q.result(distinct: true).page(params[:page] || 1)
+  end
+
   def list_docbot
     @docbot_points = Point.docbot
     @q = @docbot_points.ransack(params[:q])
