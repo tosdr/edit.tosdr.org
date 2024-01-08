@@ -21,9 +21,10 @@ module ApplicationHelper
     admin_icon = fa_icon 'tools', text: ' Staff'
     banned_icon = fa_icon 'ban', text: ' Suspended'
     curator_icon = fa_icon 'hands-helping', text: ' Curator'
-    
+
     id = user
-    user = User.find(user.to_i) if id.class == String || id.class == Integer
+    id_not_object = (id.instance_of? String) || (id.instance_of? Integer)
+    user = User.find_by(id: id.to_i) if id_not_object
     return if user.nil?
 
     if user.deactivated?
