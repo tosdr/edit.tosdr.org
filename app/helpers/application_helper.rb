@@ -23,7 +23,7 @@ module ApplicationHelper
     curator_icon = fa_icon 'hands-helping', text: ' Curator'
     
     id = user
-    user = User.find(user.to_i) if id.instance_of? String
+    user = User.find(user.to_i) if id.class == String || id.class == Integer
     return if user.nil?
 
     if user.deactivated?
