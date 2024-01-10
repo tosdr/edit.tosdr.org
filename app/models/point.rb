@@ -36,7 +36,6 @@ class Point < ApplicationRecord
          .docbot_created(docbot_user.id)
          .need_review('pending')
          .limit(10)
-         .offset(rand(100))
          .order('ml_score DESC')
   end
 
