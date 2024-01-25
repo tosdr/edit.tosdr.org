@@ -1,5 +1,7 @@
 {
   "name": "phoenix",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "xpath-to-css": "^1.1.0"
+  }
 }

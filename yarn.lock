@@ -2,3 +2,7 @@
 # yarn lockfile v1
 
 
+"xpath-to-css@^1.1.0":
+  "integrity" "sha512-+LkgkWUFj10DQujqovkQKiHdnfF01exhbr0UrXbIkq88vXTuAF1RcUvYV9YzE8dSKR9exKtCc8hgwl1xfs701A=="
+  "resolved" "https://registry.npmjs.org/xpath-to-css/-/xpath-to-css-1.1.0.tgz"
+  "version" "1.1.0"

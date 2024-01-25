@@ -82,3 +82,5 @@ group :development, :test do
   gem 'stackprof'
   gem 'webmock'
 end
+
+gem "node-runner", "~> 1.1"
