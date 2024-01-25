@@ -66,6 +66,19 @@ class Document < ApplicationRecord
     errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
   end
 
+  def convert_xpath_to_css
+    runner = NodeRunner.new(
+      <<~JAVASCRIPT
+        const xPathToCss = require('xpath-to-css')
+        const convert = (xpath) => {
+          const css = xPathToCss(xpath)
+          return css;
+        }
+      JAVASCRIPT
+    )
+    runner.convert xpath
+  end
+
   def fetch_ota_text
     versions = %w[pga-versions contrib-versions]
     service_name = service.name
