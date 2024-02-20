@@ -13,12 +13,24 @@
       </div>
       <br>
       <div class="row">
-        <div class="col-lg-4 text-left">
+        <div class="col-lg-6 text-left">
           <div class="">
             <%= search_form_for @q, url: list_docbot_path,
                                     html: { method: :get } do |f| %> 
               <%= f.label :title_cont %>
               <%= f.search_field :title_cont %>
+
+              <%= f.submit %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-6 text-right">
+          <div class="">
+            <%= search_form_for @q, url: list_docbot_path,
+                                    html: { method: :get } do |f| %>
+
+              <%= f.label :case_title_cont %>
+              <%= f.search_field :case_title_cont %>
 
               <%= f.submit %>
             <% end %>
