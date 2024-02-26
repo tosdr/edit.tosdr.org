@@ -35,6 +35,10 @@ class PointPolicy < ApplicationPolicy
     is_peer_curator?
   end
 
+  def decline?
+    is_peer_curator?
+  end
+
   def user_points?
     !user.nil?
   end

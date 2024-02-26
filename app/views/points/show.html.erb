@@ -11,9 +11,9 @@
       <% if current_user.id == @point.user_id %>
         <%= link_to 'Edit Content', edit_point_path(@point), class: "btn btn-default btn-sm" %>
       <% elsif current_user.curator %>
-        <%= link_to 'Review Point', review_path(@point), class: "btn btn-default btn-sm" %>
+        <%= link_to 'Review', review_path(@point), class: "btn btn-default btn-sm" %>
         <% if @point.status != 'approved' %>
-          <%= link_to 'Approve Point', approve_path(@point), class: "btn btn-warning btn-sm" %>
+          <%= link_to 'Approve', approve_path(@point), method: :post, class: "btn btn-warning btn-sm" %>
         <% end %>
       <% end %>
     <% end %>

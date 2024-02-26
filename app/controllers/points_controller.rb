@@ -7,7 +7,7 @@ class PointsController < ApplicationController
   include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: %i[show edit update review post_review approve]
+  before_action :set_point, only: %i[show edit update review post_review approve decline]
   before_action :set_topics, only: %i[new create edit update approve]
   before_action :check_status, only: %i[create update]
 
@@ -124,7 +124,29 @@ class PointsController < ApplicationController
     if @point.update(status: 'approved')
       comment = status_badge('approved') + raw('<br>') + 'No comment given'
       create_comment(comment)
-      redirect_to point_path(@point)
+
+      if params['source'] == 'docbot'
+        redirect_to request.referrer
+      else
+        redirect_to point_path(@point)
+      end
+    else
+      render :edit
+    end
+  end
+
+  def decline
+    authorize @point
+
+    if @point.update(status: 'declined')
+      comment = status_badge('declined') + raw('<br>') + 'No comment given'
+      create_comment(comment)
+
+      if params['source'] == 'docbot'
+        redirect_to list_docbot_path
+      else
+        redirect_to point_path(@point)
+      end
     else
       render :edit
     end
@@ -161,7 +183,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document)
+    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :source)
   end
 
   def check_status

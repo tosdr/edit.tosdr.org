@@ -19,7 +19,8 @@ Rails.application.routes.draw do
   get 'my_points', to: 'points#user_points', as: 'my_points'
   get 'points/:id/review', to: 'points#review', as: 'review'
   post 'points/:id/review', to: 'points#post_review', as: 'post_review'
-  get 'points/:id/approve', to: 'points#approve', as: 'approve'
+  post 'points/:id/approve', to: 'points#approve', as: 'approve'
+  post 'points/:id/decline', to: 'points#decline', as: 'decline'
   get 'list_docbot', to: 'points#list_docbot', as: 'list_docbot'
   resources :points, only: :index
   resources :points, except: [:index] do

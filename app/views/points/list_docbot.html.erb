@@ -54,6 +54,7 @@
                 <th scope="col">Rating</th>
                 <th scope="col">ML score</th>
                 <th scope="col">Status</th>
+                <th scope="col">Update</th>
                 <th scope="col">Author</th>
                 <th></th>
               </tr>
@@ -75,6 +76,16 @@
                 <td class="<%= pointbox %>"></td>
                 <td> <%= point.ml_score.to_s %> </td>
                 <td> <%= status_badge point.status %> </td>
+                <td>
+                  <% if point.status == 'pending' %>
+                    <div>
+                      <%= link_to 'Approve', approve_path(point, source: 'docbot'), method: :post, class: "text-success" %>
+                    </div>
+                    <div>
+                      <%= link_to 'Decline', decline_path(point, source: 'docbot'), method: :post, class: "text-danger" %>
+                    </div>
+                  <% end %>
+                </td>
                 <td><%= username point.user %> <%= rank_badge point.user %></td>
               </tr>
             <% end %>
