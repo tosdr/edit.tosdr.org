@@ -16,11 +16,11 @@ class PointPolicy < ApplicationPolicy
   end
 
   def edit?
-    !user.nil? && is_owner?
+    (!user.nil? && is_owner?) || is_docbot_curator?
   end
 
   def update?
-    !user.nil? && is_owner?
+    !user.nil? && is_owner? || is_docbot_curator?
   end
 
   def review?
@@ -47,6 +47,10 @@ class PointPolicy < ApplicationPolicy
 
   def is_owner?
     record.user.nil? ? user.curator? : (user == record.user)
+  end
+
+  def is_docbot_curator?
+    record.user.username == 'docbot' && !user.nil? && user.curator?
   end
 
   def is_peer_curator?

@@ -52,9 +52,10 @@
                 <th scope="col">Service</th>
                 <th scope="col">Title</th>
                 <th scope="col">Rating</th>
-                <th scope="col">ML score</th>
+                <th scope="col">Score</th>
                 <th scope="col">Status</th>
                 <th scope="col">Update</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Author</th>
                 <th></th>
               </tr>
@@ -84,6 +85,11 @@
                     <div>
                       <%= link_to 'Decline', decline_path(point, source: 'docbot'), method: :post, class: "text-danger" %>
                     </div>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to edit_point_path(point) do %>
+                    <i class="fa fa-pen"></i>
                   <% end %>
                 </td>
                 <td><%= username point.user %> <%= rank_badge point.user %></td>

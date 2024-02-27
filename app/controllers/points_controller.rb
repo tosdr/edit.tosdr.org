@@ -63,6 +63,10 @@ class PointsController < ApplicationController
     authorize @point
     # to-do : error handling
     @point_text = @point.quote_text
+
+    @can_edit_docbot_point = false
+    docbot = User.find_by_username("docbot")
+    @can_edit_docbot_point = true if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
       annotation_json = JSON.parse(annotation['target_selectors'])
@@ -81,8 +85,10 @@ class PointsController < ApplicationController
       annotation.tags = [] << case_obj.title
     end
 
+    docbot = User.find_by_username('docbot')
+    @point.user_id = current_user.id if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.update(point_params)
-      annotation.save!
+      annotation.save! if annotation
       comment = @point.point_change.present? ? @point.point_change : 'point updated without comment'
       create_comment(comment)
       redirect_to point_path(@point)
