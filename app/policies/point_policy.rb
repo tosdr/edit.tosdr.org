@@ -12,48 +12,48 @@ class PointPolicy < ApplicationPolicy
   end
 
   def create?
-    !user.nil?
+    new?
   end
 
   def edit?
-    (!user.nil? && is_owner?) || is_docbot_curator?
+    (!user.nil? && owner?) || docbot_curator?
   end
 
   def update?
-    !user.nil? && is_owner? || is_docbot_curator?
+    edit?
   end
 
   def review?
-    is_peer_curator?
+    peer_curator?
   end
 
   def post_review?
-    is_peer_curator?
+    review?
   end
 
   def approve?
-    is_peer_curator?
+    review?
   end
 
   def decline?
-    is_peer_curator?
+    review?
   end
 
   def user_points?
-    !user.nil?
+    new?
   end
 
   private
 
-  def is_owner?
+  def owner?
     record.user.nil? ? user.curator? : (user == record.user)
   end
 
-  def is_docbot_curator?
+  def docbot_curator?
     record.user.username == 'docbot' && !user.nil? && user.curator?
   end
 
-  def is_peer_curator?
+  def peer_curator?
     user.curator? && (user != record.user)
   end
 end

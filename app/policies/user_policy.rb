@@ -4,7 +4,8 @@ class UserPolicy < ApplicationPolicy
       scope
     end
   end
+
   def create?
-    return true
+    true
   end
 end

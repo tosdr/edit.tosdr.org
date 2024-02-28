@@ -4,23 +4,23 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def list_all?
-    true
+    index?
   end
 
   def service_pending_points?
-    true
+    index?
   end
 
   def show?
-    true
+    index?
   end
 
   def annotate?
-    true
+    index?
   end
 
   def quote?
-    true
+    index?
   end
 
   def create?
@@ -28,16 +28,16 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def update?
-    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
+    create? || owner?
   end
 
   def destroy?
-    (!user.nil? && user.admin?) || (!user.nil? && user.curator?)
+    create? || owner?
   end
 
   private
 
-  def is_owner?
+  def owner?
     record.user.nil? ? (user.curator?) || (user.admin?) : (user == record.user)
   end
 end

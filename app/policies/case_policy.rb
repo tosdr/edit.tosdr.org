@@ -16,18 +16,18 @@ class CasePolicy < ApplicationPolicy
   end
 
   def create?
-    !user.nil? && user.curator?
+    new?
   end
 
   def edit?
-    !user.nil? && user.curator?
+    new?
   end
 
   def update?
-    !user.nil? && user.curator?
+    new?
   end
 
   def destroy?
-    !user.nil? && user.curator?
+    new?
   end
 end

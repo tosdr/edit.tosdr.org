@@ -4,7 +4,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    index?
   end
 
   def create?
@@ -12,24 +12,24 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def update?
-    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
+    create? || owner?
   end
 
   def destroy?
-    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
+    create? || owner?
   end
 
   def crawl?
-    (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
+    create? || owner?
   end
 
   def restore_points?
-    is_owner?
+    owner?
   end
 
   private
 
-  def is_owner?
+  def owner?
     record.user.nil? ? (user.curator?) || (user.admin?) : (user == record.user)
   end
 end
