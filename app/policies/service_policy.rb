@@ -28,11 +28,11 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def update?
-    create? || owner?
+    create? || (!user.nil? && owner?)
   end
 
   def destroy?
-    create? || owner?
+    update?
   end
 
   private

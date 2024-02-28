@@ -11,20 +11,24 @@ class DocumentPolicy < ApplicationPolicy
     (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
   end
 
+  def edit?
+    create? || (!user.nil? && owner?)
+  end
+
   def update?
-    create? || owner?
+    edit?
   end
 
   def destroy?
-    create? || owner?
+    edit?
   end
 
   def crawl?
-    create? || owner?
+    edit?
   end
 
   def restore_points?
-    owner?
+    !user.nil? && owner?
   end
 
   private
