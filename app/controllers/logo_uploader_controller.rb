@@ -11,7 +11,7 @@ class LogoUploaderController < CarrierWave::Uploader::Base
   end
 
   def content_type_allowlist
-    %r{/image\/png/}
+    [/image\//]
   end
 
   def store_dir
