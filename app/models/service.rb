@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/models/service.rb
 class Service < ApplicationRecord
   has_paper_trail
 
@@ -14,10 +17,6 @@ class Service < ApplicationRecord
   validates :url, uniqueness: true
 
   before_validation :strip_input_fields
-
-  def self.search_by_name(query)
-    Service.where("name ILIKE ?", "%#{query}%")
-  end
 
   def calculate_service_rating
     perform_calculation

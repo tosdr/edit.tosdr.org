@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/models/topic.rb
 class Topic < ApplicationRecord
   has_paper_trail
   has_many :points
@@ -13,15 +16,7 @@ class Topic < ApplicationRecord
     Topic.where("title ILIKE ?", "%#{query}%")
   end
 
-  def self.search_by_topic_service(query)
-    Topic.joins(:point).where("points.name ILIKE ?", "%#{query}%")
-  end
-
   def self.topic_use_frequency
     Topic.where.not(id: 53).includes(:cases)
-  end
-
-  def case_use_frequency
-    self.cases.left_joins(:points).group(:id).order('COUNT(points.id) DESC')
   end
 end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/models/topic_comment.rb
 class TopicComment < ApplicationRecord
   validates :summary, presence: true
   belongs_to :topic
