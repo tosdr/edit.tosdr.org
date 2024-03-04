@@ -23,7 +23,7 @@ class Service < ApplicationRecord
   end
 
   def points_ordered_status_class
-    service_points_hash = (points.group_by { |point| point.status }).sort_by { |key| key }.reverse.to_h
+    service_points_hash = points.group_by(&:status).sort.reverse.to_h
 
     service_points_hash.each_value do |points|
       sort_service_points(points)
@@ -31,11 +31,11 @@ class Service < ApplicationRecord
   end
 
   def pending_points
-    !points.nil? ? points.where(status: "pending") : []
+    !points.nil? ? points.where(status: 'pending') : []
   end
 
   def sort_service_points(points)
-    classifications = ['good', 'neutral', 'bad', 'blocker']
+    classifications = %w[good neutral bad blocker]
 
     points.sort! do |a, b|
       a_class = a.case&.classification

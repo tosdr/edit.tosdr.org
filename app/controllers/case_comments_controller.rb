@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/controllers/case_comments_controller.rb
 class CaseCommentsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_case, only: %i[new create]
@@ -10,7 +13,8 @@ class CaseCommentsController < ApplicationController
 
   def create
     @case_comment = CaseComment.new(case_comment_params)
-    @case_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@case_comment.summary)).to_html
+    escaped_summary = CGI::escapeHTML(@case_comment.summary)
+    @case_comment.summary = Kramdown::Document.new(escaped_summary).to_html
     @case_comment.user_id = current_user.id
     @case_comment.case_id = @case.id
 

@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
+# app/controllers/cases_controller.rb
 class CasesController < ApplicationController
   include Pundit::Authorization
 
-  before_action :authenticate_user!, except: [:index, :show, :list_all]
+  before_action :authenticate_user!, except: %i[index show list_all]
   before_action :set_curator, only: [:destroy]
-  before_action :set_case, only: [:show, :edit, :update, :destroy]
+  before_action :set_case, only: %i[show edit update destroy]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -59,7 +62,7 @@ class CasesController < ApplicationController
     authorize @case
 
     @case.update(case_params)
-    flash[:notice] = "Case has been updated!"
+    flash[:notice] = 'Case has been updated!'
     redirect_to case_path(@case)
   end
 
@@ -67,11 +70,11 @@ class CasesController < ApplicationController
     authorize @case
 
     if @case.points.any?
-      flash[:alert] = "Users have contributed valuable insight to this case!"
+      flash[:alert] = 'Users have contributed valuable insight to this case!'
       redirect_to case_path(@case)
     else
       @case.destroy
-      flash[:notice] = "Case has been deleted!"
+      flash[:notice] = 'Case has been deleted!'
       redirect_to cases_path
     end
   end
@@ -79,7 +82,7 @@ class CasesController < ApplicationController
   private
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
   end
 
@@ -92,8 +95,8 @@ class CasesController < ApplicationController
   end
 
   def set_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
-    end
+    return if current_user.curator?
+
+    render file: 'public/401.html', status: :unauthorized
   end
 end
