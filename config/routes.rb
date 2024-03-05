@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   resources :points, except: [:index] do
     resources :point_comments, only: %i[new create]
   end
+  resources :versions, only: :index
 
   resources :documents do
     resources :document_comments, only: %i[new create]

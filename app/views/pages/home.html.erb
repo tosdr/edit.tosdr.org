@@ -1,3 +1,9 @@
+<ul class="nav nav-pills">
+  <li role="presentation">
+    <%= link_to "View recent changes", versions_path %>
+  </li>
+</ul>
+
 <% if @pending_points %>
 <h2>User-created points to review:</h2>
 <%= render 'shared/table_points', points: @pending_points %>
@@ -90,56 +96,4 @@
 </div>
 <% end %>
 </div>
-<% end %>
-
-<% if user_signed_in? %>
-  <h2>Recent changes:</h2>
-  <div class="panel-group" id="accordion">
-    <% counter = 1 %>
-    <% @versions.each do |version| %>
-    <% counter += 1 %>
-    <div class="panel panel-default" id="panel<%=counter%>">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-4">
-            <h5>
-              <b><%= username version.whodunnit %> <%= rank_badge version.item.respond_to?(:user) ? version.item.user : version.whodunnit %>
-            </h5>
-          </div>
-          <div class="col-sm-4">
-            <h5>
-              <%= version.event %>d <!-- FIXME for i18n: make this literal 'd' a function to_past_tense in app/helpers/ -->
-              <a
-              href="/<%= version.item_type.downcase %>s/<%= version.item_id %>" class="collapsed">
-              <%= version.item_type %>
-              <%= version.item_id %>
-            </a>
-          </h5>
-        </div>
-        <div class="col-sm-4 text-right">
-          <a data-toggle="collapse" data-target="#collapse<%=counter%>" href="#collapse<%=counter%>" class="collapsed">
-            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true">details</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div id="collapse<%=counter%>" class="panel-collapse collapse">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-12 mb15">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <%= version.object_changes %>
-          </div>
-          <div class="col-sm-6">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% end %>
-  </div>
 <% end %>
