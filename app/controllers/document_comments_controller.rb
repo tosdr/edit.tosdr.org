@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/controllers/document_comments_controller.rb
 class DocumentCommentsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_document, only: %i[new create]

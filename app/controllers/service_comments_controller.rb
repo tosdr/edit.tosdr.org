@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/controllers/service_comments_controller.rb
 class ServiceCommentsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_service, only: %i[new create]

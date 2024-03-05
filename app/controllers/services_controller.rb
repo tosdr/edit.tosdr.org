@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/controllers/services_controller.rb
 class ServicesController < ApplicationController
   include Pundit::Authorization
 

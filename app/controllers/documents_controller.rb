@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require "#{Rails.root}/lib/tosbackdoc.rb"
 require 'zlib'
 
 puts 'loaded?'
 puts TOSBackDoc
 
+# app/controllers/documents_controller.rb
 class DocumentsController < ApplicationController
   include Pundit::Authorization
 
@@ -15,12 +18,12 @@ class DocumentsController < ApplicationController
     "https://api.tosdr.org/crawl/v1/eu-west": 'Europe (West)',
     "https://api.tosdr.org/crawl/v1/us-east": 'United States (East)',
     "https://api.tosdr.org/crawl/v1/us-west": 'United States (West)'
-  }
+  }.freeze
 
   DEV_CRAWLERS = {
     "http://localhost:5000": 'Standalone (localhost:5000)',
     "http://crawler:5000": 'Docker-Compose (crawler:5000)'
-  }
+  }.freeze
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_document, only: %i[show edit update crawl restore_points]
@@ -50,21 +53,16 @@ class DocumentsController < ApplicationController
     @document.user = current_user
 
     if @document.save
-      crawlresult = perform_crawl
+      crawl_result = perform_crawl
 
-      if !crawlresult.nil?
-        if crawlresult['error']
-          flash[:alert] =
-            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
-          redirect_to document_path(@document)
+      unless crawl_result.nil?
+        if crawl_result['error']
+          flash[:alert] = crawler_error_message(crawl_result)
         else
           flash[:notice] = 'The crawler has updated the document'
-          redirect_to document_path(@document)
         end
-      else
-        redirect_to document_path(@document)
       end
-
+      redirect_to document_path(@document)
     else
       render 'new'
     end
@@ -76,25 +74,22 @@ class DocumentsController < ApplicationController
     @document.update(document_params)
 
     # we should probably only be running the crawler if the URL or XPath have changed
-    if @document.saved_changes.keys.any? { |attribute| %w[url xpath crawler_server].include? attribute }
-      crawlresult = perform_crawl
-    end
+    run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url xpath crawler_server].include? attribute }
+    crawl_result = perform_crawl if run_crawler
 
     if @document.save
-      # only want to do this if XPath or URL have changed - the theory is that text is returned blank when there's a defunct URL or XPath to avoid server error upon 404 error in the crawler
+      # only want to do this if XPath or URL have changed
+      ## text is returned blank when there's a defunct URL or XPath
+      ### avoids server error upon 404 error in the crawler
       # need to alert people if the crawler wasn't able to retrieve any text...
-      if !crawlresult.nil?
-        if crawlresult['error']
-          flash[:alert] =
-            "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
-          redirect_to document_path(@document)
+      unless crawl_result.nil?
+        if crawl_result['error']
+          flash[:alert] = crawler_error_message(crawl_result)
         else
           flash[:notice] = 'The crawler has updated the document'
-          redirect_to document_path(@document)
         end
-      else
-        redirect_to document_path(@document)
       end
+      redirect_to document_path(@document)
     else
       render 'edit', locals: { crawlers: PROD_CRAWLERS }
     end
@@ -107,7 +102,7 @@ class DocumentsController < ApplicationController
     service = @document.service
     if @document.points.any?
       flash[:alert] =
-        'Users have highlighted points in this document; update or delete those points before deleting this document.'
+        'Users have highlighted points in this document. Update or delete those points before deleting this document.'
       redirect_to document_path(@document)
     else
       @document.destroy
@@ -121,16 +116,13 @@ class DocumentsController < ApplicationController
 
   def crawl
     authorize @document
-    crawlresult = perform_crawl
-    if crawlresult['error']
-      flash[:alert] =
-        "It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: " + crawlresult['message']['name'].to_s + '<br>Region: ' + crawlresult['message']['crawler'].to_s + '<br>Stacktrace: ' + CGI::escapeHTML(crawlresult['message']['remoteStacktrace'].to_s)
-
-      redirect_to document_path(@document)
+    crawl_result = perform_crawl
+    if crawl_result['error']
+      flash[:alert] = crawler_error_message(crawl_result)
     else
       flash[:notice] = 'The crawler has updated the document'
-      redirect_to document_path(@document)
     end
+    redirect_to document_path(@document)
   end
 
   def restore_points
@@ -164,6 +156,14 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath, :crawler_server)
+  end
+
+  def crawler_error_message(result)
+    message = result['message']['name'].to_s
+    region = result['message']['crawler'].to_s
+    stacktrace = CGI::escapeHTML(result['message']['remoteStacktrace'].to_s)
+
+    `It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: #{message} <br>Region: #{region} <br>Stacktrace: #{stacktrace}`
   end
 
   # to-do: refactor out comment assembly

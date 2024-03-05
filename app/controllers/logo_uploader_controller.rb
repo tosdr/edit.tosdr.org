@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/logo_uploader_controller.rb
 class LogoUploaderController < CarrierWave::Uploader::Base
   storage :fog

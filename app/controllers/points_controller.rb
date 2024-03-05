@@ -65,7 +65,7 @@ class PointsController < ApplicationController
     @point_text = @point.quote_text
 
     @can_edit_docbot_point = false
-    docbot = User.find_by_username("docbot")
+    docbot = User.find_by_username('docbot')
     @can_edit_docbot_point = true if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
@@ -109,10 +109,10 @@ class PointsController < ApplicationController
     # process a post of the review form
     invalid_status = point_params['status'] != 'approved' && point_params['status'] != 'declined' && point_params['status'] != 'changes-requested'
     return if invalid_status
-    
+
     if @point.update(status: point_params['status'])
-      comment = create_comment(point_params['status'] + ': ' + point_params['point_change'])
-      create_comment(point_params['status'] + ': ' + point_params['point_change'])
+      comment = point_params['status'] + ': ' + point_params['point_change']
+      create_comment(comment)
 
       if @point.user_id != current_user.id
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
@@ -193,8 +193,6 @@ class PointsController < ApplicationController
   end
 
   def check_status
-    unless %w[draft pending declined].include? point_params['status']
-      render :edit
-    end
+    render :edit unless %w[draft pending declined].include? point_params['status']
   end
 end

@@ -53,9 +53,7 @@ class CasesController < ApplicationController
     authorize @case
 
     @points = @case.points.includes(:service).includes(:user)
-    if params[:query]
-      @points = @points.search_points_by_multiple(params[:query])
-    end
+    @points = @points.search_points_by_multiple(params[:query]) if params[:query]
   end
 
   def update
