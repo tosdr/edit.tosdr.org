@@ -4,14 +4,14 @@
 class ServicesController < ApplicationController
   include Pundit::Authorization
 
-  before_action :authenticate_user!, except: [:index, :show]
-
-  invisible_captcha only: [:create, :update], honeypot: :description
+  before_action :authenticate_user!, except: %i[index show]
+  invisible_captcha only: %i[create update], honeypot: :description
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     authorize Service
+
     @q = Service.ransack(params[:q])
     @services = @q.result(distinct: true).page(params[:page] || 1)
   end
@@ -19,40 +19,30 @@ class ServicesController < ApplicationController
   def new
     authorize Service
 
-    if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
-      @service = Service.new
-    else
-      user_not_authorized
-    end
+    return user_not_authorized unless current_user && privileged_user
+
+    @service = Service.new
   end
 
   def create
     authorize Service
 
-	  if current_user && (current_user.admin? || current_user.curator? || current_user.bot?)
-      @service = Service.new(service_params)
-      @service.user = current_user
+    return user_not_authorized unless current_user && privileged_user
 
-      if @service.save
-        uploader = LogoUploaderController.new(@service.id)
-        if params[:service][:logo]
-          puts "Uploaded image"
-          if uploader.store!(params[:service][:logo])
-            flash[:notice] = "Created service with logo!"
-            redirect_to service_path(@service)
-          else
-            flash[:alert] = "Uploading the logo failed!"
-            redirect_to service_path(@service)
-          end
-        else
-          flash[:notice] = "The service has been created!"
-          redirect_to service_path(@service)
-        end
+    @service = Service.new(service_params)
+    @service.user = current_user
+
+    if @service.save
+      uploader = LogoUploaderController.new(@service.id)
+      logo = params[:service][:logo]
+      if logo
+        handle_logo(uploader, logo, @service)
       else
-        render :new
+        flash[:notice] = 'The service has been created!'
+        redirect_to service_path(@service)
       end
     else
-      user_not_authorized
+      render :new
     end
   end
 
@@ -74,33 +64,23 @@ class ServicesController < ApplicationController
 
     puts 'quote!'
     puts params
+
     @service = Service.find(params[:id] || params[:service_id])
-    if (params[:point_id] && current_user)
+
+    if params[:point_id] && current_user
       point = Point.find_by id: params[:point_id]
     else
       @case = Case.find(params[:quoteCaseId])
-      point = Point.new(
-        params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
-      )
-      point.user = current_user
-      point.case = @case
-      point.title = @case.title
-      point.service = @service
-      point.analysis = 'Generated through the annotate view'
+      point = build_point(@case, @service, current_user)
     end
-    document = Document.find(params[:document_id])
-    point.document = document
-    point.quote_text = document.text[params[:quote_start].to_i, params[:quote_end].to_i - params[:quote_start].to_i]
-    point.source = document.url
-    point.quote_start = params[:quote_start]
-    point.quote_end = params[:quote_end]
-    if (point.status === 'approved-not-found')
-      point.status = 'approved'
-    else
-      point.status = 'pending'
-    end
-    if (point.save)
-      if (params[:point_id])
+
+    point = build_quote(point)
+
+    status = point.status
+    point.status = status == 'approved-not-found' ? 'approved' : 'pending'
+
+    if point.save
+      if params[:point_id]
         redirect_to point_path(params[:point_id])
       else
         redirect_to service_path(params[:id]) + '/annotate'
@@ -112,7 +92,9 @@ class ServicesController < ApplicationController
 
   def show
     @service = Service.includes(points: [:case, :user]).find(params[:id] || params[:service_id])
+
     authorize @service
+
     @sourced_from_ota = @service.documents.where(ota_sourced: true).any?
     @points = @service.points.where(status: 'approved') unless current_user
     @points = @service.points_ordered_status_class.values.flatten if current_user
@@ -130,22 +112,23 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id] || params[:service_id])
 
     authorize @service
+
     if @service.update(service_params)
-        if params[:service][:logo]
-          puts "Uploaded image"
-          if uploader.store!(params[:service][:logo])
-            flash[:notice] = "Uploaded logo!"
-            redirect_to service_path(@service)
-          else
-            flash[:alert] = "Uploading the logo failed!"
-            render :edit
-          end
+      logo = params[:service][:logo]
+      if logo
+        if uploader.store!(logo)
+          flash[:notice] = 'Uploaded logo!'
+          redirect_to service_path(@service)
         else
-            flash[:notice] = "The service has been updated!"
-            redirect_to service_path(@service)
+          flash[:alert] = 'Uploading the logo failed!'
+          render :edit
         end
+      else
+        flash[:notice] = 'The service has been updated!'
+        redirect_to service_path(@service)
+      end
     else
-      flash[:alert] = "Failed to update the service!"
+      flash[:alert] = 'Failed to update the service!'
       render :edit
     end
   end
@@ -156,19 +139,56 @@ class ServicesController < ApplicationController
     authorize @service
 
     if @service.points.any?
-      flash[:alert] = "Users have contributed valuable insight to this service!"
+      flash[:alert] = 'Users have contributed valuable insight to this service!'
       redirect_to service_path(@service)
     else
       @service.destroy
-      flash[:notice] = "Service has been removed!"
+      flash[:notice] = 'Service has been removed!'
       redirect_to services_path
     end
   end
 
   private
 
+  def handle_logo(uploader, logo, service)
+    puts 'Uploaded image'
+    if uploader.store!(logo)
+      flash[:notice] = 'Created service with logo!'
+    else
+      flash[:alert] = 'Uploading the logo failed!'
+    end
+    redirect_to service_path(service)
+  end
+
+  def build_quote(point)
+    document = Document.find(params[:document_id])
+    point.document = document
+
+    point.quote_text = document.text[params[:quote_start].to_i, params[:quote_end].to_i - params[:quote_start].to_i]
+    point.source = document.url
+    point.quote_start = params[:quote_start]
+    point.quote_end = params[:quote_end]
+    point
+  end
+
+  def build_point(case_obj, service, current_user)
+    point = Point.new(
+      params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
+    )
+    point.user = current_user
+    point.case = case_obj
+    point.title = case_obj.title
+    point.service = service
+    point.analysis = 'Generated through the annotate view'
+    point
+  end
+
+  def privileged_user
+    current_user.admin? || current_user.curator? || current_user.bot?
+  end
+
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
   end
 
