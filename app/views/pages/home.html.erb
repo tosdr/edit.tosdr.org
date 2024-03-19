@@ -1,8 +1,11 @@
-<ul class="nav nav-pills">
-  <li role="presentation">
-    <%= link_to "View recent changes", versions_path %>
-  </li>
-</ul>
+
+<% if user_signed_in? %>
+  <ul class="nav nav-pills">
+    <li role="presentation">
+      <%= link_to "View recent changes", versions_path %>
+    </li>
+  </ul>
+<% end %>
 
 <% if @pending_points %>
 <h2>User-created points to review:</h2>
