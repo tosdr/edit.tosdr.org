@@ -160,11 +160,6 @@ class PointsController < ApplicationController
 
   private
 
-  def user_not_authorized
-    flash[:alert] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || root_path)
-  end
-
   def create_comment(comment_text)
     PointComment.create!(point_id: @point.id, summary: comment_text, user_id: current_user.id)
   end

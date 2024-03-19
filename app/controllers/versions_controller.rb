@@ -11,11 +11,4 @@ class VersionsController < ApplicationController
     versions = Version.order('created_at DESC').limit(50)
     @versions = versions.includes(:item)
   end
-  
-  private
-
-  def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
-    redirect_to(request.referrer || root_path)
-  end
 end

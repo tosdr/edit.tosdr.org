@@ -145,11 +145,6 @@ class DocumentsController < ApplicationController
 
   private
 
-  def user_not_authorized
-    flash[:info] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || root_path)
-  end
-
   def set_document
     @document = Document.find(params[:id].to_i)
   end

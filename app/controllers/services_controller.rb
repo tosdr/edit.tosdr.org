@@ -187,11 +187,6 @@ class ServicesController < ApplicationController
     current_user.admin? || current_user.curator? || current_user.bot?
   end
 
-  def user_not_authorized
-    flash[:alert] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || root_path)
-  end
-
   def service_params
     if current_user.curator?
       params.require(:service).permit(:name, :url, :query, :wikipedia, :is_comprehensively_reviewed)
