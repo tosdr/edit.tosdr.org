@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/policies/document_policy.rb
 class DocumentPolicy < ApplicationPolicy
   def index?
     true

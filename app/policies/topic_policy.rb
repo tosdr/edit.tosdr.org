@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/policies/topic_policy.rb
 class TopicPolicy < ApplicationPolicy
   def index?
     true

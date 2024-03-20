@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/policies/point_policy.rb
 class PointPolicy < ApplicationPolicy
   def index?
     true

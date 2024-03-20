@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/policies/case_policy.rb
 class CasePolicy < ApplicationPolicy
   def index?
     true
