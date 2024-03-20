@@ -1,16 +1,27 @@
+# frozen_string_literal: true
+
+# app/controllers/topics_controller.rb
 class TopicsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_curator, except: [:index, :show]
-  before_action :set_topic, only: [:show, :edit, :update, :destroy]
+  include Pundit::Authorization
+
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_curator, except: %i[index show]
+  before_action :set_topic, only: %i[show edit update destroy]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
+    authorize Topic
+
     @topics = Topic.all
-    if @query = params[:query]
-      @topics = Topic.search_by_topic_title(@query)
-    end
+    return unless @query == params[:query]
+
+    @topics = Topic.search_by_topic_title(@query)
   end
 
   def create
+    authorize Topic
+
     @topic = Topic.new(topic_params)
     if @topic.save
       redirect_to topics_path
@@ -20,33 +31,40 @@ class TopicsController < ApplicationController
   end
 
   def new
+    authorize Topic
+
     @topic = Topic.new
   end
 
   def edit
+    authorize @topic
   end
 
   def show
+    authorize @topic
+
     @cases = @topic.cases
-    if @query = params[:query]
+    return unless @query == params[:query]
 
-      @cases = Case.search_by_multiple(@query).where(topic: @topic)
-
-    end
+    @cases = Case.search_by_multiple(@query).where(topic: @topic)
   end
 
   def update
+    authorize @topic
+
     @topic.update(topic_params)
     redirect_to topic_path(@topic)
   end
 
   def destroy
+    authorize @topic
+
     if @topic.points.any?
-      flash[:alert] = "Users have contributed valuable insight to this topic!"
+      flash[:alert] = 'Users have contributed valuable insight to this topic!'
       redirect_to topic_path(@topic)
     else
       @topic.destroy
-      flash[:notice] = "Topic has been deleted!"
+      flash[:notice] = 'Topic has been deleted!'
       redirect_to topics_path
     end
   end
@@ -62,8 +80,6 @@ class TopicsController < ApplicationController
   end
 
   def set_curator
-    unless current_user.curator?
-      render :file => "public/401.html", :status => :unauthorized
-    end
+    render file: 'public/401.html', status: :unauthorized unless current_user.curator?
   end
 end

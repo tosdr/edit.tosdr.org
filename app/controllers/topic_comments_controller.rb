@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# app/controllers/topic_comments_controller.rb
 class TopicCommentsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_topic, only: %i[new create]
