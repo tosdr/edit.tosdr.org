@@ -1,4 +1,4 @@
 <% content_for :title do %>
   <title>Commenting on topic <%= @topic.id %> (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form' %>
+<%= render "shared/comments_form", object: @topic, object_comment: @topic_comment %>

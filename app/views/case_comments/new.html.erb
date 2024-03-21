@@ -1,4 +1,4 @@
 <% content_for :title do %>
   <title>Commenting on case <%= @case.id %> (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form' %>
+<%= render "shared/comments_form", object: @case, object_comment: @case_comment %>
