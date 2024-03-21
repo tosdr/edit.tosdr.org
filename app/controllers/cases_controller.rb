@@ -7,6 +7,7 @@ class CasesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show list_all]
   before_action :set_curator, only: [:destroy]
   before_action :set_case, only: %i[show edit update destroy]
+  before_action :set_topics, only: %i[new edit]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -81,6 +82,10 @@ class CasesController < ApplicationController
 
   def set_case
     @case = Case.find(params[:id])
+  end
+
+  def set_topics
+    @topics = Topic.order('title ASC')
   end
 
   def case_params

@@ -27,6 +27,9 @@ class DocumentsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_document, only: %i[show edit update crawl restore_points]
+  before_action :set_services, only: %i[new edit]
+  before_action :set_document_names, only: %i[new edit]
+  before_action :set_crawlers, only: %i[new edit]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -147,6 +150,18 @@ class DocumentsController < ApplicationController
 
   def set_document
     @document = Document.find(params[:id].to_i)
+  end
+
+  def set_services
+    @services = Service.order('name ASC')
+  end
+
+  def set_document_names
+    @document_names = Document::VALID_NAMES
+  end
+
+  def set_crawlers
+    @crawlers = Rails.env.development? ? DEV_CRAWLERS : PROD_CRAWLERS
   end
 
   def document_params

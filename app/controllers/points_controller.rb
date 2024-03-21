@@ -8,7 +8,8 @@ class PointsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show]
   before_action :set_point, only: %i[show edit update review post_review approve decline]
-  before_action :set_topics, only: %i[new create edit update approve]
+  before_action :set_topics, only: %i[new edit]
+  before_action :set_services, only: %i[new edit]
   before_action :check_status, only: %i[create update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -181,6 +182,10 @@ class PointsController < ApplicationController
 
   def set_topics
     @topics = Topic.all.includes(:cases).all
+  end
+
+  def set_services
+    @services = Service.order('name ASC')
   end
 
   def point_params

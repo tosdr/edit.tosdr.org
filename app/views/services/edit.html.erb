@@ -1,4 +1,5 @@
 <% content_for :title do %>
   <title>Editing Service <%= @service.name %> (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form' %>
+<%= render 'form', service: @service %>
+

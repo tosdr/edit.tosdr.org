@@ -1,4 +1,4 @@
 <% content_for :title do %>
   <title>New Case (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form' %>
+<%= render 'form', case_obj: @case, topics: @topics %>

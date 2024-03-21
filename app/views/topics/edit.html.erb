@@ -1,4 +1,4 @@
 <% content_for :title do %>
   <title>Editing Topic <%= @topic.title %> (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form' %>
+<%= render 'form', topic: @topic %>

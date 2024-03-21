@@ -8,8 +8,8 @@
 <% end %>
 
 <% if @pending_points %>
-<h2>User-created points to review:</h2>
-<%= render 'shared/table_points', points: @pending_points %>
+  <h2>User-created points to review:</h2>
+  <%= render 'shared/table_points', points: @pending_points %>
 <% end %>
 
 <% if @docbot_points && @docbot_points.count > 0 %>

@@ -46,4 +46,4 @@
 <br>
 <br>
 
-  <%= render 'shared/comments', comments: @case.case_comments.includes([:user, :spams]) %>
+<%= render 'shared/comments', comments: @case.case_comments.includes([:user, :spams]) %>

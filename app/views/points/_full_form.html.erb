@@ -1,8 +1,8 @@
 <div class="form-login">
-    <%= simple_form_for [@point] do |f| %>
+    <%= simple_form_for [point] do |f| %>
     <div class="row">
       <div class="col-xs-6">
-      <%= f.association :service, collection: Service.order('name ASC'), hint: "If your service isn't on the list, please contact the team" %>
+      <%= f.association :service, collection: services, hint: "If your service isn't on the list, please contact the team" %>
       </div>
     </div>
     <div class="row">
@@ -17,7 +17,7 @@
           # attribute, the ID as the second, and additional attributes after that.
           # This allows us to set data-attributes that Javascript can extract.
           :group_method => :last,
-          collection: @topics.map { |t|
+          collection: topics.map { |t|
             [
               t.title,
               t.id,
@@ -53,7 +53,7 @@
         <%= f.input :source, placeholder: "Example: https://duckduckgo.com/privacy#s3", hint: "Where did you find it?" %>
       </div>
       <div class="col-xs-4">
-        <%= f.input :status, collection: ["pending", "draft", "declined"], hint: "Choose pending for the curators to review your point", selected: @point.status || "pending" %>
+        <%= f.input :status, collection: ["pending", "draft", "declined"], hint: "Choose pending for the curators to review your point", selected: point.status || "pending" %>
       </div>
     </div>
     <% if edit %>
@@ -76,5 +76,4 @@
     </div>
     <% end %>
   </div>
-</div>
 </div>
