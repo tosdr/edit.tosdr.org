@@ -43,15 +43,29 @@ class Document < ApplicationRecord
     'Vulnerability Disclosure Policy',
     'Live Policy',
     'Complaints Policy',
+    'Conditions of Carriage',
     'General Conditions of Sale',
     'Marketplace Buyers Conditions',
     'Marketplace Sellers Conditions',
+    'Frequently Asked Questions',
+    'Corporate Social Responsibility',
+    'Social Media Policy',
+    'Uniform Disclosure',
+    'Affiliate Disclosure',
+    'Safety Guidelines',
+    'Telephone Communication Guidelines',
+    'Records Keeping Policy',
+    'Service Level Agreement',
+    'Legal Information',
+    'Policy',
+    'About',
+    'Miscellaneous Agreement',
     'Ranking Parameters Description',
     'Premium Partner Conditions',
     'Platform to Business Notice',
     'Business Mediation Policy',
     'Business Privacy Policy'
-  ]
+  ].freeze
 
   def custom_uniqueness_check
     doc = Document.where(url: url, xpath: xpath, status: nil)

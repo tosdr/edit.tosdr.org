@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="form-login">
-    <%= simple_form_for @point, url: post_review_path, method: :post do |f| %>
+  <%= simple_form_for @point, url: post_review_path, method: :post do |f| %>
     <div class="row">
       <div class="col-xs-4">
         <% if current_user.curator? %>
@@ -28,5 +28,4 @@
     </div>
     <% end %>
   </div>
-</div>
 </div>

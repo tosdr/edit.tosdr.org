@@ -1,4 +1,11 @@
 <% content_for :title do %>
   <title>New Document (ToS;DR Phoenix)</title>
 <% end %>
-<%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+<div class="container">
+  <div>
+    We now enforce the standardization of document names to prevent the addition of non-sensical texts and spam. Definitions of these standardized names can be found <a href="https://github.com/tosdr/terms-types?tab=readme-ov-file#terms-types-definitions"> here</a>. We are working on new features to ease this transition.
+  </div>
+  <div>
+    <%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+  </div>
+</div>
