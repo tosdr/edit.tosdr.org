@@ -11,6 +11,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   web_host = ENV['AUTHORITY'] || 'localhost'
   web_port = ENV['WEB_PORT'] || '9090'
+  routes.default_url_options[:host] = web_host
 
   config.action_controller.default_url_options = {
     host: web_host,
