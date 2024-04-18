@@ -49,7 +49,7 @@
       <li class="list-group-item">
         <div class="row">
           <div class="col-lg-6">
-            <a href="#doc_<%= doc.id %>"><%= doc.name %></a>
+            <a href="#doc_<%= doc.id %>"><%= doc.document_type ? doc.document_type.name : doc.name %></a>
           </div>
           <% if doc.ota_sourced %>
             <div class="col-lg-6 text-right small">
@@ -61,7 +61,7 @@
     <% end %>
   	<% if policy(@service).create? %>
       <li style="list-style-type: none; padding-top: 1rem;">
-        <%= link_to "Add a document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-primary" %>
+        <%= link_to "Add a document", new_service_document_path(@service), title: "Add a new document to crawl", class: "btn btn-primary" %>
   		</li>
   	<% end %>
   </ul>
@@ -72,7 +72,7 @@
     <div class="docAnchor" id="doc_<%= doc.id %>">
       <div class="panel panel-default">
         <div class="panel-heading pb-2">
-          <h3><%= link_to doc.name, document_path(doc) %></h3>
+          <h3><%= link_to doc.document_type ? doc.document_type.name : doc.name, document_path(doc) %></h3>
           <% if policy(doc).restore_points? %>
             <% if doc.snippets[:points_needing_restoration].present? %>
               <%= link_to("Restore quotes", document_restore_points_path(doc), method: :post, class: 'btn btn-sm btn-warning') %>
