@@ -1,4 +1,4 @@
 <% content_for :title do %>
-  <title>Editing Document <%= @document.service.name %> <%= @document.name %> (ToS;DR Phoenix)</title>
+  <title>Editing <%= @document.service.name %> <%= @document.document_type ? @document.document_type.name : @document.name %></title>
 <% end %>
 <%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>

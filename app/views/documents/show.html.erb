@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <title>Document <%= @document.service.name %> <%= @document.name %> (ToS;DR Phoenix)</title>
+  <title><%= @document.service.name %> <%= @name %></title>
 <% end %>
 
 <div class="card-inline">
@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-6">
         <h1><%= link_to @document.service.name, annotate_service_path(@document.service) %></h1>
-        <h5><%= @document.name %></h5>
+        <h5><%= @name %></h5>
       </div>
     </div>
 
