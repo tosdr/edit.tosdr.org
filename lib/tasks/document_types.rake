@@ -57,7 +57,10 @@ namespace :document_types do
   desc 'Create document types'
   task create_document_types: :environment do
     TYPES.each do |key, value|
-      DocumentType.create!(name: key, description: value, status: 'approved')
+      unless DocumentType.find_by_name(key).any?
+        document_type = DocumentType.new(name: key, description: value, status: 'approved')
+        document_type.save! validate: false
+      end
     end
   end
 end
