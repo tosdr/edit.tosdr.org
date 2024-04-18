@@ -24,16 +24,21 @@
 
   <!-- Right Navigation -->
   <div class="navbar-tosdr-right hidden-xs hidden-sm">
-
     <!-- Links -->
     <% unless current_user.nil? %>
-      <div class="navbar-tosdr-group">
-        <%= link_to "Points", points_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
-        <%= link_to "Cases", cases_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
-        <%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
-        <%= link_to "Services", services_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
-        <%= link_to "Documents", documents_path, class: "navbar-tosdr-item navbar-tosdr-link" %>
-      </div>
+      <ul class="nav navbar-nav">
+        <li><%= link_to "Cases", cases_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+        <li><%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle navbar-tosdr-item navbar-tosdr-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Annotate<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Points", points_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+            <li><%= link_to "Services", services_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+            <li><%= link_to "Documents", documents_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+            <li><%= link_to "Document types", document_types_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+          </ul>
+        </li>
+      </ul>
     <% end %>
     <div class="navbar-tosdr-group">
       <div class="navbar-tosdr-item">
