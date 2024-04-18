@@ -19,57 +19,6 @@ class Document < ApplicationRecord
   validate :location_uniqueness_check
   validate :document_type_uniqueness_check
 
-  VALID_NAMES = [
-    'Terms of Service',
-    'Privacy Policy',
-    'Imprint',
-    'Trackers Policy',
-    'Developer Terms',
-    'Community Guidelines',
-    'Deceased Users',
-    'Acceptable Use Policy',
-    'Restricted Use Policy',
-    'Commercial Terms',
-    'Copyright Claims Policy',
-    'Law Enforcement Guidelines',
-    'Human Rights Policy',
-    'In-App Purchases Policy',
-    'Review Guidelines',
-    'Brand Guidelines',
-    'Quality Guidelines',
-    'Data Controller Agreement',
-    'Data Processor Agreement',
-    'User Consent Policy',
-    'Closed Captioning Policy',
-    'Seller Warranty',
-    'Single Sign-On Policy',
-    'Vulnerability Disclosure Policy',
-    'Live Policy',
-    'Complaints Policy',
-    'Conditions of Carriage',
-    'General Conditions of Sale',
-    'Marketplace Buyers Conditions',
-    'Marketplace Sellers Conditions',
-    'Frequently Asked Questions',
-    'Corporate Social Responsibility',
-    'Social Media Policy',
-    'Uniform Disclosure',
-    'Affiliate Disclosure',
-    'Safety Guidelines',
-    'Telephone Communication Guidelines',
-    'Records Keeping Policy',
-    'Service Level Agreement',
-    'Legal Information',
-    'Policy',
-    'About',
-    'Miscellaneous Agreement',
-    'Ranking Parameters Description',
-    'Premium Partner Conditions',
-    'Platform to Business Notice',
-    'Business Mediation Policy',
-    'Business Privacy Policy'
-  ].freeze
-
   def location_uniqueness_check
     doc = Document.where(url: url, xpath: xpath, status: nil)
 
