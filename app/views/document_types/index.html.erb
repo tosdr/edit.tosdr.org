@@ -1,0 +1,73 @@
+<% content_for :title do %>
+  <title>Document types</title>
+<% end %>
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <small>We <mark>explicitly define</mark> document types to better <mark>standardize</mark> and <mark>organize</mark> our data. For more information, please inspect our  <%= link_to 'documentation', 'https://github.com/tosdr/terms-types' %>.</small>
+    </div>
+    <div class="panel-body">
+      <span class="lighter">
+        <h3>Document types
+          <% if current_user %> 
+            <small>
+              Can't find what you're looking for?
+              <% if current_user.admin || current_user.curator %>
+                <%= link_to 'Create', new_document_type_path %>
+              <% else %>
+                <%= link_to 'Request', new_document_type_path %> 
+              <% end %>
+              a new type
+            </small>
+          <% end %>
+        </h3>
+      </span>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <br>
+      <div class="row">
+      <form class="navbar-form navbar-left" role="search">
+          <%= search_form_for @q do |f| %>
+            <div>
+              <%= f.label :name_cont, class: "small lighter" %>
+            </div>
+            <div class="form-group">
+              <%= f.search_field :name_cont, class: "form-control" %>
+            </div>
+            <%= f.submit class: "btn btn-default small" %>
+          <% end %>
+        </form>
+        <form class="navbar-form navbar-left" role="search">
+          <%= search_form_for @q do |f| %>
+            <div>
+              <%= f.label :description_cont, class: "small lighter" %>
+            </div>
+            <div class="form-group">
+              <%= f.search_field :description_cont, class: "form-control" %>
+            </div>
+            <%= f.submit class: "btn btn-default small" %>
+          <% end %>
+        </form>
+        <form class="navbar-form navbar-left" role="search">
+          <%= search_form_for @q do |f| %>
+            <div>
+              <%= f.label 'Status', class: "small lighter" %>
+            </div>
+            <%= f.select :status_eq, options_for_select(DocumentType.pluck(:status).uniq, @q.status_eq), { include_blank: true }, { class: 'form-control' } %>
+            <%= f.submit class: "btn btn-default small" %>
+          <% end %>
+        </form>
+
+      </div>
+      <% if @document_types.empty? %>
+        <p>No document types to display at this time</p>
+      <% else %>
+        <%= render "table_document_types", document_types: @document_types %>
+      <% end %>
+      <%= paginate @document_types %>
+    </div>
+  </div>
+</div>

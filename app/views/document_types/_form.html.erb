@@ -1,0 +1,13 @@
+<%= simple_form_for [document_type] do |f| %>  
+  <span class="lighter">
+    <%= f.input :name, hint: "The name classifies the type of document. It should be unique and specific.", placeholder: "e.g., EU Privacy Policy, as opposed to just Privacy Policy" %>
+    <br>
+    <%= f.input :description, as: :text, placeholder: "e.g., concerns EU end user’s personal data", class: "lighter" %>
+    <br>
+    <% if current_user.admin || current_user.curator %>
+      <%= f.input :status, collection: ["approved", "declined", "pending"], selected: document_type.status || "pending", class: "lighter" %>
+    <% end %>
+  </span>
+  <br>
+  <%= f.submit submit_text, class: 'btn btn-default lighter' %>
+<% end %>

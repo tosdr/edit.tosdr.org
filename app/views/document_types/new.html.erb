@@ -1,0 +1,43 @@
+<% content_for :title do %>
+  <title>New document type</title>
+<% end %>
+
+<div>
+  <div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="lighter small"><%= link_to 'Back', document_types_path %></li>
+    </ul>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>Document types <mark>classify</mark> legal documents. For more information, please inspect our  <%= link_to 'documentation', 'https://github.com/tosdr/terms-types' %>.</small>
+      </div>
+      <div class="panel-body">
+        <span class="lighter">
+          <h4>
+            New document type
+          </h4>
+        </span>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>Document types allow us to <mark>normalize</mark> and <mark>organize</mark> documents. An example would be <mark>Corporate Social Responsibility</mark>, or CSR.
+        <br>
+        <br>
+        Many service documents concern CSR. Documents that address diversity policies, environmental practices, corruption prevention, and human trafficking prevention would all fall under the <mark>document type</mark> of <mark>Corporate Social Responsibility</mark>. 
+        <br>
+        <br>
+        For a broader dictionary of <mark>individual documents</mark> and their <mark>document type</mark> classification, inspect our <%= link_to 'source code', 'https://github.com/tosdr/terms-dictionary/blob/master/type.rb'%>.</small>
+      </div>
+      <div class="panel-body">
+        <br>
+          <%= render 'form', document_type: @document_type, submit_text: @submit_text %>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>

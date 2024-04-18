@@ -1,0 +1,32 @@
+<div class="container-fluid">
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <% if current_user %>
+      <ul class="nav navbar-nav">
+        <% if document_type.user == current_user || (current_user.admin || current_user.curator) %>
+          <li><%= link_to 'Edit', edit_document_type_path(document_type) %></li>
+        <% end %>
+        <% if current_user.admin || current_user.curator %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle lighter" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Review <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="lighter small"><%= link_to 'Approve', document_type_review_path(document_type, status: 'approved'), method: :post %></li>
+              <li class="lighter small"><%= link_to 'Decline', document_type_review_path(document_type, status: 'declined'), method: :post %></li>
+              <li class="lighter small"><%= link_to 'Revert to pending', document_type_review_path(document_type, status: 'pending'), method: :post %></li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="lighter small"><%= link_to 'All document types', document_types_path %></li>
+      </ul>
+    <% end %>
+    <% unless current_user %>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <li class="lighter small"><%= link_to 'Inspect all document types', document_types_path %></li>
+        </li>
+      </ul>
+    <% end %>
+  </div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->

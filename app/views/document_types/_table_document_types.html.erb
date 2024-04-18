@@ -1,0 +1,31 @@
+<div>
+  <div class="table-responsive">
+    <table class="table table-hover table-condensed">
+      <thead>
+        <tr>
+          <th scope="col" class="lighter">Name</th>
+          <th scope="col" class="lighter">Description</th>
+          <th scope="col" class="lighter">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% document_types.each do |d| %>
+        <% 
+          if d.status == "approved"
+            status_color = "bg-success"
+          elsif d.status == "declined"
+            status_color = "bg-danger"
+          elsif d.status
+            status_color = "bg-warning"
+          end
+        %>
+        <tr>
+          <td class="small lighter"><%= link_to d.name, document_type_path(d) %></td>
+          <td class="small"><mark><%= d.description %></mark></td>
+          <td class="small <%= status_color  %>"><%= d.status %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

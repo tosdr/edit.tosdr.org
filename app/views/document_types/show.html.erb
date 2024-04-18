@@ -1,0 +1,56 @@
+<% content_for :title do %>
+  <title><%= @document_type.name %></title>
+<% end %>
+<br>
+<div class="container">
+  <%= render "nav", document_type: @document_type %>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <small>Document types <mark>classify</mark> legal documents. For more information, please inspect our  <%= link_to 'documentation', 'https://github.com/tosdr/terms-types' %>.</small>
+    </div>
+    <div class="panel-body">
+      <span class="lighter">
+        <div class="row">
+          <div class="col-md-3">
+            <h4>
+              <%= @document_type.name %>
+            </h4>
+          </div>
+          <div class="col-md-6">
+            <small> 
+            <%= @document_type.description %>
+          </small>
+          </div>
+          <% if @document_type.status == 'approved' %>
+            <% status_color = 'text-success' %>
+          <% elsif @document_type.status == 'pending' %>
+            <% status_color = 'text-warning' %>
+          <% elsif @document_type.status == 'declined' %>
+            <% status_color = 'text-danger' %>
+          <% end %>
+          <div class="col-md-3 text-right">
+            <span class="<%= status_color %>">
+              <small> status: <%= @document_type.status %>
+            </span>
+          </div>
+        </div>
+        <div>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <small>
+        Many <mark>individual documents</mark> can correspond to a single <mark>document type</mark>. For a broader dictionary of <mark>individual documents</mark> and their <mark>document type</mark>, inspect our <%= link_to 'source code', 'https://github.com/tosdr/terms-dictionary/blob/master/type.rb'%>.
+      </small>
+    </div>
+    <div class="panel-body">
+      <br>
+        <%= render "table_documents", documents: @documents %>
+      <br>
+    </div>
+  </div>
+</div>
