@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_11_184004) do
+ActiveRecord::Schema.define(version: 2024_04_10_113954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,6 +161,16 @@ ActiveRecord::Schema.define(version: 2023_12_11_184004) do
     t.index ["updated"], name: "ix__document_meta_updated"
   end
 
+  create_table "document_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description"
+    t.bigint "user_id"
+    t.string "status"
+    t.index ["user_id"], name: "index_document_types_on_user_id"
+  end
+
   create_table "document_uri", id: :serial, force: :cascade do |t|
     t.datetime "created", default: -> { "now()" }, null: false
     t.datetime "updated", default: -> { "now()" }, null: false
@@ -191,6 +201,8 @@ ActiveRecord::Schema.define(version: 2023_12_11_184004) do
     t.string "crawler_server"
     t.string "text_version"
     t.boolean "ota_sourced", default: false
+    t.bigint "document_type_id"
+    t.index ["document_type_id"], name: "index_documents_on_document_type_id"
     t.index ["service_id"], name: "index_documents_on_service_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
@@ -483,7 +495,9 @@ ActiveRecord::Schema.define(version: 2023_12_11_184004) do
   add_foreign_key "document_comments", "documents"
   add_foreign_key "document_comments", "users"
   add_foreign_key "document_meta", "document", name: "fk__document_meta__document_id__document"
+  add_foreign_key "document_types", "users"
   add_foreign_key "document_uri", "document", name: "fk__document_uri__document_id__document"
+  add_foreign_key "documents", "document_types"
   add_foreign_key "documents", "services"
   add_foreign_key "documents", "users"
   add_foreign_key "featurecohort_feature", "feature", name: "fk__featurecohort_feature__feature_id__feature", on_delete: :cascade
