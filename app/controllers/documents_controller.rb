@@ -27,15 +27,15 @@ class DocumentsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_document, only: %i[show edit update crawl restore_points]
-  before_action :set_services, only: %i[new edit]
-  before_action :set_document_names, only: %i[new edit]
-  before_action :set_crawlers, only: %i[new edit]
+  before_action :set_services, only: %i[new edit create update]
+  before_action :set_document_names, only: %i[new edit create update]
+  before_action :set_crawlers, only: %i[new edit create update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     authorize Document
-    @q = Document.includes(:service).ransack(params[:q])
+    @q = Document.includes(:service, :document_type).ransack(params[:q])
     @documents = @q.result(distinct: true).page(params[:page] || 1)
   end
 
@@ -43,10 +43,9 @@ class DocumentsController < ApplicationController
     authorize Document
 
     @document = Document.new
-    service = params[:service]
-    return unless service
+    service = params[:service_id]
 
-    @document.service = Service.find(service)
+    @document.service = Service.find(service) if service
   end
 
   def create
@@ -54,6 +53,7 @@ class DocumentsController < ApplicationController
 
     @document = Document.new(document_params)
     @document.user = current_user
+    @document.name = @document.document_type.name if @document.document_type
 
     if @document.save
       crawl_result = perform_crawl
@@ -67,7 +67,7 @@ class DocumentsController < ApplicationController
       end
       redirect_to document_path(@document)
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -75,6 +75,12 @@ class DocumentsController < ApplicationController
     authorize @document
 
     @document.update(document_params)
+
+    if document_params[:document_type_id]
+      id = document_params[:document_type_id]
+      document_type = DocumentType.find(id)
+      @document.name = document_type.name unless @document.name == document_type.name
+    end
 
     # we should probably only be running the crawler if the URL or XPath have changed
     run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url xpath crawler_server].include? attribute }
@@ -115,6 +121,8 @@ class DocumentsController < ApplicationController
 
   def show
     authorize @document
+
+    @name = @document.document_type ? @document.document_type.name : @document.name
   end
 
   def crawl
@@ -157,7 +165,7 @@ class DocumentsController < ApplicationController
   end
 
   def set_document_names
-    @document_names = Document::VALID_NAMES
+    @document_names = DocumentType.order('name ASC')
   end
 
   def set_crawlers
@@ -165,7 +173,7 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:service, :service_id, :user_id, :name, :url, :xpath, :crawler_server)
+    params.require(:document).permit(:service, :service_id, :user_id, :document_type_id, :name, :url, :xpath, :crawler_server)
   end
 
   def crawler_error_message(result)

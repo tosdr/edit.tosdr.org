@@ -49,7 +49,7 @@ class ServicesController < ApplicationController
   def annotate
     authorize Service
 
-    @service = Service.includes(documents: [:points, :user]).find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: [:points, :user, :document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @sourced_from_ota = @documents.where(ota_sourced: true).any?
     if params[:point_id] && current_user
