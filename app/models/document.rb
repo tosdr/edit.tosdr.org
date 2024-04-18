@@ -6,6 +6,7 @@ class Document < ApplicationRecord
 
   belongs_to :service
   belongs_to :user, optional: true
+  belongs_to :document_type, optional: true
 
   has_many :points
   has_many :document_comments, dependent: :destroy
@@ -13,8 +14,10 @@ class Document < ApplicationRecord
   validates :name, presence: true
   validates :url, presence: true
   validates :service_id, presence: true
+  validates :document_type_id, presence: true
 
-  validate :custom_uniqueness_check
+  validate :location_uniqueness_check
+  validate :document_type_uniqueness_check
 
   VALID_NAMES = [
     'Terms of Service',
@@ -67,13 +70,22 @@ class Document < ApplicationRecord
     'Business Privacy Policy'
   ].freeze
 
-  def custom_uniqueness_check
+  def location_uniqueness_check
     doc = Document.where(url: url, xpath: xpath, status: nil)
 
     return unless doc.any? && (doc.first.id != id)
 
     go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
     errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
+  end
+
+  def document_type_uniqueness_check
+    doc = Document.where(document_type_id: document_type_id, service_id: service_id)
+
+    return unless doc.any? && (doc.first.id != id)
+
+    go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
+    errors.add(:document_type_id, "This document already exists for this service! Inspect it here: #{go_to_doc}")
   end
 
   def convert_xpath_to_css
