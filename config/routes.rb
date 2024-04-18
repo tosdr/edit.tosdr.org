@@ -36,12 +36,16 @@ Rails.application.routes.draw do
   post 'documents/:id/crawl', to: 'documents#crawl', as: :document_crawl
   post 'documents/:id/restore_points', to: 'documents#restore_points', as: :document_restore_points
 
+  resources :document_types, except: [:destroy]
+  post 'document_types/:id/review', to: 'document_types#review', as: :document_type_review
+
   # api endpoints for vue
   # get 'services/list_all', to: 'services#list_all', as: 'list_all_services'
 
   # traditional rails routes
   resources :services, except: [:show]
   resources :services, except: [:index] do
+    resources :documents, only: %i[new create]
     resources :points, only: %i[new create]
     resources :service_comments, only: %i[new create]
   end
