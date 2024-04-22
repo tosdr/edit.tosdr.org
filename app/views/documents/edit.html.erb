@@ -1,4 +1,40 @@
 <% content_for :title do %>
   <title>Editing <%= @document.service.name %> <%= @document.document_type ? @document.document_type.name : @document.name %></title>
 <% end %>
-<%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+
+<div>
+  <div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="lighter small"><%= link_to 'Back', document_path(@document) %></li>
+    </ul>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>Documents describe a service's various <mark>legal policies</mark> and <mark>business practices</mark>.</small>
+      </div>
+      <div class="panel-body">
+        <span class="lighter">
+          <h4>
+            Update <%= @document.service.name %> - <%= @document.document_type ? @document.document_type.name : @document.name %>
+            <small>
+              To generate the document, crawlers fetch the text from the given web location
+            </small>
+          </h4>
+        </span>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>We use <%= link_to 'document types', document_types_path %> to enforce the <mark>standardization</mark> of document names to prevent the addition of non-sensical texts and spam. We are working on new features to ease this transition.</small>
+      </div>
+      <div class="panel-body">
+        <br>
+          <%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
