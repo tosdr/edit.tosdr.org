@@ -1,20 +1,21 @@
 <%= simple_form_for [document] do |f| %>
+  <span class="lighter">
+    <%= f.association :service, collection: services, hint: "If your service isn't on the list, please contact the team" %>
 
-  <%= f.association :service, collection: services, hint: "If your service isn't on the list, please contact the team" %>
+    <% if document.name.present? %>
+      <label class="sr-only" for="inputHelpBlock">Name</label>
+      <input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="<%= document.name%>" readonly>
+      <span id="helpBlock" class="help-block">To change the document name, please select a new document type</span>
+    <% end %>
 
-  <% if document.name.present? %>
-    <label class="sr-only" for="inputHelpBlock">Name</label>
-    <input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="<%= document.name%>" readonly>
-    <span id="helpBlock" class="help-block">To change the document name, please select a new document type.</span>
-  <% end %>
-
-  <%= f.association :document_type, collection: document_names, hint: "Inspect the document types and their descriptions #{link_to 'here', document_types_path}".html_safe %>
+    <%= f.association :document_type, collection: document_names, hint: "Inspect the document types and their descriptions #{link_to 'here', document_types_path}".html_safe %>
+    
+    <%= f.input :url, hint: "The web location at which we can fetch the text of this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
+    
+    <%= f.input :xpath, input_html: { value: (f.object.xpath.present?) ? f.object.xpath : '//body' }, placeholder: "e.g. \"//*[@id='content']//div[@class='_5tkp _3m9']\"", hint: "The location of the terms on the web page using <a href=\"https://en.wikipedia.org/wiki/XPath\" title=\"Wikipedia explanation of XPath\" target=\"_blank\">XPath</a>".html_safe %>
+    
+    <%= f.input :crawler_server, collection: crawlers, label_method: :second, value_method: :first, hint: "<a href=\"https://to.tosdr.org/U98u1\">Select which crawler should be used (optional, useful if blocked by EU)</a>".html_safe, selected: document.crawler_server || "eu.crawler.api.tosdr.org" %>
+  </span>
   
-  <%= f.input :url, hint: "Where we should fetch this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
-  
-  <%= f.input :xpath, input_html: { value: (f.object.xpath.present?) ? f.object.xpath : '//body' }, placeholder: "e.g. \"//*[@id='content']//div[@class='_5tkp _3m9']\"", hint: "The location of the terms on the page using <a href=\"https://en.wikipedia.org/wiki/XPath\" title=\"Wikipedia explanation of XPath\" target=\"_blank\">XPath</a>".html_safe %>
-  
-  <%= f.input :crawler_server, collection: crawlers, label_method: :second, value_method: :first, hint: "<a href=\"https://to.tosdr.org/U98u1\">Select from which country the crawler should be used, or a specific crawler. Useful if blocked by EU. (Optional)</a>".html_safe, selected: document.crawler_server || "eu.crawler.api.tosdr.org" %>
-  
-  <%= f.submit "Crawl Document", name: "only_create", class: 'btn btn-primary' %>
+  <%= f.submit "Crawl Document", name: "only_create", class: 'btn btn-default lighter' %>
 <% end %>

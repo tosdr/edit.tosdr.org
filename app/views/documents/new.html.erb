@@ -1,11 +1,41 @@
 <% content_for :title do %>
   <title>New document</title>
 <% end %>
-<div class="container">
+
+<div>
   <div>
-    We now enforce the standardization of document names to prevent the addition of non-sensical texts and spam. Definitions of these standardized names can be found <a href="https://github.com/tosdr/terms-types?tab=readme-ov-file#terms-types-definitions"> here</a>. We are working on new features to ease this transition.
+    <ul class="nav navbar-nav navbar-right">
+      <li class="lighter small"><%= link_to 'Back', documents_path %></li>
+    </ul>
   </div>
-  <div>
-    <%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+  <br>
+  <br>
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>Documents describe a service's various <mark>legal policies</mark> and <mark>business practices</mark>.</small>
+      </div>
+      <div class="panel-body">
+        <span class="lighter">
+          <h4>
+            New document 
+            <small>
+              To generate the document, crawlers fetch the text from the given web location
+            </small>
+          </h4>
+        </span>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>We use <%= link_to 'document types', document_types_path %> to enforce the <mark>standardization</mark> of document names to prevent the addition of non-sensical texts and spam. We are working on new features to ease this transition.</small>
+      </div>
+      <div class="panel-body">
+        <br>
+          <%= render 'form', document: @document, document_names: @document_names, crawlers: @crawlers, services: @services %>
+        <br>
+      </div>
+    </div>
   </div>
 </div>
+
