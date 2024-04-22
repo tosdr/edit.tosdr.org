@@ -165,7 +165,7 @@ class DocumentsController < ApplicationController
   end
 
   def set_document_names
-    @document_names = DocumentType.order('name ASC')
+    @document_names = DocumentType.where(status: 'approved').order('name ASC')
   end
 
   def set_crawlers
