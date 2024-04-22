@@ -1,49 +1,59 @@
-<% content_for :document do %>
-  <document>Documents (ToS;DR Edit Tool)</document>
+<% content_for :title do %>
+  <title>Documents</title>
 <% end %>
-<div class="card-inline">
-  <div class="card-inline-item card-inline-service">
-    <div class="row">
-      <div class="col-lg-6">
-        <h1>Documents</h1>
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <small><mark>Documents</mark> are the <mark>legal texts</mark> associated with a service.</small>
+    </div>
+    <div class="panel-body">
+      <span class="lighter">
+        <h3>Documents
+          <% if current_user&.admin || current_user&.curator %> 
+            <small>
+              Can't find what you're looking for?
+              <%= link_to 'Create', new_document_path %>
+              a new document
+            </small>
+          <% end %>
+        </h3>
+      </span>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <br>
+      <div class="row">
+      <form class="navbar-form navbar-left" role="search">
+          <%= search_form_for @q do |f| %>
+            <div>
+              <%= f.label :name_cont, class: "small lighter" %>
+            </div>
+            <div class="form-group">
+              <%= f.search_field :name_cont, class: "form-control" %>
+            </div>
+            <%= f.submit class: "btn btn-default small" %>
+          <% end %>
+        </form>
+        <form class="navbar-form navbar-left" role="search">
+          <%= search_form_for @q do |f| %>
+            <div>
+              <%= f.label :service_name_cont, class: "small lighter" %>
+            </div>
+            <div class="form-group">
+              <%= f.search_field :service_name_cont, class: "form-control" %>
+            </div>
+            <%= f.submit class: "btn btn-default small" %>
+          <% end %>
+        </form>
       </div>
-      <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
-        <div class="col-lg-6 text-right justify-content-end">
-          <%= link_to 'Add Document', new_document_path, class: 'btn btn-primary mb15' %>
-        </div>
+      <% if @documents.empty? %>
+        <p>No documents to display at this time</p>
+      <% else %>
+        <%= render "shared/table_documents", documents: @documents %>
       <% end %>
+      <%= paginate @documents %>
     </div>
-    <br>
-    <br>
-    <div class="row">
-      <div class="col-lg-4 text-left">
-          <div class="">
-            <%= search_form_for @q do |f| %>
-              <%= f.label :name_cont %>
-              <%= f.search_field :name_cont %>
-
-              <%= f.submit %>
-            <% end %>
-          </div>
-        </div>
-        <div class="col-lg-6 text-left">
-          <div class="">
-            <%= search_form_for @q do |f| %>
-
-              <%= f.label :service_name_cont %>
-              <%= f.search_field :service_name_cont %>
-
-              <%= f.submit %>
-            <% end %>
-          </div>
-        </div>
-    </div>
-    <br>
-    <% if @documents.empty? %>
-      <p>There are no documents to display at this time!</p>
-    <% else %>
-      <%= render "table_documents", documents: @documents %>
-    <% end %>
   </div>
 </div>
-<%= paginate @documents %>
