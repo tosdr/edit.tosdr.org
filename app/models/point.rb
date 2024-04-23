@@ -100,6 +100,12 @@ class Point < ApplicationRecord
     annotation.index_elasticsearch
   end
 
+  def display_title
+    return self.case&.title if self.case
+
+    point.quote_text ? "\"" + point.quote_text + "\"" : point.title
+  end
+
   def annotation_uuid
     StringConverter.new(string: annotation_ref).to_uuid
   end

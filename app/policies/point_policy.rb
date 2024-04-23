@@ -3,7 +3,7 @@
 # app/policies/point_policy.rb
 class PointPolicy < ApplicationPolicy
   def index?
-    true
+    !user.nil?
   end
 
   def show?

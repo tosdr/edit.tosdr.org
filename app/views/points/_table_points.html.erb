@@ -1,0 +1,37 @@
+<div>
+  <div class="table-responsive">
+    <table class="table table-hover table-condensed">
+      <thead>
+        <tr>
+          <th scope="col" class="lighter">Service</th>
+          <th scope="col" class="lighter">Title</th>
+          <th scope="col" class="lighter text-left">Rating</th>
+          <th scope="col" class="lighter text-right">Status</th>
+          <th scope="col" class="lighter text-right">Author</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% points.each do |point| %>
+        <% if point.case&.classification == 'good' %>
+          <% pointbox = "point-good" %>
+        <% elsif point.case&.classification == 'neutral' %>
+          <% pointbox = "point-neutral" %>
+        <% elsif point.case&.classification == 'bad' %>
+          <% pointbox = "point-bad" %>
+        <% elsif point.case&.classification == 'blocker' %>
+          <% pointbox = "point-blocker" %>
+        <% end %>
+        <tr>
+          <td class="small lighter"><%= link_to point.service.name, service_path(point.service), title: "View service" %></td>
+          <td class="small"><mark><%= link_to point.display_title, point_path(point), title: "View point" %></mark></td>
+          <td class="small text-right <%= pointbox %>"></td>
+          <td class="small text-right"><%= status_badge point.status %></td>
+          <td class="small text-right"><%= username point.user %> <%= rank_badge point.user %></td>
+          <td></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
