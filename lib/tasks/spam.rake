@@ -21,7 +21,7 @@ namespace :spam do
     items.select do |item|
       summary = item.summary
       uris = extract_uris(summary)
-      return uris.length.positive?
+      uris.length.positive?
     end
 
     items
