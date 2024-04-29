@@ -18,7 +18,7 @@ namespace :spam do
   end
 
   def find_spam(items)
-    items.select do |item|
+    items = items.select do |item|
       summary = item.summary
       uris = extract_uris(summary)
       uris.length.positive?
