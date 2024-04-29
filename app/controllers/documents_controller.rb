@@ -55,20 +55,50 @@ class DocumentsController < ApplicationController
     @document.user = current_user
     @document.name = @document.document_type.name if @document.document_type
 
-    if @document.save
-      crawl_result = perform_crawl
+    # <ActionController::Parameters {"service_id"=>"4", "document_type_id"=>"2", "url"=>"https://opentermsarchive.org/en/privacy-policy", "selector"=>".TextContent_textContent__ToW2S", "crawler_server"=>"http://localhost:5000"} permitted: true>
 
-      unless crawl_result.nil?
-        if crawl_result['error']
-          flash[:alert] = crawler_error_message(crawl_result)
-        else
-          flash[:notice] = 'The crawler has updated the document'
-        end
-      end
-      redirect_to document_path(@document)
-    else
-      render :new
-    end
+    # {
+    #   "name": "Open Terms Archive",
+    #   "documents": {
+    #     "Privacy Policy": {
+    #       "fetch": "https://opentermsarchive.org/en/privacy-policy",
+    #       "select": ".TextContent_textContent__ToW2S"
+    #     }
+    #   }
+    # }
+    service = Service.find(document_params[:service_id]).name
+    normalized_name = service.strip
+    document_type = DocumentType.find(document_params[:document_type_id]).name
+    declaration = {}
+    declaration["name"] = normalized_name
+    declaration["documents"] = {}
+    declaration["documents"][document_type] = {}
+    declaration["documents"][document_type]["fetch"] = document_params[:url]
+    declaration["documents"][document_type]["selector"] = document_params[:selector]
+
+    file_path = 'declarations/' + normalized_name + '.json'
+    # make sure declaractions folder exists
+    File.new(file_path, 'w') unless File.exist?(file_path)
+    json = JSON.pretty_generate(JSON.parse(JSON[declaration]))
+
+    File.write(file_path, json)
+    result = exec 'npx ota track'
+    byebug
+
+    # if @document.save
+    #   crawl_result = perform_crawl
+
+    #   unless crawl_result.nil?
+    #     if crawl_result['error']
+    #       flash[:alert] = crawler_error_message(crawl_result)
+    #     else
+    #       flash[:notice] = 'The crawler has updated the document'
+    #     end
+    #   end
+      # redirect_to document_path(@document)
+    # else
+    #   render :new
+    # end
   end
 
   def update
@@ -82,13 +112,13 @@ class DocumentsController < ApplicationController
       @document.name = document_type.name unless @document.name == document_type.name
     end
 
-    # we should probably only be running the crawler if the URL or XPath have changed
-    run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url xpath crawler_server].include? attribute }
+    # we should probably only be running the crawler if the URL or css selector have changed
+    run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url selector crawler_server].include? attribute }
     crawl_result = perform_crawl if run_crawler
 
     if @document.save
-      # only want to do this if XPath or URL have changed
-      ## text is returned blank when there's a defunct URL or XPath
+      # only want to do this if css selector or URL have changed
+      ## text is returned blank when there's a defunct URL or css selector
       ### avoids server error upon 404 error in the crawler
       # need to alert people if the crawler wasn't able to retrieve any text...
       unless crawl_result.nil?
@@ -173,7 +203,7 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:service, :service_id, :user_id, :document_type_id, :name, :url, :xpath, :crawler_server)
+    params.require(:document).permit(:service, :service_id, :user_id, :document_type_id, :name, :url, :selector, :crawler_server)
   end
 
   def crawler_error_message(result)
@@ -189,7 +219,7 @@ class DocumentsController < ApplicationController
     authorize @document
     @tbdoc = TOSBackDoc.new({
                               url: @document.url,
-                              xpath: @document.xpath,
+                              xpath: @document.selector,
                               server: @document.crawler_server
                             })
 

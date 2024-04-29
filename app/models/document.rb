@@ -20,7 +20,7 @@ class Document < ApplicationRecord
   validate :document_type_uniqueness_check
 
   def location_uniqueness_check
-    doc = Document.where(url: url, xpath: xpath, status: nil)
+    doc = Document.where(url: url, selector: selector, status: nil)
 
     return unless doc.any? && (doc.first.id != id)
 
