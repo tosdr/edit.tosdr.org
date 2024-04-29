@@ -19,6 +19,8 @@ namespace :spam do
 
   def find_spam(items)
     items = items.select do |item|
+      return false if item.user.curator || item.user.admin
+
       summary = item.summary
       uris = extract_uris(summary)
       uris.length.positive?
@@ -39,5 +41,8 @@ namespace :spam do
 
     topic_comments = find_spam(TopicComment.all)
     topic_comments.delete_all if topic_comments.length.positive?
+
+    service_comments = find_spam(ServiceComment.all)
+    service_comments.delete_all if service_comments.length.positive?
   end
 end
