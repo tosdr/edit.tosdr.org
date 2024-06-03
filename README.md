@@ -27,6 +27,13 @@ This is a *new implementation*, [merged](https://github.com/tosdr/edit.tosdr.org
 
 Phoenix, when used, also connects to two other services: Atlassian, which runs [the widget](https://status.tosdr.org) that helps us to monitor the application's health, and jrbit.de, which is where our databases live as well as our system for reporting errors.
 
+## Deploy
+
+To deploy this code to https://do-staging.tosdr.org:
+* get an Ubuntu 24.04 server
+* ssh into it as root
+* download the `staging-deploy.sh` script from this repo, and run it
+
 ## Development
 
 Requirements:
