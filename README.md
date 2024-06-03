@@ -32,7 +32,7 @@ Phoenix, when used, also connects to two other services: Atlassian, which runs [
 To deploy this code to https://do-staging.tosdr.org:
 * get an Ubuntu 24.04 server
 * ssh into it as root
-* download the `staging-deploy.sh` script from this repo, and run it
+* download the `./staging/deploy.sh` script from this repo, and run it
 
 ## Development
 

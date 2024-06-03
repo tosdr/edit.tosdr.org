@@ -13,7 +13,25 @@ sudo apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plu
 sudo service docker start
 sudo docker run hello-world
 
-# edit.tosdr.org
+# pyenv
+apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+curl https://pyenv.run | bash
+echo -e 'export PYENV_ROOT="$HOME/.pyenv"\nexport PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo -e 'eval "$(pyenv init --path)"\neval "$(pyenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+
+# Node.js
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm install 20
+nvm use 20
+corepack enable
+yarn --version -q
+
+# Postgres
+apt install -q libpq-dev
+
+# Phoenix
 git clone https://github.com/tosdr/edit.tosdr.org.git
 cd edit.tosdr.org
 docker compose build
@@ -23,13 +41,6 @@ docker compose up -d
 docker exec -it edittosdrorg-web-1 rails db:seed
 docker compose down
 cd ..
-
-# pyenv
-apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-curl https://pyenv.run | bash
-echo -e 'export PYENV_ROOT="$HOME/.pyenv"\nexport PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo -e 'eval "$(pyenv init --path)"\neval "$(pyenv init -)"' >> ~/.bashrc
-source ~/.bashrc
 
 # Hypothesis
 git clone https://github.com/tosdr/h
