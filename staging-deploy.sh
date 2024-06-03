@@ -34,9 +34,11 @@ source ~/.bashrc
 # Hypothesis
 git clone https://github.com/tosdr/h
 cd h
+git checkout do-staging
 echo Note this will take several minutes...
-pyenv install 3.8.12
+pyenv install 3.11.7
 pyenv init
-pyenv shell 3.8.12
+pyenv shell 3.11.7
+python -m pip install -rrequirements/dockercompose.txt
 make services
 make dev
