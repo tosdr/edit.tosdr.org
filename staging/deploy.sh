@@ -34,13 +34,14 @@ apt install -q libpq-dev
 # Phoenix
 git clone https://github.com/tosdr/edit.tosdr.org.git
 cd edit.tosdr.org
+git checkout staging-deploy
 docker compose build
 docker network create elasticsearch
 docker network create dbs
 docker compose up -d
 docker exec -it edittosdrorg-web-1 rails db:seed
 docker compose down
-cd ..
+cd ~
 
 # Hypothesis
 git clone https://github.com/tosdr/h
@@ -53,3 +54,9 @@ pyenv shell 3.11.7
 python -m pip install -rrequirements/dockercompose.txt
 make services
 make dev
+cd ~
+
+# Nginx Proxy Manager
+cd edit.tosdr.org/staging/nginx-proxy-manager
+docker compose up -d
+cd ~
