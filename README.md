@@ -27,6 +27,13 @@ This is a *new implementation*, [merged](https://github.com/tosdr/edit.tosdr.org
 
 Phoenix, when used, also connects to two other services: Atlassian, which runs [the widget](https://status.tosdr.org) that helps us to monitor the application's health, and jrbit.de, which is where our databases live as well as our system for reporting errors.
 
+## Deploy
+
+To deploy this code to https://do-staging.tosdr.org:
+* get an Ubuntu 24.04 server
+* ssh into it as root
+* download the `./staging/deploy.sh` script from this repo, and run it
+
 ## Development
 
 Requirements:
@@ -103,6 +110,8 @@ H is the Hypothesis web service and api.
 
 1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone, and `cd h/`. **The correct branch to work from is the *phoenix-integration* branch.**
 
+    **ATTENTION**: Due to [an issue with pip-tools](https://github.com/tosdr/edit.tosdr.org/issues/1156) you might need to use the *staging-deploy* branch instead.
+
     **ATTENTION**: The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). Please also consult these docs as needed.
    
     Note the prerequisites:
@@ -127,8 +136,8 @@ H is the Hypothesis web service and api.
 
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
-5. `make services`, which launches the docker services needed to run H.
-7. `make dev`
+2. `make services`, which launches the docker services needed to run H.
+3. `make dev`
 
    If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node* and *yarn*.
    
@@ -141,12 +150,12 @@ H is the Hypothesis web service and api.
    You will have to exit and restart `tox` whenever changes are made to the code. Additionally, in debug mode, certain functionalities may be restricted. You will not be able to create and persist annotations from the client if H is running in debug mode, for example.
    
    To launch the shell and poke around in the database, run `make shell`.
-9. Create an admin user from the shell
+4. Create an admin user from the shell
 
    You will need an admin user to set up OAuth between H and the Hypothesis client. 
    
    Follow [these instructions](https://h.readthedocs.io/en/latest/developing/administration/).
-7. Log in as admin, and configure OAuth
+5. Log in as admin, and configure OAuth
 
    Instructions [here](https://h.readthedocs.io/en/latest/developing/integrating-client/).
    
