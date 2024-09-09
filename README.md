@@ -110,7 +110,7 @@ H is the Hypothesis web service and api.
 
 1. To use it with Phoenix, clone [our fork of H](https://github.com/tosdr/h) into the same directory as the Phoenix clone, and `cd h/`. **The correct branch to work from is the *phoenix-integration* branch.**
 
-    **ATTENTION**: Due to [an issue with pip-tools](https://github.com/tosdr/edit.tosdr.org/issues/1156) you might need to use the *do-staging* branch instead.
+    **ATTENTION**: Due to [an issue with pip-tools](https://github.com/tosdr/edit.tosdr.org/issues/1156) you might need to use the *staging-deploy* branch instead.
 
     **ATTENTION**: The official documentation for installing H is [here](https://h.readthedocs.io/en/latest/developing/install/). Please also consult these docs as needed.
    
