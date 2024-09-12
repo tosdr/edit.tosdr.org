@@ -184,6 +184,18 @@ class DocumentsController < ApplicationController
     `It seems that our crawler wasn't able to retrieve any text. <br><br>Reason: #{message} <br>Region: #{region} <br>Stacktrace: #{stacktrace}`
   end
 
+#    puts "download and filter"
+#    uri = URI("http://localhost:3000")
+#    req = Net::HTTP::Post.new(uri) # => #<Net::HTTP::Post POST>
+#    req.body = '{"fetch": "' + @url + '","select": "' + @xpath + '"}'
+#    req.content_type = 'application/json'
+#    res = Net::HTTP.start(hostname) do |http|
+#      http.request(req)
+#    end
+#    puts res.code
+#    puts res.content_type
+#    puts res.body
+
   # to-do: refactor out comment assembly
   def perform_crawl
     authorize @document
