@@ -69,21 +69,23 @@ class DocumentsController < ApplicationController
     service = Service.find(document_params[:service_id]).name
     normalized_name = service.strip
     document_type = DocumentType.find(document_params[:document_type_id]).name
-    declaration = {}
-    declaration["name"] = normalized_name
-    declaration["documents"] = {}
-    declaration["documents"][document_type] = {}
-    declaration["documents"][document_type]["fetch"] = document_params[:url]
-    declaration["documents"][document_type]["selector"] = document_params[:selector]
 
-    file_path = 'declarations/' + normalized_name + '.json'
-    # make sure declaractions folder exists
-    File.new(file_path, 'w') unless File.exist?(file_path)
-    json = JSON.pretty_generate(JSON.parse(JSON[declaration]))
+    # declaration = {}
+    # declaration["name"] = normalized_name
+    # declaration["documents"] = {}
+    # declaration["documents"][document_type] = {}
+    # declaration["documents"][document_type]["fetch"] = document_params[:url]
+    # declaration["documents"][document_type]["selector"] = document_params[:selector]
+    # declaration = JSON.parse(JSON[declaration])
 
-    File.write(file_path, json)
-    result = exec 'npx ota track'
-    byebug
+    base_url = "http://localhost:3000/"
+    url = 'https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement'
+    selector = '#article-contents'
+    params = '{"fetch": "' + url + '","select": "' + selector + '"}'
+
+    response = HTTParty.post(base_url, body: params)
+    response = response.body
+    puts response
 
     # if @document.save
     #   crawl_result = perform_crawl
