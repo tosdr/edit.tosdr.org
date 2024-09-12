@@ -69,6 +69,7 @@ class DocumentsController < ApplicationController
     service = Service.find(document_params[:service_id]).name
     normalized_name = service.strip
     document_type = DocumentType.find(document_params[:document_type_id]).name
+    
 
     # declaration = {}
     # declaration["name"] = normalized_name
@@ -79,13 +80,26 @@ class DocumentsController < ApplicationController
     # declaration = JSON.parse(JSON[declaration])
 
     base_url = "http://localhost:3000/"
-    url = 'https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement'
-    selector = '#article-contents'
+    # url = 'https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement'
+    url = document_params[:url]
+    # selector = '#article-contents'
+    selector = document_params[:selector]
     params = '{"fetch": "' + url + '","select": "' + selector + '"}'
 
-    response = HTTParty.post(base_url, body: params)
-    response = response.body
-    puts response
+    # byebug
+    response = HTTParty.post(url, body: params)
+
+    puts '!!!!!!!!!!!!!!!!!!!!!!!!'
+    puts response.body
+
+    parsed_response_body = JSON.parse(response.body)
+
+
+    puts parsed_response_body
+
+    # @document.text = 
+
+
 
     # Net::HTTP implementation
     #    puts "download and filter"
