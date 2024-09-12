@@ -165,7 +165,9 @@ class DocumentsController < ApplicationController
   end
 
   def set_document_names
-    @document_names = DocumentType.where(status: 'approved').order('name ASC')
+    # Doing this only in dev:
+    # FIXME seems we don't have a fixture for document types?
+    @document_names = Service.order('name ASC') # DocumentType.where(status: 'approved').order('name ASC')
   end
 
   def set_crawlers
