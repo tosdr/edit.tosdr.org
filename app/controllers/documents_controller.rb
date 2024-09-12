@@ -87,6 +87,19 @@ class DocumentsController < ApplicationController
     response = response.body
     puts response
 
+    # Net::HTTP implementation
+    #    puts "download and filter"
+    #    uri = URI("http://localhost:3000")
+    #    req = Net::HTTP::Post.new(uri) # => #<Net::HTTP::Post POST>
+    #    req.body = '{"fetch": "' + @url + '","select": "' + @xpath + '"}'
+    #    req.content_type = 'application/json'
+    #    res = Net::HTTP.start(hostname) do |http|
+    #      http.request(req)
+    #    end
+    #    puts res.code
+    #    puts res.content_type
+    #    puts res.body
+
     # if @document.save
     #   crawl_result = perform_crawl
 
