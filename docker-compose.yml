@@ -22,6 +22,12 @@ services:
       - discovery.type=single-node
     networks:
       - elasticsearch
+  ota:
+    image: pondersource/tosdr-ota:latest
+    ports:
+      - '127.0.0.1:3000:3000'
+    networks:
+      - dbs
   web:
     tty: true
     stdin_open: true
