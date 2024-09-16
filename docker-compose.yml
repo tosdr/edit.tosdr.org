@@ -23,11 +23,13 @@ services:
     networks:
       - elasticsearch
   ota:
-    image: pondersource/tosdr-ota:1.1
+    image: pondersource/tosdr-ota:1.2
     ports:
       - '127.0.0.1:3000:3000'
     networks:
       - dbs
+    environment:
+      - API_SECRET=foo
   web:
     tty: true
     stdin_open: true
