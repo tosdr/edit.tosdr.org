@@ -23,7 +23,7 @@ services:
     networks:
       - elasticsearch
   ota:
-    image: pondersource/tosdr-ota:latest
+    image: pondersource/tosdr-ota:1.0
     ports:
       - '127.0.0.1:3000:3000'
     networks:
