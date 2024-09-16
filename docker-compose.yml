@@ -30,6 +30,7 @@ services:
       - dbs
     environment:
       - API_SECRET=foo
+    cap_add: [ SYS_ADMIN ]
   web:
     tty: true
     stdin_open: true
