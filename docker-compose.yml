@@ -58,6 +58,8 @@ services:
       - WEB_PORT=9090
       - ELASTICSEARCH_HOST=elasticsearch
       - AUTHORITY=localhost
+      - OTA_URL=http://ota:3000
+      - OTA_API_SECRET=foo
   # Useful during development: inspect the database at localhost:1337
   adminer:
     image: adminer
