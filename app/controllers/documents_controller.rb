@@ -220,7 +220,7 @@ class DocumentsController < ApplicationController
     rescue StandardError => e
       # Handle any other standard errors
       Rails.logger.error("Standard Error: #{e.message}")
-      message = "Standard Error: Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{e.message}"
+      message = "Standard Error: Could not retrieve document text. Is the crawler running? Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{e.message}"
     end
 
     { document: document, message: message, crawl_sucessful: crawl_sucessful }
