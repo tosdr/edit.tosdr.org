@@ -2,7 +2,6 @@
   "name": "phoenix",
   "private": true,
   "dependencies": {
-    "@opentermsarchive/engine": "^1.1.2",
     "xpath-to-css": "^1.1.0"
   }
 }
