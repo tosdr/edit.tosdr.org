@@ -15,7 +15,6 @@ class DocumentsController < ApplicationController
   before_action :set_services, only: %i[new edit create update]
   before_action :set_document_names, only: %i[new edit create update]
   before_action :set_uri, only: %i[new edit create update crawl]
-  # before_action :set_crawlers, only: %i[new edit create update]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
