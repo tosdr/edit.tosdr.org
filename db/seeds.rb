@@ -41,6 +41,16 @@ puts "#{services.length} services added!"
 
 puts 'Seeding topics'
 
+documentTypes = [
+  DocumentType.new(name: 'Terms of Service', status: 'approved')
+]
+
+documentTypes.each do |documentType|
+  documentType.save! validate: false
+end
+
+puts "#{services.length} document types added!"
+
 topics = [
   Topic.new(title: 'Personal Data', subtitle: 'Can you control your privacy?', description: 'How much control do you have over how your data will be used?'),
   Topic.new(title: 'Third Parties', subtitle: 'Data Processors, Social Media Services, Ad Services', description: 'How much data is processed by external companies?'),

@@ -93,6 +93,11 @@ So,
 
 5. Sign-in
 
+6. To debug the db, try `docker exec -it db psql -U postgres`. Due to a bug in the seeds you will currently need to:
+```
+insert into document_types values (0, 'terms of service', now(), now(), null, 1, 'approved');
+update documents set url='http://example.com', selector='body';
+```
 To **annotate** a service, navigate to the services page from the top-right menu, choose a service, and click `View Documents`. Begin by highlighting a piece of text from this page. **H and the Hypothesis client must be running.**
 
 For a demonstration of how annotations work, feel free to [inspect the video attached to this PR](https://github.com/tosdr/edit.tosdr.org/pull/1116).

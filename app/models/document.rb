@@ -11,16 +11,18 @@ class Document < ApplicationRecord
   has_many :points
   has_many :document_comments, dependent: :destroy
 
-  validates :name, presence: true
-  validates :url, presence: true
-  validates :service_id, presence: true
   validates :document_type_id, presence: true
+  validates :name, presence: true
+  validates :service_id, presence: true
+  validates :text, presence: true
+  validates :url, presence: true
+  validates :selector, presence: true
 
   validate :location_uniqueness_check
   validate :document_type_uniqueness_check
 
   def location_uniqueness_check
-    doc = Document.where(url: url, xpath: xpath, status: nil)
+    doc = Document.where(url: url, selector: selector, status: nil)
 
     return unless doc.any? && (doc.first.id != id)
 
@@ -82,7 +84,6 @@ class Document < ApplicationRecord
     self.text = document_html
     self.ota_sourced = true
     self.url = document_ota_url
-    self.crawler_server = nil
     save
   end
 
