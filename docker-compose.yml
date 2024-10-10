@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   db:
-    image: postgres:11.5-alpine
+    image: postgres:14
     container_name: db
     hostname: db 
     ports:
@@ -11,7 +11,7 @@ services:
         interval: 1s
     volumes:
       # Will use db volume and inside to path /var/lib/mysql
-      - db:/var/lib/postgresql/data
+      - ./db/postgresql/data:/var/lib/postgresql/data
     networks:
       - dbs
   elasticsearch:
@@ -44,7 +44,8 @@ services:
       - RAILS_ENV=development
       - DATABASE_HOST=db
       - DATABASE_USER=postgres
-      - DATABASE_NAME=postgres
+      - DATABASE_NAME=phoenix_development
+      - DATABASE_PASSWORD=password
       - H_ORIGIN=http://localhost:5000
       - WEB_PORT=9090
       - ELASTICSEARCH_HOST=elasticsearch
