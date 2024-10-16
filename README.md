@@ -128,6 +128,7 @@ H is the Hypothesis web service and api.
     **If pyenv has trouble finding the python binary**, you may need to add configuration to `.zshrc`, as documented [here](https://stackoverflow.com/questions/51863225/pyenv-python-command-not-found).
     
 5. `make services`, which launches the docker services needed to run H.
+6. `make db`, if this is your first time configuring and launching H (this will configure the database schema).
 7. `make dev`
 
    If this is your first time, `make dev` will install the dependencies. To do so, it requires both *node* and *yarn*.
