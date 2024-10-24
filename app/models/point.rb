@@ -3,6 +3,8 @@
 # app/models/point.rb
 class Point < ApplicationRecord
   has_paper_trail
+  include Elasticsearch::Model::Proxy
+  include Elasticsearch::Model::Callbacks
 
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
@@ -12,7 +14,9 @@ class Point < ApplicationRecord
   has_many :point_comments, dependent: :destroy
 
   validates :title, presence: true
-  validates :status, inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found], allow_nil: false }
+  validates :status,
+            inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found],
+                         allow_nil: false }
   validates :case_id, presence: true
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
@@ -54,7 +58,8 @@ class Point < ApplicationRecord
   end
 
   def self.search_points_by_multiple(query)
-    Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%", "%#{query}%", "%#{query}%")
+    Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%",
+                                "%#{query}%", "%#{query}%")
   end
 
   def restore
@@ -63,6 +68,36 @@ class Point < ApplicationRecord
     self.quote_start = quote_start
     self.quote_end = quote_end
     save
+  end
+
+  def restore_elasticsearch
+    return unless annotation_ref
+
+    annotation = Point.retrieve_annotation(annotation_ref)
+
+    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
+    __elasticsearch__.client = client
+
+    begin
+      # Attempt to get a document that might not exist
+      response = client.get(index: 'hypothesis', type: 'annotation',
+                            id: StringConverter.new(string: annotation['id']).to_url_safe)
+      puts response
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound => e
+      # Handle the 404 "Not Found" error
+      puts 'Document not found - adding document'
+
+      updates = {
+        target_uri: annotation['target_uri'].gsub('https://edit.tosdr.org', 'http://localhost:9090'),
+        target_uri_normalized: annotation['target_uri_normalized'].gsub('httpx://edit.tosdr.org',
+                                                                        'httpx://localhost:9090')
+      }
+      dynamic_update('annotation', annotation['id'], updates)
+      migrate
+    rescue StandardError => e
+      # Handle other potential errors
+      puts "An error occurred: #{e.message}"
+    end
   end
 
   def self.retrieve_annotation(id)
@@ -84,6 +119,52 @@ class Point < ApplicationRecord
     results
   end
 
+  def update_annotation(new_target_uri, new_target_uri_normalized, annotation)
+    id = annotation['id']
+    # Step 1: Prepare the SQL statement
+    sql = <<-SQL
+      UPDATE annotation
+      SET target_uri = $1,
+          target_uri_normalized = $2
+      WHERE id = $3;
+    SQL
+
+    # Step 2: Execute the SQL statement
+    begin
+      result = ActiveRecord::Base.connection.exec_query(sql, 'SQL',
+                                                        [[nil, new_target_uri], [nil, new_target_uri_normalized], [nil, id]])
+      puts "#{result.rows.count} record(s) updated successfully!" if result.rows.count > 0
+    rescue ActiveRecord::StatementInvalid => e
+      puts "An error occurred: #{e.message}"
+    end
+  end
+
+  def dynamic_update(table_name, id, updates)
+    # Step 1: Build the SET clause dynamically
+    set_clause = updates.map do |column, value|
+      "#{ActiveRecord::Base.connection.quote_column_name(column)} = #{ActiveRecord::Base.connection.quote(value)}"
+    end.join(', ')
+
+    # Step 2: Prepare the SQL statement
+    sql = "UPDATE #{ActiveRecord::Base.connection.quote_table_name(table_name)} SET #{set_clause} WHERE id = #{ActiveRecord::Base.connection.quote(id)};"
+
+    # Step 3: Execute the SQL statement
+    begin
+      result = ActiveRecord::Base.connection.exec_query(sql)
+      puts "#{result.rows.count} record(s) updated successfully!" if result.rows.count > 0
+    rescue ActiveRecord::StatementInvalid => e
+      puts "An error occurred: #{e.message}"
+    end
+  end
+
+  # # Example usage
+  # updates = {
+  #   target_uri: annotation['target_uri'].gsub('https://edit.tosdr.org', 'http://localhost:9090'),
+  #   target_uri_normalized: annotation['target_uri_normalized'].gsub('httpx://edit.tosdr.org', 'httpx://localhost:9090')
+  # }
+
+  # dynamic_update('annotation', annotation['id'], updates)
+
   def migrate
     # only creates new annotation if point is not already linked to an annotation
     unless annotation_ref
@@ -93,6 +174,9 @@ class Point < ApplicationRecord
 
     uuid = annotation_uuid
     # does not perform the migration if point's annotation_ref does not exist
+
+    annotation = Annotation.find(uuid) if annotation_ref && Annotation.find(uuid).present?
+
     if annotation_ref && !Annotation.find(uuid).present?
       puts `MIGRATION: point #{id} has annotation_ref but no corresponding annotation`
     end
@@ -103,7 +187,7 @@ class Point < ApplicationRecord
   def display_title
     return self.case&.title if self.case
 
-    point.quote_text ? "\"" + point.quote_text + "\"" : point.title
+    point.quote_text ? '"' + point.quote_text + '"' : point.title
   end
 
   def annotation_uuid
@@ -113,12 +197,12 @@ class Point < ApplicationRecord
   def build_target_selectors
     target_selectors = []
     target_selectors << {
-                            'type' => 'RangeSelector',
-                            'endOffset' => nil,
-                            'startOffset' => nil,
-                            'endContainer' => nil,
-                            'startContainer' => nil
-                        }
+      'type' => 'RangeSelector',
+      'endOffset' => nil,
+      'startOffset' => nil,
+      'endContainer' => nil,
+      'startContainer' => nil
+    }
     target_selectors << { 'end' => nil, 'type' => 'TextPositionSelector', 'start' => nil }
     exact = quote_text
     document_text = document.text
