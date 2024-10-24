@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
 
+  add_flash_types :info, :error, :warning
+
   def configure_permitted_parameters
     # For additional in app/views/devise/registrations/edit.html.erb
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
