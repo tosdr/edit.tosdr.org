@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_10_113954) do
+ActiveRecord::Schema.define(version: 2024_10_16_150146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 2024_04_10_113954) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
@@ -298,9 +298,9 @@ ActiveRecord::Schema.define(version: 2024_04_10_113954) do
     t.bigint "case_id"
     t.string "old_id"
     t.text "point_change"
-    t.boolean "service_needs_rating_update", default: false
     t.integer "quote_start"
     t.integer "quote_end"
+    t.boolean "service_needs_rating_update", default: false
     t.bigint "document_id"
     t.string "annotation_ref"
     t.decimal "ml_score"
@@ -309,17 +309,6 @@ ActiveRecord::Schema.define(version: 2024_04_10_113954) do
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
     t.index ["user_id"], name: "index_points_on_user_id"
-  end
-
-  create_table "reasons", force: :cascade do |t|
-    t.text "content"
-    t.bigint "user_id"
-    t.bigint "point_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "status"
-    t.index ["point_id"], name: "index_reasons_on_point_id"
-    t.index ["user_id"], name: "index_reasons_on_user_id"
   end
 
   create_table "service_comments", force: :cascade do |t|
@@ -471,8 +460,7 @@ ActiveRecord::Schema.define(version: 2024_04_10_113954) do
   end
 
   create_table "versions", force: :cascade do |t|
-    t.string "item_type"
-    t.string "{:null=>false}"
+    t.string "item_type", null: false
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
@@ -515,8 +503,6 @@ ActiveRecord::Schema.define(version: 2024_04_10_113954) do
   add_foreign_key "points", "documents"
   add_foreign_key "points", "services"
   add_foreign_key "points", "users"
-  add_foreign_key "reasons", "points"
-  add_foreign_key "reasons", "users"
   add_foreign_key "service_comments", "services"
   add_foreign_key "service_comments", "users"
   add_foreign_key "services", "users"

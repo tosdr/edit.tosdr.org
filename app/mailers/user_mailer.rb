@@ -4,11 +4,11 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.welcome.subject
 
-  def status_update(reason)
-    @user = reason.point.user
+  # def status_update(reason)
+  #   @user = reason.point.user
 
-    mail(to: @user.email, subject: 'Status update from ToS;DR')
-  end
+  #   mail(to: @user.email, subject: 'Status update from ToS;DR')
+  # end
 
   def commented(author, point, commenter, commentText)
     @authorName = author.username || 'user ' + author.id.to_s

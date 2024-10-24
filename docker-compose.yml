@@ -2,16 +2,21 @@ version: '3.9'
 services:
   db:
     image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=phoenix_development
+      - POSTGRES_PASSWORD=""
+      - POSTGRES_HOST_AUTH_METHOD=trust
     container_name: db
     hostname: db 
     ports:
-      - '127.0.0.1:5432:5432'
+      - '5432:5432'
     healthcheck:
         test: ["CMD", "pg_isready", "-U", "postgres"]
         interval: 1s
     volumes:
       # Will use db volume and inside to path /var/lib/mysql
-      - ./db/postgresql/data:/var/lib/postgresql/data
+      - ./tmp/db/postgresql/data:/var/lib/postgresql/data
     networks:
       - dbs
   elasticsearch:
@@ -31,6 +36,8 @@ services:
       target: dev
     ports:
       - 9090:3000
+    depends_on:
+      - db
     volumes:
       - ./app:/usr/src/edit.tosdr.org/app/
       - ./lib:/usr/src/edit.tosdr.org/lib/
@@ -44,8 +51,8 @@ services:
       - RAILS_ENV=development
       - DATABASE_HOST=db
       - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=""
       - DATABASE_NAME=phoenix_development
-      - DATABASE_PASSWORD=password
       - H_ORIGIN=http://localhost:5000
       - WEB_PORT=9090
       - ELASTICSEARCH_HOST=elasticsearch

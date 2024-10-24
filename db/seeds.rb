@@ -13,9 +13,12 @@ puts 'Seeding users'
 password = 'Justforseed1'
 
 users = [
-  User.new(email: 'admin@selfhosted.tosdr.org', username: 'tosdr_admin', password: password, password_confirmation: password, admin: true, curator: true),
-  User.new(email: 'curator@selfhosted.tosdr.org', username: 'tosdr_curator', password: password, password_confirmation: password, admin: false, curator: true),
-  User.new(email: 'user@selfhosted.tosdr.org', username: 'tosdr_user', password: password, password_confirmation: password, admin: false, curator: false)
+  User.new(email: 'admin@selfhosted.tosdr.org', username: 'tosdr_admin', password: password,
+           password_confirmation: password, admin: true, curator: true),
+  User.new(email: 'curator@selfhosted.tosdr.org', username: 'tosdr_curator', password: password,
+           password_confirmation: password, admin: false, curator: true),
+  User.new(email: 'user@selfhosted.tosdr.org', username: 'tosdr_user', password: password,
+           password_confirmation: password, admin: false, curator: false)
 ]
 
 users.each do |user|
@@ -28,9 +31,9 @@ puts "#{users.length} users added!"
 puts 'Seeding services'
 
 services = [
-  Service.new(name: 'YouTube', url: 'youtube.com'),
-  Service.new(name: 'Facebook', url: 'facebook.com'),
-  Service.new(name: 'Wikipedia', url: 'wikipedia.org')
+  Service.new(name: 'YouTube_dev', url: 'youtube_dev.com'),
+  Service.new(name: 'Facebook_dev', url: 'facebook_dev.com'),
+  Service.new(name: 'Wikipedia_dev', url: 'wikipedia_dev.org')
 ]
 
 services.each do |service|
@@ -42,9 +45,12 @@ puts "#{services.length} services added!"
 puts 'Seeding topics'
 
 topics = [
-  Topic.new(title: 'Personal Data', subtitle: 'Can you control your privacy?', description: 'How much control do you have over how your data will be used?'),
-  Topic.new(title: 'Third Parties', subtitle: 'Data Processors, Social Media Services, Ad Services', description: 'How much data is processed by external companies?'),
-  Topic.new(title: 'Notice of Changing Terms', subtitle: 'Are users notified when terms change?', description: 'Updates and changes to terms of service and privacy policies need to be communicated to users.')
+  Topic.new(title: 'Personal Data Dev', subtitle: 'Can you control your privacy?',
+            description: 'How much control do you have over how your data will be used?'),
+  Topic.new(title: 'Third Parties Dev', subtitle: 'Data Processors, Social Media Services, Ad Services',
+            description: 'How much data is processed by external companies?'),
+  Topic.new(title: 'Notice of Changing Terms Dev', subtitle: 'Are users notified when terms change?',
+            description: 'Updates and changes to terms of service and privacy policies need to be communicated to users.')
 ]
 
 topics.each do |topic|
@@ -55,14 +61,17 @@ puts "#{topics.length} topics added!"
 
 puts 'Seeding cases'
 
-personal_data = Topic.find_by_title('Personal Data')
-third_parties = Topic.find_by_title('Third Parties')
-notice = Topic.find_by_title('Notice of Changing Terms')
+personal_data = Topic.find_by_title('Personal Data Dev')
+third_parties = Topic.find_by_title('Third Parties Dev')
+notice = Topic.find_by_title('Notice of Changing Terms Dev')
 
 cases = [
-  Case.new(title: 'Your personal information is used for many different purposes', classification: 'bad', topic_id: personal_data.id),
-  Case.new(title: 'Third parties are involved in operating the service', classification: 'neutral', topic_id: third_parties.id),
-  Case.new(title: 'Terms may be changed any time at their discretion, without notice to you', classification: 'bad', topic_id: notice.id)
+  Case.new(title: 'Dev Your personal information is used for many different purposes', classification: 'bad',
+           topic_id: personal_data.id),
+  Case.new(title: 'Dev Third parties are involved in operating the service', classification: 'neutral',
+           topic_id: third_parties.id),
+  Case.new(title: 'Dev Terms may be changed any time at their discretion, without notice to you',
+           classification: 'bad', topic_id: notice.id)
 ]
 
 cases.each do |c|
@@ -88,9 +97,9 @@ wikipedia_text = <<~TEXT
 TEXT
 
 documents = [
-  Document.new(name: 'Privacy Policy', service_id: Service.find_by_name('YouTube').id, text: youtube_text),
-  Document.new(name: 'Cookie Police', service_id: Service.find_by_name('Facebook').id, text: facebook_text),
-  Document.new(name: 'Privacy Policy', service_id: Service.find_by_name('Wikipedia'), text: wikipedia_text)
+  Document.new(name: 'Privacy Policy', service_id: Service.find_by_name('YouTube_dev').id, text: youtube_text),
+  Document.new(name: 'Cookie Police', service_id: Service.find_by_name('Facebook_dev').id, text: facebook_text),
+  Document.new(name: 'Privacy Policy', service_id: Service.find_by_name('Wikipedia_dev'), text: wikipedia_text)
 ]
 
 documents.each do |doc|
@@ -120,5 +129,6 @@ documents = Document.pluck(:id)
   title = Case.find(case_id).title
   document_id = documents.sample
   ml_score = Faker::Number.between(from: 0.0, to: 1.0).round(2)
-  Point.create!(title: title, case_id: case_id, service_id: service_id, document_id: document_id, ml_score: ml_score, user_id: docbot.id, status: 'pending')
+  Point.create!(title: title, case_id: case_id, service_id: service_id, document_id: document_id, ml_score: ml_score,
+                user_id: docbot.id, status: 'pending')
 end
