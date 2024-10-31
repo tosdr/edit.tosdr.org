@@ -57,6 +57,59 @@ class Annotation < ApplicationRecord
     }
   end
 
+  def dynamic_update(table_name, id, updates)
+    # Step 1: Build the SET clause dynamically
+    set_clause = updates.map do |column, value|
+      "#{ActiveRecord::Base.connection.quote_column_name(column)} = #{ActiveRecord::Base.connection.quote(value)}"
+    end.join(', ')
+
+    # Step 2: Prepare the SQL statement
+    sql = "UPDATE #{ActiveRecord::Base.connection.quote_table_name(table_name)} SET #{set_clause} WHERE id = #{ActiveRecord::Base.connection.quote(id)};"
+
+    # Step 3: Execute the SQL statement
+    begin
+      result = ActiveRecord::Base.connection.exec_query(sql)
+      puts "#{result.rows.count} record(s) updated successfully!" if result.rows.count > 0
+    rescue ActiveRecord::StatementInvalid => e
+      puts "An error occurred: #{e.message}"
+    end
+  end
+
+  # # Example usage
+  # updates = {
+  #   target_uri: annotation['target_uri'].gsub('https://edit.tosdr.org', 'http://localhost:9090'),
+  #   target_uri_normalized: annotation['target_uri_normalized'].gsub('httpx://edit.tosdr.org', 'httpx://localhost:9090')
+  # }
+
+  # dynamic_update('annotation', annotation['id'], updates)
+
+  def restore
+    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
+    __elasticsearch__.client = client
+
+    begin
+      # Attempt to get a document that might not exist
+      response = client.get(index: 'hypothesis', type: 'annotation',
+                            id: StringConverter.new(string: self['id']).to_url_safe)
+      puts response
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound => e
+      # Handle the 404 "Not Found" error
+      puts 'Document not found - adding document'
+
+      updates = {
+        target_uri: self['target_uri'].gsub('https://edit.tosdr.org', 'http://localhost:9090'),
+        target_uri_normalized: self['target_uri_normalized'].gsub('httpx://edit.tosdr.org',
+                                                                  'httpx://localhost:9090')
+      }
+      dynamic_update('annotation', self['id'], updates)
+      self
+    rescue StandardError => e
+      # Handle other potential errors
+      puts "An error occurred: #{e.message}"
+      nil
+    end
+  end
+
   def index_elasticsearch
     client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
     __elasticsearch__.client = client
