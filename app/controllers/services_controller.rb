@@ -49,9 +49,13 @@ class ServicesController < ApplicationController
   def annotate
     authorize Service
 
-    @service = Service.includes(documents: [:points, :user, :document_type]).find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @sourced_from_ota = @documents.where(ota_sourced: true).any?
+    @missing_points = @service.points.where(status: 'approved-not-found')
+    @missing_points_cases = []
+    @missing_points.each { |point| @missing_points_cases << point.case.title } if @missing_points.any?
+    @missing_points_cases = @missing_points_cases.length > 1 ? @missing_points_cases.join(', ') : @missing_points_cases.join('')
     if params[:point_id] && current_user
       @point = Point.find_by id: params[:point_id]
     else
@@ -91,7 +95,7 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service = Service.includes(points: [:case, :user]).find(params[:id] || params[:service_id])
+    @service = Service.includes(points: %i[case user]).find(params[:id] || params[:service_id])
 
     authorize @service
 
@@ -173,7 +177,8 @@ class ServicesController < ApplicationController
 
   def build_point(case_obj, service, current_user)
     point = Point.new(
-      params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :quote_start, :quote_end, :quote_text)
+      params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document,
+                    :quote_start, :quote_end, :quote_text)
     )
     point.user = current_user
     point.case = case_obj

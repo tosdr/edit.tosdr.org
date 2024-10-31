@@ -41,6 +41,14 @@
     Some of the documents for this service have been sourced from the Open Terms Archive as part of an ongoing effort to improve our data. Please <%= link_to "read here", "https://tosdr.community/t/partnership-between-phoenix-and-open-terms-archive-sourcing-document-text/3100", :target => "_blank" %> for more information.
   </div>
 <% end %>
+
+<% if @missing_points.any? %>
+  <div>
+    <p>
+      <span class="label label-warning">Attention!</span> Points are missing from the latest crawled texts for this service. Total number of missing points: <mark> <%= @missing_points.length %> </mark>. The cases these points represent: <mark><%= @missing_points_cases %></mark>. Please review the document texts and create a new annotation if the point still exists, but has changed in exact wording or content.</span>
+    </p>
+  </div>
+<% end %>
 <br>
 <div id="toc">
   <p>Documents:</p>
@@ -51,6 +59,11 @@
           <div class="col-lg-6">
             <a href="#doc_<%= doc.id %>"><%= doc.document_type ? doc.document_type.name : doc.name %></a>
           </div>
+          <% if doc.last_crawl_date %>
+            <div class="col-lg-6 text-right small">
+              <h5> Last crawled at: <mark> <%= doc.formatted_last_crawl_date %> </mark></h5>
+            </div>
+          <% end %>
           <% if doc.ota_sourced %>
             <div class="col-lg-6 text-right small">
               <%= link_to "text sourced from Open Terms Archive", doc.url, :target => "_blank" %>

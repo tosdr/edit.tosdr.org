@@ -71,18 +71,20 @@ class DocumentsController < ApplicationController
 
     # we should probably only be running the crawler if the URL or css selector have changed
     run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url selector].include? attribute }
-
+    #### need to crawl regardless once we deploy
     if run_crawler
       request = build_request(@document.url, @uri, @document.selector)
       results = fetch_text(request, @uri, @document)
 
       @document = results[:document]
+      @document.last_crawl_date = Time.now.getutc
       message = results[:message]
       crawl_sucessful = results[:crawl_sucessful]
     end
 
-    if crawl_sucessful && @document.save
-      flash[:notice] = 'Document updated!'
+    if (crawl_sucessful || !run_crawler) && @document.save
+      message ||= 'Document updated'
+      flash[:notice] = message
       redirect_to document_path(@document)
     else
       message ||= 'Document failed to update'
@@ -109,6 +111,9 @@ class DocumentsController < ApplicationController
   def show
     authorize @document
 
+    @points = @document.points
+    @missing_points = @points.where(status: 'approved-not-found')
+    @last_crawled_at = @document.formatted_last_crawl_date
     @name = @document.document_type ? @document.document_type.name : @document.name
   end
 
@@ -120,14 +125,18 @@ class DocumentsController < ApplicationController
     results = fetch_text(request, @uri, @document)
 
     @document = results[:document]
+    @document.last_crawl_date = Time.now.getutc
     message = results[:message]
     crawl_sucessful = results[:crawl_sucessful]
 
     text_changed = old_text != @document.text
 
     if crawl_sucessful && text_changed && @document.save
-      flash[:notice] = 'Crawl successful. Document text updated!'
-    elsif crawl_sucessful && !text_changed
+      missing_points = analyze_points
+      missing_points_count = missing_points.length.to_s
+      message = `Crawl successful. Document text updated. There are #{missing_points_count} points missing from the new text.`
+      flash[:notice] = message
+    elsif crawl_sucessful && !text_changed && @document.save
       flash[:notice] = 'Crawl successful. Document text unchanged.'
     else
       message ||= 'Crawl failed!'
@@ -189,9 +198,12 @@ class DocumentsController < ApplicationController
     request
   end
 
+  def analyze_points
+    document.handle_missing_points
+  end
+
   def fetch_text(request, uri, document)
     crawl_sucessful = false
-
     begin
       response_text = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
         http.request(request)
