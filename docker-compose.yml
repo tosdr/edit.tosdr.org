@@ -8,10 +8,7 @@ services:
       - POSTGRES_PASSWORD=""
       - POSTGRES_HOST_AUTH_METHOD=trust
     container_name: db
-    hostname: db 
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+    hostname: db
     ports:
       - '5432:5432'
     healthcheck:
@@ -25,15 +22,19 @@ services:
   elasticsearch:
     image: hypothesis/elasticsearch:latest
     ports:
-      - '127.0.0.1:9200:9200'
+      - '9200:9200'
     environment:
       - discovery.type=single-node
     networks:
       - elasticsearch
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - es_logs:/usr/share/elasticsearch/logs
+      - es_config:/usr/share/elasticsearch/config
   ota:
     image: pondersource/tosdr-ota:1.3
     ports:
-      - '127.0.0.1:3000:3000'
+      - '127.0.0.1:4000:3000'
     networks:
       - dbs
     environment:
@@ -50,6 +51,7 @@ services:
       - 9090:3000
     depends_on:
       - db
+      - elasticsearch
     volumes:
       - ./app:/usr/src/edit.tosdr.org/app/
       - ./lib:/usr/src/edit.tosdr.org/lib/
@@ -65,13 +67,13 @@ services:
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=""
       - DATABASE_NAME=phoenix_development
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
       - H_ORIGIN=http://localhost:5000
       - WEB_PORT=9090
       - ELASTICSEARCH_HOST=elasticsearch
       - AUTHORITY=localhost
-      - OTA_URL=http://ota:3000
-      - OTA_API_SECRET=foo
-  # Useful during development: inspect the database at localhost:1337
+      - OTA_URL=
+      - OTA_API_SECRET=
   adminer:
     image: adminer
     ports:
@@ -84,8 +86,12 @@ volumes:
   web:
     # Specify name so it does not append stack name
     name: web
-  # db_postgres14:
-  #   name: db_postgres14
+  es_data:
+    driver: local
+  es_logs:
+    driver: local
+  es_config:
+    driver: local
 networks:
   dbs:
     # Joins existing network of this name (it was created by db container)
