@@ -3,6 +3,8 @@
 # app/models/point.rb
 class Point < ApplicationRecord
   has_paper_trail
+  include Elasticsearch::Model::Proxy
+  include Elasticsearch::Model::Callbacks
 
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
@@ -97,6 +99,52 @@ class Point < ApplicationRecord
     results = nil unless results.present?
     results
   end
+
+  def update_annotation(new_target_uri, new_target_uri_normalized, annotation)
+    id = annotation['id']
+    # Step 1: Prepare the SQL statement
+    sql = <<-SQL
+      UPDATE annotation
+      SET target_uri = $1,
+          target_uri_normalized = $2
+      WHERE id = $3;
+    SQL
+
+    # Step 2: Execute the SQL statement
+    begin
+      result = ActiveRecord::Base.connection.exec_query(sql, 'SQL',
+                                                        [[nil, new_target_uri], [nil, new_target_uri_normalized], [nil, id]])
+      puts "#{result.rows.count} record(s) updated successfully!" if result.rows.count > 0
+    rescue ActiveRecord::StatementInvalid => e
+      puts "An error occurred: #{e.message}"
+    end
+  end
+
+  def dynamic_update(table_name, id, updates)
+    # Step 1: Build the SET clause dynamically
+    set_clause = updates.map do |column, value|
+      "#{ActiveRecord::Base.connection.quote_column_name(column)} = #{ActiveRecord::Base.connection.quote(value)}"
+    end.join(', ')
+
+    # Step 2: Prepare the SQL statement
+    sql = "UPDATE #{ActiveRecord::Base.connection.quote_table_name(table_name)} SET #{set_clause} WHERE id = #{ActiveRecord::Base.connection.quote(id)};"
+
+    # Step 3: Execute the SQL statement
+    begin
+      result = ActiveRecord::Base.connection.exec_query(sql)
+      puts "#{result.rows.count} record(s) updated successfully!" if result.rows.count > 0
+    rescue ActiveRecord::StatementInvalid => e
+      puts "An error occurred: #{e.message}"
+    end
+  end
+
+  # # Example usage
+  # updates = {
+  #   target_uri: annotation['target_uri'].gsub('https://edit.tosdr.org', 'http://localhost:9090'),
+  #   target_uri_normalized: annotation['target_uri_normalized'].gsub('httpx://edit.tosdr.org', 'httpx://localhost:9090')
+  # }
+
+  # dynamic_update('annotation', annotation['id'], updates)
 
   def migrate
     # only creates new annotation if point is not already linked to an annotation
