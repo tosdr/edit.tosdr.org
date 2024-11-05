@@ -31,6 +31,7 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'kramdown'
 gem 'mini_racer'
+gem 'node-runner', '~> 1.1'
 gem 'paper_trail'
 gem 'pg', '~> 0.21'
 gem 'puma', '>= 3.12.4'
@@ -82,5 +83,3 @@ group :development, :test do
   gem 'stackprof'
   gem 'webmock'
 end
-
-gem "node-runner", "~> 1.1"

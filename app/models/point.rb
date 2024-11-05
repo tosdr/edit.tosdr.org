@@ -12,7 +12,9 @@ class Point < ApplicationRecord
   has_many :point_comments, dependent: :destroy
 
   validates :title, presence: true
-  validates :status, inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found], allow_nil: false }
+  validates :status,
+            inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found],
+                         allow_nil: false }
   validates :case_id, presence: true
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
@@ -54,7 +56,8 @@ class Point < ApplicationRecord
   end
 
   def self.search_points_by_multiple(query)
-    Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%", "%#{query}%", "%#{query}%")
+    Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%",
+                                "%#{query}%", "%#{query}%")
   end
 
   def restore
@@ -63,6 +66,17 @@ class Point < ApplicationRecord
     self.quote_start = quote_start
     self.quote_end = quote_end
     save
+  end
+
+  def restore_elasticsearch
+    return unless annotation_ref
+
+    uuid = annotation_uuid
+
+    annotation = Annotation.find(uuid)
+    annotation = annotation.restore
+
+    migrate if annotation
   end
 
   def self.retrieve_annotation(id)
@@ -93,6 +107,9 @@ class Point < ApplicationRecord
 
     uuid = annotation_uuid
     # does not perform the migration if point's annotation_ref does not exist
+
+    annotation = Annotation.find(uuid) if annotation_ref && Annotation.find(uuid).present?
+
     if annotation_ref && !Annotation.find(uuid).present?
       puts `MIGRATION: point #{id} has annotation_ref but no corresponding annotation`
     end
@@ -103,7 +120,7 @@ class Point < ApplicationRecord
   def display_title
     return self.case&.title if self.case
 
-    point.quote_text ? "\"" + point.quote_text + "\"" : point.title
+    point.quote_text ? '"' + point.quote_text + '"' : point.title
   end
 
   def annotation_uuid
@@ -113,12 +130,12 @@ class Point < ApplicationRecord
   def build_target_selectors
     target_selectors = []
     target_selectors << {
-                            'type' => 'RangeSelector',
-                            'endOffset' => nil,
-                            'startOffset' => nil,
-                            'endContainer' => nil,
-                            'startContainer' => nil
-                        }
+      'type' => 'RangeSelector',
+      'endOffset' => nil,
+      'startOffset' => nil,
+      'endContainer' => nil,
+      'startContainer' => nil
+    }
     target_selectors << { 'end' => nil, 'type' => 'TextPositionSelector', 'start' => nil }
     exact = quote_text
     document_text = document.text
