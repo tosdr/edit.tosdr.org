@@ -3,8 +3,6 @@
 # app/models/point.rb
 class Point < ApplicationRecord
   has_paper_trail
-  include Elasticsearch::Model::Proxy
-  include Elasticsearch::Model::Callbacks
 
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
