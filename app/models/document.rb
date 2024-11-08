@@ -18,7 +18,6 @@ class Document < ApplicationRecord
   validates :selector, presence: true
 
   validate :location_uniqueness_check
-  validate :document_type_uniqueness_check
 
   def location_uniqueness_check
     doc = Document.where(url: url, selector: selector, status: nil)
