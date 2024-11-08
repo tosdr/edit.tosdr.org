@@ -63,7 +63,7 @@ class DocumentsController < ApplicationController
 
     @document.update(document_params)
 
-    if document_params[:document_type_id]
+    if document_params[:document_type_id].present?
       id = document_params[:document_type_id]
       document_type = DocumentType.find(id)
       @document.name = document_type.name unless @document.name == document_type.name

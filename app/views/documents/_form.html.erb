@@ -2,13 +2,9 @@
   <span class="lighter">
     <%= f.association :service, collection: services, hint: "If your service isn't on the list, please contact the team" %>
 
-    <% if document.name.present? %>
-      <label class="sr-only" for="inputHelpBlock">Name</label>
-      <input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="<%= document.name%>" readonly>
-      <span id="helpBlock" class="help-block">To change the document name, please select a new document type</span>
-    <% end %>
+    <%= f.input :name, hint: "The name of the document", placeholder: "e.g. Terms of Service" %>
 
-    <%= f.association :document_type, collection: document_names, hint: "Inspect the document types and their descriptions #{link_to 'here', document_types_path}".html_safe %>
+    <%= f.association :document_type, collection: document_names, hint: "Document types can help us organize the documents and maintain clean data. If you don't see yours, or if you're not sure, feel free to leave this blank. Inspect the document types and their descriptions #{link_to 'here', document_types_path}".html_safe %>
     
     <%= f.input :url, hint: "The web location where we can fetch the text of this document", placeholder: "e.g. \"https://www.facebook.com/about/privacy\"" %>
     

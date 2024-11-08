@@ -11,7 +11,6 @@ class Document < ApplicationRecord
   has_many :points
   has_many :document_comments, dependent: :destroy
 
-  validates :document_type_id, presence: true
   validates :name, presence: true
   validates :service_id, presence: true
   validates :text, presence: true
