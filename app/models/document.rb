@@ -63,49 +63,6 @@ class Document < ApplicationRecord
     runner.convert selector
   end
 
-  def fetch_ota_text
-    versions = %w[pga-versions contrib-versions]
-    service_name = service.name
-    service_name = service_name.strip
-    service_name = service_name.gsub(/\s/, '%20')
-
-    # first: check for document in pga
-    version_name = versions[0]
-    document_ota_url = generate_ota_url(version_name, service_name)
-    document_markdown = HTTParty.get(document_ota_url)
-
-    # second: check for document in contrib
-    if document_markdown.code == 404
-      version_name = versions[1]
-      document_ota_url = generate_ota_url(version_name, service_name)
-      document_markdown = HTTParty.get(document_ota_url)
-    end
-
-    # early return if document not stored in ota github
-    return if document_markdown.code == 404
-
-    document_html = Kramdown::Document.new(document_markdown).to_html
-
-    # compare text for **possible** language (i.e., English, German, etc.) differences
-    new_text_snippets = retrieve_snippets(document_html)
-    new_text_snippets = new_text_snippets[:snippets]
-    no_matches = new_text_snippets.length == 1 && !new_text_snippets[0][:pointId]
-    return if no_matches
-
-    self.text = document_html
-    self.ota_sourced = true
-    self.url = document_ota_url
-    save
-  end
-
-  def generate_ota_url(version, service)
-    document_name = name
-    document_name = document_name.strip
-    document_name = document_name.gsub(/\s/, '%20')
-
-    "https://raw.githubusercontent.com/OpenTermsArchive/#{version}/main/#{service}/#{document_name}.md"
-  end
-
   def snippets
     retrieve_snippets(text)
   end

@@ -1,13 +1,10 @@
+# frozen_string_literal: true
+
 require "#{Rails.root}/lib/tosbackdoc.rb"
 require 'zlib'
 
 namespace :documents do
-  desc 'Pull document text from OTA github'
-  task fetch_ota_text: :environmnet do
-    documents = Document.includes(:service).all
-    documents.each(&:fetch_ota_text)
-  end
-
+  desc 'Convert xpath to selector'
   task validate_selector: :environment do
     documents = Document.all
     documents.each do |document|
@@ -32,6 +29,7 @@ namespace :documents do
     end
   end
 
+  # to-do: deprecate
   desc 'Recrawl all invalid documents'
   task recrawl: :environment do
     documents = Document.all
@@ -49,27 +47,27 @@ namespace :documents do
       end
 
       if !document.text.blank?
-        oldLength = document.text.length
-        oldCRC = Zlib.crc32(@document.text)
+        old_length = document.text.length
+        old_crc = Zlib.crc32(@document.text)
       else
-        oldLength = 0
-        oldCRC = 0
+        old_length = 0
+        old_crc = 0
       end
 
-      newCRC = Zlib.crc32(@tbdoc.newdata)
+      new_crc = Zlib.crc32(@tbdoc.newdata)
 
       document.update(text: @tbdoc.newdata)
-      newLength = document.text.length
+      new_length = document.text.length
 
-      @document_comment = DocumentComment.new
-      @document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + oldLength.to_s + ' CRC ' + oldCRC.to_s + '</kbd><br><b>New length:</b> <kbd>' + newLength.to_s + ' CRC ' + newCRC.to_s + '</kbd>'
-      @document_comment.user_id = '21311'
-      @document_comment.document_id = document.id
-      if @document_comment.save
+      document_comment = DocumentComment.new
+      document_comment.summary = '<span class="label label-info">Document has been crawled</span><br><b>Old length:</b> <kbd>' + old_length.to_s + ' CRC ' + old_crc.to_s + '</kbd><br><b>New length:</b> <kbd>' + new_length.to_s + ' CRC ' + new_crc.to_s + '</kbd>'
+      document_comment.user_id = '21311'
+      document_comment.document_id = document.id
+      if document_comment.save
         puts 'Comment added!'
       else
         puts 'Error adding comment!'
-        puts @document_comment.errors.full_messages
+        puts document_comment.errors.full_messages
       end
     end
   end

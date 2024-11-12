@@ -64,11 +64,6 @@
               <h5> Last crawled at: <mark> <%= doc.formatted_last_crawl_date %> </mark></h5>
             </div>
           <% end %>
-          <% if doc.ota_sourced %>
-            <div class="col-lg-6 text-right small">
-              <%= link_to "text sourced from Open Terms Archive", doc.url, :target => "_blank" %>
-            </div>
-          <% end %>
         </div>
       </li>
     <% end %>

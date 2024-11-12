@@ -51,7 +51,6 @@ class ServicesController < ApplicationController
 
     @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
-    @sourced_from_ota = @documents.where(ota_sourced: true).any?
     @missing_points = @service.points.where(status: 'approved-not-found')
     @missing_points_cases = []
     @missing_points.each { |point| @missing_points_cases << point.case.title } if @missing_points.any?
@@ -99,7 +98,6 @@ class ServicesController < ApplicationController
 
     authorize @service
 
-    @sourced_from_ota = @service.documents.where(ota_sourced: true).any?
     @points = @service.points.where(status: 'approved') unless current_user
     @points = @service.points_ordered_status_class.values.flatten if current_user
     @versions = @service.versions.includes(:item).reverse
