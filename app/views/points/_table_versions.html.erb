@@ -1,18 +1,18 @@
 <div class="panel-group" id="accordion">
   <% counter = 1 %>
-  <% @versions.each do |version| %>
+  <% @versions.each_with_index do |version, index| %>
+  <% counter += 1 %>
   <% event = version.event == "create" ? "Analysis created" : "Analysis updated" %>
   <% title = version.changeset["title"] %>
   <% analysis = version.changeset["analysis"] %>
   <% status = version.changeset["status"] %>
   <% version.changeset['change_reason'].nil? ? reason = "No reason provided for previous changes" : reason = version.changeset["change_reason"].second %>
-  <% counter += 1 %>
   <div class="panel panel-default" id="panel<%=counter%>">
     <div class="panel-heading" id="panel-style">
       <div class="row">
         <div class="col-sm-4">
           <h5>
-              <b>Version <%= counter - 1 %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %> <%= rank_badge version.item.respond_to?(:user) ? version.item.user : version.whodunnit %>
+              <b>Version <%= @versions.length - index %>:</b> <%= version.changeset["updated_at"].nil? ? @point.updated_at : version.changeset["updated_at"].second.time %> by <%= username version.whodunnit %> <%= rank_badge version.item.respond_to?(:user) ? version.item.user : version.whodunnit %>
           </h5>
         </div>
         <div class="col-sm-4">
