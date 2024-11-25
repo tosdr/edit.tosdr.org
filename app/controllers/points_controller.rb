@@ -27,9 +27,9 @@ class PointsController < ApplicationController
   end
 
   def list_docbot
-    @docbot_points = Point.docbot
-    @q = @docbot_points.ransack(params[:q])
-    @docbot_points = @q.result(distinct: true).page(params[:page] || 1)
+    @docbot_points = User.docbot_user.present? ? Point.docbot : []
+    @q = @docbot_points.any? ? @docbot_points.ransack(params[:q]) : []
+    @docbot_points = @q.any? ? @q.result(distinct: true).page(params[:page] || 1) : []
   end
 
   def new
@@ -66,7 +66,7 @@ class PointsController < ApplicationController
     @point_text = @point.quote_text
 
     @can_edit_docbot_point = false
-    docbot = User.find_by_username('docbot')
+    docbot = User.docbot_user
     @can_edit_docbot_point = true if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
@@ -86,7 +86,7 @@ class PointsController < ApplicationController
       annotation.tags = [] << case_obj.title
     end
 
-    docbot = User.find_by_username('docbot')
+    docbot = User.docbot_user
     @point.user_id = current_user.id if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.update(point_params)
       annotation.save! if annotation
@@ -116,7 +116,8 @@ class PointsController < ApplicationController
       create_comment(comment)
 
       if @point.user_id != current_user.id
-        UserMailer.reviewed(@point.user, @point, current_user, point_params['status'], point_params['point_change']).deliver_now
+        UserMailer.reviewed(@point.user, @point, current_user, point_params['status'],
+                            point_params['point_change']).deliver_now
       end
 
       redirect_to point_path(@point)
@@ -189,7 +190,8 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document, :source)
+    params.require(:point).permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id,
+                                  :document, :source)
   end
 
   def check_status

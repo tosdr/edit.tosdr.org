@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   def home
     # .joins('INNER JOIN users ON "whodunnit"= cast(users."id" as text)')
     if current_user&.curator
-      docbot_user = User.find_by_username('docbot')
+      docbot_user = User.docbot_user
       ids = []
       ids << current_user.id
       ids << docbot_user.id if docbot_user.present?

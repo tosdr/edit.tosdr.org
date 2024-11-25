@@ -27,6 +27,11 @@ class User < ApplicationRecord
   PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
   USERNAME_REGEX = /\A[\w.]+\z/
 
+  def self.docbot_user
+    username = ENV['DOCBOT_USER']
+    find_by_username(username)
+  end
+
   def password_validation
     password_valid = password =~ PASSWORD_REGEX
     message = 'Must include at least one lowercase letter, one uppercase letter, and one digit'

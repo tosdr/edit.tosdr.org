@@ -74,6 +74,7 @@ services:
       - AUTHORITY=localhost
       - OTA_URL=
       - OTA_API_SECRET=
+      - DOCBOT_USER=nouser
   adminer:
     image: adminer
     ports:

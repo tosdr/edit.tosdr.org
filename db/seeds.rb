@@ -120,7 +120,7 @@ puts "#{documents.length} documents added!"
 
 puts 'seeding docbot-created points'
 
-docbot = User.find_by_username('docbot')
+docbot = User.docbot_user
 
 unless docbot
   docbot = User.new(email: 'docbot@test.org', username: 'docbot', admin: true, curator: true)

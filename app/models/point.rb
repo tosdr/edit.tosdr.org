@@ -33,7 +33,7 @@ class Point < ApplicationRecord
   end
 
   def self.docbot
-    docbot_user = User.find_by_username('docbot')
+    docbot_user = User.docbot_user
     Point.eager_loaded
          .docbot_created(docbot_user.id)
          .need_review('pending')
