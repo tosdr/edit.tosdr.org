@@ -52,9 +52,6 @@ class ServicesController < ApplicationController
     @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @missing_points = @service.points.where(status: 'approved-not-found')
-    @missing_points_cases = []
-    @missing_points.each { |point| @missing_points_cases << point.case.title } if @missing_points.any?
-    @missing_points_cases = @missing_points_cases.length > 1 ? @missing_points_cases.join(', ') : @missing_points_cases.join('')
     if params[:point_id] && current_user
       @point = Point.find_by id: params[:point_id]
     else

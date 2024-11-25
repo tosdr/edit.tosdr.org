@@ -45,7 +45,17 @@
 <% if @missing_points.any? %>
   <div>
     <p>
-      <span class="label label-warning">Attention!</span> Points are missing from the latest crawled texts for this service. Total number of missing points: <mark> <%= @missing_points.length %> </mark>. The cases these points represent: <mark><%= @missing_points_cases %></mark>. Please review the document texts and create a new annotation if the point still exists, but has changed in exact wording or content.</span>
+      <span class="label label-warning">Attention!</span> Points are missing from the latest crawled texts for this service. Total number of missing points: <mark> <%= @missing_points.length %> </mark>. View the missing points:
+    </p>
+    <ul>
+      <% @missing_points.each do |point| %>
+        <li>
+          <%= link_to point.case.title, point_path(point) %>
+        </li>
+      <% end %>
+    </ul>
+    <p>
+      Please review the texts and create a new annotation if the point still exists, but has changed in exact wording or content.
     </p>
   </div>
 <% end %>
