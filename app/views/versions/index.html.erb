@@ -9,16 +9,16 @@
         <div class="row">
           <div class="col-sm-4">
             <h5>
-              <b><%= username version.whodunnit %> <%= rank_badge version.item.respond_to?(:user) ? version.item.user : version.whodunnit %>
+              <b><%= username version.version.whodunnit %> <%= rank_badge version.version.item.respond_to?(:user) ? version.version.item.user : version.version.whodunnit %>
             </h5>
           </div>
           <div class="col-sm-4">
             <h5>
-              <%= version.event %>d <!-- FIXME for i18n: make this literal 'd' a function to_past_tense in app/helpers/ -->
+              <%= version.version.event %>d <!-- FIXME for i18n: make this literal 'd' a function to_past_tense in app/helpers/ -->
               <a
-              href="/<%= version.item_type.downcase %>s/<%= version.item_id %>" class="collapsed">
-              <%= version.item_type %>
-              <%= version.item_id %>
+              href="/<%= version.version.item_type.downcase %>s/<%= version.version.item_id %>" class="collapsed">
+              <%= version.version.item_type %>
+              <%= version.version.item_id %>
             </a>
           </h5>
         </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="row">
           <div class="col-sm-6">
-            <%= version.object_changes %>
+            <%= version.version.object_changes %>
           </div>
           <div class="col-sm-6">
           </div>

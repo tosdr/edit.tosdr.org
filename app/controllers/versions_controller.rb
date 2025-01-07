@@ -8,7 +8,7 @@ class VersionsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    versions = Version.order('created_at DESC').limit(50)
-    @versions = versions.includes(:item)
+    versions = Version.with_whodunnit_users
+    @versions = versions
   end
 end
