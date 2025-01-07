@@ -13,36 +13,22 @@ namespace :spam do
 
   desc 'Delete comment objects with external URIs'
 
-  def extract_uris(value)
-    URI.extract(value)
-  end
+  task clean_comments: :environment do
+    models = [CaseComment, DocumentComment, PointComment, TopicComment, ServiceComment]
+    deleted_count = 0
 
-  def find_spam(items)
-    items = items.select do |item|
-      return false if item.user.curator || item.user.admin
-
-      summary = item.summary
-      uris = extract_uris(summary)
-      uris.length.positive?
+    models.each do |model|
+      puts "Processing #{model.name}..."
+      model.find_each do |record|
+        user = record.user # Adjust if the association is named differently
+        if record.summary.present? && SpamHelpers.contains_external_uri?(user, record.summary)
+          puts "Deleting #{model.name} with ID #{record.id} due to external URI in summary."
+          record.destroy
+          deleted_count += 1
+        end
+      end
     end
 
-    items
-  end
-
-  task clean_comments: :environment do
-    case_comments = find_spam(CaseComment.all)
-    case_comments.delete_all if case_comments.length.positive?
-
-    document_comments = find_spam(DocumentComment.all)
-    document_comments.delete_all if document_comments.length.positive?
-
-    point_comments = find_spam(PointComment.all)
-    point_comments.delete_all if point_comments.length.positive?
-
-    topic_comments = find_spam(TopicComment.all)
-    topic_comments.delete_all if topic_comments.length.positive?
-
-    service_comments = find_spam(ServiceComment.all)
-    service_comments.delete_all if service_comments.length.positive?
+    puts "Cleanup completed. Total records deleted: #{deleted_count}."
   end
 end

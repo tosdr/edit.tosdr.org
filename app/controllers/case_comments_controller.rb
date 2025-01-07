@@ -13,7 +13,7 @@ class CaseCommentsController < ApplicationController
 
   def create
     @case_comment = CaseComment.new(case_comment_params)
-    escaped_summary = CGI::escapeHTML(@case_comment.summary)
+    escaped_summary = CGI.escapeHTML(@case_comment.summary)
     @case_comment.summary = Kramdown::Document.new(escaped_summary).to_html
     @case_comment.user_id = current_user.id
     @case_comment.case_id = @case.id
@@ -21,10 +21,10 @@ class CaseCommentsController < ApplicationController
     if @case_comment.save
       report_spam(@case_comment.summary, 'ham') if current_user.admin || current_user.curator
       flash[:notice] = 'Comment added!'
+      redirect_to case_path(@case)
     else
-      flash[:notice] = 'Error adding comment!'
+      render 'new'
     end
-    redirect_to case_path(@case)
   end
 
   private

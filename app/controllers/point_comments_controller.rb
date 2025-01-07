@@ -10,17 +10,17 @@ class PointCommentsController < ApplicationController
 
   def create
     @point_comment = PointComment.new(point_comment_params)
-    @point_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@point_comment.summary)).to_html
+    @point_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@point_comment.summary)).to_html
     @point_comment.user_id = current_user.id
     @point_comment.point_id = @point.id
 
     if @point_comment.save
       report_spam(@point_comment.summary, 'ham') if current_user.admin || current_user.curator
       flash[:notice] = 'Comment added!'
+      redirect_to point_path(@point)
     else
-      flash[:notice] = 'Error adding comment!'
+      render 'new'
     end
-    redirect_to point_path(@point)
   end
 
   private

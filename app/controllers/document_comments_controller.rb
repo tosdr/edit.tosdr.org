@@ -13,18 +13,17 @@ class DocumentCommentsController < ApplicationController
 
   def create
     @document_comment = DocumentComment.new(document_comment_params)
-    @document_comment.summary = Kramdown::Document.new(CGI::escapeHTML(@document_comment.summary)).to_html
+    @document_comment.summary = Kramdown::Document.new(CGI.escapeHTML(@document_comment.summary)).to_html
     @document_comment.user_id = current_user.id
     @document_comment.document_id = @document.id
 
     if @document_comment.save
       report_spam(@document_comment.summary, 'ham') if current_user.admin || current_user.curator
       flash[:notice] = 'Comment added!'
+      redirect_to document_path(@document)
     else
-      flash[:notice] = 'Error adding comment!'
-      puts @document_comment.errors.full_messages
+      render 'new'
     end
-    redirect_to document_path(@document)
   end
 
   private
