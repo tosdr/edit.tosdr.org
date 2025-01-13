@@ -26,4 +26,4 @@ jobs:
           git remote add gitlab https://oauth2:${GITLAB_TOKEN}@git.tosdr.org/tosdr/phoenix.git
           
           # Push to the mirror
-          git push gitlab master --tags
+          git push --force gitlab master --tags
