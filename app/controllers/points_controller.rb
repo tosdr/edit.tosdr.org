@@ -67,7 +67,7 @@ class PointsController < ApplicationController
 
     @can_edit_docbot_point = false
     docbot = User.docbot_user
-    @can_edit_docbot_point = true if docbot && @point.user_id == docbot.id && current_user.curator?
+    @can_edit_docbot_point = true if docbot && @point.user_id == docbot.id && current_user&.curator?
     if @point.annotation_ref
       annotation = Point.retrieve_annotation(@point.annotation_ref)
       annotation_json = JSON.parse(annotation['target_selectors'])
