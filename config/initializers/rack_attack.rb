@@ -23,8 +23,18 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', limit: 300, period: 5.minutes) do |req|
+  throttle('req/ip', limit: 5, period: 1.minute) do |req|
     req.ip # unless req.path.start_with?('/assets')
+  end
+
+  # Throttle requests to nonexistent or restricted routes
+  throttle('nonexistent', limit: 3, period: 1.minute) do |req|
+    # Check if the route matches a nonexistent pattern
+
+    nonexistent = Rails.application.routes.recognize_path(req.path, method: req.request_method)
+    nonexistent.nil?
+  rescue ActionController::RoutingError
+    true # Nonexistent route detected
   end
 
   # Throttle POST requests to */services by IP address
@@ -41,7 +51,7 @@ class Rack::Attack
 
   # FIXME: temporarily loosened this from 5 to 50 due to
   # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
-  throttle('points/ip', limit: 50, period: 10.minutes) do |req|
+  throttle('points/ip', limit: 5, period: 1.minute) do |req|
     match = req.path.match(/^\/points\/(\w+)/)
     if (req.patch? || req.put?) &&  !match.nil?
       req.ip
