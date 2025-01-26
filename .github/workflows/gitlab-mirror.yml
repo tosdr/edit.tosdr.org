@@ -18,12 +18,19 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Push to GitLab
+      - name: Install SSH key
         env:
-          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan git.tosdr.org >> ~/.ssh/known_hosts
+
+      - name: Push to GitLab
         run: |
           # Add GitLab as a remote
-          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@git.tosdr.org/tosdr/phoenix.git
+          git remote add gitlab git@git.tosdr.org:tosdr/phoenix.git
           
           # Push to the mirror
           git push --force gitlab master --tags
