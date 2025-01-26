@@ -32,5 +32,8 @@ jobs:
           # Add GitLab as a remote
           git remote add gitlab git@git.tosdr.org:tosdr/phoenix.git
           
+          # Fetch full history
+          git fetch --unshallow
+          
           # Push to the mirror
           git push --force gitlab master --tags
