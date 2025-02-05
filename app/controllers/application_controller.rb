@@ -11,10 +11,6 @@ class ApplicationController < ActionController::Base
 
   add_flash_types :info, :error, :warning
 
-  def route_not_found
-    head :not_found
-  end
-
   def configure_permitted_parameters
     # For additional in app/views/devise/registrations/edit.html.erb
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
