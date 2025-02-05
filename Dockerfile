@@ -25,6 +25,7 @@ RUN gem install bundler -v 2.4.14
 COPY Gemfile Gemfile.lock ./
 
 FROM base as dev
+RUN bundle config set force_ruby_platform true
 RUN bundle check || bundle install
 CMD ["bash", "docker-entrypoint.sh"]
 
