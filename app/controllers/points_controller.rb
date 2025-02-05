@@ -27,9 +27,12 @@ class PointsController < ApplicationController
   end
 
   def list_docbot
-    @docbot_points = User.docbot_user.present? ? Point.docbot : []
-    @q = @docbot_points.any? ? @docbot_points.ransack(params[:q]) : []
-    @docbot_points = @q.any? ? @q.result(distinct: true).page(params[:page] || 1) : []
+    @docbot_points = User.docbot_user ? Point.docbot : []
+
+    return @docbot_points unless @docbot_points.any?
+
+    @q = @docbot_points.ransack(params[:q])
+    @docbot_points = @q.result(distinct: true).page(params[:page])
   end
 
   def new
