@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   # In config/routes.rb
-  match '*unmatched', to: 'application#route_not_found', via: :all
   get 'about', to: 'pages#about'
   get 'flag_spam', to: 'spam#flag_as_spam', as: 'flag_as_spam'
 

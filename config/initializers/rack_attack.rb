@@ -10,6 +10,19 @@ class Rack::Attack
 
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
+  throttle('nonexistent', limit: 5, period: 1.minute) do |req|
+    # Normalize request path
+    path = req.path.squeeze('/')
+
+    # Try recognizing the path with Rails' router
+    begin
+      Rails.application.routes.recognize_path(path, method: req.request_method)
+      false # If it matches a valid route, do NOT throttle
+    rescue ActionController::RoutingError
+      true  # If route doesn't exist, apply throttling
+    end
+  end
+
   ### Throttle Spammy Clients ###
 
   # If any single client IP is making tons of requests, then they're
@@ -23,18 +36,8 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', limit: 5, period: 1.minute) do |req|
+  throttle('req/ip', limit: 50, period: 1.minute) do |req|
     req.ip # unless req.path.start_with?('/assets')
-  end
-
-  # Throttle requests to nonexistent or restricted routes
-  throttle('nonexistent', limit: 3, period: 1.minute) do |req|
-    # Check if the route matches a nonexistent pattern
-
-    nonexistent = Rails.application.routes.recognize_path(req.path, method: req.request_method)
-    nonexistent.nil?
-  rescue ActionController::RoutingError
-    true # Nonexistent route detected
   end
 
   # Throttle POST requests to */services by IP address
@@ -44,45 +47,33 @@ class Rack::Attack
   # FIXME: temporarily loosened this from 2 to 50 due to
   # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
   throttle('services/ip', limit: 50, period: 10.minutes) do |req|
-    if req.path.end_with?('/services') && req.post?
-      req.ip
-    end
+    req.ip if req.path.end_with?('/services') && req.post?
   end
 
   # FIXME: temporarily loosened this from 5 to 50 due to
   # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
   throttle('points/ip', limit: 5, period: 1.minute) do |req|
-    match = req.path.match(/^\/points\/(\w+)/)
-    if (req.patch? || req.put?) &&  !match.nil?
-      req.ip
-    end
+    match = req.path.match(%r{^/points/(\w+)})
+    req.ip if (req.patch? || req.put?) && !match.nil?
   end
 
   throttle('throttle document creation', limit: 5, period: 10.minutes) do |req|
-    if req.path.end_with?('/documents') && req.post?
-      req.ip
-    end
+    req.ip if req.path.end_with?('/documents') && req.post?
   end
 
   # FIXME: temporarily loosened this from 5 to 50 due to
   # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
   throttle('throttle document updates', limit: 50, period: 10.minutes) do |req|
-    match = req.path.match(/^\/documents\/(\w+)/)
-    if (req.patch? || req.put?) &&  !match.nil?
-      req.ip
-    end
+    match = req.path.match(%r{^/documents/(\w+)})
+    req.ip if (req.patch? || req.put?) && !match.nil?
   end
 
   # FIXME: temporarily loosened this from 5 to 500 due to
   # https://github.com/tosdr/edit.tosdr.org/issues/929#issuecomment-743216243
   throttle('document crawling + creation for specific services', limit: 500, period: 10.minutes) do |req|
-    match = req.path.match(/^\/documents\/(\w+)/)
-    if req.post? && !match.nil?
-      req.ip
-    end
+    match = req.path.match(%r{^/documents/(\w+)})
+    req.ip if req.post? && !match.nil?
   end
-
-
 
   ### Prevent Brute-Force Login Attacks ###
 
@@ -97,9 +88,7 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
   throttle('logins/ip', limit: 5, period: 60.seconds) do |req|
-    if req.path == 'users/sign_in' && req.post?
-      req.ip
-    end
+    req.ip if req.path == 'users/sign_in' && req.post?
   end
 
   # Throttle POST requests to /login by email param
@@ -110,7 +99,7 @@ class Rack::Attack
   # throttle logins for another user and force their login requests to be
   # denied, but that's not very common and shouldn't happen to you. (Knock
   # on wood!)
-  throttle("logins/email", limit: 5, period: 60.seconds) do |req|
+  throttle('logins/email', limit: 5, period: 60.seconds) do |req|
     if req.path == 'users/sign_in' && req.post?
       # return the email if present, nil otherwise
       req.params['email'].presence
@@ -129,7 +118,7 @@ class Rack::Attack
     [
       503, # status
       {}, # headers
-      ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in 10 minutes."]
+      ["Oops! It looks like you're doing many different things in a short period of time. We check for this to prevent abusive requests or other types of vandalism to our site. Please try again in a few minutes."]
     ] # body
   end
 end
