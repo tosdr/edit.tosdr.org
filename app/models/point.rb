@@ -18,6 +18,7 @@ class Point < ApplicationRecord
   validates :case_id, presence: true
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
+  scope :eager_loaded_nouser, -> { includes(:case, :service) }
   scope :user_reviewable, ->(users) { where.not(user_id: users) }
   scope :need_review, ->(status) { where(status: status) }
   scope :docbot_created, ->(user) { where(user_id: user) }
@@ -34,7 +35,7 @@ class Point < ApplicationRecord
 
   def self.docbot
     docbot_user = User.docbot_user
-    Point.eager_loaded
+    Point.eager_loaded_nouser
          .docbot_created(docbot_user.id)
          .need_review('pending')
          .limit(10)
