@@ -10,7 +10,8 @@
       <%= link_to 'Add Comment', new_point_point_comment_path(@point), class: "btn btn-primary btn-sm" %>
       <% if current_user.id == @point.user_id || @can_edit_docbot_point %>
         <%= link_to 'Edit', edit_point_path(@point), class: "btn btn-default btn-sm" %>
-      <% elsif current_user.curator %>
+      <% end %>
+      <% if current_user.id != @point.user_id && current_user.curator %>
         <%= link_to 'Review', review_path(@point), class: "btn btn-default btn-sm" %>
         <% if @point.status != 'approved' %>
           <%= link_to 'Approve', approve_path(@point), method: :post, class: "btn btn-warning btn-sm" %>
