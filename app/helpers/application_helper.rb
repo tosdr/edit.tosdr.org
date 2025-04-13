@@ -81,7 +81,7 @@ module ApplicationHelper
     return 'you' if user_id && current_user && user_id == current_user.id
 
     user = User.find_by(id: user_id)
-    return raw user.username + ' <sup>(' + user.id.to_s + ')</sup>' || 'user ' + user.id.to_s if user&.username && user&.id
+    return raw("#{h(user.username)} <sup>(#{user.id.to_s})</sup>") || 'user ' + user.id.to_s if user&.username && user&.id
 
     user_str
   end
