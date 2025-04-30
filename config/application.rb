@@ -25,23 +25,31 @@ module Phoenix
       generate.helper false
     end
 
-    config.version = (ENV["GIT_TAG"].present?) ? ENV["GIT_TAG"] : "Development"
+    config.version = ENV['GIT_TAG'].present? ? ENV['GIT_TAG'] : 'Development'
 
     # config.autoload_paths += %W[#{config.root}/lib]
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 7.0
     # config.autoloader = :classic
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
+
     # Don't generate system test files.
     config.generators.system_tests = nil
     config.action_view.embed_authenticity_token_in_remote_forms = true
     config.action_mailer.raise_delivery_errors = false
-    # config.middleware.use Rack::Attack
+    config.middleware.use Rack::Attack
 
     # Logging config for Docker
     logger           = ActiveSupport::Logger.new($stdout)
