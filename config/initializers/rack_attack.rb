@@ -23,6 +23,19 @@ class Rack::Attack
     end
   end
 
+  blocklist('block exploit paths') do |req|
+    exploit_paths = [
+      %r{^/wp-admin},
+      %r{^/wp-login\.php},
+      %r{^/admin$},
+      %r{^/\.env},
+      %r{^/vendor/phpunit},
+      %r{^/\.well-known/traffic-advice},
+      %r{^/users/.*/wp-login\.php}
+    ]
+    exploit_paths.any? { |pattern| req.path.match(pattern) }
+  end
+
   ### Throttle Spammy Clients ###
 
   # If any single client IP is making tons of requests, then they're
@@ -89,6 +102,10 @@ class Rack::Attack
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
   throttle('logins/ip', limit: 5, period: 60.seconds) do |req|
     req.ip if req.path == 'users/sign_in' && req.post?
+  end
+
+  throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
+    req.ip if req.path == '/login' && req.post?
   end
 
   # Throttle POST requests to /login by email param
