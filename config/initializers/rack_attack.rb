@@ -49,8 +49,10 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
+  EXEMPT_PATHS = ['/assets', '/api/v1/points', '/api/v1/cases'].freeze
+
   throttle('req/ip', limit: 50, period: 1.minute) do |req|
-    req.ip # unless req.path.start_with?('/assets')
+    req.ip unless EXEMPT_PATHS.any? { |path| req.path.start_with?(path) }
   end
 
   # Throttle POST requests to */services by IP address
