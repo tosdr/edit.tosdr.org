@@ -10,19 +10,6 @@ class Rack::Attack
 
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
-  throttle('nonexistent', limit: 5, period: 1.minute) do |req|
-    # Normalize request path
-    path = req.path.squeeze('/')
-
-    # Try recognizing the path with Rails' router
-    begin
-      Rails.application.routes.recognize_path(path, method: req.request_method)
-      false # If it matches a valid route, do NOT throttle
-    rescue ActionController::RoutingError
-      true  # If route doesn't exist, apply throttling
-    end
-  end
-
   blocklist('block exploit paths') do |req|
     exploit_paths = [
       %r{^/wp-admin},
@@ -49,10 +36,27 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  EXEMPT_PATHS = ['/assets', '/api/v1/points', '/api/v1/cases'].freeze
+  EXEMPT_PREFIXES = [
+    '/assets',
+    '/api/v1/points',
+    '/api/v1/cases',
+    '/points',
+    '/cases',
+    '/documents',
+    '/services',
+  ].freeze
 
   throttle('req/ip', limit: 50, period: 1.minute) do |req|
-    req.ip unless EXEMPT_PATHS.any? { |path| req.path.start_with?(path) }
+    Rails.logger.warn "DEBUG: req.path=#{req.path.inspect} method=#{req.request_method}"
+
+    unless EXEMPT_PREFIXES.any? { |prefix| req.path.start_with?(prefix) }
+      req.ip
+    end
+  end
+
+  ActiveSupport::Notifications.subscribe("rack.attack") do |name, start, finish, request_id, payload|
+    req = payload[:request]
+    Rails.logger.warn "RACK::ATTACK blocked: #{req.request_method} #{req.path} from #{req.ip}"
   end
 
   # Throttle POST requests to */services by IP address
