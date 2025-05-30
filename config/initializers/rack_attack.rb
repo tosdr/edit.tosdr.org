@@ -36,28 +36,6 @@ class Rack::Attack
   # Throttle all requests by IP (60rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  EXEMPT_PREFIXES = [
-    '/assets',
-    '/api/v1/points',
-    '/api/v1/cases',
-    '/points',
-    '/cases',
-    '/documents',
-    '/services',
-  ].freeze
-
-  throttle('req/ip', limit: 50, period: 1.minute) do |req|
-    Rails.logger.warn "DEBUG: req.path=#{req.path.inspect} method=#{req.request_method}"
-
-    unless EXEMPT_PREFIXES.any? { |prefix| req.path.start_with?(prefix) }
-      req.ip
-    end
-  end
-
-  ActiveSupport::Notifications.subscribe("rack.attack") do |name, start, finish, request_id, payload|
-    req = payload[:request]
-    Rails.logger.warn "RACK::ATTACK blocked: #{req.request_method} #{req.path} from #{req.ip}"
-  end
 
   # Throttle POST requests to */services by IP address
   #
