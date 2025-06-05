@@ -3,6 +3,8 @@
 # app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
   include ApplicationHelper
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
 
   protect_from_forgery with: :exception
 
@@ -22,6 +24,10 @@ class ApplicationController < ActionController::Base
   end
 
   def not_found
-    render json: { error: 'Not found' }, status: 404
+    respond_to do |format|
+      format.html { render plain: "404 Not Found", status: 404 }
+      format.json { render json: { error: 'Not found' }, status: 404 }
+      format.any  { head 404 }
+    end
   end
 end
