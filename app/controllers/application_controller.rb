@@ -20,4 +20,8 @@ class ApplicationController < ActionController::Base
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
   end
+
+  def not_found
+    render json: { error: 'Not found' }, status: 404
+  end
 end

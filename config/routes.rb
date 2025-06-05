@@ -65,4 +65,6 @@ Rails.application.routes.draw do
   resources :cases do
     resources :case_comments, only: %i[new create]
   end
+
+  match '*path', to: 'application#not_found', via: :all
 end
