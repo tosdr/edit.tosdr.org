@@ -13,14 +13,18 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 preload_app!
 
 port        ENV.fetch("PORT") { 3000 }
-environment ENV.fetch("RAILS_ENV") { "development" }
+environment ENV.fetch("RAILS_ENV", "production")
 
+
+plugin :tmp_restart
+
+before_fork do
+  ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+end
 
 on_worker_boot do
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 end
-
-plugin :tmp_restart
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
