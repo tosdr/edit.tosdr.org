@@ -5,7 +5,7 @@ require 'zlib'
 
 namespace :documents do
   desc 'Convert xpath to selector'
-  task validate_selector: :environment do
+  task convert_selector: :environment do
     documents = Document.all
     documents.each do |document|
       next unless document.selector.present?

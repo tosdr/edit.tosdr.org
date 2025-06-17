@@ -28,41 +28,6 @@ class Document < ApplicationRecord
     errors.add(:url, "A document for this URL already exists! Inspect it here: #{go_to_doc}")
   end
 
-  def document_type_uniqueness_check
-    doc = Document.where(document_type_id: document_type_id, service_id: service_id)
-
-    return unless doc.any? && (doc.first.id != id)
-
-    go_to_doc = Rails.application.routes.url_helpers.document_url(doc.first.id)
-    errors.add(:document_type_id, "This document already exists for this service! Inspect it here: #{go_to_doc}")
-  end
-
-  def convert_xpath_to_css
-    runner = NodeRunner.new(
-      <<~JAVASCRIPT
-        const xPathToCss = require('xpath-to-css')
-        const convert = (xpath) => {
-          const css = xPathToCss(xpath)
-          return css;
-        }
-      JAVASCRIPT
-    )
-    runner.convert xpath
-  end
-
-  def validate_selector
-    runner = NodeRunner.new(
-      <<~JAVASCRIPT
-        const xPathToCss = require('xpath-to-css')
-        const convert = (selector) => {
-          const css = xPathToCss(selector)
-          return css;
-        }
-      JAVASCRIPT
-    )
-    runner.convert selector
-  end
-
   def snippets
     retrieve_snippets(text)
   end
@@ -71,12 +36,11 @@ class Document < ApplicationRecord
     text_to_scan = text
     points_no_longer_in_text = []
 
-    points.each do |_point|
+    points.each do |p|
       next if p.status == 'declined'
-      next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
+      next if p.quote_text.blank? || (p.quote_start.blank? && p.quote_end.blank?)
       next if p.annotation_ref.nil?
 
-      points_no_longer_in_text = []
       quote_exists_in_text = !text_to_scan.index(p.quote_text).nil?
       points_no_longer_in_text << p unless quote_exists_in_text
 
