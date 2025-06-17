@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'fuzzystringmatch'
 
 # app/models/document.rb
 class Document < ApplicationRecord
@@ -93,71 +94,98 @@ class Document < ApplicationRecord
 
   def retrieve_snippets(text_given)
     text_to_scan = text_given || ''
+    jarow = FuzzyStringMatch::JaroWinkler.create(:native)
+    match_threshold = 0.85
 
     quotes = []
     snippets = []
     points_with_quote_text_to_restore_in_doc = []
     points_no_longer_in_text = []
 
+    normalized_text = text_to_scan.gsub(/\s+/, ' ')
+
     points.each do |p|
       next if p.status == 'declined'
       next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
 
-      quote_exists_in_text = !text_to_scan.index(p.quote_text).nil?
-      points_no_longer_in_text << p unless quote_exists_in_text
-      next unless quote_exists_in_text
+      normalized_quote = p.quote_text.gsub(/\s+/, ' ')
+      quote_start = normalized_text.index(normalized_quote)
 
-      quote_start = text_to_scan.index(p.quote_text)
+      if quote_start.nil?
+        # Fuzzy match fallback
+        best_match_index = nil
+        best_match_score = 0.0
+        best_candidate = nil
+        window_size = normalized_quote.length
+
+        (0..(normalized_text.length - window_size)).each do |i|
+          candidate = normalized_text[i, window_size]
+          score = jarow.getDistance(normalized_quote, candidate)
+
+          if score > best_match_score
+            best_match_score = score
+            best_match_index = i
+            best_candidate = candidate
+          end
+        end
+
+        if best_match_score >= match_threshold
+          puts "🔍 Fuzzy match for Point ##{p.id} with score #{best_match_score.round(3)}"
+          puts "→ Original: #{p.quote_text[0..80].inspect}"
+          puts "→ Match:    #{best_candidate[0..80].inspect}"
+          quote_start = best_match_index
+        else
+          puts "❌ No match for Point ##{p.id}"
+          if p.status != 'approved-not-found' && p.status != 'pending-not-found'
+            old_status = p.status
+            p.status = old_status == 'approved' ? 'approved-not-found' : 'pending-not-found'
+            p.save!
+            puts "⚠️  Point ##{p.id} status changed from #{old_status} to #{p.status}"
+          end
+          points_no_longer_in_text << p
+          next
+        end
+      end
+
+      quote_end = quote_start + normalized_quote.length
       quote_start_changed = p.quote_start != quote_start
-      quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
+      quote_end_changed = p.quote_end != quote_end
 
-      quote_ok = !quote_start_changed && !quote_end_changed
-      quote_ok ? quotes << p : points_with_quote_text_to_restore_in_doc << p
-    end
-
-    if points_no_longer_in_text.length
-      points_no_longer_in_text.each do |p|
-        next if p.status == 'approved-not-found'
-
-        p.status = p.status == 'approved' ? 'approved-not-found' : 'pending-not-found'
-        p.save
+      if p.status == 'approved-not-found'
+        puts "✅ Point ##{p.id} (#{p.title}) restored. Status updated to 'approved'."
+        p.status = 'approved'
+        p.quote_start = quote_start
+        p.quote_end = quote_end
+        p.save!
+        quotes << p
+      elsif !quote_start_changed && !quote_end_changed
+        quotes << p
+      else
+        puts "🛠️  Point ##{p.id} position mismatch. Old: #{p.quote_start}-#{p.quote_end}, New: #{quote_start}-#{quote_end}"
+        points_with_quote_text_to_restore_in_doc << p
       end
     end
 
     cursor = 0
-
-    quotes.sort! do |x, y|
-      puts 'comparing ' + x.quote_start.to_s + ' to ' + y.quote_start.to_s
-      x.quote_start - y.quote_start
-    end
+    quotes.sort_by!(&:quote_start)
 
     quotes.each do |q|
-      puts 'quote to snippet ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s + ' ..' + cursor.to_s
       next unless q.quote_start > cursor
 
-      puts 'unquoted ' + cursor.to_s + ' -> ' + q.quote_start.to_s
-      snippets.push({
-                      text: text_to_scan[cursor, q.quote_start - cursor]
-                    })
-      puts 'quoted ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s
-      snippets.push({
-                      pointId: q.id,
-                      text: text_to_scan[q.quote_start, q.quote_end - q.quote_start],
-                      title: q.title
-                    })
-      puts 'cursor to ' + q.quote_end.to_s
+      snippets << { text: text_to_scan[cursor, q.quote_start - cursor] }
+      snippets << {
+        pointId: q.id,
+        text: text_to_scan[q.quote_start, q.quote_end - q.quote_start],
+        title: q.title
+      }
       cursor = q.quote_end
     end
 
-    puts 'final snippet ' + cursor.to_s + ' -> ' + text_to_scan.length.to_s
-
-    snippets.push({
-                    text: text_to_scan[cursor, text_to_scan.length - cursor]
-                  })
+    snippets << { text: text_to_scan[cursor, text_to_scan.length - cursor] }
 
     {
       snippets: snippets,
       points_needing_restoration: points_with_quote_text_to_restore_in_doc
     }
-  end
+  end 
 end
