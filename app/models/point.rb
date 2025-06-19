@@ -17,6 +17,8 @@ class Point < ApplicationRecord
                          allow_nil: false }
   validates :case_id, presence: true
 
+  after_create :refresh_document_snippet_cache
+
   scope :eager_loaded, -> { includes(:case, :service, :user) }
   scope :eager_loaded_nouser, -> { includes(:case, :service) }
   scope :user_reviewable, ->(users) { where.not(user_id: users) }
@@ -251,6 +253,14 @@ class Point < ApplicationRecord
   end
 
   private
+
+  def refresh_document_snippet_cache
+    return unless document
+
+    Rails.logger.info "[SnippetCache] Clearing and refreshing cache for Document ##{document.id} due to new Point ##{id}"
+    Rails.cache.delete("doc:#{document.id}:snippets:v1")
+    SnippetCacheRefreshJob.perform_later(document.id)
+  end
 
   def determine_target_uri(point)
     path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)
