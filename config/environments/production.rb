@@ -8,13 +8,13 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: "edit.tosdr.org" }
   config.action_mailer.smtp_settings = {
-    :user_name => ENV['SENDGRID_USERNAME'],
-    :password => ENV['SENDGRID_PASSWORD'],
-    :domain => 'edit.tosdr.org',
-    :address => 'smtp.sendgrid.net',
-    :port => 587,
+    :user_name => ENV['SMTP_USERNAME'] || ENV['SENDGRID_USERNAME'],
+    :password => ENV['SMTP_PASSWORD'] || ENV['SENDGRID_PASSWORD'],
+    :domain => ENV['SMTP_DOMAIN'] || 'edit.tosdr.org',
+    :address => ENV['SMTP_HOSTNAME'] || 'smtp.sendgrid.net',
+    :port => ENV['SMTP_PORT'] || 587,
     :authentication => :plain,
-    :enable_starttls_auto => true
+    :enable_starttls_auto => ENV['SMTP_ENABLE_STARTTLS_AUTO'] != 'false'
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
