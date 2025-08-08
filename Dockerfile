@@ -1,4 +1,4 @@
-FROM ruby:3.0.6-buster as base
+FROM ruby:3.0.6-slim-bullseye as base
 
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=enabled
