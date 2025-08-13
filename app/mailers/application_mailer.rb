@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'automatic-email@tosdr.org'
+  default from: 'notifications@mail.tosdr.org'
   layout 'mailer'
 end
