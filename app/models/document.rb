@@ -29,17 +29,7 @@ class Document < ApplicationRecord
   end
 
   def snippets
-    cache_key = "doc:#{id}:snippets:v1"
-  
-    if text.length > 50_000
-      cached = Rails.cache.read(cache_key)
-      SnippetCacheRefreshJob.perform_later(id) unless cached
-      cached || []
-    else
-      Rails.cache.fetch(cache_key, expires_in: 12.hours) do
-        retrieve_snippets(text)
-      end
-    end
+    retrieve_snippets(text)
   end
 
   def handle_missing_points
