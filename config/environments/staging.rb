@@ -7,6 +7,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: "edit.staging.tosdr.org" }
+
+  puts "SMTP_USERNAME: #{ENV['SMTP_USERNAME'].inspect}"
   config.action_mailer.smtp_settings = {
     :user_name => ENV['SMTP_USERNAME'] || ENV['SENDGRID_USERNAME'],
     :password => ENV['SMTP_PASSWORD'] || ENV['SENDGRID_PASSWORD'],
