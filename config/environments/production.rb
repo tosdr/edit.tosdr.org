@@ -10,13 +10,13 @@ Rails.application.configure do
 
   puts "SMTP_USERNAME: #{ENV['SMTP_USERNAME'].inspect}"
   config.action_mailer.smtp_settings = {
-    :user_name => ENV['SMTP_USERNAME'] || ENV['SENDGRID_USERNAME'],
-    :password => ENV['SMTP_PASSWORD'] || ENV['SENDGRID_PASSWORD'],
-    :domain => ENV['SMTP_DOMAIN'] || 'mail.tosdr.org',
-    :address => ENV['SMTP_HOSTNAME'] || 'smtp.sendgrid.net',
-    :port => ENV['SMTP_PORT'] || 587,
+    :user_name => ENV['SMTP_USERNAME'],
+    :password => ENV['SMTP_PASSWORD'],
+    :domain => 'mail.tosdr.org',                      # OK for MailerSend
+    :address => 'smtp.mailersend.net',               # Not SendGrid!
+    :port => 587,
     :authentication => :plain,
-    :enable_starttls_auto => ENV['SMTP_ENABLE_STARTTLS_AUTO'] != 'false'
+    :enable_starttls_auto => true
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
