@@ -61,8 +61,14 @@ class Service < ApplicationRecord
     end
   end
 
+  # Avoid the .select {} Ruby loop.
+	# Filter on status and case_id in SQL (far faster).
+	# Preload associated cases to avoid N+1.
   def approved_points
-    points.select { |p| p.status == 'approved' && !p.case.nil? }
+    points
+      .includes(:case)
+      .where(status: 'approved')
+      .where.not(case_id: nil)
   end
 
   def perform_calculation

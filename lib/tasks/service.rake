@@ -1,25 +1,30 @@
 namespace :service do
-  desc "Calculate the ratings for each service and store in db"
+  desc "Recalculate ratings for all services (in batches)"
   task perform_rating: :environment do
-    services = Service.all
-    services.each do |service|
-      initial_rating = service.rating
-      new_rating = service.calculate_service_rating
-      if initial_rating != new_rating
-        service.rating = new_rating
-        service.save(validate: false)
-
-        version = Version.new
-        version.item_type = "Service"
-        version.item_id = service.id
-        version.event = "update"
-        version.whodunnit = "21311"
-        version.object_changes = "This has been an automatic update by an official ToS;DR bot. The rating for this service changed from #{initial_rating} to #{new_rating}."
-        version.save
+    batch_size = 100
+    Service.find_in_batches(batch_size: batch_size) do |services|
+      services.each do |service|
+        recalculate_service_rating(service)
       end
     end
   end
-  
+
+  def recalculate_service_rating(service)
+    initial_rating = service.rating
+    new_rating = service.calculate_service_rating
+
+    return if new_rating == initial_rating
+
+    service.update_columns(rating: new_rating, updated_at: Time.current)
+
+    Version.create!(
+      item_type: "Service",
+      item_id: service.id,
+      event: "update",
+      whodunnit: "21311",
+      object_changes: "This has been an automatic update by an official ToS;DR bot. The rating for this service changed from #{initial_rating} to #{new_rating}."
+    )
+  end
   
   desc "Mark as reviewed if approved points are over 20"
   task mark_as_reviewed: :environment do
