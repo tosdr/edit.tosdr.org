@@ -19,10 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 12.hours do
+every :monday, :wednesday, :friday, at: '3:00 am' do
   rake 'service:perform_rating'
 end
 
-every 12.hours do
+every :tuesday, :thursday, at: '3:00 am' do
   rake 'spam:clean_spam'
 end
