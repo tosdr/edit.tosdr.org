@@ -19,10 +19,22 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every :monday, :wednesday, :friday, at: '3:00 am' do
+every :monday, at: '3:00 am' do
   rake 'service:perform_rating'
 end
 
-every :tuesday, :thursday, at: '3:00 am' do
+every :wednesday, at: '3:00 am' do
+  rake 'service:perform_rating'
+end
+
+every :friday, at: '3:00 am' do
+  rake 'service:perform_rating'
+end
+
+every :tuesday, at: '3:00 am' do
+  rake 'spam:clean_spam'
+end
+
+every :thursday, at: '3:00 am' do
   rake 'spam:clean_spam'
 end
