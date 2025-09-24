@@ -334,7 +334,7 @@ GEM
       net-protocol
     nio4r (2.5.9)
     node-runner (1.1.0)
-    nokogiri (1.15.3-x86_64-linux)
+    nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     paper_trail (13.0.0)
@@ -359,7 +359,7 @@ GEM
       activesupport (>= 3.0.0)
     pundit-matchers (1.6.0)
       rspec-rails (>= 3.0.0)
-    racc (1.7.1)
+    racc (1.7.3)
     rack (2.2.7)
     rack-accept (0.4.5)
       rack (>= 0.4)
