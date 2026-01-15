@@ -17,8 +17,14 @@ if [ -v INIT_SETUP ]; then
 	rails db:seed
 fi
 
-bundle exec puma -C config/puma.rb
+# Start cron in the background
+service cron start
 
-bundle exec rails s -b 0.0.0.0 -p $WEB_PORT
+# Starting the Rails server
+# Option 1: Using puma
+exec bundle exec puma -C config/puma.rb
+
+# Option 2: Using rails server
+# exec bundle exec rails s -b 0.0.0.0 -p $WEB_PORT
 
 exec "$@"
