@@ -30,7 +30,6 @@ gem 'jquery-rails'
 # for api pagination
 gem 'kaminari'
 gem 'kramdown'
-gem 'mini_racer'
 gem 'node-runner', '~> 1.1'
 gem 'paper_trail'
 gem 'pg', '~> 0.21'
