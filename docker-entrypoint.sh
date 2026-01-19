@@ -19,6 +19,7 @@ fi
 
 # Start cron in the background
 service cron start
+whenever --update-crontab
 
 # Starting the Rails server
 # Option 1: Using puma
