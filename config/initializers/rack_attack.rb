@@ -54,7 +54,8 @@ class Rack::Attack
   end
 
   ### Optional Logging (disable in prod if noisy) ###
-  ActiveSupport::Notifications.subscribe('rack.attack') do |_, _, _, _, req|
+  ActiveSupport::Notifications.subscribe('rack.attack') do |_, _, _, _, payload|
+    req = payload[:request]
     Rails.logger.info "[rack-attack] Throttled request to #{req.path} from #{req.ip}"
   end
 end
