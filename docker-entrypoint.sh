@@ -8,6 +8,7 @@ fi
 
 export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
+export EXECJS_RUNTIME=Disabled
 rails db:migrate
 
 rake tmp:clear
