@@ -8,10 +8,12 @@ fi
 
 export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
+# Precompile assets before db:migrate (uses Node.js via ExecJS)
+rake assets:precompile
+
 rails db:migrate
 
 rake tmp:clear
-rake assets:precompile
 
 if [ -v INIT_SETUP ]; then
 	rails db:seed
