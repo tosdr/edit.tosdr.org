@@ -8,12 +8,6 @@ fi
 
 export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
-# Precompile assets before db:migrate (uses Node.js via ExecJS)
-rake assets:precompile
-
-# Make sure db:migrate sees Node
-export EXECJS_RUNTIME=Node
-export PATH="/usr/bin:$PATH"
 rails db:migrate
 
 rake tmp:clear

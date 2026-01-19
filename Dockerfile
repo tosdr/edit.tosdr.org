@@ -45,7 +45,7 @@ RUN yarn install --frozen-lockfile
 # -----------------------
 COPY . .
 
-# Precompile assets (uses Node.js via ExecJS)
+# Precompile assets during build (not at runtime)
 RUN bundle exec rake assets:precompile
 
 # -----------------------
