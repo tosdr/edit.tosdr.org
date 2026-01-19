@@ -2,21 +2,13 @@
 
 set -m
 
-echo "=== Checking Node availability ==="
-which node
-ruby -e "p File.executable? '/usr/bin/node'"
-node --version
-echo "=== Node check complete ==="
-
 if [ ! -f /etc/SECRET_KEY_BASE ]; then
 	echo $(openssl rand -hex 128) > /etc/SECRET_KEY_BASE
 fi
 
 export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
-export EXECJS_RUNTIME=Node
-export PATH="/usr/bin/:$PATH"
-bundle exec rake db:migrate
+rails db:migrate
 
 rake tmp:clear
 

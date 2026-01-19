@@ -29,6 +29,7 @@ migrate-and-test:
   variables:
     DATABASE_URL: postgres://phoenix:phoenix@postgres:5432/phoenix
     H_ORIGIN: http://localhost:5000
+    EXECJS_RUNTIME: Node
   image:
     name: ruby:3.0.6
   script:
