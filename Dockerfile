@@ -35,6 +35,8 @@ RUN gem install bundler -v 2.4.14
 # -----------------------
 COPY Gemfile Gemfile.lock ./
 RUN bundle config set force_ruby_platform true
+# Install ONLY production dependencies in base
+RUN bundle config set --local without 'development test'
 RUN bundle install --jobs 4 --retry 3
 
 COPY package.json yarn.lock ./
@@ -46,15 +48,19 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Precompile assets during build (not at runtime)
-RUN bundle exec rake assets:precompile
+# Use a dummy secret key for asset precompilation only
+RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile
 
 # -----------------------
 # Build targets
 # -----------------------
 
 FROM base as dev
+# Reset the bundle config to include all groups
+RUN bundle config unset without
+# Install development and test dependencies
+RUN bundle install --jobs 4 --retry 3
 CMD ["bash", "docker-entrypoint.sh"]
 
 FROM base as prod
-RUN bundle install --without development test --jobs 4 --retry 3
 CMD ["bash", "docker-entrypoint.sh"]
