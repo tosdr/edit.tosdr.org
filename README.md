@@ -101,6 +101,14 @@ To **annotate** a service, navigate to the services page from the top-right menu
 
 For a demonstration of how annotations work, feel free to [inspect the video attached to this PR](https://github.com/tosdr/edit.tosdr.org/pull/1116).
 
+### Resetting the database
+
+To reset the database, add a line `command: sleep 6000` for phoenix in the docker-compose.yml, then run `docker compose up` and then you can:
+```sh
+docker exec -it edittosdrorg-web-1 /bin/bash
+root@c8d0c53945a9:/usr/src/edit.tosdr.org# bundle exec rails db:reset
+```
+
 ### Hypothesis installation - part 1
 
 H is the Hypothesis web service and api. 
