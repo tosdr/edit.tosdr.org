@@ -24,9 +24,7 @@ class CasesController < ApplicationController
       object << { pointbox: c.determine_pointbox, case: c }
     end
 
-    respond_to do |format|
-      format.json { render json: object }
-    end
+    render json: object
   end
 
   def new
