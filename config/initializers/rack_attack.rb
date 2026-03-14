@@ -4,7 +4,7 @@ class Rack::Attack
 
   ### Block Known Exploit Paths ###
   blocklist('block exploit paths') do |req|
-    %r{^/(wp-admin|wp-login\.php|admin|\.env|vendor/phpunit|\.well-known/traffic-advice|users/.*/wp-login\.php)}.match?(req.path)
+    %r{^/(wp-admin|wp-login\.php|\.env|vendor/phpunit|\.well-known/traffic-advice|users/.*/wp-login\.php)}.match?(req.path)
   end
 
   ### Throttles (IP-based) ###
@@ -42,6 +42,11 @@ class Rack::Attack
   # Login email throttling
   throttle('logins/email', limit: 5, period: 60.seconds) do |req|
     req.params['email'].presence if req.post? && req.path == '/users/sign_in'
+  end
+
+  # GET to /admin
+  throttle('admin', limit: 20, period: 10.minutes) do |req|
+    req.ip if req.get? && req.path == '/admin'
   end
 
   ### Custom Throttle Response ###
