@@ -60,12 +60,19 @@ class User < ApplicationRecord
     bot
   end
 
-  def hard_delete
-    points.update_all user_id: 1 # change to anonymous account id
-    return unless PointComment.where user_id: id
+  before_destroy :hard_delete
 
-    comments = PointComment.where user_id: id
-    comments.update_all user_id: 1
+  def hard_delete
+    anonymous_id = 1
+    points.update_all user_id: anonymous_id
+    documents.update_all user_id: anonymous_id
+    services.update_all user_id: anonymous_id
+    point_comments.update_all user_id: anonymous_id
+    case_comments.update_all user_id: anonymous_id
+    document_comments.update_all user_id: anonymous_id
+    service_comments.update_all user_id: anonymous_id
+    topic_comments.update_all user_id: anonymous_id
+    DocumentType.where(user_id: id).update_all user_id: anonymous_id
   end
 
   def after_database_authentication
