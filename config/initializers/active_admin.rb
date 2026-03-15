@@ -98,7 +98,6 @@ ActiveAdmin.setup do |config|
   # will call the method to return the path.
   #
   # Default:
-  config.base_controller = 'ApplicationController'
   config.logout_link_path = :destroy_user_session_path
   config.logout_link_method = :delete
   config.authentication_method = :authenticate_admin!
@@ -295,4 +294,11 @@ ActiveAdmin.setup do |config|
   # You can inherit it with own class and inject it for all resources
   #
   # config.order_clause = MyOrderClause
+end
+
+ActiveAdmin::BaseController.class_eval do
+  def authenticate_admin!
+    response.headers['Cache-Control'] = 'no-store'
+    redirect_to root_path unless current_user&.admin
+  end
 end
