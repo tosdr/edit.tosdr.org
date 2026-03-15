@@ -279,7 +279,9 @@ ActiveAdmin.setup do |config|
   # You can enabled or disable the inclusion
   # of those filters by default here.
   #
-  # config.include_default_association_filters = true
+  # Disabled: default association filters run unscoped SELECT * on every has_many
+  # table to populate dropdowns, causing OOM crashes with large datasets.
+  config.include_default_association_filters = false
 
   # == Footer
   #
