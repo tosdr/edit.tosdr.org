@@ -14,14 +14,10 @@ ActiveAdmin.register_page "Dashboard" do
     #
     columns do
       column do
-        panel "User" do
-          ul do
-            User.all.map do |user|
-            li link_to(user.email, edit_user_registration_path(user))
-          end
+        panel "Users" do
+          para link_to("Manage all users (#{User.count})", admin_users_path)
         end
       end
-    end
 
     column do
       panel "Info" do

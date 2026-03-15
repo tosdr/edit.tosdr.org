@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
   end
 
+  def authenticate_admin!
+    redirect_to root_path unless current_user&.admin
+  end
+
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_to(request.referrer || root_path)
