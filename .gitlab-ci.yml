@@ -56,6 +56,7 @@ docker-nightly:
     --destination "${CI_REGISTRY_IMAGE}:nightly" --build-arg GIT_TAG=nightly
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 
 docker-prod:
@@ -100,3 +101,4 @@ deploy-staging:
     - curl -X POST $PORTAINER_WEBHOOK_URL_STAGING
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
