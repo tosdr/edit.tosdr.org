@@ -98,6 +98,7 @@ ActiveAdmin.setup do |config|
   # will call the method to return the path.
   #
   # Default:
+  config.base_controller = 'ApplicationController'
   config.logout_link_path = :destroy_user_session_path
   config.logout_link_method = :delete
   config.authentication_method = :authenticate_admin!
@@ -149,6 +150,7 @@ ActiveAdmin.setup do |config|
   # Active Admin resources and pages from here.
   #
   # config.before_action :do_something_awesome
+  config.before_action { response.headers['Cache-Control'] = 'no-store' }
 
   # == Localize Date/Time Format
   #

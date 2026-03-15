@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin!
+    response.headers['Cache-Control'] = 'no-store'
     redirect_to root_path unless current_user&.admin
   end
 
