@@ -16,6 +16,10 @@ class Service < ApplicationRecord
   validates :url, presence: true
   validates :url, uniqueness: true
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name rating]
+  end
+
   before_validation :strip_input_fields
 
   def calculate_service_rating

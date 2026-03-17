@@ -8,6 +8,10 @@ class Annotation < ApplicationRecord
   self.table_name = 'annotation'
   belongs_to :h_document, class_name: 'HDocument', foreign_key: 'document_id'
 
+  def self.search_client
+    __elasticsearch__.client || Elasticsearch::Model.client
+  end
+
   def target
     target = { "source": target_uri }
     target['selector'] = target_selectors if target_selectors
@@ -84,8 +88,7 @@ class Annotation < ApplicationRecord
   # dynamic_update('annotation', annotation['id'], updates)
 
   def restore
-    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
-    __elasticsearch__.client = client
+    client = self.class.search_client
 
     begin
       # Attempt to get a document that might not exist
@@ -111,9 +114,7 @@ class Annotation < ApplicationRecord
   end
 
   def index_elasticsearch
-    client = Elasticsearch::Client.new url: 'http://elasticsearch:9200', index: 'hypothesis', log: true
-    __elasticsearch__.client = client
-    __elasticsearch__.client.index index: 'hypothesis', type: 'annotation',
-                                   id: StringConverter.new(string: id).to_url_safe, body: annotation_dict
+    self.class.search_client.index index: 'hypothesis', type: 'annotation',
+                                  id: StringConverter.new(string: id).to_url_safe, body: annotation_dict
   end
 end

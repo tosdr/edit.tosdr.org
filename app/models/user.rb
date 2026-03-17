@@ -17,6 +17,14 @@ class User < ApplicationRecord
   has_many :service_comments
   has_many :topic_comments
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[email username admin curator bot deactivated created_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   attr_accessor :skip_on_sign_out
 
   validate :password_validation, if: :password

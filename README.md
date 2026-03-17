@@ -33,7 +33,7 @@ Requirements:
 * [Docker](https://docs.docker.com/engine/install/) and docker-compose
     * We rely on Docker as an attempt to be OS-agnostic
     * If you **are not able to use Docker**, install the following: 
-        * Ruby 3.0.6
+        * Ruby 3.4.9
         * Rails (Phoenix uses version 6.0.6.1)
         * Bundler 2.4.14
         * Postgres 11.5

@@ -19,6 +19,14 @@ class Point < ApplicationRecord
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
   scope :eager_loaded_nouser, -> { includes(:case, :service) }
+
+  def self.ransackable_associations(auth_object = nil)
+    ["service"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[title status analysis source]
+  end
   scope :user_reviewable, ->(users) { where.not(user_id: users) }
   scope :need_review, ->(status) { where(status: status) }
   scope :docbot_created, ->(user) { where(user_id: user) }
