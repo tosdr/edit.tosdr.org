@@ -2,7 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
-  before_action :check_cap_token, only: [:create]
+  before_action :check_cap_token, only: [:create], unless: :user_signed_in?
 
   respond_to :html, :json
 

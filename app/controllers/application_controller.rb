@@ -44,6 +44,7 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = "Captcha verification failed. Please try again."
     redirect_back fallback_location: root_path
+    throw :abort
   end
 
   def verify_cap_token
