@@ -92,7 +92,7 @@ class PointsController < ApplicationController
     docbot = User.docbot_user
     @point.user_id = current_user.id if docbot && @point.user_id == docbot.id && current_user.curator?
     if @point.update(point_params)
-      annotation.save! if annotation
+      save_annotation(annotation) if annotation
       comment = @point.point_change.present? ? @point.point_change : 'point updated without comment'
       create_comment(comment)
       redirect_to point_path(@point)
@@ -167,6 +167,15 @@ class PointsController < ApplicationController
 
   def create_comment(comment_text)
     PointComment.create!(point_id: @point.id, summary: comment_text, user_id: current_user.id)
+  end
+
+  def save_annotation(annotation)
+    annotation.save!
+  rescue StandardError => e
+    # Search index availability should not block successful point edits.
+    raise e unless e.is_a?(Faraday::ConnectionFailed) || e.class.name.start_with?('Elasticsearch::Transport')
+
+    Rails.logger.warn("POINT UPDATE: annotation persisted but index update failed for annotation #{annotation.id}: #{e.class} - #{e.message}")
   end
 
   def point_create_options(point, path)
