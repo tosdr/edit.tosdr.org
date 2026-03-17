@@ -42,10 +42,13 @@ class ApplicationController < ActionController::Base
   def verify_cap_token
     return true unless cap_enabled?
 
+    token = params["cap-token"]
+    return false if token.blank?
+
     uri = URI("#{cap_api_endpoint}siteverify")
     response = Net::HTTP.post(
       uri,
-      { secret: ENV["CAP_SECRET_KEY"], response: params["cap-token"] }.to_json,
+      { secret: ENV["CAP_SECRET_KEY"], response: token }.to_json,
       "Content-Type" => "application/json"
     )
     result = JSON.parse(response.body)
