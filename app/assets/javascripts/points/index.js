@@ -33,7 +33,13 @@ $(".points.index").ready(function() {
     }
   }
 
-  document.getElementById('orderByPoint').addEventListener("click", (event) => {
+  const orderByPointButton = document.getElementById('orderByPoint');
+  const pointsTableBody = document.getElementById('myTableBody');
+  if (!orderByPointButton || !pointsTableBody) {
+    return;
+  }
+
+  orderByPointButton.addEventListener("click", (event) => {
     event.preventDefault();
     let elems =  document.getElementsByClassName("toSort");
     // convert nodelist to array
@@ -59,6 +65,6 @@ $(".points.index").ready(function() {
       output += array[i].outerHTML;
     }
     // append output to div 'points-table-container'
-    document.getElementById('myTableBody').innerHTML = output;
+    pointsTableBody.innerHTML = output;
   });
 });

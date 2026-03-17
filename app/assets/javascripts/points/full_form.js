@@ -1,9 +1,17 @@
 $(".points.edit").ready(function() {
-  document.getElementById('point_case_id').addEventListener('change', function() {
+  const pointCaseSelect = document.getElementById('point_case_id');
+  if (!pointCaseSelect) {
+    return;
+  }
 
-  let id = document.getElementById('point_case_id').selectedIndex;
+  pointCaseSelect.addEventListener('change', function() {
 
-  let title = document.getElementById('point_case_id').options[id].dataset.title;
-  document.querySelectorAll("input[name='point[title]']")[0].setAttribute("value", title);
+  let id = pointCaseSelect.selectedIndex;
+
+  let title = pointCaseSelect.options[id].dataset.title;
+  const pointTitleInput = document.querySelector("input[name='point[title]']");
+  if (pointTitleInput) {
+    pointTitleInput.setAttribute("value", title);
+  }
   });
 });
