@@ -1,4 +1,4 @@
-FROM ruby:3.0.6-slim-bullseye as base
+FROM ruby:3.4.9-slim-bookworm as base
 
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=enabled
@@ -16,7 +16,7 @@ RUN apt-get update -qq && apt-get install -y \
   build-essential libpq-dev postgresql postgresql-contrib openssl sudo \
   libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
   libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2 \
-  curl gnupg python3 python3-distutils
+  curl gnupg python3
 
 # Add Yarn & Node.js repos
 RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \

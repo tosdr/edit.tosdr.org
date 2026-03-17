@@ -16,7 +16,7 @@ ActiveAdmin.setup do |config|
   #
   # Note: Aim for an image that's 21px high so it fits in the header.
   #
-  config.site_title_image = "favicon.ico"
+  # config.site_title_image = "favicon.ico" # removed in ActiveAdmin 4.x; use config.favicon instead
 
   # == Default Namespace
   #
@@ -99,7 +99,6 @@ ActiveAdmin.setup do |config|
   #
   # Default:
   config.logout_link_path = :destroy_user_session_path
-  config.logout_link_method = :delete
   config.authentication_method = :authenticate_admin!
   config.current_user_method = :current_user
 
@@ -161,7 +160,7 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  config.favicon = 'favicon.ico'
+  # config.favicon = 'favicon.ico'
 
   # == Meta Tags
   #
@@ -298,9 +297,11 @@ ActiveAdmin.setup do |config|
   # config.order_clause = MyOrderClause
 end
 
-ActiveAdmin::BaseController.class_eval do
-  def authenticate_admin!
-    response.headers['Cache-Control'] = 'no-store'
-    redirect_to root_path unless current_user&.admin
+if defined?(ActiveAdmin::ApplicationController)
+  ActiveAdmin::ApplicationController.class_eval do
+    def authenticate_admin!
+      response.headers['Cache-Control'] = 'no-store'
+      redirect_to root_path unless current_user&.admin
+    end
   end
 end
