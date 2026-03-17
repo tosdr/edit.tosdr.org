@@ -10,6 +10,11 @@
     </div>
 
     <div class="form-actions">
+      <% if cap_enabled? %>
+        <div style="margin: 10px 0;">
+          <cap-widget data-cap-api-endpoint="<%= cap_api_endpoint %>"></cap-widget>
+        </div>
+      <% end %>
       <%= f.button :submit, "Log in" %>
     </div>
     <% end %>

@@ -13,6 +13,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
+    unless verify_cap_token
+      flash[:alert] = "Captcha verification failed. Please try again."
+      return redirect_to new_user_registration_path
+    end
     super
   end
 

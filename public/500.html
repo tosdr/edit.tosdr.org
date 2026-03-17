@@ -496,8 +496,6 @@
     </div>
         </div>
 		
-		<script src="https://rksyl9kf1wtg.statuspage.io/embed/script.js"></script>
-    
     <script>
 
 
@@ -968,18 +966,5 @@ c.modifiers.flip.padding);b.setAttribute("x-placement",a);M(b,{position:c.positi
             }
         });
     </script>
-        <script src='https://sentry.tosdr.org/js-sdk-loader/768d6b987bc24cc3bbe67fe7e70a2414.min.js' crossorigin="anonymous"></script>
-        <script>
-            Sentry.init({
-                dsn: "https://768d6b987bc24cc3bbe67fe7e70a2414@sentry.tosdr.org/3",
-                beforeSend(event, hint) {
-                    // Check if it is an exception, and if so, show the report dialog
-                    if (event.exception) {
-                        Sentry.showReportDialog({ eventId: event.event_id });
-                    }
-                    return event;
-                },
-            });
-        </script>
 
 </body></html>

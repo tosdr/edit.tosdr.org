@@ -63,7 +63,6 @@ tasks:
       RAILS_MAX_THREADS: 500
       PORT: 3000
       SECRET_KEY_BASE: 12345
-      SENTRY_DSN: https://c0d549cf9ae645cdb525e308c04d44b4@sentry.internal.jrbit.de/23
     command: rvm install 3.0.6 && 
              rvm use 3.0.6 --default &&
              gem install bundler &&

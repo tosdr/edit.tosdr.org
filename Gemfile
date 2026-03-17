@@ -44,8 +44,6 @@ gem 'redis'
 # for tosback2:
 gem 'sanitize'
 gem 'sendgrid-ruby'
-gem 'sentry-rails'
-gem 'sentry-ruby'
 gem 'simple_form'
 gem 'uglifier'
 gem 'uuid', '~> 2.3', '>= 2.3.9'

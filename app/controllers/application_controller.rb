@@ -3,6 +3,7 @@
 # app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
   include ApplicationHelper
+  include CapHelper
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
 
@@ -34,5 +35,22 @@ class ApplicationController < ActionController::Base
       format.json { render json: { error: 'Not found' }, status: 404 }
       format.any  { head 404 }
     end
+  end
+
+  private
+
+  def verify_cap_token
+    return true unless cap_enabled?
+
+    uri = URI("#{cap_api_endpoint}siteverify")
+    response = Net::HTTP.post(
+      uri,
+      { secret: ENV["CAP_SECRET_KEY"], response: params["cap-token"] }.to_json,
+      "Content-Type" => "application/json"
+    )
+    result = JSON.parse(response.body)
+    result["success"] == true
+  rescue StandardError
+    false
   end
 end
