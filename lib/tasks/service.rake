@@ -1,31 +1,50 @@
 namespace :service do
   desc "Recalculate ratings for all services (in batches)"
   task perform_rating: :environment do
-    batch_size = (ENV["BATCH_SIZE"] || 100).to_i
-    debug_mode = ActiveModel::Type::Boolean.new.cast(ENV["DEBUG_RATING"])
-    processed_count = 0
-    updated_count = 0
-
-    puts "[service:perform_rating] Starting (batch_size=#{batch_size}, debug=#{debug_mode})"
-
-    Service.find_in_batches(batch_size: batch_size) do |services|
-      services.each do |service|
-        updated = recalculate_service_rating(service, debug_mode)
-        processed_count += 1
-        updated_count += 1 if updated
-      end
-    end
-
-    puts "[service:perform_rating] Done (processed=#{processed_count}, updated=#{updated_count})"
-
     heartbeat_url = ENV["GRADING_SUCCESS_HEARTBEAT"]
-    if heartbeat_url.present?
-      if system("curl", "-fsS", "-m", "10", heartbeat_url)
-        puts "[service:perform_rating] Sent success heartbeat"
-      else
-        warn "[service:perform_rating] Failed to send success heartbeat"
+
+    begin
+      batch_size = (ENV["BATCH_SIZE"] || 100).to_i
+      debug_mode = ActiveModel::Type::Boolean.new.cast(ENV["DEBUG_RATING"])
+      processed_count = 0
+      updated_count = 0
+
+      puts "[service:perform_rating] Starting (batch_size=#{batch_size}, debug=#{debug_mode})"
+
+      Service.find_in_batches(batch_size: batch_size) do |services|
+        services.each do |service|
+          updated = recalculate_service_rating(service, debug_mode)
+          processed_count += 1
+          updated_count += 1 if updated
+        end
       end
+
+      puts "[service:perform_rating] Done (processed=#{processed_count}, updated=#{updated_count})"
+
+      if heartbeat_url.present?
+        if system("curl", "-fsS", "-m", "10", heartbeat_url)
+          puts "[service:perform_rating] Sent success heartbeat"
+        else
+          warn "[service:perform_rating] Failed to send success heartbeat"
+        end
+      end
+    
+    
+    rescue => e
+      warn "[service:perform_rating] Failed with error: #{e.message}"
+      if heartbeat_url.present?
+        url = heartbeat_url.chomp('/') + '/fail'
+        if system("curl", "-fsS", "-m", "10", "-d", e.message, url)
+          puts "[service:perform_rating] Sent error heartbeat"
+        else
+          warn "[service:perform_rating] Failed to send error heartbeat"
+        end
+      end
+      return
+
+
     end
+    
   end
 
   def recalculate_service_rating(service, debug_mode = false)
