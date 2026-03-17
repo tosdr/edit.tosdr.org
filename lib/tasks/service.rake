@@ -1,21 +1,44 @@
 namespace :service do
   desc "Recalculate ratings for all services (in batches)"
   task perform_rating: :environment do
-    batch_size = 100
+    batch_size = (ENV["BATCH_SIZE"] || 100).to_i
+    debug_mode = ActiveModel::Type::Boolean.new.cast(ENV["DEBUG_RATING"])
+    processed_count = 0
+    updated_count = 0
+
+    puts "[service:perform_rating] Starting (batch_size=#{batch_size}, debug=#{debug_mode})"
+
     Service.find_in_batches(batch_size: batch_size) do |services|
       services.each do |service|
-        recalculate_service_rating(service)
+        updated = recalculate_service_rating(service, debug_mode)
+        processed_count += 1
+        updated_count += 1 if updated
+      end
+    end
+
+    puts "[service:perform_rating] Done (processed=#{processed_count}, updated=#{updated_count})"
+
+    heartbeat_url = ENV["GRADING_SUCCESS_HEARTBEAT"]
+    if heartbeat_url.present?
+      if system("curl", "-fsS", "-m", "10", heartbeat_url)
+        puts "[service:perform_rating] Sent success heartbeat"
+      else
+        warn "[service:perform_rating] Failed to send success heartbeat"
       end
     end
   end
 
-  def recalculate_service_rating(service)
+  def recalculate_service_rating(service, debug_mode = false)
     initial_rating = service.rating
     new_rating = service.calculate_service_rating
 
-    return if new_rating == initial_rating
+    if new_rating == initial_rating
+      puts "[service:perform_rating] Service ##{service.id} unchanged (rating=#{initial_rating})" if debug_mode
+      return false
+    end
 
     service.update_columns(rating: new_rating, updated_at: Time.current)
+    puts "[service:perform_rating] Service ##{service.id} updated #{initial_rating} -> #{new_rating}" if debug_mode
 
     Version.create!(
       item_type: "Service",
@@ -24,6 +47,8 @@ namespace :service do
       whodunnit: "21311",
       object_changes: "This has been an automatic update by an official ToS;DR bot. The rating for this service changed from #{initial_rating} to #{new_rating}."
     )
+
+    true
   end
   
   desc "Mark as reviewed if approved points are over 20"
