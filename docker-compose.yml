@@ -75,6 +75,7 @@ services:
       - OTA_URL=
       - OTA_API_SECRET=
       - DOCBOT_USER=docbot
+      - GRADING_SUCCESS_HEARTBEAT=
   adminer:
     image: adminer
     ports:
