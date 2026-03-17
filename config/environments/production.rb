@@ -12,8 +12,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :user_name => ENV['SMTP_USERNAME'],
     :password => ENV['SMTP_PASSWORD'],
-    :domain => 'edit.tosdr.org',
-    :address => 'smtp-relay.brevo.com',
+    :domain => 'mail.tosdr.org',
+    :address => 'live.smtp.mailtrap.io',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
