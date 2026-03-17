@@ -39,6 +39,13 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def check_cap_token
+    return if verify_cap_token
+
+    flash[:alert] = "Captcha verification failed. Please try again."
+    redirect_back fallback_location: root_path
+  end
+
   def verify_cap_token
     return true unless cap_enabled?
 

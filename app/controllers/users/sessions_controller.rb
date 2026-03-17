@@ -2,6 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
+  before_action :check_cap_token, only: [:create]
 
   respond_to :html, :json
 
@@ -16,10 +17,6 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    unless verify_cap_token
-      flash[:alert] = "Captcha verification failed. Please try again."
-      return redirect_to new_user_session_path
-    end
     super
     flash.delete(:notice)
   end

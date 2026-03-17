@@ -2,9 +2,9 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
+  before_action :check_cap_token, only: [:create]
 
   invisible_captcha only: [:create], honeypot: :full_name
-  # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -12,13 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create
-    unless verify_cap_token
-      flash[:alert] = "Captcha verification failed. Please try again."
-      return redirect_to new_user_registration_path
-    end
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # GET /resource/edit
   # def edit

@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
+  before_action :check_cap_token, only: [:create]
+
   # GET /resource/password/new
   # def new
   #   super
   # end
 
   # POST /resource/password
-  def create
-    unless verify_cap_token
-      flash[:alert] = "Captcha verification failed. Please try again."
-      return redirect_to new_user_password_path
-    end
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # GET /resource/password/edit?reset_password_token=abcdef
   # def edit
