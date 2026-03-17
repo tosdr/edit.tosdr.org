@@ -23,11 +23,11 @@ else
 fi
 eval "$(rbenv init -)"
 
-if rbenv versions --bare | grep -q 2.7.2 ; then
-  echo "You have Ruby 2.7.2!"
+if rbenv versions --bare | grep -q 3.4.9 ; then
+  echo "You have Ruby 3.4.9!"
 else
-  echo '[*] Installing Ruby 2.7.2, it might take a while...'
-  rbenv install 2.7.2
+  echo '[*] Installing Ruby 3.4.9, it might take a while...'
+  rbenv install 3.4.9
 fi
 
 if hash yarn 2>/dev/null; then
@@ -57,8 +57,8 @@ else
   echo '[*] Installing phantomjs'
   sudo apt-get -y install phantomjs
 fi
-echo '[*] Setting local ruby version to 2.7.2'
-rbenv local 2.7.2
+echo '[*] Setting local ruby version to 3.4.9'
+rbenv local 3.4.9
 if rbenv which bundle 2&>1 > /dev/null ; then
   echo 'You have bundler!'
 else

@@ -26,6 +26,14 @@ class DocumentType < ApplicationRecord
 
   validates :name, length: { maximum: 50 }
   validates :name, presence: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name description status]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
   validates :name, uniqueness: true
   validates :name, contains_external_links: true
   validates_format_of :name, with: /^[a-zA-Z\d ]*$/i, multiline: true, message: 'can only contain letters and numbers.'

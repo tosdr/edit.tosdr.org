@@ -4,6 +4,7 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from ActionController::InvalidCrossOriginRequest, with: :cross_origin_request
 
 
   protect_from_forgery with: :exception
@@ -32,7 +33,12 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { render plain: "404 Not Found", status: 404 }
       format.json { render json: { error: 'Not found' }, status: 404 }
+      format.js   { render plain: "404 Not Found", status: 404, content_type: 'text/plain' }
       format.any  { head 404 }
     end
+  end
+
+  def cross_origin_request
+    render plain: "404 Not Found", status: 404, content_type: 'text/plain'
   end
 end

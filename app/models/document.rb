@@ -13,6 +13,14 @@ class Document < ApplicationRecord
 
   validates :name, presence: true
   validates :service_id, presence: true
+
+  def self.ransackable_associations(auth_object = nil)
+    ["service"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name]
+  end
   validates :text, presence: true
   validates :url, presence: true
   validates :selector, presence: true

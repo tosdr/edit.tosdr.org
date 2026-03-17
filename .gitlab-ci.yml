@@ -31,7 +31,7 @@ migrate-and-test:
     H_ORIGIN: http://localhost:5000
     EXECJS_RUNTIME: Disabled
   image:
-    name: ruby:3.0.6
+    name: ruby:3.4.9
   script:
   - gem install bundler
   - gem install rails
