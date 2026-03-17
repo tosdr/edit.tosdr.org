@@ -552,11 +552,6 @@ GEM
     securerandom (0.4.1)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    sentry-rails (5.9.0)
-      railties (>= 5.0)
-      sentry-ruby (~> 5.9.0)
-    sentry-ruby (5.9.0)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
     simple_form (5.2.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -693,8 +688,6 @@ DEPENDENCIES
   sanitize
   sassc-rails
   sendgrid-ruby
-  sentry-rails
-  sentry-ruby
   simple_form
   simplecov
   spring
