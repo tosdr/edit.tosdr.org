@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  include RequiresAltcha
+
   # before_action :configure_sign_in_params, only: [:create]
 
   respond_to :html, :json
@@ -16,6 +18,11 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
+    unless altcha_valid?
+      self.resource = resource_class.new(sign_in_params.except(:password))
+      return render_altcha_failure!(:new, resource: resource)
+    end
+
     super
     flash.delete(:notice)
   end

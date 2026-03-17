@@ -34,9 +34,9 @@ Requirements:
     * We rely on Docker as an attempt to be OS-agnostic
     * If you **are not able to use Docker**, install the following: 
         * Ruby 3.4.9
-        * Rails (Phoenix uses version 6.0.6.1)
+        * Rails (Phoenix uses version 7.1.x)
         * Bundler 2.4.14
-        * Postgres 11.5
+        * Postgres 15
         * Node.js (to access Yarn)
         * Please refer to the [QUICKSTART.md](./QUICKSTART.md) guide for more information on manual set-up. If anything is missing, please let us know.
 

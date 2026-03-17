@@ -66,6 +66,7 @@ gem 'uuid', '~> 2.3', '>= 2.3.9'
 gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 gem 'vuejs-rails', '~> 2.3.2'
 gem 'whenever'
+gem "altcha", "~> 1.0"
 
 group :development do
   gem 'get_process_mem'

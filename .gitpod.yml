@@ -63,8 +63,8 @@ tasks:
       RAILS_MAX_THREADS: 500
       PORT: 3000
       SECRET_KEY_BASE: 12345
-    command: rvm install 3.0.6 && 
-             rvm use 3.0.6 --default &&
+    command: rvm install 3.4.9 && 
+             rvm use 3.4.9 --default &&
              gem install bundler &&
              gem install rails &&
              bundle install && 

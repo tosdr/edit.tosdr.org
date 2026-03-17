@@ -8,6 +8,7 @@
       <%= f.input :password, required: false %>
       <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
     </div>
+    <%= render "shared/altcha_widget" %>
 
     <div class="form-actions">
       <%= f.button :submit, "Log in" %>

@@ -15,6 +15,7 @@
       <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
       <%= f.input :password_confirmation, required: true %>
     </div>
+    <%= render "shared/altcha_widget" %>
 
     <div class="form-actions">
       <%= f.button :submit, "Sign up" %>
