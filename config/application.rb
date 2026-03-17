@@ -39,6 +39,8 @@ module Phoenix
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    # Rails 7.2 removes support for 6.1 cache serialization format.
+    config.active_support.cache_format_version = 7.1
     config.action_view.embed_authenticity_token_in_remote_forms = true
     config.action_mailer.raise_delivery_errors = false
     # config.middleware.use Rack::Attack
