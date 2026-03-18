@@ -26,8 +26,12 @@ class Service < ApplicationRecord
     perform_calculation
   end
 
+  STATUS_ORDER = %w[pending pending-not-found approved approved-not-found draft declined changes-requested].freeze
+
   def points_ordered_status_class
-    service_points_hash = points.group_by(&:status).sort.reverse.to_h
+    service_points_hash = points.group_by(&:status)
+      .sort_by { |status, _| STATUS_ORDER.index(status) || STATUS_ORDER.length }
+      .to_h
 
     service_points_hash.each_value do |points|
       sort_service_points(points)
