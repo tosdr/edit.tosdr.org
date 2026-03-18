@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  include RequiresAltcha
+
   before_action :configure_sign_up_params, only: [:create]
 
   invisible_captcha only: [:create], honeypot: :full_name
@@ -13,6 +15,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
+    unless altcha_valid?
+      build_resource(sign_up_params)
+      return render_altcha_failure!(:new, resource: resource, set_minimum_password_length: true)
+    end
+
     super
   end
 

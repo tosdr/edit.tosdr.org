@@ -93,6 +93,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
+    altcha (1.0.0)
     arbre (1.7.0)
       activesupport (>= 3.0.0)
       ruby2_keywords (>= 0.0.2)
@@ -620,6 +621,7 @@ PLATFORMS
 DEPENDENCIES
   active_record_query_trace
   activeadmin (~> 3.5.0)
+  altcha (~> 1.0)
   autoprefixer-rails
   babel-transpiler
   base64

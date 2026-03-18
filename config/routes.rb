@@ -6,12 +6,14 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
   }
 
   mount ApplicationInteraction::Base => ''
 
   root to: 'pages#home'
+  get 'altcha', to: 'altcha#show'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   # In config/routes.rb
   get 'about', to: 'pages#about'
