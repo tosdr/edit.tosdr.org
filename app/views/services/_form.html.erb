@@ -12,6 +12,102 @@
          
         <label>Logo (.png)</label>
         <%= f.file_field :logo, label: "Logo (.png)", accept: "image/png" %>
+
+        <% if service.id && (current_user.curator? || current_user.admin?) %>
+          <div style="margin-top: 10px;">
+            <label>Fetch Logo from Domain</label>
+            <div>
+              <button type="button" id="fetch-logo-btn" class="btn btn-default"
+                      data-fetch-url="<%= fetch_service_logo_path(service) %>"
+                      data-approve-url="<%= approve_service_logo_path(service) %>">
+                Fetch Logo
+              </button>
+            </div>
+            <div id="logo-fetch-preview" style="display:none; margin-top:10px;">
+              <img id="fetched-logo-img" src="" alt="Logo preview"
+                   style="max-width:128px; max-height:128px; border:1px solid #ccc; display:block; margin-bottom:8px;" />
+              <button type="button" id="approve-logo-btn" class="btn btn-success">Approve</button>
+              <button type="button" id="reject-logo-btn" class="btn btn-danger">Reject</button>
+            </div>
+            <p id="logo-fetch-status" style="margin-top:6px;"></p>
+          </div>
+          <script>
+            (function() {
+              var fetchBtn   = document.getElementById('fetch-logo-btn');
+              var approveBtn = document.getElementById('approve-logo-btn');
+              var rejectBtn  = document.getElementById('reject-logo-btn');
+              var preview    = document.getElementById('logo-fetch-preview');
+              var logoImg    = document.getElementById('fetched-logo-img');
+              var statusEl   = document.getElementById('logo-fetch-status');
+              var csrfToken  = function() {
+                var el = document.querySelector('meta[name="csrf-token"]');
+                return el ? el.content : '';
+              };
+
+              fetchBtn.addEventListener('click', function() {
+                fetchBtn.disabled = true;
+                fetchBtn.textContent = 'Fetching...';
+                statusEl.textContent = '';
+                preview.style.display = 'none';
+
+                fetch(fetchBtn.dataset.fetchUrl, {
+                  headers: { 'X-CSRF-Token': csrfToken(), 'Accept': 'application/json' }
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                  fetchBtn.disabled = false;
+                  fetchBtn.textContent = 'Fetch Logo';
+                  if (data.error) {
+                    statusEl.textContent = data.error;
+                  } else {
+                    logoImg.src = 'data:image/png;base64,' + data.image;
+                    preview.style.display = 'block';
+                    approveBtn.disabled = false;
+                    approveBtn.textContent = 'Approve';
+                  }
+                })
+                .catch(function() {
+                  fetchBtn.disabled = false;
+                  fetchBtn.textContent = 'Fetch Logo';
+                  statusEl.textContent = 'Failed to fetch logo.';
+                });
+              });
+
+              approveBtn.addEventListener('click', function() {
+                approveBtn.disabled = true;
+                approveBtn.textContent = 'Approving...';
+                statusEl.textContent = '';
+
+                fetch(fetchBtn.dataset.approveUrl, {
+                  method: 'POST',
+                  headers: { 'X-CSRF-Token': csrfToken(), 'Accept': 'application/json' }
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                  if (data.success) {
+                    statusEl.textContent = 'Logo approved and saved!';
+                    preview.style.display = 'none';
+                  } else {
+                    approveBtn.disabled = false;
+                    approveBtn.textContent = 'Approve';
+                    statusEl.textContent = data.error || 'Failed to approve logo.';
+                  }
+                })
+                .catch(function() {
+                  approveBtn.disabled = false;
+                  approveBtn.textContent = 'Approve';
+                  statusEl.textContent = 'Failed to approve logo.';
+                });
+              });
+
+              rejectBtn.addEventListener('click', function() {
+                preview.style.display = 'none';
+                logoImg.src = '';
+                statusEl.textContent = '';
+              });
+            })();
+          </script>
+        <% end %>
       </div>
       <%= invisible_captcha :description %>
       <div class="form-actions col-xs-4 col-sm-2 col-md-2">
