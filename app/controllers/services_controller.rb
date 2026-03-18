@@ -147,6 +147,63 @@ class ServicesController < ApplicationController
     end
   end
 
+  def fetch_logo
+    @service = Service.find(params[:id] || params[:service_id])
+    authorize @service, :update?
+
+    return render json: { error: 'Not authorized' }, status: :forbidden unless privileged_user
+
+    domain = @service.url.to_s.split(',').first.to_s.strip
+    return render json: { error: 'Service has no domain set' } if domain.blank?
+
+    begin
+      response = HTTParty.get("https://api.companyenrich.com/logo/#{domain}", timeout: 10)
+
+      if response.success? && response.headers['content-type'].to_s.include?('image')
+        render json: { image: Base64.strict_encode64(response.body) }
+      else
+        render json: { error: 'No logo found for this domain' }
+      end
+    rescue StandardError
+      render json: { error: 'Failed to contact logo service' }
+    end
+  end
+
+  def approve_logo
+    @service = Service.find(params[:id] || params[:service_id])
+    authorize @service, :update?
+
+    return render json: { error: 'Not authorized' }, status: :forbidden unless privileged_user
+
+    domain = @service.url.to_s.split(',').first.to_s.strip
+    return render json: { error: 'Service has no domain set' } if domain.blank?
+
+    tempfile = nil
+    begin
+      response = HTTParty.get("https://api.companyenrich.com/logo/#{domain}", timeout: 10)
+
+      unless response.success? && response.headers['content-type'].to_s.include?('image')
+        return render json: { error: 'Could not fetch logo for this domain' }
+      end
+
+      tempfile = Tempfile.new(["logo_#{@service.id}", '.png'])
+      tempfile.binmode
+      tempfile.write(response.body)
+      tempfile.rewind
+
+      uploader = LogoUploaderController.new(@service.id)
+      uploader.store!(tempfile)
+
+      render json: { success: true }
+    rescue StandardError => e
+      Rails.logger.error("approve_logo failed for service #{@service.id}: #{e.message}")
+      render json: { error: 'Failed to store logo' }
+    ensure
+      tempfile&.close
+      tempfile&.unlink
+    end
+  end
+
   private
 
   def handle_logo(uploader, logo, service)
