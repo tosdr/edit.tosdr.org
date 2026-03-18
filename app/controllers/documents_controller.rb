@@ -11,7 +11,7 @@ class DocumentsController < ApplicationController
   include Pundit::Authorization
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_document, only: %i[show edit update crawl restore_points]
+  before_action :set_document, only: %i[show edit update crawl restore_points nuke]
   before_action :set_services, only: %i[new edit create update]
   before_action :set_document_names, only: %i[new edit create update]
   before_action :set_uri, only: %i[new edit create update crawl]
@@ -113,6 +113,7 @@ class DocumentsController < ApplicationController
 
     @points = @document.points
     @missing_points = @points.where(status: 'approved-not-found')
+    @has_approved_points = @points.where(status: %w[approved approved-not-found]).exists?
     @last_crawled_at = @document.formatted_last_crawl_date
     @name = @document.document_type ? @document.document_type.name : @document.name
   end
@@ -162,6 +163,20 @@ class DocumentsController < ApplicationController
     flash[:alert] = message
 
     redirect_to annotate_path(@document.service)
+  end
+
+  def nuke
+    authorize @document
+
+    service = @document.service
+    if @document.points.where(status: %w[approved approved-not-found]).exists?
+      flash[:alert] = 'Cannot nuke a document that has approved points.'
+      redirect_to document_path(@document)
+    else
+      @document.points.destroy_all
+      @document.destroy
+      redirect_to annotate_path(service)
+    end
   end
 
   private
