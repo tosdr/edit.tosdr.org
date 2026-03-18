@@ -30,6 +30,15 @@
       </div>
 
       <div class="col-lg-6 form-inline text-right justify-content-end">
+        <% if policy(@document).nuke? %>
+          <% if @has_approved_points %>
+            <button class="btn btn-danger smaller-btn-text" disabled title="Cannot nuke: document has approved points attached">Nuke</button>
+          <% else %>
+            <%= link_to 'Nuke', document_nuke_path(@document), method: :post,
+                data: { confirm: 'This will permanently delete this document and all its pending/declined/not-found points. This cannot be undone.' },
+                class: 'btn btn-danger smaller-btn-text' %>
+          <% end %>
+        <% end %>
         <% if policy(@document).destroy? %>
           <%= link_to 'Delete Document', @document, method: :delete, class: 'btn btn-danger' %>
         <% end %>
