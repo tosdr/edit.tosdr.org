@@ -6,7 +6,7 @@ CarrierWave.configure do |config|
     aws_access_key_id: ENV['S3_ACCESS_KEY'] || '',
     aws_secret_access_key: ENV['S3_SECRET_KEY'] || '',
     host: ENV['S3_HOST'] || '',
-    path_style: true,
+    path_style: ENV['S3_PATH_STYLE'] == 'true',
     endpoint: ENV['S3_ENDPOINT'] || ''
   }
 
@@ -15,5 +15,5 @@ CarrierWave.configure do |config|
   config.cache_dir = "#{Rails.root}/tmp/uploads"                  # To let CarrierWave work on heroku
 
   config.fog_directory = ENV['S3_BUCKET'] || ''
-  config.fog_public = false
+  config.fog_public = true
 end
