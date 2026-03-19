@@ -21,6 +21,6 @@ class LogoUploaderController < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{@service_id}.#{file.extension}" if original_filename.present?
+    "#{@service_id}.#{file.extension}"
   end
 end
