@@ -10,8 +10,6 @@
     - [With Hypothesis](#with-hypothesis)
 - [Database](#database)
 - [API](#api)
-- [Core Developers](#core-developers)
-  - [Hosting](#hosting)
 - [License](#license)
 
 ---
@@ -349,20 +347,6 @@ All the details on the database schema can be found on the [wiki](https://github
 ## API
 
 All the details on the API can be found [here](https://developers.tosdr.org/dev/restful-api)
-
----
-
-## Core Developers
-
-- [Chris](https://github.com/piks3l/)
-- [Jesse](https://github.com/JesseWeinstein)
-- [Madeline](https://github.com/madoleary)
-- [Michiel](https://github.com/michielbdejong)
-- [Vincent](https://github.com/vinnl)
-
-### Hosting
-
-- [edit.tosdr.org](https://edit.tosdr.org) (production)
 
 ---
 
