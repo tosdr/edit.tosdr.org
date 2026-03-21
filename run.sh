@@ -7,7 +7,7 @@
 
 set -o pipefail
 
-OPTS=":hvsbdrnu:"
+OPTS=":hvsbdrcnu:"
 RUN_ARGS=""
 VERBOSE=0
 SEED=0
