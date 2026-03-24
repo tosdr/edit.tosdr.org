@@ -4,6 +4,10 @@ class Case < ApplicationRecord
 
   has_many :case_comments, dependent: :destroy
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[title]
+  end
+
   def self.search_by_multiple(query)
     Case.where("title ILIKE ? or description ILIKE ?", "%#{query}%", "%#{query}%")
   end

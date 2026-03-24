@@ -21,7 +21,7 @@ class Point < ApplicationRecord
   scope :eager_loaded_nouser, -> { includes(:case, :service) }
 
   def self.ransackable_associations(auth_object = nil)
-    ["service"]
+    ["service", "case"]
   end
 
   def self.ransackable_attributes(auth_object = nil)
