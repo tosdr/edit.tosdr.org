@@ -17,7 +17,7 @@ class LogoUploaderController < CarrierWave::Uploader::Base
   end
 
   def store_dir
-    ''
+    nil
   end
 
   def filename
