@@ -116,6 +116,7 @@ class ServicesController < ApplicationController
       logo = params[:service][:logo]
       if logo
         if uploader.store!(logo)
+          purge_logo_cdn(@service.id)
           flash[:notice] = 'Uploaded logo!'
           redirect_to service_path(@service)
         else
@@ -152,11 +153,19 @@ class ServicesController < ApplicationController
   def handle_logo(uploader, logo, service)
     puts 'Uploaded image'
     if uploader.store!(logo)
+      purge_logo_cdn(service.id)
       flash[:notice] = 'Created service with logo!'
     else
       flash[:alert] = 'Uploading the logo failed!'
     end
     redirect_to service_path(service)
+  end
+
+  def purge_logo_cdn(service_id)
+    return unless ENV['FASTLY_API_KEY'].present? && ENV['S3_CDN'].present?
+
+    fastly = Fastly.new(api_key: ENV['FASTLY_API_KEY'])
+    fastly.purge("#{ENV['S3_CDN']}/#{service_id}.png")
   end
 
   def build_quote(point)
