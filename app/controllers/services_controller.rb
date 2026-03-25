@@ -164,8 +164,8 @@ class ServicesController < ApplicationController
   def purge_logo_cdn(service_id)
     return unless ENV['FASTLY_API_KEY'].present? && ENV['S3_CDN'].present?
 
-    fastly = Fastly.new(api_key: ENV['FASTLY_API_KEY'])
-    fastly.purge("#{ENV['S3_CDN']}/#{service_id}.png")
+    Fastly.configure { |config| config.api_token = ENV['FASTLY_API_KEY'] }
+    Fastly::PurgeApi.new.purge_single_url(cached_url: "#{ENV['S3_CDN']}/#{service_id}.png")
   end
 
   def build_quote(point)
