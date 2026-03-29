@@ -66,7 +66,7 @@ gem 'sprockets-rails'
 gem 'uuid', '~> 2.3', '>= 2.3.9'
 gem 'uuidtools', '~> 2.1', '>= 2.1.5'
 gem 'vuejs-rails', '~> 2.3.2'
-gem 'whenever'
+gem 'rufus-scheduler', '~> 3.9'
 gem "altcha", "~> 1.0"
 
 group :development do

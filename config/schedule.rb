@@ -1,40 +1,8 @@
-# Use this file to easily define all of your cron jobs.
+# DEPRECATED: This file was used by the `whenever` gem for system cron.
+# Scheduled tasks are now managed by rufus-scheduler in
+# config/initializers/scheduler.rb (runs in-process, Docker-friendly).
 #
-# It's helpful, but not entirely necessary to understand cron before proceeding.
-# http://en.wikipedia.org/wiki/Cron
-
-# Example:
-#
-# set :output, "/path/to/my/cron_log.log"
-#
-# every 2.hours do
-#   command "/usr/bin/some_great_command"
-#   runner "MyModel.some_method"
-#   rake "some:great:rake:task"
-# end
-#
-# every 4.days do
-#   runner "AnotherModel.prune_old_records"
-# end
-
-# Learn more: http://github.com/javan/whenever
-
-every :monday, at: '3:00 am' do
-  rake 'service:perform_rating'
-end
-
-every :wednesday, at: '3:00 am' do
-  rake 'service:perform_rating'
-end
-
-every :friday, at: '3:00 am' do
-  rake 'service:perform_rating'
-end
-
-every :tuesday, at: '3:00 am' do
-  rake 'spam:clean_spam'
-end
-
-every :thursday, at: '3:00 am' do
-  rake 'spam:clean_spam'
-end
+# Schedule overview:
+#   Mon, Wed, Fri at 3:00 AM — service:perform_rating
+#   Tue, Thu at 3:00 AM      — spam:clean_spam
+#   Daily at 4:00 AM          — bounced_emails:fetch

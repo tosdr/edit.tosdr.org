@@ -16,10 +16,6 @@ if [ -v INIT_SETUP ]; then
 	bundle exec rake db:seed
 fi
 
-# Start cron in the background
-service cron start
-whenever --update-crontab
-
 # Starting the Rails server
 # Option 1: Using puma
 exec bundle exec puma -C config/puma.rb
