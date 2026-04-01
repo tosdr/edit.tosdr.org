@@ -5,9 +5,11 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   rescue_from ActionController::InvalidCrossOriginRequest, with: :cross_origin_request
+  rescue_from ActionController::InvalidAuthenticityToken, with: :invalid_authenticity_token
 
 
   protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token, only: :not_found
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
@@ -40,5 +42,18 @@ class ApplicationController < ActionController::Base
 
   def cross_origin_request
     render plain: "404 Not Found", status: 404, content_type: 'text/plain'
+  end
+
+  def invalid_authenticity_token
+    # Expired sessions and unsolicited bot POSTs can trigger this.
+    # Reset the session and return a controlled response without stack traces.
+    reset_session
+
+    respond_to do |format|
+      format.html { redirect_to root_path, alert: 'Your session expired. Please try again.' }
+      format.json { render json: { error: 'Invalid authenticity token' }, status: :unprocessable_entity }
+      format.js   { head :unprocessable_entity }
+      format.any  { head :unprocessable_entity }
+    end
   end
 end

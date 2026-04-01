@@ -164,8 +164,14 @@ class ServicesController < ApplicationController
   def purge_logo_cdn(service_id)
     return unless ENV['FASTLY_API_KEY'].present? && ENV['S3_CDN'].present?
 
-    Fastly.configure { |config| config.api_token = ENV['FASTLY_API_KEY'] }
-    Fastly::PurgeApi.new.purge_single_url(cached_url: "#{ENV['S3_CDN']}/#{service_id}.png")
+    url = URI("#{ENV['S3_CDN']}/#{service_id}.png")
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = url.scheme == 'https'
+    req = Net::HTTPGenericRequest.new('PURGE', false, true, url.request_uri)
+    req['Fastly-Key'] = ENV['FASTLY_API_KEY']
+    http.request(req)
+  rescue StandardError => e
+    Rails.logger.warn("Fastly CDN purge failed for service #{service_id}: #{e.message}")
   end
 
   def build_quote(point)
