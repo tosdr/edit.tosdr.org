@@ -94,11 +94,9 @@ module ApplicationHelper
     ).html_safe
   end
 
-  def format_figures(figure, first: true)
-    if first
-      figure.nil? ? 'No changes recorded' : figure.first
-    else
-      figure.nil? ? 'No changes recorded' : figure.second
-    end
+  def format_version_change(figure, first: true)
+    return 'No changes recorded' if figure.nil?
+
+    first ? figure.first : figure.last
   end
 end
