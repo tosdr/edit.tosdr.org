@@ -204,7 +204,13 @@ while getopts "$OPTS" OPTION; do
         n) NETWORKS=1 ;;
         r) RUN=1 ;;
         s) SEED=1 ;;
-        u) RUN_ARGS="$OPTARG" ;;
+        u)
+            if [[ "${RUN_ARGS}" == "" ]]; then
+                RUN_ARGS="$OPTARG"
+            else
+                RUN_ARGS=" $OPTARG"
+            fi
+            ;;
         *) usage 1 ;;
     esac
 done
