@@ -23,6 +23,28 @@
 
 <br>
 
+<% if @point.auto_approval_countdown? %>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 alert alert-info">
+      <p>
+        <span class="bolder">Verified contributor veto period:</span>
+        this point will be auto-approved in <%= auto_approval_remaining_label(@point) %>
+        on <%= l(@point.auto_approve_after, format: :long) %>.
+      </p>
+      <% if current_user && current_user.id != @point.user_id && current_user.curator? %>
+        <p>
+          To stop the countdown, review the point and request changes, reject it, or approve it manually.
+        </p>
+        <%= link_to 'Request changes', review_path(@point), class: "btn btn-default btn-sm" %>
+        <%= link_to 'Reject', decline_path(@point), method: :post, class: "btn btn-danger btn-sm" %>
+        <%= link_to 'Approve now', approve_path(@point), method: :post, class: "btn btn-warning btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+
+  <br>
+<% end %>
+
 <div class="row">
   <div class="col-sm-2">
     <span class="bolder">Service:</span> <%= link_to @point.service.name, service_path(@point.service), title: 'View this service' %>

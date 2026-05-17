@@ -107,7 +107,7 @@ module ApplicationInteraction
           authenticate!
           point = Point.find_by_annotation_ref(params[:annotation_id])
           if point.update!(status: 'declined')
-            comment = PointComment.new(summary: 'This point has been marked as declined because its corresponding annotation was removed from its document.', point: point)
+            comment = PointComment.new(summary: 'This point has been marked as declined because its corresponding annotation was removed from its document.', point: point, user: current_user)
             comment.save
           else
             error!('404 Not found', 404)

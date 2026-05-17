@@ -8,6 +8,7 @@ FactoryBot.define do
     password_confirmation { password }
     admin { true }
     curator { true }
+    verified_contributor { false }
 
     factory :user_confirmed do
       after(:create) do |user|

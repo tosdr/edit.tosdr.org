@@ -21,6 +21,7 @@ module ApplicationHelper
     admin_icon = fa_icon 'tools', text: ' Staff'
     banned_icon = fa_icon 'ban', text: ' Suspended'
     curator_icon = fa_icon 'hands-helping', text: ' Curator'
+    verified_icon = fa_icon 'user-check', text: ' Verified contributor'
 
     id = user
     id_not_object = (id.instance_of? String) || (id.instance_of? Integer)
@@ -35,7 +36,13 @@ module ApplicationHelper
       raw link_to(admin_icon, 'https://to.tosdr.org/about', target: '_blank', title: 'This user is a ToS;DR Team member', class: 'label label-danger')
     elsif user.curator?
       raw link_to(curator_icon, 'https://to.tosdr.org/8dd5k', target: '_blank', title: 'This user is a phoenix curator', class: 'label label-primary')
+    elsif user.verified_contributor?
+      raw content_tag(:span, verified_icon, title: 'This user is a verified contributor', class: 'label label-info')
     end
+  end
+
+  def auto_approval_remaining_label(point)
+    distance_of_time_in_words(Time.current, Time.current + point.auto_approval_remaining)
   end
 
   def status_badge(status)

@@ -18,7 +18,7 @@ class User < ApplicationRecord
   has_many :topic_comments
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[email username admin curator bot deactivated created_at]
+    %w[email username admin curator bot deactivated verified_contributor created_at]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -66,6 +66,10 @@ class User < ApplicationRecord
 
   def bot?
     bot
+  end
+
+  def verified_contributor?
+    verified_contributor
   end
 
   before_destroy :hard_delete
