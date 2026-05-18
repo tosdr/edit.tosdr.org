@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post 'points/:id/review', to: 'points#post_review', as: 'post_review'
   post 'points/:id/approve', to: 'points#approve', as: 'approve'
   post 'points/:id/decline', to: 'points#decline', as: 'decline'
+  post 'points/:id/veto', to: 'points#veto', as: 'veto'
   get 'list_docbot', to: 'points#list_docbot', as: 'list_docbot'
   resources :points, only: :index
   resources :points, except: [:index] do

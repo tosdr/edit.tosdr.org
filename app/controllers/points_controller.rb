@@ -7,7 +7,7 @@ class PointsController < ApplicationController
   include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: %i[show edit update review post_review approve decline]
+  before_action :set_point, only: %i[show edit update review post_review approve decline veto]
   before_action :set_topics, only: %i[new edit]
   before_action :set_services, only: %i[new edit]
   before_action :check_status, only: %i[create update]
@@ -163,7 +163,30 @@ class PointsController < ApplicationController
     end
   end
 
+  def veto
+    authorize @point
+
+    result = @point.veto_period_veto!(current_user)
+    flash[:notice] = veto_flash_message(result)
+    redirect_to point_path(@point)
+  end
+
   private
+
+  def veto_flash_message(result)
+    case result
+    when :changes_requested
+      'Veto recorded. This point now has changes requested.'
+    when :veto_recorded
+      'Veto recorded.'
+    when :own_point
+      'You cannot veto your own point.'
+    when :not_in_veto_period
+      'This point is no longer in the veto period.'
+    else
+      'You need at least one approved point to veto.'
+    end
+  end
 
   def create_comment(comment_text)
     PointComment.create!(point_id: @point.id, summary: comment_text, user_id: current_user.id)
