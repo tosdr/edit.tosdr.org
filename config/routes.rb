@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   post 'documents/:id/edit', to: 'documents#update'
   post 'documents/:id/crawl', to: 'documents#crawl', as: :document_crawl
   post 'documents/:id/restore_points', to: 'documents#restore_points', as: :document_restore_points
+  post 'documents/:id/nuke', to: 'documents#nuke', as: :document_nuke
 
   resources :document_types, except: [:destroy]
   post 'document_types/:id/review', to: 'document_types#review', as: :document_type_review
@@ -68,6 +69,9 @@ Rails.application.routes.draw do
   resources :cases do
     resources :case_comments, only: %i[new create]
   end
+
+  get  'services/:id/fetch_logo',   to: 'services#fetch_logo',   as: :fetch_service_logo
+  post 'services/:id/approve_logo', to: 'services#approve_logo', as: :approve_service_logo
 
   match '*unmatched', to: 'application#not_found', via: :all
 end
