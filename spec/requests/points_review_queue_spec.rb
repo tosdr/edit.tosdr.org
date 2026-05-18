@@ -13,16 +13,19 @@ RSpec.describe 'Point review queue', type: :request do
     own_point = create(:point, user: curator, status: 'pending', case: create(:case, title: 'Own pending point'))
     reviewable_point = create(:point, user: author, status: 'pending', case: create(:case, title: 'Reviewable pending point'))
     newer_point = create(:point, user: author, status: 'pending', case: create(:case, title: 'Newer pending point'))
+    quote_not_found_point = create(:point, user: author, status: 'pending-not-found', case: create(:case, title: 'Quote not found point'))
 
     own_point.update_columns(updated_at: 3.days.ago)
     reviewable_point.update_columns(updated_at: 2.days.ago)
     newer_point.update_columns(updated_at: 1.day.ago)
+    quote_not_found_point.update_columns(updated_at: 4.days.ago)
 
     get review_queue_path
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include('Reviewable pending point')
     expect(response.body).not_to include('Own pending point')
+    expect(response.body).not_to include('Quote not found point')
   end
 
   it 'returns to the queue after submitting a queued review' do

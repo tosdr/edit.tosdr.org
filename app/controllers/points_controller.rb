@@ -227,7 +227,7 @@ class PointsController < ApplicationController
   end
 
   def review_queue_base_points
-    Point.where(status: %w[pending pending-not-found approved-not-found])
+    Point.where(status: 'pending')
          .where('points.user_id IS NULL OR points.user_id != ?', current_user.id)
   end
 
