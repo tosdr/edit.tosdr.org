@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -135,6 +135,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
     t.index ["user_id"], name: "index_point_comments_on_user_id"
   end
 
+  create_table "point_vetoes", force: :cascade do |t|
+    t.bigint "point_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_id", "user_id"], name: "index_point_vetoes_on_point_id_and_user_id", unique: true
+    t.index ["point_id"], name: "index_point_vetoes_on_point_id"
+    t.index ["user_id"], name: "index_point_vetoes_on_user_id"
+  end
+
   create_table "points", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "rank", default: 0
@@ -242,8 +252,11 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
     t.boolean "bot", default: false
     t.string "h_key"
     t.boolean "verified_contributor", default: false, null: false
+    t.integer "approved_points_count", default: 0, null: false
+    t.integer "level", default: 1, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["level"], name: "index_users_on_level"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -272,6 +285,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
   add_foreign_key "documents", "users"
   add_foreign_key "point_comments", "points"
   add_foreign_key "point_comments", "users"
+  add_foreign_key "point_vetoes", "points"
+  add_foreign_key "point_vetoes", "users"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "documents"
   add_foreign_key "points", "services"

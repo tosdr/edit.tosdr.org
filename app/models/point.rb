@@ -5,6 +5,7 @@ class Point < ApplicationRecord
   has_paper_trail
 
   AUTO_APPROVAL_WAIT = 7.days
+  VETO_THRESHOLD = 3
 
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
@@ -12,6 +13,7 @@ class Point < ApplicationRecord
   belongs_to :service
   belongs_to :case
   has_many :point_comments, dependent: :destroy
+  has_many :point_vetoes, dependent: :destroy
 
   validates :title, presence: true
   validates :status,
@@ -20,6 +22,8 @@ class Point < ApplicationRecord
   validates :case_id, presence: true
 
   before_validation :set_verified_contributor_auto_approval
+  after_commit :refresh_author_levels_after_commit, on: %i[create update]
+  after_destroy_commit :refresh_destroyed_author_level
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
   scope :eager_loaded_nouser, -> { includes(:case, :service) }
@@ -101,6 +105,32 @@ class Point < ApplicationRecord
         user: user
       )
     end
+  end
+
+  def veto_period_veto!(voter)
+    return :ineligible unless voter&.level_two?
+    return :own_point if voter.id == user_id
+    return :not_in_veto_period unless auto_approval_countdown?
+
+    transaction do
+      lock!
+      return :not_in_veto_period unless auto_approval_countdown?
+
+      point_vetoes.find_or_create_by!(user: voter)
+
+      if point_vetoes.count >= VETO_THRESHOLD
+        update!(status: 'changes-requested', auto_approve_after: nil)
+        point_comments.create!(
+          summary: 'Changes requested after 3 level 2 contributor veto votes.',
+          user: voter
+        )
+        :changes_requested
+      else
+        :veto_recorded
+      end
+    end
+  rescue ActiveRecord::RecordNotUnique
+    :veto_recorded
   end
 
   def restore
@@ -293,6 +323,26 @@ class Point < ApplicationRecord
   end
 
   private
+
+  def refresh_author_levels_after_commit
+    user_ids = []
+    user_ids << user_id if saved_change_to_status? || saved_change_to_user_id?
+
+    if saved_change_to_user_id?
+      old_user_id, = saved_change_to_user_id
+      user_ids << old_user_id
+    end
+
+    refresh_user_levels(user_ids)
+  end
+
+  def refresh_destroyed_author_level
+    refresh_user_levels([user_id])
+  end
+
+  def refresh_user_levels(user_ids)
+    User.where(id: user_ids.compact.uniq).find_each(&:refresh_level_from_points!)
+  end
 
   def set_verified_contributor_auto_approval
     if status == 'pending' && user&.verified_contributor?

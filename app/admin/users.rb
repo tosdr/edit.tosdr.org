@@ -9,6 +9,8 @@ ActiveAdmin.register User do
     column :admin
     column :curator
     column :verified_contributor
+    column :approved_points_count
+    column :level
     column :bot
     column :deactivated
     column :created_at
@@ -20,6 +22,7 @@ ActiveAdmin.register User do
   filter :admin
   filter :curator
   filter :verified_contributor
+  filter :level
   filter :bot
   filter :deactivated
   filter :created_at

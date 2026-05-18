@@ -42,6 +42,10 @@ class PointPolicy < ApplicationPolicy
     review?
   end
 
+  def veto?
+    !user.nil? && user.level_two? && user != record.user && record.auto_approval_countdown?
+  end
+
   def user_points?
     new?
   end

@@ -4,11 +4,14 @@ require 'securerandom'
 
 # app/models/user.rb
 class User < ApplicationRecord
+  MINIMUM_APPROVED_POINTS = 0
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :points
+  has_many :point_vetoes, dependent: :destroy
   has_many :documents
   has_many :services
   has_many :point_comments
@@ -18,7 +21,7 @@ class User < ApplicationRecord
   has_many :topic_comments
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[email username admin curator bot deactivated verified_contributor created_at]
+    %w[email username admin curator bot deactivated verified_contributor approved_points_count level created_at]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -38,6 +41,27 @@ class User < ApplicationRecord
   def self.docbot_user
     username = ENV['DOCBOT_USER']
     find_by_username(username)
+  end
+
+  def self.level_for_approved_points(count)
+    approved_points = [count.to_i, MINIMUM_APPROVED_POINTS].max
+    Math.sqrt(approved_points).floor + 1
+  end
+
+  def self.backfill_missing_levels!
+    missing_ids = where(level: nil).pluck(:id)
+    return if missing_ids.empty?
+
+    approved_counts = Point.where(user_id: missing_ids, status: 'approved').group(:user_id).count
+
+    where(id: missing_ids).find_each do |user|
+      approved_points_count = approved_counts.fetch(user.id, MINIMUM_APPROVED_POINTS)
+      user.update_columns(
+        approved_points_count: approved_points_count,
+        level: level_for_approved_points(approved_points_count),
+        updated_at: Time.current
+      )
+    end
   end
 
   def password_validation
@@ -70,6 +94,20 @@ class User < ApplicationRecord
 
   def verified_contributor?
     verified_contributor
+  end
+
+  def level_two?
+    level.to_i >= 2
+  end
+
+  def refresh_level_from_points!
+    approved_count = points.where(status: 'approved').count
+
+    update_columns(
+      approved_points_count: approved_count,
+      level: self.class.level_for_approved_points(approved_count),
+      updated_at: Time.current
+    )
   end
 
   before_destroy :hard_delete

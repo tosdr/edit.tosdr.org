@@ -38,6 +38,12 @@
         <%= link_to 'Request changes', review_path(@point), class: "btn btn-default btn-sm" %>
         <%= link_to 'Reject', decline_path(@point), method: :post, class: "btn btn-danger btn-sm" %>
         <%= link_to 'Approve now', approve_path(@point), method: :post, class: "btn btn-warning btn-sm" %>
+      <% elsif current_user && policy(@point).veto? %>
+        <p>
+          <%= pluralize(@point.point_vetoes.count, 'eligible contributor') %> vetoed this point.
+          Three vetoes request changes.
+        </p>
+        <%= link_to 'Veto', veto_path(@point), method: :post, class: "btn btn-default btn-sm" %>
       <% end %>
     </div>
   </div>
