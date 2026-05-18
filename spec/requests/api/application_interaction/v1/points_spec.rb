@@ -47,10 +47,13 @@ describe ApplicationInteraction::V1::Points, type: :request do
     end
 
     context 'malformed params' do
-      # TO-DO: create annotation table 
       it 'returns 201 if trailing whitespaces in case_title' do
-        # post '/api/v1/points', params: { annotation_id: @annotation_id, case_title: @case_ref.title + "    ", h_key: @user.h_key, user: @user.username, service_id: @service.id, document_id: @document.id }
-        # expect(response.status).to eq(201)
+        allow(Point).to receive(:retrieve_annotation).and_return(
+          'target_selectors' => [{}, {}, { 'exact' => 'Example policy text' }].to_json
+        )
+
+        post '/api/v1/points', params: { annotation_id: @annotation_id, case_title: @case_ref.title + "    ", h_key: @user.h_key, user: @user.username, service_id: @service.id, document_id: @document.id }
+        expect(response.status).to eq(201)
       end
     end
   end
@@ -58,6 +61,11 @@ describe ApplicationInteraction::V1::Points, type: :request do
   describe 'POST /api/v1/points' do
     it 'returns 404 for unauthenticated user' do
       post '/api/v1/points'
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns 404 for an unknown case_title' do
+      post '/api/v1/points', params: { annotation_id: @annotation_id, case_title: 'missing case', h_key: @user.h_key, user: @user.username, service_id: @service.id, document_id: @document.id }
       expect(response.status).to eq(404)
     end
 
@@ -71,12 +79,17 @@ describe ApplicationInteraction::V1::Points, type: :request do
   describe 'PATCH /api/v1/points' do
     before :each do
       case_ref = FactoryBot.create(:case)
-      @point = FactoryBot.create(:point, annotation_ref: @annotation_id, case_id: case_ref.id)
+      @point = FactoryBot.create(:point, annotation_ref: @annotation_id, case_id: case_ref.id, user: @user, status: 'pending')
       @point.save!
     end
 
     it 'returns 404 for unauthenticated user' do
       patch '/api/v1/points'
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns 404 for an authenticated unknown annotation_id' do
+      patch '/api/v1/points', params: { annotation_id: 'missing', case_title: @point.case.title, h_key: @user.h_key, user: @user.username, document_id: @document.id, service_id: @point.document.service.id }
       expect(response.status).to eq(404)
     end
 
@@ -92,13 +105,36 @@ describe ApplicationInteraction::V1::Points, type: :request do
   describe 'DELETE /api/v1/points' do
     before :each do
       case_ref = FactoryBot.create(:case)
-      @point = FactoryBot.create(:point, annotation_ref: @annotation_id, case_id: case_ref.id)
+      @point = FactoryBot.create(:point, annotation_ref: @annotation_id, case_id: case_ref.id, user: @user, status: 'pending')
       @point.save!
     end
 
     it 'returns 404 for unauthenticated user' do
       delete '/api/v1/points'
       expect(response.status).to eq(404)
+    end
+
+    it 'returns 404 for an authenticated unknown annotation_id' do
+      delete '/api/v1/points', params: { annotation_id: 'missing', h_key: @user.h_key, user: @user.username }
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns 404 and does not decline a point for a non-owner non-curator' do
+      other_user = FactoryBot.create(:user_confirmed, h_key: 'otherkey1234', admin: false, curator: false)
+
+      delete '/api/v1/points', params: { annotation_id: @point.annotation_ref, h_key: other_user.h_key, user: other_user.username }
+
+      expect(response.status).to eq(404)
+      expect(@point.reload.status).not_to eq('declined')
+    end
+
+    it 'allows a curator to decline another user point' do
+      curator = FactoryBot.create(:user_confirmed, h_key: 'curatorkey1234', admin: false, curator: true)
+
+      delete '/api/v1/points', params: { annotation_id: @point.annotation_ref, h_key: curator.h_key, user: curator.username }
+
+      expect(response.status).to eq(200)
+      expect(@point.reload.status).to eq('declined')
     end
 
     # to-do : limit what we can update via the api? don't want to update the service id, document id, for example

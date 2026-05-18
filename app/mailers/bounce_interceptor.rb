@@ -9,10 +9,10 @@ class BounceInterceptor
 
     if filtered_to.empty?
       message.perform_deliveries = false
-      Rails.logger.info("[BounceInterceptor] Blocked email to bounced address(es): #{original_to.join(', ')}")
+      Rails.logger.info("[BounceInterceptor] Blocked email to #{original_to.size} bounced recipient(s).")
     elsif filtered_to.size < original_to.size
       blocked = original_to - filtered_to
-      Rails.logger.info("[BounceInterceptor] Removed bounced address(es) from recipients: #{blocked.join(', ')}")
+      Rails.logger.info("[BounceInterceptor] Removed #{blocked.size} bounced recipient(s) from email.")
       message.to = filtered_to
     end
   end

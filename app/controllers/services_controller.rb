@@ -74,7 +74,7 @@ class ServicesController < ApplicationController
       point = build_point(@case, @service, current_user)
     end
 
-    point = build_quote(point)
+    point = build_quote(point, @service)
 
     status = point.status
     point.status = status == 'approved-not-found' ? 'approved' : 'pending'
@@ -174,8 +174,8 @@ class ServicesController < ApplicationController
     Rails.logger.warn("Fastly CDN purge failed for service #{service_id}: #{e.message}")
   end
 
-  def build_quote(point)
-    document = Document.find(params[:document_id])
+  def build_quote(point, service)
+    document = service.documents.find(params[:document_id])
     point.document = document
 
     point.quote_text = document.text[params[:quote_start].to_i, params[:quote_end].to_i - params[:quote_start].to_i]

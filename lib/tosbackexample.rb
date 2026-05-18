@@ -12,6 +12,8 @@ require_relative 'tosbackdoc'
 
 
 doc = TOSBackDoc.new({
+  site: "wikipedia.org",
+  name: "Privacy Policy",
   url: "https://wikimediafoundation.org/wiki/Privacy_policy", # url.name
   xpath: "//*[@id='mw-content-text']" # url.xpath
 })

@@ -32,6 +32,22 @@ module ApplicationInteraction
           case_title = params[:case_title] || ''
           error!('404 Not found', 404) unless case_title.present? && annotation_id.present? && document_id.present? && service_id.present?
         end
+
+        def find_case!
+          case_ref = Case.find_by_title(params[:case_title]&.strip)
+          error!('404 Not found', 404) unless case_ref
+          case_ref
+        end
+
+        def find_point!
+          point = Point.find_by_annotation_ref(params[:annotation_id])
+          error!('404 Not found', 404) unless point
+          point
+        end
+
+        def authorize_point_mutation!(point)
+          error!('404 Not found', 404) if (point.user != current_user) && !current_user.curator?
+        end
       end
 
       resource :points do
@@ -57,8 +73,7 @@ module ApplicationInteraction
           verify_attrs!
           service = Service.find(params[:service_id]&.to_i)
           document = Document.find(params[:document_id]&.to_i)
-          case_title = params[:case_title]
-          case_ref = Case.find_by_title(case_title)
+          case_ref = find_case!
 
           point = Point.new(service: service, case: case_ref, user: current_user, analysis: 'Generated through the annotate view', title: case_ref.title, status: 'pending', annotation_ref: params[:annotation_id], document: document)
 
@@ -84,13 +99,9 @@ module ApplicationInteraction
 
           authenticate!
           verify_attrs!
-          case_title = params[:case_title]&.strip
-          case_ref = Case.find_by_title(case_title)
-          point = Point.find_by_annotation_ref(params[:annotation_id])
-
-          if (point.user != current_user) && !current_user.curator?
-            error!('404 Not found', 404)
-          end
+          case_ref = find_case!
+          point = find_point!
+          authorize_point_mutation!(point)
           
           if point.update!(case: case_ref, title: case_ref.title)
             present point, with: ::ApplicationInteraction::Entities::Point
@@ -105,7 +116,9 @@ module ApplicationInteraction
           end
 
           authenticate!
-          point = Point.find_by_annotation_ref(params[:annotation_id])
+          point = find_point!
+          authorize_point_mutation!(point)
+
           if point.update!(status: 'declined')
             comment = PointComment.new(summary: 'This point has been marked as declined because its corresponding annotation was removed from its document.', point: point, user: current_user)
             comment.save

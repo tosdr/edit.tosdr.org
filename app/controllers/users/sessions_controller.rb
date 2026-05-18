@@ -7,10 +7,6 @@ class Users::SessionsController < Devise::SessionsController
 
   respond_to :html, :json
 
-  def verified_request?
-    request.format.json? or super()
-  end
-
   # GET /resource/sign_in
   # def new
   #   super

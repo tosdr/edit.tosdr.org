@@ -9,6 +9,8 @@ class StringConverter
     # Returns the Base64-decoded version of str
     # https://ruby-doc.org/stdlib-2.4.0/libdoc/base64/rdoc/Base64.html#method-i-urlsafe_decode64
     b64_decoded = Base64.urlsafe_decode64(utf_encoded)
+    raise ArgumentError, 'Decoded annotation id must be 16 bytes' unless b64_decoded.bytesize == 16
+
     # unpack decoded with uuid format
     # https://apidock.com/ruby/String/unpack
     b64_decoded.unpack('H8H4H4H4H12').join('-')

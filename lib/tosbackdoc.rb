@@ -17,6 +17,9 @@ class TOSBackDoc
   def initialize(hash)
     @site = hash[:site]
     @name = hash[:name]
+    raise ArgumentError, 'site is required' if @site.nil? || @site.empty?
+    raise ArgumentError, 'name is required' if @name.nil? || @name.empty?
+
     @server = (hash[:server].nil? || hash[:server].empty? || hash[:server] == false || hash[:server] == "false" ) ? "eu" : hash[:server]
     @url = hash[:url]
     @xpath = (hash[:xpath] == "") ? nil : hash[:xpath]
@@ -34,6 +37,8 @@ class TOSBackDoc
   end
 
   def write
+    return if crawler_error?
+
     unless crawl_empty?
       Dir.mkdir(@save_dir) unless File.exists?(@save_dir)
 
@@ -46,6 +51,8 @@ class TOSBackDoc
   end #write
 
   def check_notify
+    return if crawler_error?
+
     if @reviewed
       if crawl_empty? && !skip_notify?
         $notifier.blank << {site: @site, name: @name}
@@ -56,6 +63,8 @@ class TOSBackDoc
   end
 
   def crawl_empty?
+    return false if crawler_error?
+
     @newdata.nil? || @newdata.chomp == ""
   end
 
@@ -84,10 +93,13 @@ class TOSBackDoc
 
   def download_and_filter_with_xpath
 	begin
+    api_key = ENV["CRAWLER_API_KEY"]
+    raise ArgumentError, "CRAWLER_API_KEY is required" if api_key.nil? || api_key.empty?
+
 		if not @xpath.blank?
-			response = HTTParty.get(@server+'/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get(@server+'/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ api_key)
 		else
-			response = HTTParty.get(@server+'/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+			response = HTTParty.get(@server+'/?url='+ CGI.escape(@url) +'&apikey='+ api_key)
 		end
 		@apiresponse = JSON.parse(response.body)
 		  
@@ -126,6 +138,10 @@ class TOSBackDoc
   end #strip_tags
 
   attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed, :apiresponse
+  def crawler_error?
+    @apiresponse.is_a?(Hash) && @apiresponse["error"]
+  end
+
   private :download_and_filter_with_xpath, :strip_tags, :format_newdata, :skip_notify?, :data_changed?
 end #TOSBackDoc
 
