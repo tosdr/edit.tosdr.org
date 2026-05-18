@@ -3,5 +3,5 @@
 <% end %>
 
 <div class="form-login">
-  <%= render "review_form", point: @point, queue: @queue, back_path: (@queue ? review_queue_path : nil), submit_label: (@queue ? "Submit and next" : "Submit") %>
+  <%= render "review_form", point: @point, queue: @queue, queue_filters: @queue_filter_params, back_path: (@queue ? review_queue_path(@queue_filter_params) : nil), submit_label: (@queue ? "Submit and next" : "Submit") %>
 </div>

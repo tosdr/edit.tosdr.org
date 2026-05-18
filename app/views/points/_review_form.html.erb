@@ -1,5 +1,11 @@
 <%= simple_form_for point, url: post_review_path(point), method: :post do |f| %>
   <%= hidden_field_tag :queue, "1" if local_assigns[:queue] %>
+  <% Array(local_assigns.dig(:queue_filters, :excluded_service_ids)).each do |service_id| %>
+    <%= hidden_field_tag "excluded_service_ids[]", service_id %>
+  <% end %>
+  <% %i[author_id level skip_id].each do |filter| %>
+    <%= hidden_field_tag filter, local_assigns.dig(:queue_filters, filter) if local_assigns.dig(:queue_filters, filter).present? %>
+  <% end %>
 
   <div class="row">
     <div class="col-xs-4">
