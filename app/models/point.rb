@@ -5,6 +5,7 @@ class Point < ApplicationRecord
   has_paper_trail
 
   AUTO_APPROVAL_WAIT = 7.days
+  AUTO_APPROVAL_MAX_AGE = 6.months
   VETO_THRESHOLD = 3
 
   belongs_to :user, optional: true
@@ -44,6 +45,7 @@ class Point < ApplicationRecord
     joins(:user)
       .where(status: 'pending')
       .where(users: { verified_contributor: true })
+      .where('points.created_at >= ?', AUTO_APPROVAL_MAX_AGE.ago)
       .where('points.auto_approve_after <= ?', now)
       .find_each do |point|
         point.auto_approve_from_veto_period!
@@ -88,7 +90,10 @@ class Point < ApplicationRecord
   end
 
   def auto_approval_countdown?
-    status == 'pending' && auto_approve_after.present? && user&.verified_contributor?
+    status == 'pending' &&
+      auto_approve_after.present? &&
+      user&.verified_contributor? &&
+      eligible_for_verified_contributor_auto_approval?
   end
 
   def auto_approval_remaining(now: Time.current)
@@ -345,11 +350,17 @@ class Point < ApplicationRecord
   end
 
   def set_verified_contributor_auto_approval
-    if status == 'pending' && user&.verified_contributor?
+    if status == 'pending' && user&.verified_contributor? && eligible_for_verified_contributor_auto_approval?
       self.auto_approve_after ||= AUTO_APPROVAL_WAIT.from_now
     else
       self.auto_approve_after = nil
     end
+  end
+
+  def eligible_for_verified_contributor_auto_approval?
+    return true if created_at.blank?
+
+    created_at >= AUTO_APPROVAL_MAX_AGE.ago
   end
 
   def determine_target_uri(point)

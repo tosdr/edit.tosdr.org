@@ -11,6 +11,18 @@ describe Point, type: :model do
       expect(point.auto_approve_after).to be_within(1.minute).of(7.days.from_now)
     end
 
+    it 'does not set a deadline for quote not found points by verified contributors' do
+      point = create(:point, user: verified_user, status: 'pending-not-found')
+
+      expect(point.auto_approve_after).to be_nil
+    end
+
+    it 'does not set a deadline for pending points older than 6 months' do
+      point = create(:point, user: verified_user, status: 'pending', created_at: 6.months.ago - 1.day)
+
+      expect(point.auto_approve_after).to be_nil
+    end
+
     it 'does not set a deadline for regular contributors' do
       point = create(:point, user: regular_user, status: 'pending')
 
@@ -41,6 +53,22 @@ describe Point, type: :model do
       described_class.auto_approve_veto_expired
 
       expect(point.reload.status).to eq('pending')
+    end
+
+    it 'does not approve pending points older than 6 months' do
+      point = create(
+        :point,
+        user: verified_user,
+        status: 'pending',
+        created_at: 6.months.ago - 1.day,
+        auto_approve_after: 1.hour.ago
+      )
+      point.update_column(:auto_approve_after, 1.hour.ago)
+
+      described_class.auto_approve_veto_expired
+
+      expect(point.reload.status).to eq('pending')
+      expect(point.auto_approve_after).to be_present
     end
 
     it 'requests changes after 3 level 2 contributor vetoes' do
