@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'flag_spam', to: 'spam#flag_as_spam', as: 'flag_as_spam'
 
   get 'my_points', to: 'points#user_points', as: 'my_points'
+  get 'review_queue', to: 'points#review_queue', as: 'review_queue'
   get 'points/:id/review', to: 'points#review', as: 'review'
   post 'points/:id/review', to: 'points#post_review', as: 'post_review'
   post 'points/:id/approve', to: 'points#approve', as: 'approve'

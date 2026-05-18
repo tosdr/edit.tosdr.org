@@ -1,0 +1,26 @@
+<%= simple_form_for point, url: post_review_path(point), method: :post do |f| %>
+  <%= hidden_field_tag :queue, "1" if local_assigns[:queue] %>
+
+  <div class="row">
+    <div class="col-xs-4">
+      <% if current_user.curator? %>
+        <%= f.input :status, collection: ["approved", "declined", "changes-requested"], selected: point.status || "approved" %>
+      <% else %>
+        <%= f.input :status, collection: ["pending", "draft"], hint: "Choose pending for the curators to review your point", selected: point.status || "pending" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.input :point_change, as: :text, input_html: { rows: 4, class: "text-area", value: "" }, hint: "Provide a reason for your changes to this analysis point. Be careful: this will be sent by email to the author of the point." %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-actions col-xs-6 col-sm-2 col-md-2">
+      <%= link_to "Back", local_assigns[:back_path] || :back, class: "btn btn-default" %>
+    </div>
+    <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
+      <%= f.submit local_assigns[:submit_label] || "Submit", name: "Submit Review", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

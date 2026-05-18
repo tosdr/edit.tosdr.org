@@ -105,6 +105,15 @@ class PointsController < ApplicationController
 
   def review
     authorize @point
+    @queue = params[:queue].present?
+  end
+
+  def review_queue
+    authorize Point
+
+    @points = review_queue_points.limit(15)
+    @point = @points.first
+    @pending_points_count = review_queue_points.count
   end
 
   def post_review
@@ -118,12 +127,12 @@ class PointsController < ApplicationController
       comment = point_params['status'] + ': ' + point_params['point_change']
       create_comment(comment)
 
-      if @point.user_id != current_user.id
+      if @point.user && @point.user_id != current_user.id
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'],
                             point_params['point_change']).deliver_now
       end
 
-      redirect_to point_path(@point)
+      redirect_to params[:queue].present? ? review_queue_path : point_path(@point)
     else
       render :review
     end
@@ -199,6 +208,13 @@ class PointsController < ApplicationController
     raise e unless e.is_a?(Faraday::ConnectionFailed) || e.class.name.start_with?('Elasticsearch::Transport')
 
     Rails.logger.warn("POINT UPDATE: annotation persisted but index update failed for annotation #{annotation.id}: #{e.class} - #{e.message}")
+  end
+
+  def review_queue_points
+    Point.includes(:case, :service)
+         .where(status: %w[pending pending-not-found approved-not-found])
+         .where('points.user_id IS NULL OR points.user_id != ?', current_user.id)
+         .order(updated_at: :asc, id: :asc)
   end
 
   def point_create_options(point, path)
