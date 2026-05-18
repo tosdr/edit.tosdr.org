@@ -34,6 +34,10 @@ class DocumentPolicy < ApplicationPolicy
     !user.nil? && owner?
   end
 
+  def nuke?
+    !user.nil? && user.admin?
+  end
+
   private
 
   def owner?
