@@ -32,6 +32,7 @@ Service.all.each do |service|
     data['name'] = service.name
     data['keywords'] = service.keywords ? service.keywords.split(',') : []
     data['related'] = service.related ? service.related.split(',') : []
+    data['categories'] = service.categories || []
     goodUrls = data['urls'] ? data['urls'].join(',') : ''
     if service.url != goodUrls then
       puts service.id.to_s + ' ' + service.url + ' <- ' + goodUrls

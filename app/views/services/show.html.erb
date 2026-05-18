@@ -8,6 +8,9 @@
       <div class="col-lg-6">
         <img src="<%= ENV['S3_CDN'] %>/<%= @service.id %>.png" width="64" onerror="this.onerror=null; this.src='<%= image_path('logo.png') %>'"/><h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
         <h5> Rating: <%= @service.rating %></h5>
+        <% if @service.categories.any? %>
+          <h5> Categories: <%= @service.categories.map { |category| Service.category_label(category) }.join(', ') %></h5>
+        <% end %>
       </div>
 
       <div class="col-lg-6 text-right justify-content-end">

@@ -60,6 +60,7 @@
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Rating</th>
+                <th scope="col">Categories</th>
                 <th scope="col" class="text-right">View</th>
                 <th scope="col" class="text-right">Documents</th>
                 <th></th>
@@ -73,6 +74,9 @@
                 </td>
                 <td>
                   <%= service.rating || 'No rating yet' %>
+                </td>
+                <td>
+                  <%= service.categories.any? ? service.categories.map { |category| Service.category_label(category) }.join(', ') : 'No categories yet' %>
                 </td>
                 
                 <td class="text-right">

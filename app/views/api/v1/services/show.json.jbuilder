@@ -1,1 +1,1 @@
-json.extract! @service, :id, :name, :url, :rating, :points, :documents
+json.extract! @service, :id, :name, :url, :rating, :categories, :points, :documents

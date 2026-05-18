@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_18_193000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_enum "service_category", ["ai", "browser", "cloud_storage", "dating", "developer_tools", "ecommerce", "education", "email", "entertainment", "file_sharing", "finance", "gaming", "health", "messaging", "news", "payments", "productivity", "search_engine", "social_network", "travel", "vpn"]
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -197,6 +199,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
     t.bigint "user_id"
     t.string "rating"
     t.string "status"
+    t.enum "categories", default: [], null: false, enum_type: "service_category", array: true
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 

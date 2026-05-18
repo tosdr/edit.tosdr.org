@@ -4,6 +4,35 @@
 class Service < ApplicationRecord
   has_paper_trail
 
+  CATEGORIES = %w[
+    ai
+    browser
+    cloud_storage
+    dating
+    developer_tools
+    ecommerce
+    education
+    email
+    entertainment
+    file_sharing
+    finance
+    gaming
+    health
+    messaging
+    news
+    payments
+    productivity
+    search_engine
+    social_network
+    travel
+    vpn
+  ].freeze
+  CATEGORY_LABELS = {
+    'ai' => 'AI',
+    'ecommerce' => 'E-commerce',
+    'vpn' => 'VPN'
+  }.freeze
+
   belongs_to :user, optional: true
 
   has_many :points
@@ -15,12 +44,22 @@ class Service < ApplicationRecord
   validates :name, uniqueness: true
   validates :url, presence: true
   validates :url, uniqueness: true
+  validate :categories_are_known
 
   def self.ransackable_attributes(auth_object = nil)
     %w[name rating]
   end
 
   before_validation :strip_input_fields
+  before_validation :normalize_categories
+
+  def self.category_options
+    CATEGORIES.map { |category| [category_label(category), category] }
+  end
+
+  def self.category_label(category)
+    CATEGORY_LABELS.fetch(category, category.to_s.titleize)
+  end
 
   def calculate_service_rating
     perform_calculation
@@ -122,5 +161,16 @@ class Service < ApplicationRecord
     attributes.each do |key, value|
       self[key] = value.strip if value.respond_to?('strip')
     end
+  end
+
+  def normalize_categories
+    self.categories = Array(categories).reject(&:blank?).uniq
+  end
+
+  def categories_are_known
+    unknown_categories = Array(categories) - CATEGORIES
+    return if unknown_categories.empty?
+
+    errors.add(:categories, "include unknown values: #{unknown_categories.join(', ')}")
   end
 end
