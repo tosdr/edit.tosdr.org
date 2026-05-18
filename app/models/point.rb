@@ -4,18 +4,26 @@
 class Point < ApplicationRecord
   has_paper_trail
 
+  AUTO_APPROVAL_WAIT = 7.days
+  VETO_THRESHOLD = 3
+
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
   belongs_to :document, optional: true
   belongs_to :service
   belongs_to :case
   has_many :point_comments, dependent: :destroy
+  has_many :point_vetoes, dependent: :destroy
 
   validates :title, presence: true
   validates :status,
             inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found],
                          allow_nil: false }
   validates :case_id, presence: true
+
+  before_validation :set_verified_contributor_auto_approval
+  after_commit :refresh_author_levels_after_commit, on: %i[create update]
+  after_destroy_commit :refresh_destroyed_author_level
 
   scope :eager_loaded, -> { includes(:case, :service, :user) }
   scope :eager_loaded_nouser, -> { includes(:case, :service) }
@@ -31,6 +39,16 @@ class Point < ApplicationRecord
   scope :need_review, ->(status) { where(status: status) }
   scope :docbot_created, ->(user) { where(user_id: user) }
   scope :current_user_points, ->(user) { where(user_id: user) }
+
+  def self.auto_approve_veto_expired(now: Time.current)
+    joins(:user)
+      .where(status: 'pending')
+      .where(users: { verified_contributor: true })
+      .where('points.auto_approve_after <= ?', now)
+      .find_each do |point|
+        point.auto_approve_from_veto_period!
+      end
+  end
 
   def self.pending(users)
     Point.eager_loaded
@@ -67,6 +85,52 @@ class Point < ApplicationRecord
   def self.search_points_by_multiple(query)
     Point.joins(:service).where('services.name ILIKE ? or points.status ILIKE ? OR points.title ILIKE ?', "%#{query}%",
                                 "%#{query}%", "%#{query}%")
+  end
+
+  def auto_approval_countdown?
+    status == 'pending' && auto_approve_after.present? && user&.verified_contributor?
+  end
+
+  def auto_approval_remaining(now: Time.current)
+    return 0 unless auto_approval_countdown?
+
+    [auto_approve_after - now, 0].max
+  end
+
+  def auto_approve_from_veto_period!
+    transaction do
+      update!(status: 'approved', auto_approve_after: nil)
+      point_comments.create!(
+        summary: 'Point automatically approved after the 7 day verified contributor veto period.',
+        user: user
+      )
+    end
+  end
+
+  def veto_period_veto!(voter)
+    return :ineligible unless voter&.level_two?
+    return :own_point if voter.id == user_id
+    return :not_in_veto_period unless auto_approval_countdown?
+
+    transaction do
+      lock!
+      return :not_in_veto_period unless auto_approval_countdown?
+
+      point_vetoes.find_or_create_by!(user: voter)
+
+      if point_vetoes.count >= VETO_THRESHOLD
+        update!(status: 'changes-requested', auto_approve_after: nil)
+        point_comments.create!(
+          summary: 'Changes requested after 3 level 2 contributor veto votes.',
+          user: voter
+        )
+        :changes_requested
+      else
+        :veto_recorded
+      end
+    end
+  rescue ActiveRecord::RecordNotUnique
+    :veto_recorded
   end
 
   def restore
@@ -259,6 +323,34 @@ class Point < ApplicationRecord
   end
 
   private
+
+  def refresh_author_levels_after_commit
+    user_ids = []
+    user_ids << user_id if saved_change_to_status? || saved_change_to_user_id?
+
+    if saved_change_to_user_id?
+      old_user_id, = saved_change_to_user_id
+      user_ids << old_user_id
+    end
+
+    refresh_user_levels(user_ids)
+  end
+
+  def refresh_destroyed_author_level
+    refresh_user_levels([user_id])
+  end
+
+  def refresh_user_levels(user_ids)
+    User.where(id: user_ids.compact.uniq).find_each(&:refresh_level_from_points!)
+  end
+
+  def set_verified_contributor_auto_approval
+    if status == 'pending' && user&.verified_contributor?
+      self.auto_approve_after ||= AUTO_APPROVAL_WAIT.from_now
+    else
+      self.auto_approve_after = nil
+    end
+  end
 
   def determine_target_uri(point)
     path = Rails.application.routes.url_helpers.service_url(point.service, only_path: true)

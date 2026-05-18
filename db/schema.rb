@@ -2,16 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_12_133938) do
-
+ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,19 +21,39 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "altcha_solutions", force: :cascade do |t|
+    t.string "algorithm"
+    t.string "challenge"
+    t.string "salt"
+    t.string "signature"
+    t.integer "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["algorithm", "challenge", "salt", "signature", "number"], name: "index_altcha_solutions", unique: true
+  end
+
+  create_table "bounced_emails", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "bounce_type"
+    t.datetime "bounced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_bounced_emails_on_email", unique: true
   end
 
   create_table "case_comments", force: :cascade do |t|
     t.string "summary"
     t.bigint "case_id"
     t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["case_id"], name: "index_case_comments_on_case_id"
     t.index ["user_id"], name: "index_case_comments_on_user_id"
   end
@@ -45,8 +64,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "title"
     t.text "description"
     t.bigint "topic_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "privacy_related"
     t.string "docbot_regex"
     t.index ["topic_id"], name: "index_cases_on_topic_id"
@@ -56,8 +75,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "docbot_version"
     t.bigint "document_id"
     t.bigint "case_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "char_start"
     t.integer "char_end"
     t.decimal "ml_score"
@@ -70,16 +89,16 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "summary"
     t.bigint "document_id"
     t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["document_id"], name: "index_document_comments_on_document_id"
     t.index ["user_id"], name: "index_document_comments_on_user_id"
   end
 
   create_table "document_types", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "description"
     t.bigint "user_id"
     t.string "status"
@@ -91,8 +110,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "url"
     t.string "selector"
     t.string "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "service_id"
     t.boolean "reviewed"
     t.bigint "user_id"
@@ -100,7 +119,7 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "crawler_server"
     t.string "text_version"
     t.bigint "document_type_id"
-    t.datetime "last_crawl_date"
+    t.datetime "last_crawl_date", precision: nil
     t.index ["document_type_id"], name: "index_documents_on_document_type_id"
     t.index ["service_id"], name: "index_documents_on_service_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -109,11 +128,21 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
   create_table "point_comments", force: :cascade do |t|
     t.bigint "point_id"
     t.string "summary"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "user_id"
     t.index ["point_id"], name: "index_point_comments_on_point_id"
     t.index ["user_id"], name: "index_point_comments_on_user_id"
+  end
+
+  create_table "point_vetoes", force: :cascade do |t|
+    t.bigint "point_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_id", "user_id"], name: "index_point_vetoes_on_point_id_and_user_id", unique: true
+    t.index ["point_id"], name: "index_point_vetoes_on_point_id"
+    t.index ["user_id"], name: "index_point_vetoes_on_user_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -123,8 +152,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "source"
     t.string "status"
     t.text "analysis"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "service_id"
     t.string "quote_text"
     t.bigint "case_id"
@@ -137,6 +166,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "annotation_ref"
     t.decimal "ml_score"
     t.string "docbot_version"
+    t.datetime "auto_approve_after"
+    t.index ["auto_approve_after"], name: "index_points_on_auto_approve_after"
     t.index ["case_id"], name: "index_points_on_case_id"
     t.index ["document_id"], name: "index_points_on_document_id"
     t.index ["service_id"], name: "index_points_on_service_id"
@@ -147,8 +178,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "summary"
     t.bigint "service_id"
     t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["service_id"], name: "index_service_comments_on_service_id"
     t.index ["user_id"], name: "index_service_comments_on_user_id"
   end
@@ -156,8 +187,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "wikipedia"
     t.string "keywords"
     t.string "related"
@@ -172,8 +203,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
   create_table "spams", force: :cascade do |t|
     t.string "spammable_type"
     t.bigint "spammable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "flagged_by_admin_or_curator", default: false
     t.boolean "cleaned", default: false
     t.index ["spammable_type", "spammable_id"], name: "index_spams_on_spammable_type_and_spammable_id"
@@ -183,8 +214,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "summary"
     t.bigint "topic_id"
     t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["topic_id"], name: "index_topic_comments_on_topic_id"
     t.index ["user_id"], name: "index_topic_comments_on_user_id"
   end
@@ -193,8 +224,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "title"
     t.string "subtitle"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "oldId"
   end
 
@@ -202,37 +233,41 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "username"
     t.boolean "admin", default: false
     t.boolean "curator", default: false
     t.boolean "deactivated", default: false
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.boolean "bot", default: false
     t.string "h_key"
+    t.boolean "verified_contributor", default: false, null: false
+    t.integer "approved_points_count", default: 0, null: false
+    t.integer "level", default: 1, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["level"], name: "index_users_on_level"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "versions", force: :cascade do |t|
     t.string "item_type"
-    t.string "{:null=>false}"
+    t.string "{null: false}"
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
@@ -250,6 +285,8 @@ ActiveRecord::Schema.define(version: 2024_11_12_133938) do
   add_foreign_key "documents", "users"
   add_foreign_key "point_comments", "points"
   add_foreign_key "point_comments", "users"
+  add_foreign_key "point_vetoes", "points"
+  add_foreign_key "point_vetoes", "users"
   add_foreign_key "points", "cases"
   add_foreign_key "points", "documents"
   add_foreign_key "points", "services"

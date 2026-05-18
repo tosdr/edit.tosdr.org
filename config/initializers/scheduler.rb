@@ -35,4 +35,11 @@ scheduler.cron '0 4 * * *' do
   Rake::Task['bounced_emails:fetch'].invoke
 end
 
-Rails.logger.info('[Scheduler] 3 tasks scheduled.')
+# points:auto_approve_verified_contributors — Daily at 4:30 AM
+scheduler.cron '30 4 * * *' do
+  Rails.logger.info('[Scheduler] Running points:auto_approve_verified_contributors')
+  Rake::Task['points:auto_approve_verified_contributors'].reenable
+  Rake::Task['points:auto_approve_verified_contributors'].invoke
+end
+
+Rails.logger.info('[Scheduler] 4 tasks scheduled.')
