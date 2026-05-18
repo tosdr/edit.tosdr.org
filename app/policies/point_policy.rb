@@ -30,6 +30,10 @@ class PointPolicy < ApplicationPolicy
     peer_curator?
   end
 
+  def review_queue?
+    user.curator?
+  end
+
   def post_review?
     review?
   end
