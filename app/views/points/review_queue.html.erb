@@ -1,0 +1,126 @@
+<% content_for :title do %>
+  <title>Review queue (ToS;DR Phoenix)</title>
+<% end %>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="lighter">Review queue</h3>
+    <p>
+      <%= pluralize(@pending_points_count, "pending point") %> waiting for curator review.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="bgw p30">
+      <%= form_tag review_queue_path, method: :get do %>
+        <div class="row">
+          <div class="col-sm-3">
+            <%= label_tag :author_id, "Author" %>
+            <%= select_tag :author_id, options_from_collection_for_select(@authors, :id, :username, @queue_filter_params[:author_id]), include_blank: "Any author", class: "form-control" %>
+          </div>
+          <div class="col-sm-2">
+            <%= label_tag :level, "Level" %>
+            <%= select_tag :level, options_for_select(@levels.map { |level| ["Level #{level}", level] }, @queue_filter_params[:level]), include_blank: "Any level", class: "form-control" %>
+          </div>
+          <div class="col-sm-5">
+            <%= label_tag :excluded_service_ids, "Exclude services" %>
+            <%= select_tag "excluded_service_ids[]", options_from_collection_for_select(@services, :id, :name, @queue_filter_params[:excluded_service_ids]), multiple: true, class: "form-control" %>
+          </div>
+          <div class="col-sm-2">
+            <%= label_tag :filters, "&nbsp;".html_safe %>
+            <%= submit_tag "Apply", name: nil, class: "btn btn-primary btn-block" %>
+            <%= link_to "Clear", review_queue_path, class: "btn btn-default btn-block" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<% if @point.nil? %>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 alert alert-success">
+      There are no pending points to review.
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="bgw p30">
+        <div class="row">
+          <div class="col-sm-8">
+            <h4 class="lighter"><%= link_to @point.display_title, point_path(@point) %></h4>
+          </div>
+          <div class="col-sm-4 text-right">
+            <%= status_badge @point.status %>
+          </div>
+        </div>
+
+        <p>
+          <span class="bolder">Service:</span>
+          <%= link_to @point.service.name, service_path(@point.service) %>
+          <span class="bolder">Author:</span>
+          <%= username @point.user %> <%= rank_badge @point.user %>
+        </p>
+
+        <% if @point.case %>
+          <p>
+            <span class="bolder">Case:</span>
+            <%= link_to @point.case.title, case_path(@point.case) %>
+            <% if @point.case.classification.present? %>
+              (<%= @point.case.classification %>)
+            <% end %>
+          </p>
+        <% end %>
+
+        <% if @point.quote_text.present? %>
+          <blockquote>
+            <%= @point.quote_text %>
+            <% if @point.document %>
+              <footer>
+                <cite><%= link_to @point.document.name, annotate_path(@point.service, anchor: "doc_#{@point.document_id}") %></cite>
+              </footer>
+            <% end %>
+          </blockquote>
+        <% end %>
+
+        <% if @point.analysis.present? && @point.analysis != "Generated through the annotate view" %>
+          <p><%= @point.analysis %></p>
+        <% end %>
+      </div>
+
+      <div class="form-login">
+        <%= render "review_form", point: @point, queue: true, queue_filters: @queue_filter_params, back_path: points_path, submit_label: "Submit and next" %>
+        <%= link_to "Skip", review_queue_path(@queue_filter_params.merge(skip_id: @point.id)), class: "btn btn-default" %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="table-responsive">
+        <table class="table table-hover table-condensed">
+          <thead>
+            <tr>
+              <th scope="col" class="lighter">Up next</th>
+              <th scope="col" class="lighter text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @points.each do |point| %>
+              <tr class="<%= "active" if point == @point %>">
+                <td class="small">
+                  <%= link_to point.display_title, review_path(point, @queue_filter_params.merge(queue: true)) %><br>
+                  <span class="lighter"><%= point.service.name %></span>
+                </td>
+                <td class="small text-right"><%= status_badge point.status %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

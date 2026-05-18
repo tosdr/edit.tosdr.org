@@ -29,6 +29,9 @@
       <ul class="nav navbar-nav">
         <li><%= link_to "Cases", cases_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
         <li><%= link_to "Topics", topics_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+        <% if current_user.curator? %>
+          <li><%= link_to "Review queue", review_queue_path, class: "navbar-tosdr-item navbar-tosdr-link" %></li>
+        <% end %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle navbar-tosdr-item navbar-tosdr-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Annotate<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -83,6 +86,9 @@
           <li><%= link_to "Points", points_path %></li>
           <li><%= link_to "Cases", cases_path %></li>
           <li><%= link_to "Topics", topics_path %></li>
+          <% if current_user.curator? %>
+            <li><%= link_to "Review queue", review_queue_path %></li>
+          <% end %>
           <li><%= link_to "Services", services_path %></li>
           <li><%= link_to "Settings", edit_user_registration_path %></li>
           <li><%= link_to "Log out", destroy_user_session_path, method: :get %></li>

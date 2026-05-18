@@ -105,6 +105,20 @@ class PointsController < ApplicationController
 
   def review
     authorize @point
+    @queue = params[:queue].present?
+    @queue_filter_params = review_queue_filter_params if @queue
+  end
+
+  def review_queue
+    authorize Point
+
+    @queue_filter_params = review_queue_filter_params
+    @authors = User.where(id: review_queue_base_points.select(:user_id)).order('username ASC')
+    @services = Service.where(id: review_queue_base_points.select(:service_id)).order('name ASC')
+    @levels = User.where(id: review_queue_base_points.select(:user_id)).distinct.order('level ASC').pluck(:level)
+    @points = review_queue_points.limit(15)
+    @point = @points.first
+    @pending_points_count = review_queue_points.count
   end
 
   def post_review
@@ -118,12 +132,12 @@ class PointsController < ApplicationController
       comment = point_params['status'] + ': ' + point_params['point_change']
       create_comment(comment)
 
-      if @point.user_id != current_user.id
+      if @point.user && @point.user_id != current_user.id
         UserMailer.reviewed(@point.user, @point, current_user, point_params['status'],
                             point_params['point_change']).deliver_now
       end
 
-      redirect_to point_path(@point)
+      redirect_to params[:queue].present? ? review_queue_path(review_queue_filter_params) : point_path(@point)
     else
       render :review
     end
@@ -199,6 +213,29 @@ class PointsController < ApplicationController
     raise e unless e.is_a?(Faraday::ConnectionFailed) || e.class.name.start_with?('Elasticsearch::Transport')
 
     Rails.logger.warn("POINT UPDATE: annotation persisted but index update failed for annotation #{annotation.id}: #{e.class} - #{e.message}")
+  end
+
+  def review_queue_points
+    points = review_queue_base_points.includes(:case, :service)
+
+    points = points.where(user_id: @queue_filter_params[:author_id]) if @queue_filter_params[:author_id].present?
+    points = points.joins(:user).where(users: { level: @queue_filter_params[:level] }) if @queue_filter_params[:level].present?
+    points = points.where.not(service_id: @queue_filter_params[:excluded_service_ids]) if @queue_filter_params[:excluded_service_ids].present?
+    points = points.where.not(id: @queue_filter_params[:skip_id]) if @queue_filter_params[:skip_id].present?
+
+    points.order(updated_at: :asc, id: :asc)
+  end
+
+  def review_queue_base_points
+    Point.where(status: 'pending')
+         .where('points.user_id IS NULL OR points.user_id != ?', current_user.id)
+  end
+
+  def review_queue_filter_params
+    permitted = params.permit(:author_id, :level, :skip_id, excluded_service_ids: [])
+    filters = permitted.to_h.symbolize_keys
+    filters[:excluded_service_ids] = Array(filters[:excluded_service_ids]).reject(&:blank?)
+    filters
   end
 
   def point_create_options(point, path)
