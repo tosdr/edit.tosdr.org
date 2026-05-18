@@ -41,6 +41,14 @@ module ApplicationHelper
     end
   end
 
+  def level_badge(user)
+    user = User.find_by(id: user.to_i) if user.instance_of?(String) || user.instance_of?(Integer)
+    return if user.nil?
+
+    level = user.level.to_i.positive? ? user.level : 1
+    raw content_tag(:span, "Lv. #{level}", title: "This user is level #{level}", class: 'label label-default')
+  end
+
   def auto_approval_remaining_label(point)
     distance_of_time_in_words(Time.current, Time.current + point.auto_approval_remaining)
   end
@@ -82,13 +90,20 @@ module ApplicationHelper
       return raw link_to(invalid_icon, '/users/edit', target: '_blank', title: 'This user has deleted their account', class: 'label label-default')
     end
 
-    return user_str.username || 'user ' + user_str.id.to_s if user_str.instance_of? User
+    if user_str.instance_of? User
+      name = user_str.username || 'user ' + user_str.id.to_s
+      return safe_join([h(name), level_badge(user_str)].compact, ' ')
+    end
 
     user_id = user_str.to_i
-    return 'you' if user_id && current_user && user_id == current_user.id
+    user = current_user if user_id && current_user && user_id == current_user.id
+    user ||= User.find_by(id: user_id)
 
-    user = User.find_by(id: user_id)
-    return raw("#{h(user.username)} <sup>(#{user.id.to_s})</sup>") || 'user ' + user.id.to_s if user&.username && user&.id
+    if user&.id
+      name = user == current_user ? 'you' : (user.username || 'user ' + user.id.to_s)
+      id = user == current_user ? nil : content_tag(:sup, user.id.to_s)
+      return safe_join([h(name), id, level_badge(user)].compact, ' ')
+    end
 
     user_str
   end
