@@ -280,7 +280,7 @@ Devise.setup do |config|
   Warden::Manager.after_authentication do |user, auth|
     auth.cookies[:h_key] = {
       value: user.h_key,
-      httponly: true,
+      httponly: false,
       secure: Rails.env.production? || Rails.env.staging?,
       same_site: :lax
     }
