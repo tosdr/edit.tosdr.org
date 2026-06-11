@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_11_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,17 +26,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
-  end
-
-  create_table "altcha_solutions", force: :cascade do |t|
-    t.string "algorithm"
-    t.string "challenge"
-    t.string "salt"
-    t.string "signature"
-    t.integer "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["algorithm", "challenge", "salt", "signature", "number"], name: "index_altcha_solutions", unique: true
   end
 
   create_table "bounced_emails", force: :cascade do |t|
@@ -262,7 +251,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_110000) do
 
   create_table "versions", force: :cascade do |t|
     t.string "item_type"
-    t.string "{null: false}"
+    t.string "{:null=>false}"
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"

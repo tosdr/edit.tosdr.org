@@ -11,10 +11,32 @@ class Service < ApplicationRecord
 
   has_many :service_comments, dependent: :destroy
 
+  # Soft-delete: deprecated services have status 'deleted' and are hidden from every
+  # read path. The predicate is NULL-safe (most services have a NULL status).
+  default_scope { where("status IS DISTINCT FROM 'deleted'") }
+
+  # Escape hatch for console/admin use. A scope using `unscope(where: :status)` cannot
+  # strip the raw-SQL default scope above, so bypass all scoping via `unscoped`.
+  def self.with_deleted
+    unscoped
+  end
+
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :url, presence: true
   validates :url, uniqueness: true
+
+  # Deprecate (soft-delete) this service, cascading to its documents and points.
+  # Points are deprecated directly (not only via documents) because a point belongs to
+  # a service directly and may have no document — otherwise such points would be left
+  # active while their service is hidden, and views calling point.service would break.
+  def deprecate!
+    transaction do
+      points.find_each { |point| point.update!(status: 'deleted') }
+      documents.find_each(&:deprecate!)
+      update!(status: 'deleted')
+    end
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     %w[name rating]

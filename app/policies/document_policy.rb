@@ -26,16 +26,16 @@ class DocumentPolicy < ApplicationPolicy
     edit?
   end
 
+  def deprecate?
+    edit?
+  end
+
   def crawl?
     edit?
   end
 
   def restore_points?
     !user.nil? && owner?
-  end
-
-  def nuke?
-    !user.nil? && user.admin?
   end
 
   private

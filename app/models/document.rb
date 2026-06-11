@@ -11,8 +11,28 @@ class Document < ApplicationRecord
   has_many :points
   has_many :document_comments, dependent: :destroy
 
+  # Soft-delete: deprecated documents have status 'deleted' and are hidden from every
+  # read path. The predicate is NULL-safe (most documents have a NULL status).
+  default_scope { where("status IS DISTINCT FROM 'deleted'") }
+
+  # Escape hatch for console/admin use. A scope using `unscope(where: :status)` cannot
+  # strip the raw-SQL default scope above, so bypass all scoping via `unscoped`.
+  def self.with_deleted
+    unscoped
+  end
+
   validates :name, presence: true
   validates :service_id, presence: true
+
+  # Deprecate (soft-delete) this document and cascade to its points. Uses per-point
+  # update! (not update_all) so PaperTrail versions and the point's user-level-refresh
+  # callbacks fire.
+  def deprecate!
+    transaction do
+      points.find_each { |point| point.update!(status: 'deleted') }
+      update!(status: 'deleted')
+    end
+  end
 
   def self.ransackable_associations(auth_object = nil)
     ["service"]

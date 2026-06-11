@@ -42,4 +42,12 @@ scheduler.cron '30 4 * * *' do
   Rake::Task['points:auto_approve_verified_contributors'].invoke
 end
 
-Rails.logger.info('[Scheduler] 4 tasks scheduled.')
+# deprecation:backfill_orphans — Daily at 5:00 AM (self-heals points whose service or
+# document was deprecated without cascading, e.g. a manual DB status change)
+scheduler.cron '0 5 * * *' do
+  Rails.logger.info('[Scheduler] Running deprecation:backfill_orphans')
+  Rake::Task['deprecation:backfill_orphans'].reenable
+  Rake::Task['deprecation:backfill_orphans'].invoke
+end
+
+Rails.logger.info('[Scheduler] 5 tasks scheduled.')
