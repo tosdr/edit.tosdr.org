@@ -18,9 +18,40 @@ class Point < ApplicationRecord
 
   validates :title, presence: true
   validates :status,
-            inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found],
+            inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found deleted],
                          allow_nil: false }
   validates :case_id, presence: true
+
+  # Soft-delete: deprecated points have status 'deleted' and are hidden from every
+  # read path. The predicate is NULL-safe (a plain `where.not` would drop NULL rows).
+  default_scope { where("status IS DISTINCT FROM 'deleted'") }
+
+  # Allows us to bypass the filtering of deleted points. This is used by deprecate_orphans below,
+  # and might be useful for ad hoc admin/debugging sessions where we want to see all points.
+  def self.with_deleted
+    unscoped
+  end
+
+  # Deprecate any still-active point whose service or document is already deprecated. 
+  # Covers orphans created before the service cascade handled document-less points, 
+  # and services/documents marked 'deleted' directly in the DB. Idempotent.
+  # Uses update_all rather than update! because a point under a deprecated service
+  # cannot pass the required `belongs_to :service` validation (the service is hidden by the default scope).
+  def self.deprecate_orphans!
+    deleted_services = Service.unscoped.where(status: 'deleted').select(:id)
+    deleted_documents = Document.unscoped.where(status: 'deleted').select(:id)
+
+    active = with_deleted.where.not(status: 'deleted')
+    orphan_ids = active.where(service_id: deleted_services)
+                       .or(active.where(document_id: deleted_documents))
+                       .pluck(:id)
+    return if orphan_ids.empty?
+
+    author_ids = with_deleted.where(id: orphan_ids).distinct.pluck(:user_id).compact
+    with_deleted.where(id: orphan_ids).update_all(status: 'deleted')
+    # Author levels are refreshed afterwards since that callback is skipped by update_all
+    User.where(id: author_ids).find_each(&:refresh_level_from_points!)
+  end
 
   before_validation :set_verified_contributor_auto_approval
   after_commit :refresh_author_levels_after_commit, on: %i[create update]
@@ -61,13 +92,13 @@ class Point < ApplicationRecord
          .offset(rand(100))
   end
 
-  def self.docbot
+  def self.docbot(include_user: true)
     docbot_user = User.docbot_user
-    Point.eager_loaded_nouser
-         .docbot_created(docbot_user.id)
-         .need_review('pending')
-         .limit(10)
-         .order('ml_score DESC')
+    base = include_user ? eager_loaded : eager_loaded_nouser
+    base.docbot_created(docbot_user.id)
+        .need_review('pending')
+        .limit(10)
+        .order('ml_score DESC')
   end
 
   def self.draft(user)

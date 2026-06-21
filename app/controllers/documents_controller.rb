@@ -11,7 +11,7 @@ class DocumentsController < ApplicationController
   include Pundit::Authorization
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_document, only: %i[show edit update crawl restore_points nuke]
+  before_action :set_document, only: %i[show edit update crawl restore_points deprecate]
   before_action :set_services, only: %i[new edit create update]
   before_action :set_document_names, only: %i[new edit create update]
   before_action :set_uri, only: %i[new edit create update crawl]
@@ -93,17 +93,17 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def destroy
-    @document = Document.find(params[:id] || params[:document_id])
-    authorize @document
+  def deprecate
+    authorize @document, :deprecate?
 
-    service = @document.service
-    if @document.points.any?
+    if @document.points.exists? && !current_user.admin?
       flash[:alert] =
-        'Users have highlighted points in this document. Update or delete those points before deleting this document.'
+        'This document has points attached. Please ask an admin to deprecate it.'
       redirect_to document_path(@document)
     else
-      @document.destroy
+      service = @document.service
+      @document.deprecate!
+      flash[:notice] = 'Document deprecated.'
       redirect_to annotate_path(service)
     end
   end
@@ -111,9 +111,8 @@ class DocumentsController < ApplicationController
   def show
     authorize @document
 
-    @points = @document.points
+    @points = @document.points.includes(:case, :user)
     @missing_points = @points.where(status: 'approved-not-found')
-    @has_approved_points = @points.where(status: %w[approved approved-not-found]).exists?
     @last_crawled_at = @document.formatted_last_crawl_date
     @name = @document.document_type ? @document.document_type.name : @document.name
   end
@@ -163,20 +162,6 @@ class DocumentsController < ApplicationController
     flash[:alert] = message
 
     redirect_to annotate_path(@document.service)
-  end
-
-  def nuke
-    authorize @document
-
-    service = @document.service
-    if @document.points.where(status: %w[approved approved-not-found]).exists?
-      flash[:alert] = 'Cannot nuke a document that has approved points.'
-      redirect_to document_path(@document)
-    else
-      @document.points.destroy_all
-      @document.destroy
-      redirect_to annotate_path(service)
-    end
   end
 
   private

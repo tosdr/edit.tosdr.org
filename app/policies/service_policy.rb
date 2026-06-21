@@ -38,6 +38,10 @@ class ServicePolicy < ApplicationPolicy
     update?
   end
 
+  def deprecate?
+    update?
+  end
+
   private
 
   def owner?

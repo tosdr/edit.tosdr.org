@@ -27,7 +27,7 @@ class PointsController < ApplicationController
   end
 
   def list_docbot
-    @docbot_points = User.docbot_user ? Point.docbot : []
+    @docbot_points = User.docbot_user ? Point.docbot(include_user: false) : []
 
     return @docbot_points unless @docbot_points.any?
 

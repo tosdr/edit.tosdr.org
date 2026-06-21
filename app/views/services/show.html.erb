@@ -41,6 +41,14 @@
         <% end %>
       </div>
 
+      <div class="col-lg-6 form-inline text-right justify-content-end">
+        <% if policy(@service).deprecate? %>
+          <%= link_to 'Deprecate Service', service_deprecate_path(@service), method: :post,
+              data: { confirm: 'Deprecate this service, its documents, and all of their points? They will be hidden from the site.' },
+              class: 'btn btn-danger smaller-btn-text' %>
+        <% end %>
+      </div>
+
     </div> <!--/.float-right -->
     <br>
     <% if @points.empty? %>

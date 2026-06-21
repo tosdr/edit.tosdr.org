@@ -133,17 +133,17 @@ class ServicesController < ApplicationController
     end
   end
 
-  def destroy
+  def deprecate
     @service = Service.find(params[:id] || params[:service_id])
 
-    authorize @service
+    authorize @service, :deprecate?
 
-    if @service.points.any?
-      flash[:alert] = 'Users have contributed valuable insight to this service!'
+    if @service.points.exists? && !current_user.admin?
+      flash[:alert] = 'This service has points attached. Please ask an admin to deprecate it.'
       redirect_to service_path(@service)
     else
-      @service.destroy
-      flash[:notice] = 'Service has been removed!'
+      @service.deprecate!
+      flash[:notice] = 'Service has been deprecated.'
       redirect_to services_path
     end
   end
