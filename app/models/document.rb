@@ -21,16 +21,23 @@ class Document < ApplicationRecord
     unscoped
   end
 
-  validates :name, presence: true
+  # Content-field presence is enforced on create and whenever the field is actually being
+  # changed, but a pre-existing record that leaves the field untouched is grandfathered --
+  # so legacy rows with blank content stay editable/crawlable while we never write NEW
+  # blanks. Structural FKs like service_id stay unconditionally required.
+  validates :name, presence: true, unless: -> { persisted? && !name_changed? }
   validates :service_id, presence: true
 
-  # Deprecate (soft-delete) this document and cascade to its points. Uses per-point
-  # update! (not update_all) so PaperTrail versions and the point's user-level-refresh
-  # callbacks fire.
+  # Deprecate (soft-delete) this document and cascade to its points. Goes per-point
+  # (not update_all) so PaperTrail versions and the point's user-level-refresh callbacks
+  # fire. Both the points and the document itself are saved with validate: false: a
+  # soft-delete only flips `status`, and a record's content validity (presence of text,
+  # selector, etc.) must not gate hiding it -- legacy rows predate those validations.
   def deprecate!
     transaction do
-      points.find_each { |point| point.update!(status: 'deleted') }
-      update!(status: 'deleted')
+      points.find_each(&:deprecate!)
+      self.status = 'deleted'
+      save!(validate: false)
     end
   end
 
@@ -41,13 +48,17 @@ class Document < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     %w[name]
   end
-  validates :text, presence: true
-  validates :url, presence: true
-  validates :selector, presence: true
+  validates :text, presence: true, unless: -> { persisted? && !text_changed? }
+  validates :url, presence: true, unless: -> { persisted? && !url_changed? }
+  validates :selector, presence: true, unless: -> { persisted? && !selector_changed? }
 
   validate :location_uniqueness_check
 
   def location_uniqueness_check
+    # Only meaningful when the location is actually (re)set; skipping it on unrelated
+    # edits keeps legacy rows that share a blank url+selector editable.
+    return unless new_record? || url_changed? || selector_changed?
+
     doc = Document.where(url: url, selector: selector, status: nil)
 
     return unless doc.any? && (doc.first.id != id)

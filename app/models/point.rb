@@ -16,7 +16,10 @@ class Point < ApplicationRecord
   has_many :point_comments, dependent: :destroy
   has_many :point_vetoes, dependent: :destroy
 
-  validates :title, presence: true
+  # Title presence is grandfathered: enforced on create and when the title is being changed,
+  # but a pre-existing point that leaves it untouched can still be saved/edited so legacy
+  # blank-title rows are not stuck. status and case_id (referential) stay strict.
+  validates :title, presence: true, unless: -> { persisted? && !title_changed? }
   validates :status,
             inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found deleted],
                          allow_nil: false }
@@ -51,6 +54,15 @@ class Point < ApplicationRecord
     with_deleted.where(id: orphan_ids).update_all(status: 'deleted')
     # Author levels are refreshed afterwards since that callback is skipped by update_all
     User.where(id: author_ids).find_each(&:refresh_level_from_points!)
+  end
+
+  # Soft-delete this point as part of a service/document deprecation cascade. Skips
+  # validations (via save!(validate: false)) so legacy points with otherwise-invalid
+  # content -- a blank title, a missing case, or a service already hidden by its default
+  # scope -- can still be hidden. Keeps callbacks + PaperTrail, unlike update_all.
+  def deprecate!
+    self.status = 'deleted'
+    save!(validate: false)
   end
 
   before_validation :set_verified_contributor_auto_approval

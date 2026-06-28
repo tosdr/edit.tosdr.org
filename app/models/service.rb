@@ -21,10 +21,11 @@ class Service < ApplicationRecord
     unscoped
   end
 
-  validates :name, presence: true
-  validates :name, uniqueness: true
-  validates :url, presence: true
-  validates :url, uniqueness: true
+  # Grandfather legacy rows: presence + uniqueness are enforced on create and only when the
+  # field is actually being changed, so a pre-existing service with a blank or duplicate
+  # name/url stays editable without ever letting new bad data in.
+  validates :name, presence: true, uniqueness: true, unless: -> { persisted? && !name_changed? }
+  validates :url, presence: true, uniqueness: true, unless: -> { persisted? && !url_changed? }
 
   # Deprecate (soft-delete) this service, cascading to its documents and points.
   # Points are deprecated directly (not only via documents) because a point belongs to
@@ -32,9 +33,10 @@ class Service < ApplicationRecord
   # active while their service is hidden, and views calling point.service would break.
   def deprecate!
     transaction do
-      points.find_each { |point| point.update!(status: 'deleted') }
+      points.find_each(&:deprecate!)
       documents.find_each(&:deprecate!)
-      update!(status: 'deleted')
+      self.status = 'deleted'
+      save!(validate: false)
     end
   end
 

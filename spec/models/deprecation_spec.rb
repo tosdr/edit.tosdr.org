@@ -43,6 +43,26 @@ describe 'Deprecation (soft-delete)', type: :model do
       expect(Point.with_deleted.find(pending.id).status).to eq('deleted')
     end
 
+    it 'soft-deletes a legacy document whose required fields are blank (regression)' do
+      document = create(:document)
+      point = create(:point, document: document, service: document.service, status: 'approved')
+      # Simulate legacy rows that predate the text/selector presence validations.
+      document.update_columns(text: '', selector: '')
+
+      expect { document.deprecate! }.not_to raise_error
+      expect(Document.with_deleted.find(document.id).status).to eq('deleted')
+      expect(Point.with_deleted.find(point.id).status).to eq('deleted')
+    end
+
+    it 'soft-deletes a point with legacy-invalid content (blank title)' do
+      document = create(:document)
+      point = create(:point, document: document, service: document.service, status: 'approved')
+      point.update_columns(title: '')
+
+      expect { document.deprecate! }.not_to raise_error
+      expect(Point.with_deleted.find(point.id).status).to eq('deleted')
+    end
+
     it 'refreshes the author level when an approved point is deprecated (proves per-point update!)' do
       author = create(:user_confirmed)
       document = create(:document)
