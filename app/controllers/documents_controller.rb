@@ -134,7 +134,7 @@ class DocumentsController < ApplicationController
     if crawl_sucessful && text_changed && @document.save
       missing_points = analyze_points
       missing_points_count = missing_points.length.to_s
-      message = `Crawl successful. Document text updated. There are #{missing_points_count} points missing from the new text.`
+      message = "Crawl successful. Document text updated. There are #{missing_points_count} points missing from the new text."
       flash[:notice] = message
     elsif crawl_sucessful && !text_changed && @document.save
       flash[:notice] = 'Crawl successful. Document text unchanged.'
@@ -199,7 +199,7 @@ class DocumentsController < ApplicationController
   end
 
   def analyze_points
-    document.handle_missing_points
+    @document.handle_missing_points
   end
 
   def fetch_text(request, uri, document)

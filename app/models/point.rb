@@ -189,6 +189,30 @@ class Point < ApplicationRecord
     save
   end
 
+  # A point participates in quote tracking only when it carries quote text plus at least
+  # one offset. Declined points are excluded outright. Shared by every document path that
+  # searches the text for a point's quote (see Document#flag_points_missing_from).
+  def quote_locatable?
+    return false if status == 'declined'
+    return false if quote_text.blank?
+
+    quote_start.present? || quote_end.present?
+  end
+
+  # Demote an approved/pending point to its *-not-found counterpart when its quote can no
+  # longer be located in the document text. Idempotent and convergent: a no-op (returns
+  # false) for any other status -- including already-flagged points -- and only writes on
+  # a real change. Restoring a found point back to approved/pending stays a manual action.
+  def mark_quote_not_found!
+    new_status = case status
+                 when 'approved' then 'approved-not-found'
+                 when 'pending'  then 'pending-not-found'
+                 end
+    return false unless new_status
+
+    update(status: new_status)
+  end
+
   def restore_elasticsearch
     return unless annotation_ref
 

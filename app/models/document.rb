@@ -106,24 +106,12 @@ class Document < ApplicationRecord
     retrieve_snippets(text)
   end
 
+  # Flag points whose quote no longer appears in the current document text, demoting
+  # approved/pending points to their *-not-found status, and return the missing points.
+  # Thin wrapper over #flag_points_missing_from -- the single source of truth shared with
+  # #retrieve_snippets so the crawl (write) and annotation (read) paths can't diverge.
   def handle_missing_points
-    text_to_scan = text
-    points_no_longer_in_text = []
-
-    points.each do |_point|
-      next if p.status == 'declined'
-      next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
-      next if p.annotation_ref.nil?
-
-      points_no_longer_in_text = []
-      quote_exists_in_text = !text_to_scan.index(p.quote_text).nil?
-      points_no_longer_in_text << p unless quote_exists_in_text
-
-      p.status = p.status == 'approved' ? 'approved-not-found' : 'pending-not-found'
-      p.save
-    end
-
-    points_no_longer_in_text
+    flag_points_missing_from(text)
   end
 
   def formatted_last_crawl_date
@@ -133,34 +121,24 @@ class Document < ApplicationRecord
   def retrieve_snippets(text_given)
     text_to_scan = text_given || ''
 
+    # Shared detection: flag (and demote) every point whose quote is gone from the text.
+    flag_points_missing_from(text_to_scan)
+
     quotes = []
     snippets = []
     points_with_quote_text_to_restore_in_doc = []
-    points_no_longer_in_text = []
 
     points.each do |p|
-      next if p.status == 'declined'
-      next if p.quote_text.nil? || (p.quote_start.nil? && p.quote_end.nil?)
-
-      quote_exists_in_text = !text_to_scan.index(p.quote_text).nil?
-      points_no_longer_in_text << p unless quote_exists_in_text
-      next unless quote_exists_in_text
+      next unless p.quote_locatable?
 
       quote_start = text_to_scan.index(p.quote_text)
+      next if quote_start.nil?
+
       quote_start_changed = p.quote_start != quote_start
       quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
 
       quote_ok = !quote_start_changed && !quote_end_changed
       quote_ok ? quotes << p : points_with_quote_text_to_restore_in_doc << p
-    end
-
-    if points_no_longer_in_text.length
-      points_no_longer_in_text.each do |p|
-        next if p.status == 'approved-not-found'
-
-        p.status = p.status == 'approved' ? 'approved-not-found' : 'pending-not-found'
-        p.save
-      end
     end
 
     cursor = 0
@@ -198,5 +176,28 @@ class Document < ApplicationRecord
       snippets: snippets,
       points_needing_restoration: points_with_quote_text_to_restore_in_doc
     }
+  end
+
+  private
+
+  # Single source of truth for missing-quote detection, shared by the crawl (write) path
+  # (#handle_missing_points) and the annotation (read) path (#retrieve_snippets). Returns
+  # every quote-locatable point whose quote_text no longer appears in `text_to_scan`, and
+  # demotes the approved/pending ones to their *-not-found status as a side effect. The
+  # flip is guarded per point (only the missing ones move) and idempotent, so re-running
+  # over the same text makes no further changes and never touches still-present points.
+  def flag_points_missing_from(text_to_scan)
+    text_to_scan = text_to_scan.to_s
+    missing = []
+
+    points.each do |point|
+      next unless point.quote_locatable?
+      next if text_to_scan.include?(point.quote_text)
+
+      missing << point
+      point.mark_quote_not_found!
+    end
+
+    missing
   end
 end
