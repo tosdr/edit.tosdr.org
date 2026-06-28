@@ -168,6 +168,10 @@ class DocumentsController < ApplicationController
 
   def set_document
     @document = Document.find(params[:id].to_i)
+    # Defensive: an orphan document whose service was deprecated out-of-band (before the daily
+    # backfill re-hides it) has a nil service and would 500 every view that reads it. Treat it
+    # as gone until the sweep deprecates it. Covers show/edit/crawl/update/restore_points.
+    redirect_to documents_path, alert: 'That document is no longer available.' if @document.service.nil?
   end
 
   def set_services

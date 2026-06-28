@@ -108,6 +108,50 @@ describe 'Deprecation (soft-delete)', type: :model do
     end
   end
 
+  describe 'Document.deprecate_orphans!' do
+    it 'deprecates an active document whose service was already deleted' do
+      service = create(:service)
+      document = create(:document, service: service)
+      service.update_columns(status: 'deleted') # simulate an orphan (no cascade)
+
+      Document.deprecate_orphans!
+
+      expect(Document.with_deleted.find(document.id).status).to eq('deleted')
+    end
+
+    it 'deprecates a legacy NULL-status document under a deleted service (NULL-safe scope)' do
+      service = create(:service)
+      document = create(:document, service: service)
+      document.update_columns(status: nil) # legacy row: most documents have NULL status
+      service.update_columns(status: 'deleted')
+
+      Document.deprecate_orphans!
+
+      expect(Document.with_deleted.find(document.id).status).to eq('deleted')
+    end
+
+    it 'leaves documents under a healthy service untouched' do
+      document = create(:document)
+
+      Document.deprecate_orphans!
+
+      expect(Document.find(document.id)).to eq(document)
+    end
+
+    it 'lets the points pass hide points orphaned by the document it deprecates' do
+      service = create(:service)
+      document = create(:document, service: service)
+      point = create(:point, document: document, service: service, status: 'approved')
+      service.update_columns(status: 'deleted')
+
+      Document.deprecate_orphans!
+      Point.deprecate_orphans!
+
+      expect(Document.with_deleted.find(document.id).status).to eq('deleted')
+      expect(Point.with_deleted.find(point.id).status).to eq('deleted')
+    end
+  end
+
   describe 'Point.deprecate_orphans!' do
     it 'deprecates an active point whose service was already deleted' do
       service = create(:service)

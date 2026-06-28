@@ -11,6 +11,9 @@
       </thead>
       <tbody>
       <% documents.each do |d| %>
+        <%# Skip documents whose service was deprecated out-of-band: the association applies
+            Service's default scope, so d.service is nil until the daily backfill hides the doc. %>
+        <% next unless d.service %>
         <tr>
           <td class="small lighter"><%= link_to d.service.name, service_path(d.service) %></td>
           <td class="small"><mark><%= link_to d.document_type ? d.document_type.name : d.name, document_path(d) %></mark></td>

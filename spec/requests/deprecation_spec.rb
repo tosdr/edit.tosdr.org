@@ -118,6 +118,33 @@ RSpec.describe 'Deprecation', type: :request do
     end
   end
 
+  describe 'orphan documents (service deprecated out-of-band)' do
+    # A document whose service was marked 'deleted' directly in the DB stays active (its own
+    # status is untouched) but has a nil service, since the association applies Service's
+    # default scope. Until the daily backfill hides it, the read paths must not 500.
+    it 'does not 500 the documents index and omits the orphan row' do
+      healthy = create(:document)
+      orphan = create(:document, url: 'http://orphan-doc.example') # < 30 chars: renders un-truncated
+      orphan.service.update_columns(status: 'deleted')
+
+      get documents_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(healthy.service.name)
+      expect(response.body).not_to include('orphan-doc.example')
+    end
+
+    it 'redirects the document show page for an orphan instead of 500ing' do
+      document = create(:document)
+      document.service.update_columns(status: 'deleted')
+
+      get document_path(document)
+
+      expect(response).to redirect_to(documents_path)
+      expect(flash[:alert]).to match(/no longer available/i)
+    end
+  end
+
   describe 'removed hard-delete / nuke routes' do
     it 'no longer routes DELETE documents, DELETE services, or POST nuke (they fall through to the catch-all)' do
       expect(Rails.application.routes.recognize_path('/documents/1', method: :delete))

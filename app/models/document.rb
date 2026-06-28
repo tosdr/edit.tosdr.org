@@ -41,6 +41,25 @@ class Document < ApplicationRecord
     end
   end
 
+  # Deprecate any still-active document whose service is already deprecated. Mirrors
+  # Point.deprecate_orphans!: covers documents orphaned by a service marked 'deleted'
+  # directly in the DB, or that predate the deprecation cascade. Without this, an active
+  # document hanging off a hidden service has a nil `service` (the association applies
+  # Service's default scope) and 500s every view that reads document.service. Idempotent.
+  #
+  # The active set comes from the default scope (`status IS DISTINCT FROM 'deleted'`),
+  # which is NULL-safe -- a plain `where.not(status: 'deleted')` would silently drop the
+  # legacy NULL-status rows that make up most documents. update_all (not the #deprecate!
+  # cascade) hides the rows in bulk without tripping validations; run Point.deprecate_orphans!
+  # afterwards to hide the points hanging off the documents this deprecates.
+  def self.deprecate_orphans!
+    deleted_services = Service.unscoped.where(status: 'deleted').select(:id)
+    orphan_ids = where(service_id: deleted_services).pluck(:id)
+    return if orphan_ids.empty?
+
+    with_deleted.where(id: orphan_ids).update_all(status: 'deleted')
+  end
+
   def self.ransackable_associations(auth_object = nil)
     ["service"]
   end
