@@ -218,8 +218,8 @@ class DocumentsController < ApplicationController
         crawl_sucessful = true
         message = 'Document created!'
       else
-        Rails.logger.error("HTTP Error: #{response.code} - #{response.message}")
-        message = "HTTP Error: Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{response.code} - #{response.message}"
+        Rails.logger.error("HTTP Error: #{response_text.code} - #{response_text.message}")
+        message = "HTTP Error: Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{response_text.code} - #{response_text.message}"
       end
     rescue SocketError => e
       # Handle network-related errors
