@@ -4,6 +4,7 @@ max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }.to_i
 threads min_threads_count, max_threads_count
 
+# I think if we ever try to parallelize this will break the scheduled jobs, they might need to be run outside of puma
 worker_count = ENV.fetch("WEB_CONCURRENCY", 0).to_i
 workers worker_count if worker_count.positive?
 
