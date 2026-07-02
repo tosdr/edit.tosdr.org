@@ -112,7 +112,7 @@ module ApplicationHelper
     sanitize(
       snippet
       .gsub(/&(.*?);/, '&amp;\1;')
-      .gsub(/<(.*?)>/, '<span class="hiddenTag">&lt;\1&gt;</span>')
+      .gsub(/<(.*?)>/m, '<span class="hiddenTag">&lt;\1&gt;</span>')
     ).html_safe
   end
 
