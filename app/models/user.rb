@@ -6,6 +6,9 @@ require 'securerandom'
 class User < ApplicationRecord
   MINIMUM_APPROVED_POINTS = 0
 
+  # The account that inherits a deleted user's contributions. See #hard_delete.
+  ANONYMOUS_USER_ID = 1
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable
@@ -112,11 +115,22 @@ class User < ApplicationRecord
 
   before_destroy :hard_delete
 
+  # Hand every contribution over to the anonymous account so the row can be deleted without
+  # tripping one of the users FKs. Points, documents, and services are soft-deletable, and
+  # their default scope hides the 'deleted' rows -- going through the associations would skip
+  # exactly those rows and leave them pointing at a user that is about to disappear, so the
+  # DELETE 500s on a foreign key violation. They go through `with_deleted` (unscoped) instead,
+  # the same class-level form DocumentType already uses below. Vetoes are personal actions
+  # rather than contributions, so they are dropped rather than reassigned (reassigning would
+  # also collide with the unique point_id+user_id index if anonymous vetoed the same point);
+  # deleting them here also covers registrations#destroy, which calls `user.delete` and so
+  # never fires the `dependent: :destroy` on the association.
   def hard_delete
-    anonymous_id = 1
-    points.update_all user_id: anonymous_id
-    documents.update_all user_id: anonymous_id
-    services.update_all user_id: anonymous_id
+    anonymous_id = ANONYMOUS_USER_ID
+    Point.with_deleted.where(user_id: id).update_all user_id: anonymous_id
+    Document.with_deleted.where(user_id: id).update_all user_id: anonymous_id
+    Service.with_deleted.where(user_id: id).update_all user_id: anonymous_id
+    PointVeto.where(user_id: id).delete_all
     point_comments.update_all user_id: anonymous_id
     case_comments.update_all user_id: anonymous_id
     document_comments.update_all user_id: anonymous_id
