@@ -7,7 +7,7 @@ class PointsController < ApplicationController
   include FontAwesome5::Rails::IconHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :set_point, only: %i[show edit update review post_review approve decline veto]
+  before_action :set_point, only: %i[show edit update destroy review post_review approve decline veto]
   before_action :set_topics, only: %i[new edit]
   before_action :set_services, only: %i[new edit]
   before_action :check_status, only: %i[create update]
@@ -101,6 +101,26 @@ class PointsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  # Soft delete, admin only (see PointPolicy#destroy?). Leaves the row in place and flips it
+  # to the same 'deleted' status a service/document deprecation cascades down, so the default
+  # scope hides the point everywhere. Restoring one stays a console action.
+  def destroy
+    authorize @point
+
+    service = @point.service
+
+    Point.transaction do
+      # The comment has to be written before the point is hidden: PointComment's required
+      # `belongs_to :point` resolves through Point's default scope, which no longer finds it.
+      create_comment('Point deleted by an admin')
+      @point.deprecate!
+    end
+
+    flash[:notice] = 'Point has been deleted!'
+    # service is nil for an orphan whose service was already deprecated (see Point.deprecate_orphans!)
+    redirect_to service ? service_path(service) : points_path
   end
 
   def review

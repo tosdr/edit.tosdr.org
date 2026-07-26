@@ -26,6 +26,12 @@ class PointPolicy < ApplicationPolicy
     edit?
   end
 
+  # Soft delete (points#destroy) is an admin-only moderation action, deliberately wider
+  # than edit?: an admin can hide any point, including ones they cannot otherwise edit.
+  def destroy?
+    !user.nil? && user.admin?
+  end
+
   def review?
     peer_curator?
   end
