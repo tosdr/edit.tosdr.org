@@ -33,8 +33,11 @@ module ApplicationInteraction
           error!('404 Not found', 404) unless case_title.present? && annotation_id.present? && document_id.present? && service_id.present?
         end
 
+        # Trim both sides: callers pad the title, and some stored titles carry leading or
+        # trailing whitespace of their own. Trimming only the incoming value left those
+        # cases unmatchable by any payload at all.
         def find_case!
-          case_ref = Case.find_by_title(params[:case_title]&.strip)
+          case_ref = Case.find_by('btrim(title) = ?', params[:case_title].to_s.strip)
           error!('404 Not found', 404) unless case_ref
           case_ref
         end
