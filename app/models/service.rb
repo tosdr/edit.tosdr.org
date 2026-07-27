@@ -13,7 +13,9 @@ class Service < ApplicationRecord
 
   # Soft-delete: deprecated services have status 'deleted' and are hidden from every
   # read path. The predicate is NULL-safe (most services have a NULL status).
-  default_scope { where("status IS DISTINCT FROM 'deleted'") }
+  # The column must stay table-qualified: when this scope lands in a JOIN's ON clause
+  # (e.g. a Ransack search across points and services) a bare `status` is ambiguous.
+  default_scope { where("#{quoted_table_name}.status IS DISTINCT FROM 'deleted'") }
 
   # Escape hatch for console/admin use. A scope using `unscope(where: :status)` cannot
   # strip the raw-SQL default scope above, so bypass all scoping via `unscoped`.

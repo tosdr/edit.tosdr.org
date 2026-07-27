@@ -27,7 +27,9 @@ class Point < ApplicationRecord
 
   # Soft-delete: deprecated points have status 'deleted' and are hidden from every
   # read path. The predicate is NULL-safe (a plain `where.not` would drop NULL rows).
-  default_scope { where("status IS DISTINCT FROM 'deleted'") }
+  # The column must stay table-qualified: when this scope lands in a JOIN's ON clause
+  # (e.g. a Ransack search across points and services) a bare `status` is ambiguous.
+  default_scope { where("#{quoted_table_name}.status IS DISTINCT FROM 'deleted'") }
 
   # Allows us to bypass the filtering of deleted points. This is used by deprecate_orphans below,
   # and might be useful for ad hoc admin/debugging sessions where we want to see all points.
