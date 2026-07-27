@@ -36,6 +36,27 @@ RSpec.describe 'Point search across services', type: :request do
     expect(response.body).not_to include('Unrelated Gadgets')
   end
 
+  it 'keeps other contributors points out of my contributions when searching' do
+    other_user = create(:user_confirmed)
+    mine = create(:point, user: user, service: matching_service, status: 'approved')
+    theirs = create(:point, user: other_user, service: matching_service, status: 'approved')
+
+    get my_points_path, params: { q: { service_name_cont: 'Searchable' } }
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(mine.title)
+    expect(response.body).not_to include(theirs.title)
+  end
+
+  it 'submits the my contributions search back to my contributions' do
+    create(:point, user: user, service: matching_service, status: 'approved')
+
+    get my_points_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("action=\"#{my_points_path}\"")
+  end
+
   it 'leaves soft deleted points and points on soft deleted services out of the results' do
     kept = create(:point, user: user, service: matching_service, status: 'approved')
     deleted_point = create(:point, user: user, service: matching_service, status: 'approved')

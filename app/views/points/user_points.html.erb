@@ -15,7 +15,10 @@
       <div class="row">
         <div class="col-lg-4 text-left">
           <div class="">
-            <%= search_form_for @q do |f| %>
+            <%# The url has to be pinned: search_form_for defaults to the polymorphic path
+                for Point (points_path), which would submit this search to the unscoped
+                index instead of back to points#user_points. %>
+            <%= search_form_for @q, url: my_points_path, html: { method: :get } do |f| %>
               <%= f.label :service_name_cont %>
               <%= f.search_field :service_name_cont %>
 
