@@ -7,7 +7,7 @@ class PointPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    !user.nil? || record.status == 'approved'
   end
 
   def new?
@@ -67,7 +67,7 @@ class PointPolicy < ApplicationPolicy
   end
 
   def docbot_curator?
-    record.user.username == 'docbot' && !user.nil? && user.curator?
+    record.user&.username == 'docbot' && !user.nil? && user.curator?
   end
 
   def peer_curator?

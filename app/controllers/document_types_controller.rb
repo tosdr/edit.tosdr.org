@@ -22,15 +22,14 @@ class DocumentTypesController < ApplicationController
     authorize DocumentType
 
     @document_type = DocumentType.new
-    @submit_text = current_user.admin || current_user.curator ? 'Create' : 'Request'
+    @submit_text = privileged_user? ? 'Create' : 'Request'
   end
 
   def create
     authorize DocumentType
 
     @document_type = DocumentType.new(document_type_params)
-    current_user_privileged = current_user.admin || current_user.curator
-    @document_type.status = 'pending' unless current_user_privileged
+    @document_type.status = 'pending' unless privileged_user?
 
     @document_type.user = current_user
 
@@ -83,6 +82,13 @@ class DocumentTypesController < ApplicationController
   end
 
   def document_type_params
-    params.require(:document_type).permit(:user_id, :name, :status, :description)
+    permitted = %i[name description]
+    permitted << :status if privileged_user?
+
+    params.require(:document_type).permit(*permitted)
+  end
+
+  def privileged_user?
+    current_user&.admin || current_user&.curator
   end
 end

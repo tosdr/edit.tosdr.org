@@ -49,35 +49,37 @@ class ServicesController < ApplicationController
   def annotate
     authorize Service
 
+    if params[:point_id]
+      @point = Point.find(params[:point_id])
+      authorize @point, :update?
+    end
+
     @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @missing_points = @service.points.where(status: 'approved-not-found')
-    if params[:point_id] && current_user
-      @point = Point.find_by id: params[:point_id]
-    else
-      @topics = Topic.topic_use_frequency
-    end
+    @topics = Topic.topic_use_frequency unless @point
   end
 
   def quote
-    authorize Service
-
-    puts 'quote!'
-    puts params
-
     @service = Service.find(params[:id] || params[:service_id])
 
-    if params[:point_id] && current_user
-      point = Point.find_by id: params[:point_id]
+    if params[:point_id]
+      point = Point.find(params[:point_id])
+
+      authorize point, :update?
+
+      point.status = point.status == 'approved-not-found' ? 'approved' : 'pending'
     else
+      authorize Service
+
       @case = Case.find(params[:quoteCaseId])
       point = build_point(@case, @service, current_user)
+
+      # Never taken from the request: a freshly annotated point always enters the queue.
+      point.status = 'pending'
     end
 
     point = build_quote(point, @service)
-
-    status = point.status
-    point.status = status == 'approved-not-found' ? 'approved' : 'pending'
 
     if point.save
       if params[:point_id]
@@ -86,7 +88,7 @@ class ServicesController < ApplicationController
         redirect_to service_path(params[:id]) + '/annotate'
       end
     else
-      puts point.errors.full_messages
+      Rails.logger.warn("SERVICE QUOTE: point save failed: #{point.errors.full_messages.join(', ')}")
     end
   end
 
@@ -244,7 +246,7 @@ class ServicesController < ApplicationController
 
   def build_point(case_obj, service, current_user)
     point = Point.new(
-      params.permit(:title, :source, :status, :analysis, :service_id, :query, :point_change, :case_id, :document,
+      params.permit(:title, :source, :analysis, :service_id, :query, :point_change, :case_id, :document,
                     :quote_start, :quote_end, :quote_text)
     )
     point.user = current_user
