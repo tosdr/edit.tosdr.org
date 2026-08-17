@@ -202,7 +202,8 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    excon (0.99.0)
+    excon (1.5.0)
+      logger
     execjs (2.8.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -243,9 +244,9 @@ GEM
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
-    fog-core (2.3.0)
+    fog-core (2.6.0)
       builder
-      excon (~> 0.71)
+      excon (~> 1.0)
       formatador (>= 0.2, < 2.0)
       mime-types
     fog-json (1.2.0)
