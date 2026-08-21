@@ -1,6 +1,6 @@
 # Phoenix
 
-## Table of COntents
+## Table of Contents
 
 - [Overview](#overview)
   - [Infrastructure](#infrastructure)
