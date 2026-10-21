@@ -149,7 +149,7 @@ GEM
     connection_pool (3.0.2)
     crack (0.4.5)
       rexml
-    crass (1.0.6)
+    crass (1.0.7)
     csv (3.3.5)
     database_cleaner-active_record (2.1.0)
       activerecord (>= 5.a)
