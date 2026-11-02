@@ -17,7 +17,7 @@
           <%= render "shared/search_vue" %>
           <div class="mt-2">
             <span class="text-muted" style="font-size: small;">
-              Search by title or topic
+              Search by case or topic title
             </span>
           </div>
         </div>
@@ -32,26 +32,35 @@
       <div class="loading" v-if="loading">
         Loading...
       </div>
-      <div class="" v-else>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Topic</th>
-                <th scope="col" class="text-right">Rating</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="" v-for="c in filteredCases" :key="c">
-                <td v-bind:title="c.case.description"><a v-bind:href="'/cases/'+ c.case.id"> {{ c.case.title }} </a></td>
-                <td v-bind:title="c.case.topic_id"><a v-bind:href="'/topics/'+ c.case.topic_id"> View Topic </a></td>
-                <td v-bind:class="c.pointbox"></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+      <div v-else>
+        <p v-if="groupedCases.length === 0">No cases match your search.</p>
+        <div v-for="group in groupedCases" :key="group.key" class="mb-4">
+          <h2 class="h4">
+            <a v-if="group.topic" v-bind:href="'/topics/' + group.topic.id">{{ group.topic.title }}</a>
+            <span v-else>No topic</span>
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col" class="text-right" style="width: 10%;" title="Points of any status, excluding deleted">Points</th>
+                  <th scope="col" class="text-right" style="width: 10%;">Approved</th>
+                  <th scope="col" class="text-right" style="width: 10%;">Weight</th>
+                  <th scope="col" style="width: 10%;">Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="c in group.cases" :key="c.case.id">
+                  <td v-bind:title="c.case.description"><a v-bind:href="'/cases/' + c.case.id">{{ c.case.title }}</a></td>
+                  <td class="text-right">{{ c.points_count }}</td>
+                  <td class="text-right"><a v-bind:href="'/cases/' + c.case.id + '?status=approved'" title="View approved points">{{ c.approved_points_count }}</a></td>
+                  <td class="text-right">{{ c.case.score }}</td>
+                  <td><div v-bind:class="c.pointbox"></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

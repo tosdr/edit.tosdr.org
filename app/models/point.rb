@@ -8,6 +8,10 @@ class Point < ApplicationRecord
   AUTO_APPROVAL_MAX_AGE = 6.months
   VETO_THRESHOLD = 3
 
+  STATUSES = %w[approved pending declined changes-requested draft approved-not-found pending-not-found deleted].freeze
+  # Statuses a point can be listed under; deleted points are hidden by the default scope.
+  LISTABLE_STATUSES = (STATUSES - %w[deleted]).freeze
+
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
   belongs_to :document, optional: true
@@ -20,9 +24,7 @@ class Point < ApplicationRecord
   # but a pre-existing point that leaves it untouched can still be saved/edited so legacy
   # blank-title rows are not stuck. status and case_id (referential) stay strict.
   validates :title, presence: true, unless: -> { persisted? && !title_changed? }
-  validates :status,
-            inclusion: { in: %w[approved pending declined changes-requested draft approved-not-found pending-not-found deleted],
-                         allow_nil: false }
+  validates :status, inclusion: { in: STATUSES, allow_nil: false }
   validates :case_id, presence: true
 
   # Soft-delete: deprecated points have status 'deleted' and are hidden from every
