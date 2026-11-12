@@ -54,16 +54,11 @@ We rely on Docker as an attempt to be OS-agnostic.
 
 - [Docker](https://docs.docker.com/engine/install/) and `docker-compose`
 
-Please refer to the [Quickstart Guide](./QUICKSTART.md) for more information on manual set-up.
-If anything is either missing or out of date, please let us know.
-
 There are two ways to run Phoenix in development: with or without Hypothesis.
 Plenty of hacking around can be done without running Hypothesis, particularly if you just want to
 get your feet wet or see what the codebase is all about.
 
 **If you are not interested in running Hypothesis, please skip ahead to [Running Phoenix](#running-phoenix)**.
-
-**NOTE: The use of Hypothesis within Phoenix is not supported without Docker**
 
 ### Running Phoenix
 
@@ -310,15 +305,6 @@ make dev
 
 You will need a Node version that is more recent than `12.20.0`. **`H` has to be running**.
 Instructions can be found [here](https://h.readthedocs.io/projects/client/en/latest/developers/developing.html#running-the-client-from-h), if needed.
-
----
-
-## Database
-
-_**This wiki has been deprecated. We are in the process of updating it.**_
-
-All the details on the database schema can be found on the [wiki](https://github.com/tosdr/edit.tosdr.org/wiki/database).
-
 ---
 
 ## API
