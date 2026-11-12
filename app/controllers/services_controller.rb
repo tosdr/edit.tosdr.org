@@ -100,6 +100,8 @@ class ServicesController < ApplicationController
     @points = @service.points.where(status: 'approved') unless current_user
     @points = @service.points_ordered_status_class.values.flatten if current_user
     @versions = @service.versions.includes(:item).reverse
+    # Badge each version by whoever made that change, not by the service's submitter
+    @version_users = User.where(id: @versions.filter_map(&:whodunnit).map(&:to_i)).index_by(&:id)
   end
 
   def edit
