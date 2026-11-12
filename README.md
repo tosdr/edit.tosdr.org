@@ -34,16 +34,7 @@ Users submit points by annotating a service's documents, e.g. Privacy Policy,
 which Phoenix obtains and stores through web-scraping.
 
 Once a service has been comprehensively analysed in Phoenix, as determined by our curators,
-the grades appear on [tosdr.org](https://tosdr.org).
-
-An **A** grade indicates that the service treats users with a high level of respect
-for their privacy and personal data. Grades **D** and **E** indicate that the services treat users
-without much respect for their privacy and personal data. Examples include [GitHub](https://tosdr.org/en/service/297) and [Facebook](https://tosdr.org/en/service/182).
-
-The grades are calculated based on an algorithm, which, in our case is really just a simple list of
-conditions that factor in the balance of any given service's points, the relationship of the points
-to each other, and certain thresholds. This algorithm is subject to change.
-You can read more about it on our [forum](https://tosdr.community/).
+the grades appear on [tosdr.org](https://tosdr.org). You can read more about the grades on our [forum](https://tosdr.community/).
 We discuss how it has changed here: [_Updating the algorithm for service grades – thoughts?_](https://tosdr.community/t/updating-the-algorithm-for-service-grades-thoughts/2926/1)
 
 ### Infrastructure
@@ -51,13 +42,7 @@ We discuss how it has changed here: [_Updating the algorithm for service grades 
 Phoenix is a Ruby on Rails application with some Vue.js mixed in, using a PostgreSQL database.
 
 For annotation, Phoenix relies on a customised instance of [Hypothesis](https://github.com/hypothesis),
-including both forks of the [Hypothesis web application repository](https://github.com/tosdr/h) and the [Hypothesis client](https://github.com/tosdr/client).
-
-This is a _new implementation_, [merged](https://github.com/tosdr/edit.tosdr.org/pull/1116) for use in production on May 17, 2023.
-That being said, **it is still experimental**.
-
-When used, Phoenix also connects to two other services: Atlassian, which runs both our [widget](https://status.tosdr.org) (helps us to monitor the application's health),
-and `jrbit.de` (where our databases live as well as our system for reporting errors).
+including both forks of the [Hypothesis web application repository](https://github.com/tosdr/h) and the [Hypothesis client](https://github.com/tosdr/client). This is a _new implementation_, [merged](https://github.com/tosdr/edit.tosdr.org/pull/1116) for use in production on May 17, 2023.
 
 ---
 
@@ -68,14 +53,6 @@ and `jrbit.de` (where our databases live as well as our system for reporting err
 We rely on Docker as an attempt to be OS-agnostic.
 
 - [Docker](https://docs.docker.com/engine/install/) and `docker-compose`
-
-**If you are not able to use Docker**, you'll need to have the following dependencies installed:
-
-- Ruby 3.4.9
-- Rails (Phoenix uses version 7.1.x)
-- Bundler 2.4.14
-- Postgres 15
-- Node.js (to access Yarn)
 
 Please refer to the [Quickstart Guide](./QUICKSTART.md) for more information on manual set-up.
 If anything is either missing or out of date, please let us know.

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require "#{Rails.root}/lib/tosbackdoc.rb"
 require 'zlib'
-
-puts 'loaded?'
-puts TOSBackDoc
 
 # app/controllers/documents_controller.rb
 class DocumentsController < ApplicationController

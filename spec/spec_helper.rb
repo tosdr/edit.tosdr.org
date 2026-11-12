@@ -15,10 +15,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rails_helper'
 
-# require 'capybara/rails'
-require 'capybara/rspec'
-require 'pundit/matchers'
-
 RSpec.configure do |config|
   ENV['H_API_KEY'] = 'abcd1234'
   # rspec-expectations config goes here. You can use an alternate
