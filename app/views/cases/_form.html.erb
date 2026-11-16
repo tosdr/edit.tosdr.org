@@ -4,7 +4,7 @@
       <div class="form-inputs col-xs-12">
         <%= f.input :title, placeholder: "Case title", label: 'Title' %>
         <%= f.input :classification, as: :radio_buttons, collection: [['blocker', 'blocker'], ['bad', 'bad'], ['neutral', 'neutral'], ['good', 'good']] %>
-        <%= f.input :score, placeholder: 50, input_html: { min: 0, max: 100, value: case_obj.score || 50 }, label: 'Weight', hint: "Range: 0..100. Higher weights make good points extra good, and bad/blocker points extra bad. Higher weight points have more impact on a service's rating, and are also displayed more prominently in the review summaries on <a href=\"https://tosdr.org\">ToS;DR</a>.".html_safe %>
+        <%= f.input :score, placeholder: 50, input_html: { min: 0, max: 100, value: case_obj.score || 50 }, label: 'Weight', hint: "Range: 0..100. Higher weight points are displayed more prominently in the review summaries on <a href=\"https://tosdr.org\">ToS;DR</a>. Weight does not affect a service's rating, which is based only on how many distinct good, bad and blocker cases apply.".html_safe %>
         <%= f.association :topic, collection: topics, hint: "Pick the topic where the case applies" %>
         <%= f.input :description, as: :text , input_html: { rows: 3, class: "text-area" } %>
         <%= f.input :docbot_regex, label: 'DocBot Regex', hint: "(Optional) Regex for use in the DocBot Server. Insert nothing if you do not know what this is." %>
