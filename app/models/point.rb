@@ -11,6 +11,8 @@ class Point < ApplicationRecord
   STATUSES = %w[approved pending declined changes-requested draft approved-not-found pending-not-found deleted].freeze
   # Statuses a point can be listed under; deleted points are hidden by the default scope.
   LISTABLE_STATUSES = (STATUSES - %w[deleted]).freeze
+  # The status a point drops to when its quote can no longer be found in the document text.
+  QUOTE_NOT_FOUND_STATUSES = { 'approved' => 'approved-not-found', 'pending' => 'pending-not-found' }.freeze
 
   belongs_to :user, optional: true
   belongs_to :topic, optional: true
@@ -185,17 +187,9 @@ class Point < ApplicationRecord
     :veto_recorded
   end
 
-  def restore
-    quote_start = document.text.index(quote_text)
-    quote_end = quote_start + quote_text.length
-    self.quote_start = quote_start
-    self.quote_end = quote_end
-    save
-  end
-
   # A point participates in quote tracking only when it carries quote text plus at least
   # one offset. Declined points are excluded outright. Shared by every document path that
-  # searches the text for a point's quote (see Document#flag_points_missing_from).
+  # searches the text for a point's quote (see Document#reconcile_points!).
   def quote_locatable?
     return false if status == 'declined'
     return false if quote_text.blank?
@@ -206,15 +200,24 @@ class Point < ApplicationRecord
   # Demote an approved/pending point to its *-not-found counterpart when its quote can no
   # longer be located in the document text. Idempotent and convergent: a no-op (returns
   # false) for any other status -- including already-flagged points -- and only writes on
-  # a real change. Restoring a found point back to approved/pending stays a manual action.
+  # a real change. #mark_quote_found! is the inverse.
   def mark_quote_not_found!
-    new_status = case status
-                 when 'approved' then 'approved-not-found'
-                 when 'pending'  then 'pending-not-found'
-                 end
+    new_status = QUOTE_NOT_FOUND_STATUSES[status]
     return false unless new_status
 
     update(status: new_status)
+  end
+
+  # Record where the quote now sits in the document text: `location` is a Range of offsets into
+  # the raw text and `raw_quote` the raw text there, which may differ from the old quote_text in
+  # tags, whitespace or case. A *-not-found point returns to approved/pending, since its quote
+  # is there. Saves only on a real change; returns false if that save fails.
+  def mark_quote_found!(location, raw_quote)
+    self.quote_start = location.begin
+    self.quote_end = location.end
+    self.quote_text = raw_quote
+    self.status = QUOTE_NOT_FOUND_STATUSES.key(status) || status
+    !changed? || save
   end
 
   def restore_elasticsearch

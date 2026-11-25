@@ -34,10 +34,6 @@ class DocumentPolicy < ApplicationPolicy
     edit?
   end
 
-  def restore_points?
-    !user.nil? && owner?
-  end
-
   private
 
   def owner?

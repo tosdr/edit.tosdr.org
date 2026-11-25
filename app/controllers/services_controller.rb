@@ -54,7 +54,7 @@ class ServicesController < ApplicationController
       authorize @point, :update?
     end
 
-    @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: %i[points document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @missing_points = @service.points.where(status: 'approved-not-found')
     @topics = Topic.topic_use_frequency unless @point
