@@ -15,8 +15,4 @@ class Topic < ApplicationRecord
   def self.search_by_topic_title(query)
     Topic.where("title ILIKE ?", "%#{query}%")
   end
-
-  def self.topic_use_frequency
-    Topic.where.not(id: 53).includes(:cases)
-  end
 end

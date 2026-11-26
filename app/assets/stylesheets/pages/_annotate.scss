@@ -2,30 +2,6 @@
   padding-top: 1rem;
 }
 
-.toast {
-  position: absolute;
-  display: none;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 2rem 5rem;
-  background: #fff;
-  border: 1px solid #ffe;
-  box-shadow: #ccc 1px 1px 1rem;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 200ms ease;
-
-  select {
-    width: 90%;
-    text-overflow: ellipsis;
-  }
-}
-
-.toast.withSelection {
-  display: block;
-  opacity: 1;
-}
-
 .hiddenTag {
   // This is, admittedly, brittle: this originally had a width of zero and a line-height of zero,
   // but Chrome would then not include the contents in `document.getSelection().toString()` - which

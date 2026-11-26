@@ -183,9 +183,6 @@ describe 'Deprecation (soft-delete)', type: :model do
   end
 
   describe 'Document uniqueness under the default scope' do
-    # location_uniqueness_check builds an absolute document_url in its error message.
-    before { Rails.application.routes.default_url_options[:host] = 'example.com' }
-
     it 'blocks a second active document at the same url+selector' do
       active = create(:document)
       duplicate = build(:document, url: active.url, selector: active.selector, service: active.service)

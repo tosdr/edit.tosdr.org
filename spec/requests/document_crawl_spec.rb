@@ -120,7 +120,7 @@ RSpec.describe 'Document crawl', type: :request do
     context 'when the crawler answers with an HTTP error' do
       before { stub_request(:post, ota_url).to_return(status: [502, 'Bad Gateway']) }
 
-      it_behaves_like 'a failed crawl', 'the crawler responded with HTTP 502 Bad Gateway.'
+      it_behaves_like 'a failed crawl', 'double check the URL and selector'
     end
 
     context 'when the crawler drops the connection' do
@@ -200,7 +200,7 @@ RSpec.describe 'Document crawl', type: :request do
       patch document_path(document), params: { document: { url: 'https://example.com/new' } }
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('Crawl failed: the crawler responded with HTTP 502 Bad Gateway.')
+      expect(response.body).to include('Crawl failed: double check the URL and selector')
       document.reload
       expect(document.url).to eq('https://example.com/old')
       expect(document.text).to eq(old_text)
@@ -240,7 +240,7 @@ RSpec.describe 'Document crawl', type: :request do
 
       expect { post documents_path, params: params }.not_to change(Document, :count)
 
-      expect(response.body).to include('Crawl failed: the crawler responded with HTTP 502 Bad Gateway.')
+      expect(response.body).to include('Crawl failed: double check the URL and selector')
     end
 
     it 'does not claim success when the crawl works but the document cannot be saved' do

@@ -102,6 +102,36 @@ describe 'Point reconciliation', type: :model do
       expect(second.found_again).to be_empty
       expect { document.reconcile_points! }.not_to(change { moved.reload.updated_at })
     end
+
+    # The point page's history lists title, analysis and status changes, so a version for a move
+    # alone would show up there as an empty "Analysis updated" entry.
+    describe 'versions' do
+      it 'saves a relocated quote without creating a version' do
+        point = quote_point('collect your data', status: 'approved')
+        document.update_columns(text: '<p>Intro. We <b>Collect</b>  your data.</p>')
+
+        expect { document.reconcile_points! }.not_to(change { point.versions.count })
+        expect(point.reload.quote_text).to eq('Collect</b>  your data')
+      end
+
+      it 'creates a version for the status change when a quote goes missing' do
+        point = quote_point('collect your data', status: 'approved')
+        document.update_columns(text: 'Something else entirely.')
+
+        expect { document.reconcile_points! }.to change { point.versions.count }.by(1)
+        expect(point.versions.last.changeset['status']).to eq(%w[approved approved-not-found])
+      end
+
+      it 'creates a version for the status change when a missing quote is found again elsewhere' do
+        point = quote_point('collect your data', status: 'approved-not-found')
+        document.update_columns(text: "New intro. #{text}")
+
+        expect { document.reconcile_points! }.to change { point.versions.count }.by(1)
+        changeset = point.versions.last.changeset
+        expect(changeset['status']).to eq(%w[approved-not-found approved])
+        expect(changeset['quote_start']).to eq([3, 14])
+      end
+    end
   end
 
   describe 'saving new text' do

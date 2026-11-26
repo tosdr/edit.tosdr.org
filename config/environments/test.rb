@@ -7,6 +7,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   web_host = ENV['AUTHORITY'] || 'localhost'
   web_port = ENV['WEB_PORT'] || '9090'
+  # Absolute URLs built outside a request (e.g. Document#location_uniqueness_check's link to the
+  # existing document) need a host, as in every other environment.
+  routes.default_url_options[:host] = web_host
 
   config.action_controller.default_url_options = {
     host: web_host,

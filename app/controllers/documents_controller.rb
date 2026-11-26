@@ -185,7 +185,7 @@ class DocumentsController < ApplicationController
     end
 
     unless response.is_a?(Net::HTTPSuccess)
-      return crawl_failure(document, "the crawler responded with HTTP #{response.code} #{response.message}.")
+      return crawl_failure(document, "double check the URL and selector.")
     end
 
     # The crawler answers with the extracted document as a JSON string.

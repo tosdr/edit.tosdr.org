@@ -212,12 +212,19 @@ class Point < ApplicationRecord
   # the raw text and `raw_quote` the raw text there, which may differ from the old quote_text in
   # tags, whitespace or case. A *-not-found point returns to approved/pending, since its quote
   # is there. Saves only on a real change; returns false if that save fails.
+  #
+  # Moving the quote alone creates no PaperTrail version: the point page's history shows only
+  # title, analysis and status changes, so such a version would be an empty "Analysis updated"
+  # entry. A status change (found again) is still versioned, along with the move.
   def mark_quote_found!(location, raw_quote)
     self.quote_start = location.begin
     self.quote_end = location.end
     self.quote_text = raw_quote
     self.status = QUOTE_NOT_FOUND_STATUSES.key(status) || status
-    !changed? || save
+    return true unless changed?
+    return save if status_changed?
+
+    PaperTrail.request(enabled: false) { save }
   end
 
   def restore_elasticsearch

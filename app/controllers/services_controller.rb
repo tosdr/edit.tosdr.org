@@ -49,47 +49,9 @@ class ServicesController < ApplicationController
   def annotate
     authorize Service
 
-    if params[:point_id]
-      @point = Point.find(params[:point_id])
-      authorize @point, :update?
-    end
-
     @service = Service.includes(documents: %i[points document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @missing_points = @service.points.where(status: 'approved-not-found')
-    @topics = Topic.topic_use_frequency unless @point
-  end
-
-  def quote
-    @service = Service.find(params[:id] || params[:service_id])
-
-    if params[:point_id]
-      point = Point.find(params[:point_id])
-
-      authorize point, :update?
-
-      point.status = point.status == 'approved-not-found' ? 'approved' : 'pending'
-    else
-      authorize Service
-
-      @case = Case.find(params[:quoteCaseId])
-      point = build_point(@case, @service, current_user)
-
-      # Never taken from the request: a freshly annotated point always enters the queue.
-      point.status = 'pending'
-    end
-
-    point = build_quote(point, @service)
-
-    if point.save
-      if params[:point_id]
-        redirect_to point_path(params[:point_id])
-      else
-        redirect_to service_path(params[:id]) + '/annotate'
-      end
-    else
-      Rails.logger.warn("SERVICE QUOTE: point save failed: #{point.errors.full_messages.join(', ')}")
-    end
   end
 
   def show
@@ -233,30 +195,6 @@ class ServicesController < ApplicationController
     http.request(req)
   rescue StandardError => e
     Rails.logger.warn("Fastly CDN purge failed for service #{service_id}: #{e.message}")
-  end
-
-  def build_quote(point, service)
-    document = service.documents.find(params[:document_id])
-    point.document = document
-
-    point.quote_text = document.text[params[:quote_start].to_i, params[:quote_end].to_i - params[:quote_start].to_i]
-    point.source = document.url
-    point.quote_start = params[:quote_start]
-    point.quote_end = params[:quote_end]
-    point
-  end
-
-  def build_point(case_obj, service, current_user)
-    point = Point.new(
-      params.permit(:title, :source, :analysis, :service_id, :query, :point_change, :case_id, :document,
-                    :quote_start, :quote_end, :quote_text)
-    )
-    point.user = current_user
-    point.case = case_obj
-    point.title = case_obj.title
-    point.service = service
-    point.analysis = 'Generated through the annotate view'
-    point
   end
 
   def privileged_user

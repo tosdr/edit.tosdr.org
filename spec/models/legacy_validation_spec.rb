@@ -4,8 +4,6 @@ require 'rails_helper'
 # (predating the presence/uniqueness validations) stay editable, while create paths and
 # edits that actually change a field still reject bad data.
 describe 'Selective (grandfathered) validations', type: :model do
-  before { Rails.application.routes.default_url_options[:host] = 'example.com' }
-
   describe 'Document' do
     it 'rejects a brand-new document with blank content fields' do
       doc = build(:document, text: '', selector: '')

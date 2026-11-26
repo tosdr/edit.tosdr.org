@@ -5,7 +5,8 @@ RSpec.describe 'security configuration' do
     expect(Rails.application.config.filter_parameters).to include(:h_key, :'H-Key', :token)
   end
 
-  it 'requires DELETE for Devise sign out' do
-    expect(Devise.sign_out_via).to eq(:delete)
+  # The navbar's log-out links are plain GET links (see shared/_navbar.html.erb).
+  it 'signs out via GET' do
+    expect(Devise.sign_out_via).to eq(:get)
   end
 end

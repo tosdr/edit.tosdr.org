@@ -6,9 +6,14 @@
 
 require 'rufus-scheduler'
 
-return unless defined?(Puma) || defined?(Rails::Server) || ENV['RUN_SCHEDULER'] == 'true'
+# Only the web server runs the scheduler. Bundler.require loads the puma gem into every process
+# (rake, console, runner, rspec), so `defined?(Puma)` can't tell the server apart: check that
+# this process was started as puma (or `rails server`) instead.
+return unless File.basename($PROGRAM_NAME) == 'puma' || defined?(Rails::Server) || ENV['RUN_SCHEDULER'] == 'true'
 
-Rails.application.load_tasks
+# The scheduled jobs invoke rake tasks. Under rake the Rakefile has already loaded them, and
+# loading them again would register every task's body a second time, so each would run twice.
+Rails.application.load_tasks unless defined?(Rake::Task) && Rake::Task.task_defined?('environment')
 
 scheduler = Rufus::Scheduler.singleton
 

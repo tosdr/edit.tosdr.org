@@ -58,8 +58,6 @@ Rails.application.routes.draw do
 
   # routes for annotation functionality
   get 'services/:id/annotate', to: 'services#annotate', as: 'annotate'
-  get 'services/:id/annotate?point_id=:point_id', to: 'services#annotate', as: 'annotate_point'
-  post 'services/:id/annotate', to: 'services#quote'
 
   resources :topics do
     resources :topic_comments, only: %i[new create]

@@ -22,10 +22,6 @@ class ServicePolicy < ApplicationPolicy
     index?
   end
 
-  def quote?
-    index?
-  end
-
   def create?
     (!user.nil? && user.curator?) || (!user.nil? && user.admin?)
   end
