@@ -77,6 +77,8 @@ class PointsController < ApplicationController
       @point_text = annotation_json[2] && annotation_json[2]['exact']
     end
     @versions = @point.versions.includes(:item).reverse
+    # Badge each version by whoever made that change, not by the point's author (who may be a bot)
+    @version_users = User.where(id: @versions.filter_map(&:whodunnit).map(&:to_i)).index_by(&:id)
   end
 
   def update

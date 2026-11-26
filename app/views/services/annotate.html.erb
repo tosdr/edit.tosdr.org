@@ -36,12 +36,6 @@
   </div>
 <% end %>
 
-<% if @sourced_from_ota %>
-  <div>
-    Some of the documents for this service have been sourced from the Open Terms Archive as part of an ongoing effort to improve our data. Please <%= link_to "read here", "https://tosdr.community/t/partnership-between-phoenix-and-open-terms-archive-sourcing-document-text/3100", :target => "_blank" %> for more information.
-  </div>
-<% end %>
-
 <% if @missing_points.any? %>
   <div>
     <p>
@@ -91,18 +85,10 @@
       <div class="panel panel-default">
         <div class="panel-heading pb-2">
           <h3><%= link_to doc.document_type ? doc.document_type.name : doc.name, document_path(doc) %></h3>
-          <% if policy(doc).restore_points? %>
-            <% if doc.snippets[:points_needing_restoration].present? %>
-              <%= link_to("Restore quotes", document_restore_points_path(doc), method: :post, class: 'btn btn-sm btn-warning') %>
-              <div>
-                <small>Quotes for certain points were not found. Click here to try to restore them.</small>
-              </div>
-            <% end %>
-          <% end %>
         </div>
         <div class="panel-body documentContent" data-content="<%= doc.text %>">
           <% offset = 0 %>
-          <% doc.snippets[:snippets].each do |snippet| %>
+          <% doc.snippets.each do |snippet| %>
             <% if snippet[:pointId] %>
               <hypothesis-highlight class="hypothesis-highlight user-annotations"> <%= hide_tags(snippet[:text])%></hypothesis-highlight>
             <% else %>

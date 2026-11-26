@@ -18,10 +18,18 @@ class CasesController < ApplicationController
   def list_all
     authorize Case
 
-    object = []
-    cases = Case.all
-    cases.map do |c|
-      object << { pointbox: c.determine_pointbox, case: c }
+    # Point's default scope already excludes soft-deleted points.
+    points_counts = Point.group(:case_id).count
+    approved_counts = Point.where(status: 'approved').group(:case_id).count
+
+    object = Case.includes(:topic).map do |c|
+      {
+        pointbox: c.determine_pointbox,
+        case: c,
+        topic: c.topic && { id: c.topic.id, title: c.topic.title },
+        points_count: points_counts.fetch(c.id, 0),
+        approved_points_count: approved_counts.fetch(c.id, 0)
+      }
     end
 
     render json: object
@@ -53,6 +61,8 @@ class CasesController < ApplicationController
 
     @points = @case.points.includes(:service).includes(:user)
     @points = @points.search_points_by_multiple(params[:query]) if params[:query]
+    @status = params[:status].presence_in(Point::LISTABLE_STATUSES)
+    @points = @points.where(status: @status) if @status
   end
 
   def update

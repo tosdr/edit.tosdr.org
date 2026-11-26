@@ -35,6 +35,15 @@
       </div>
     </div> <!--/.float-right -->
     <br>
+    <%= form_tag case_path(@case), method: :get, class: 'form-inline', style: 'margin-bottom: 15px;' do %>
+      <%= hidden_field_tag :query, params[:query] if params[:query] %>
+      <%= label_tag :status, 'Showing', style: 'font-weight: normal;' %>
+      <%= select_tag :status, point_status_filter_options(@status),
+                     class: 'form-control input-sm', style: 'display: inline-block; width: auto;',
+                     onchange: 'this.form.submit()' %>
+      points
+      <noscript><%= submit_tag 'Apply', name: nil, class: 'btn btn-default btn-sm' %></noscript>
+    <% end %>
     <% if @points.empty? %>
       <p>There are no points to display at this time!</p>
     <% else %>

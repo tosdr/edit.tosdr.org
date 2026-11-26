@@ -11,6 +11,23 @@ class Document < ApplicationRecord
   has_many :points
   has_many :document_comments, dependent: :destroy
 
+  # What #reconcile_points! did to the points after the text changed: quotes no longer in the
+  # text, quotes moved to a new location, and previously missing quotes found again.
+  PointReconciliation = Struct.new(:missing, :relocated, :found_again, keyword_init: true)
+
+  # Set by #reconcile_points!; nil when this instance's text hasn't been saved with a change.
+  attr_reader :point_reconciliation
+
+  # text_version identifies the exact text: a SHA-256 hex digest of the raw stored text, so the
+  # same text always has the same version (including text that reverts to an earlier one).
+  # Docbot compares it against the version it last processed to skip unchanged documents.
+  before_save :set_text_version, if: :will_save_change_to_text?
+
+  # Every update that changes the text re-checks the points against it, inside the same
+  # transaction, so no path that writes new text (crawl, edit, console) can skip it. Not on
+  # create: a document being created has no points yet.
+  after_update :reconcile_points!, if: :saved_change_to_text?
+
   # Soft-delete: deprecated documents have status 'deleted' and are hidden from every
   # read path. The predicate is NULL-safe (most documents have a NULL status).
   # The column must stay table-qualified: when this scope lands in a JOIN's ON clause
@@ -123,102 +140,84 @@ class Document < ApplicationRecord
     runner.convert selector
   end
 
-  def snippets
-    retrieve_snippets(text)
-  end
+  # Bring every tracked point in line with the current text. For each point:
+  #   - quote still at its stored location: nothing to do;
+  #   - quote elsewhere (exactly, or ignoring tags/whitespace/case -- see QuoteLocator): move
+  #     quote_start/quote_end there and set quote_text to the raw text at that spot;
+  #   - quote nowhere: demote approved/pending to its *-not-found status.
+  # A *-not-found point whose quote is found returns to approved/pending. Otherwise the status is
+  # left alone. Runs after every update that changes the text (crawl, edit -- see the
+  # after_update above), so the annotate view only has to read. Idempotent. Points without
+  # offsets (those created from the Hypothesis sidebar) aren't tracked: see
+  # docs/hypothesis-sync/README.md. Returns, and keeps, a PointReconciliation.
+  def reconcile_points!
+    raw_text = text.to_s
+    locator = QuoteLocator.new(raw_text)
+    missing = []
+    relocated = []
+    found_again = []
 
-  # Flag points whose quote no longer appears in the current document text, demoting
-  # approved/pending points to their *-not-found status, and return the missing points.
-  # Thin wrapper over #flag_points_missing_from -- the single source of truth shared with
-  # #retrieve_snippets so the crawl (write) and annotation (read) paths can't diverge.
-  def handle_missing_points
-    flag_points_missing_from(text)
+    # find_each queries fresh rows without caching them on the association, so a `points`
+    # loaded before the text changed can't go stale, and none is left cached afterwards.
+    points.find_each do |point|
+      next unless point.quote_locatable?
+
+      location = locator.locate(point.quote_text, stored_start: point.quote_start)
+      if location.nil?
+        missing << point
+        point.mark_quote_not_found!
+        next
+      end
+
+      moved = point.quote_start != location.begin || point.quote_end != location.end
+      was_missing = Point::QUOTE_NOT_FOUND_STATUSES.value?(point.status)
+      next unless point.mark_quote_found!(location, raw_text[location])
+
+      relocated << point if moved
+      found_again << point if was_missing
+    end
+
+    Rails.logger.info(
+      "Document #{id}: reconciled points with new text (#{missing.length} missing, " \
+      "#{relocated.length} relocated, #{found_again.length} found again)"
+    )
+    @point_reconciliation = PointReconciliation.new(missing: missing, relocated: relocated,
+                                                    found_again: found_again)
   end
 
   def formatted_last_crawl_date
     last_crawl_date&.strftime('%Y-%m-%d %H:%M:%S')
   end
 
-  def retrieve_snippets(text_given)
-    text_to_scan = text_given || ''
-
-    # Shared detection: flag (and demote) every point whose quote is gone from the text.
-    flag_points_missing_from(text_to_scan)
-
-    quotes = []
-    snippets = []
-    points_with_quote_text_to_restore_in_doc = []
-
-    points.each do |p|
-      next unless p.quote_locatable?
-
-      quote_start = text_to_scan.index(p.quote_text)
-      next if quote_start.nil?
-
-      quote_start_changed = p.quote_start != quote_start
-      quote_end_changed = p.quote_end != p.quote_start + p.quote_text.length
-
-      quote_ok = !quote_start_changed && !quote_end_changed
-      quote_ok ? quotes << p : points_with_quote_text_to_restore_in_doc << p
+  # Split the text into plain and highlighted snippets for the annotate view. Read-only: a point
+  # is highlighted when the text at its stored offsets is its quote, and #reconcile_points!
+  # keeps those offsets current whenever the text changes.
+  def snippets
+    text_to_scan = text.to_s
+    quotes = points.select do |p|
+      p.quote_locatable? && p.quote_start && p.quote_end &&
+        text_to_scan[p.quote_start...p.quote_end] == p.quote_text
     end
 
+    snippets = []
     cursor = 0
 
-    quotes.sort! do |x, y|
-      puts 'comparing ' + x.quote_start.to_s + ' to ' + y.quote_start.to_s
-      x.quote_start - y.quote_start
-    end
+    quotes.sort_by(&:quote_start).each do |q|
+      # Skip a quote overlapping the previous highlight. One starting right at the cursor (at
+      # position 0, or immediately after the previous quote) is still highlighted.
+      next if q.quote_start < cursor
 
-    quotes.each do |q|
-      puts 'quote to snippet ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s + ' ..' + cursor.to_s
-      next unless q.quote_start > cursor
-
-      puts 'unquoted ' + cursor.to_s + ' -> ' + q.quote_start.to_s
-      snippets.push({
-                      text: text_to_scan[cursor, q.quote_start - cursor]
-                    })
-      puts 'quoted ' + q.quote_start.to_s + ' -> ' + q.quote_end.to_s
-      snippets.push({
-                      pointId: q.id,
-                      text: text_to_scan[q.quote_start, q.quote_end - q.quote_start],
-                      title: q.title
-                    })
-      puts 'cursor to ' + q.quote_end.to_s
+      snippets << { text: text_to_scan[cursor...q.quote_start] } if q.quote_start > cursor
+      snippets << { pointId: q.id, text: text_to_scan[q.quote_start...q.quote_end], title: q.title }
       cursor = q.quote_end
     end
 
-    puts 'final snippet ' + cursor.to_s + ' -> ' + text_to_scan.length.to_s
-
-    snippets.push({
-                    text: text_to_scan[cursor, text_to_scan.length - cursor]
-                  })
-
-    {
-      snippets: snippets,
-      points_needing_restoration: points_with_quote_text_to_restore_in_doc
-    }
+    snippets << { text: text_to_scan[cursor..] }
   end
 
   private
 
-  # Single source of truth for missing-quote detection, shared by the crawl (write) path
-  # (#handle_missing_points) and the annotation (read) path (#retrieve_snippets). Returns
-  # every quote-locatable point whose quote_text no longer appears in `text_to_scan`, and
-  # demotes the approved/pending ones to their *-not-found status as a side effect. The
-  # flip is guarded per point (only the missing ones move) and idempotent, so re-running
-  # over the same text makes no further changes and never touches still-present points.
-  def flag_points_missing_from(text_to_scan)
-    text_to_scan = text_to_scan.to_s
-    missing = []
-
-    points.each do |point|
-      next unless point.quote_locatable?
-      next if text_to_scan.include?(point.quote_text)
-
-      missing << point
-      point.mark_quote_not_found!
-    end
-
-    missing
+  def set_text_version
+    self.text_version = text.nil? ? nil : Digest::SHA256.hexdigest(text)
   end
 end

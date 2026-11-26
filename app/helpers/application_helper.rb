@@ -53,6 +53,14 @@ module ApplicationHelper
     distance_of_time_in_words(Time.current, Time.current + point.auto_approval_remaining)
   end
 
+  # Options for a "Showing [status] points" filter dropdown; the blank value means all statuses.
+  def point_status_filter_options(selected)
+    statuses = Point::LISTABLE_STATUSES.map do |status|
+      [status.sub('-not-found', ' (quote not found)').tr('-', ' '), status]
+    end
+    options_for_select([['all', '']] + statuses, selected.to_s)
+  end
+
   def status_badge(status)
     approved_icon = fa_icon 'check', text: ' APPROVED'
     approved_nf_icon = fa_icon 'check', text: ' QUOTE NOT FOUND'

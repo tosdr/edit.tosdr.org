@@ -111,8 +111,12 @@ class Service < ApplicationRecord
     calculate_grade(counts, balance)
   end
 
+  # Tally approved points by case classification, counting each case at most once.
+  # The same case can be approved several times for one service (identified from
+  # different quotes, in one document or across documents); that is still a single
+  # finding, so duplicates must not skew the grade.
   def determine_counts
-    total_ratings = approved_points.map { |p| p.case.classification }
+    total_ratings = approved_points.to_a.uniq(&:case_id).map { |p| p.case.classification }
     counts = Hash.new 0
     total_ratings.each { |rating| counts[rating] += 1 }
     counts

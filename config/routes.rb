@@ -39,7 +39,6 @@ Rails.application.routes.draw do
   post 'documents/new', to: 'documents#create'
   post 'documents/:id/edit', to: 'documents#update'
   post 'documents/:id/crawl', to: 'documents#crawl', as: :document_crawl
-  post 'documents/:id/restore_points', to: 'documents#restore_points', as: :document_restore_points
   post 'documents/:id/deprecate', to: 'documents#deprecate', as: :document_deprecate
 
   resources :document_types, except: [:destroy]

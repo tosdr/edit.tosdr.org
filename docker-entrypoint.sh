@@ -2,11 +2,16 @@
 
 set -m
 
-if [ ! -f /etc/SECRET_KEY_BASE ]; then
-	echo $(openssl rand -hex 128) > /etc/SECRET_KEY_BASE
+# SECRET_KEY_BASE signs session and Devise remember-me cookies, so it must stay
+# the same across deploys. Set it in the environment (e.g. the Portainer stack).
+# The fallback below lives inside the container and is lost on every redeploy.
+if [ -z "$SECRET_KEY_BASE" ]; then
+	echo "WARNING: SECRET_KEY_BASE is not set; using a container-local random key. Users will be logged out on every redeploy." >&2
+	if [ ! -f /etc/SECRET_KEY_BASE ]; then
+		echo $(openssl rand -hex 128) > /etc/SECRET_KEY_BASE
+	fi
+	export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 fi
-
-export SECRET_KEY_BASE=$(cat /etc/SECRET_KEY_BASE)
 
 rails db:migrate
 

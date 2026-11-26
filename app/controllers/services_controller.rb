@@ -54,7 +54,7 @@ class ServicesController < ApplicationController
       authorize @point, :update?
     end
 
-    @service = Service.includes(documents: %i[points user document_type]).find(params[:id] || params[:service_id])
+    @service = Service.includes(documents: %i[points document_type]).find(params[:id] || params[:service_id])
     @documents = @service.documents
     @missing_points = @service.points.where(status: 'approved-not-found')
     @topics = Topic.topic_use_frequency unless @point
@@ -100,6 +100,8 @@ class ServicesController < ApplicationController
     @points = @service.points.where(status: 'approved') unless current_user
     @points = @service.points_ordered_status_class.values.flatten if current_user
     @versions = @service.versions.includes(:item).reverse
+    # Badge each version by whoever made that change, not by the service's submitter
+    @version_users = User.where(id: @versions.filter_map(&:whodunnit).map(&:to_i)).index_by(&:id)
   end
 
   def edit

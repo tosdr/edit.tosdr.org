@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
-require "#{Rails.root}/lib/tosbackdoc.rb"
-require 'zlib'
-
-puts 'loaded?'
-puts TOSBackDoc
-
 # app/controllers/documents_controller.rb
 class DocumentsController < ApplicationController
   include Pundit::Authorization
 
+  CONTACT_LINK = "<a href='mailto:team@tosdr.org'>team@tosdr.org</a>"
+
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_document, only: %i[show edit update crawl restore_points deprecate]
+  before_action :set_document, only: %i[show edit update crawl deprecate]
   before_action :set_services, only: %i[new edit create update]
   before_action :set_document_names, only: %i[new edit create update]
-  before_action :set_uri, only: %i[new edit create update crawl]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -40,20 +35,16 @@ class DocumentsController < ApplicationController
     @document.user = current_user
     @document.name = @document.document_type.name if @document.document_type
 
-    document_url = document_params[:url]
-    selector = document_params[:selector]
+    crawl = crawl_text(@document)
 
-    request = build_request(document_url, @uri, selector)
-    results = fetch_text(request, @uri, @document)
-
-    @document = results[:document]
-    message = results[:message]
-
-    if @document.save
-      flash[:notice] = message
+    if crawl[:success] && @document.save
+      flash[:notice] = 'Document created!'
       redirect_to document_path(@document)
     else
-      flash.now[:warning] = message.html_safe if message
+      # Run the validations even when the crawl failed, so field errors (blank or duplicate
+      # URL, etc.) show next to the inputs alongside the crawl failure.
+      @document.validate unless crawl[:success]
+      flash.now[:warning] = crawl[:success] ? 'Document could not be saved.' : crawl[:message]
       render :new
     end
   end
@@ -61,34 +52,35 @@ class DocumentsController < ApplicationController
   def update
     authorize @document
 
-    @document.update(document_params)
+    @document.assign_attributes(document_params)
 
     if document_params[:document_type_id].present?
-      id = document_params[:document_type_id]
-      document_type = DocumentType.find(id)
-      @document.name = document_type.name unless @document.name == document_type.name
+      document_type = DocumentType.find(document_params[:document_type_id])
+      @document.name = document_type.name
     end
 
-    # we should probably only be running the crawler if the URL or css selector have changed
-    run_crawler = @document.saved_changes.keys.any? { |attribute| %w[url selector].include? attribute }
-    #### need to crawl regardless once we deploy
-    if run_crawler
-      request = build_request(@document.url, @uri, @document.selector)
-      results = fetch_text(request, @uri, @document)
+    # Recrawl only when the location changed. Nothing is saved until the crawl has succeeded,
+    # so a failed crawl can't leave a new URL/selector persisted next to the old location's text.
+    location_changed = @document.url_changed? || @document.selector_changed?
 
-      @document = results[:document]
-      @document.last_crawl_date = Time.now.getutc
-      message = results[:message]
-      crawl_sucessful = results[:crawl_sucessful]
+    unless @document.valid?
+      flash.now[:warning] = 'Document failed to update.'
+      return render 'edit'
     end
 
-    if (crawl_sucessful || !run_crawler) && @document.save
-      message ||= 'Document updated'
-      flash[:notice] = message
+    if location_changed
+      crawl = crawl_text(@document)
+      unless crawl[:success]
+        flash.now[:warning] = crawl[:message]
+        return render 'edit'
+      end
+    end
+
+    if @document.save
+      flash[:notice] = location_changed ? "Document updated and recrawled. #{text_change_summary}".strip : 'Document updated.'
       redirect_to document_path(@document)
     else
-      message ||= 'Document failed to update'
-      flash.now[:warning] = message
+      flash.now[:warning] = 'Document failed to update.'
       render 'edit'
     end
   end
@@ -120,48 +112,22 @@ class DocumentsController < ApplicationController
   def crawl
     authorize @document
 
-    old_text = @document.text
-    request = build_request(@document.url, @uri, @document.selector)
-    results = fetch_text(request, @uri, @document)
+    crawl = crawl_text(@document)
 
-    @document = results[:document]
-    @document.last_crawl_date = Time.now.getutc
-    message = results[:message]
-    crawl_sucessful = results[:crawl_sucessful]
-
-    text_changed = old_text != @document.text
-
-    if crawl_sucessful && text_changed && @document.save
-      missing_points = analyze_points
-      missing_points_count = missing_points.length.to_s
-      message = "Crawl successful. Document text updated. There are #{missing_points_count} points missing from the new text."
-      flash[:notice] = message
-    elsif crawl_sucessful && !text_changed && @document.save
-      flash[:notice] = 'Crawl successful. Document text unchanged.'
+    if !crawl[:success]
+      flash[:warning] = crawl[:message]
+    elsif @document.save
+      flash[:notice] = if @document.saved_change_to_text?
+                         "Crawl successful. Document text updated. #{text_change_summary}".strip
+                       else
+                         'Crawl successful. Document text unchanged.'
+                       end
     else
-      message ||= 'Crawl failed!'
-      flash.now[:warning] = message
+      errors = ERB::Util.html_escape(@document.errors.full_messages.to_sentence)
+      flash[:warning] = "The crawl succeeded, but the document could not be saved: #{errors}"
     end
 
     redirect_to document_path(@document)
-  end
-
-  def restore_points
-    authorize @document
-
-    points_to_restore = @document.snippets[:points_needing_restoration]
-    restored = []
-    not_restored = []
-
-    points_to_restore.each do |point|
-      point.restore ? restored << point.id : not_restored << point.id
-    end
-
-    message = "Restored #{restored.length} points."
-    message += " Unable to restore #{not_restored.length} points." if not_restored.any?
-    flash[:alert] = message
-
-    redirect_to annotate_path(@document.service)
   end
 
   private
@@ -170,7 +136,7 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id].to_i)
     # Defensive: an orphan document whose service was deprecated out-of-band (before the daily
     # backfill re-hides it) has a nil service and would 500 every view that reads it. Treat it
-    # as gone until the sweep deprecates it. Covers show/edit/crawl/update/restore_points.
+    # as gone until the sweep deprecates it. Covers show/edit/crawl/update/deprecate.
     redirect_to documents_path, alert: 'That document is no longer available.' if @document.service.nil?
   end
 
@@ -186,59 +152,83 @@ class DocumentsController < ApplicationController
     params.require(:document).permit(:service, :service_id, :user_id, :document_type_id, :name, :url, :selector)
   end
 
-  def set_uri
-    url = ENV['OTA_URL']
-    @uri = URI(url)
+  # Describes what the text change did to the document's points, from the reconciliation that
+  # Document runs after saving new text. Blank when the text didn't change.
+  def text_change_summary
+    reconciliation = @document.point_reconciliation
+    return '' unless reconciliation
+
+    summary = "#{helpers.pluralize(reconciliation.missing.length, 'point')} missing from the new text."
+    summary += " #{helpers.pluralize(reconciliation.relocated.length, 'quote')} relocated." if reconciliation.relocated.any?
+    if reconciliation.found_again.any?
+      summary += " #{helpers.pluralize(reconciliation.found_again.length, 'previously missing point')} " \
+                 'found again and restored.'
+    end
+    summary
   end
 
-  def build_request(document_url, uri, selector)
-    request = Net::HTTP::Post.new(uri)
-    params = '{"fetch": "' + document_url + '","select": "' + selector + '"}'
-    request.body = params
-    request.content_type = 'application/json'
-    token = ENV['OTA_API_SECRET']
-    request['Authorization'] = "Bearer #{token}"
-
-    request
-  end
-
-  def analyze_points
-    @document.handle_missing_points
-  end
-
-  def fetch_text(request, uri, document)
-    crawl_sucessful = false
-    begin
-      response_text = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.request(request)
-      end
-
-      case response_text
-      when Net::HTTPSuccess
-        puts 'HTTP Success'
-        response_body = response_text.body
-        parsed_response_body = JSON.parse(response_body)
-        document.text = parsed_response_body
-        crawl_sucessful = true
-        message = 'Document created!'
-      else
-        Rails.logger.error("HTTP Error: #{response_text.code} - #{response_text.message}")
-        message = "HTTP Error: Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{response_text.code} - #{response_text.message}"
-      end
-    rescue SocketError => e
-      # Handle network-related errors
-      Rails.logger.error("Network Error: #{e.message}")
-      message = "Network Error: Crawler unreachable. Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{e.message}"
-    rescue Timeout::Error => e
-      # Handle timeout errors
-      Rails.logger.error("Timeout Error: #{e.message}")
-      message = "Timeout Error:  Could not retrieve document text. Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{e.message}"
-    rescue StandardError => e
-      # Handle any other standard errors
-      Rails.logger.error("Standard Error: #{e.message}")
-      message = "Standard Error: Could not retrieve document text. Is the crawler running? Contact <a href='mailto:team@tosdr.org'>team@tosdr.org</a>. Details: #{e.message}"
+  # Fetch the document's text from the OTA crawler. On success, assigns text and
+  # last_crawl_date to the (unsaved) document and returns { success: true }. On failure,
+  # leaves the document untouched, logs one line, and returns { success: false, message: }.
+  # The message is HTML because flashes render raw, so every dynamic part is escaped.
+  def crawl_text(document)
+    if document.url.blank? || document.selector.blank?
+      return crawl_failure(document, 'this document needs both a URL and a CSS selector to be crawled.',
+                           contact: false)
     end
 
-    { document: document, message: message, crawl_sucessful: crawl_sucessful }
+    uri = crawler_uri
+    return crawl_failure(document, 'the crawler is not configured (OTA_URL is not set).') unless uri
+
+    response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      http.request(build_request(document, uri))
+    end
+
+    unless response.is_a?(Net::HTTPSuccess)
+      return crawl_failure(document, "the crawler responded with HTTP #{response.code} #{response.message}.")
+    end
+
+    # The crawler answers with the extracted document as a JSON string.
+    text = JSON.parse(response.body)
+    unless text.is_a?(String) && text.present?
+      return crawl_failure(document, 'the crawler returned no text for this URL and selector.')
+    end
+
+    document.text = text
+    document.last_crawl_date = Time.now.utc
+    { success: true }
+  rescue JSON::ParserError
+    crawl_failure(document, 'the crawler returned a response that could not be read.')
+  rescue SocketError => e
+    crawl_failure(document, "the crawler is unreachable (#{e.message}).")
+  rescue Timeout::Error => e
+    crawl_failure(document, "the crawler timed out (#{e.message}).")
+  rescue StandardError => e
+    # Our crawler fork drops the connection instead of answering when it can't load the page
+    # or the selector matches nothing, which surfaces here (typically as an EOFError).
+    crawl_failure(document, "#{e.class}: #{e.message}. If the crawler is running, check the URL and " \
+                            'selector: the crawler drops the connection when it cannot load the page or ' \
+                            'the selector matches nothing.')
+  end
+
+  def crawl_failure(document, reason, contact: true)
+    Rails.logger.warn("Crawl failed for document #{document.id || '(new)'} (#{document.url}): #{reason}")
+
+    message = "Crawl failed: #{ERB::Util.html_escape(reason)}"
+    message += " Contact #{CONTACT_LINK} if this keeps happening." if contact
+    { success: false, message: message }
+  end
+
+  def crawler_uri
+    url = ENV['OTA_URL']
+    URI(url) if url.present?
+  end
+
+  def build_request(document, uri)
+    request = Net::HTTP::Post.new(uri)
+    request.body = { fetch: document.url, select: document.selector }.to_json
+    request.content_type = 'application/json'
+    request['Authorization'] = "Bearer #{ENV['OTA_API_SECRET']}"
+    request
   end
 end
