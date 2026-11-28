@@ -120,13 +120,13 @@ RSpec.describe 'Document crawl', type: :request do
     context 'when the crawler answers with an HTTP error' do
       before { stub_request(:post, ota_url).to_return(status: [502, 'Bad Gateway']) }
 
-      it_behaves_like 'a failed crawl', 'double check the URL and selector'
+      it_behaves_like 'a failed crawl', 'check the URL'
     end
 
     context 'when the crawler drops the connection' do
       before { stub_request(:post, ota_url).to_raise(EOFError) }
 
-      it_behaves_like 'a failed crawl', 'check the URL and selector'
+      it_behaves_like 'a failed crawl', 'check the URL'
     end
 
     context 'when the crawler times out' do

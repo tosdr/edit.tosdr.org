@@ -52,7 +52,7 @@ including both forks of the [Hypothesis web application repository](https://gith
 
 We rely on Docker as an attempt to be OS-agnostic.
 
-- [Docker](https://docs.docker.com/engine/install/) and `docker-compose`
+- [Docker](https://docs.docker.com/engine/install/) and `docker compose`
 
 There are two ways to run Phoenix in development: with or without Hypothesis.
 Plenty of hacking around can be done without running Hypothesis, particularly if you just want to
@@ -73,16 +73,16 @@ The following steps should be completed from the root of the cloned repository.
 
 #### With Docker
 
-If you have installed [`docker-compose`](https://docs.docker.com/compose/install/), getting the application running
+If you have installed [`docker compose`](https://docs.docker.com/compose/install/), getting the application running
 involves five configuration commands, after which it can be started with a single command in the future.
 
 To prepare the application, run the following commands to build the application and initialise the database:
 
 ```sh
-docker-compose build
+docker compose build
 docker network create elasticsearch
 docker network create dbs
-docker-compose up
+docker compose up
 docker exec -it edittosdrorg_web_1 rails db:seed
 ```
 
@@ -95,18 +95,18 @@ share a database, as well as an Elasticsearch instance:
 From then on, you can start the application by running:
 
 ```sh
-docker-compose up
+docker compose up
 ```
 
 If you add or remove dependencies (e.g. Ruby Gems), add the following arguments:
 
 ```sh
-docker-compose up --build --remove-orphans
+docker compose up --build --remove-orphans
 ```
 
 Here's an explanation of what each step does:
 
-1. `docker-compose up`
+1. `docker compose up`
 
 This will launch the following services:
 
@@ -121,7 +121,7 @@ If you wish simply to run the web application and the database, you can launch t
 on their own by running:
 
 ```sh
-docker-compose up web db
+docker compose up web db
 ```
 
 - To debug application code using `byebug`, open a new terminal tab and attach to the running
@@ -134,12 +134,12 @@ docker-compose up web db
   in Docker and relies on [rspec-rails](https://github.com/rspec/rspec-rails); you can launch tests
   by running:
   ```sh
-  docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bundle exec rspec
+  docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bundle exec rspec
   ```
 
 - To access the Rails console, run:
   ```sh
-  docker-compose run web rails c
+  docker compose run web rails c
   ```
 
 2. **Create your user via the sign-up page, or use one of the seeded users**.
@@ -158,7 +158,7 @@ You can log in with any one of the following email addresses (password is `Justf
 First you'll need to access the Rails console:
 
 ```sh
-docker-compose run web rails c
+docker compose run web rails c
 ```
 
 Find, then confirm your user:
